@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FaSignOutAlt, FaBars, FaTimes, FaUser, FaChevronDown, FaUserCircle, FaCog } from 'react-icons/fa';
+import { FaSignOutAlt, FaBars, FaTimes, FaUser, FaChevronDown, FaUserCircle, FaCog, FaUserShield } from 'react-icons/fa';
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -125,12 +125,18 @@ export default function Navbar() {
                     Your Profile
                   </span>
                 </Link>
-                <Link href="/dashboard">
-                  <span className="flex items-center px-4 py-2 text-sm text-gray-300 transition-colors rounded-md hover:bg-gray-700">
-                    <FaCog className="mr-3 text-blue-400" />
-                    Dashboard
-                  </span>
-                </Link>
+                
+                {/* Add this Admin Dashboard link */}
+                {user?.role === 'admin' && (
+                  <Link href="/admin">
+                    <span className="flex items-center px-4 py-2 text-sm text-gray-300 transition-colors rounded-md hover:bg-gray-700">
+                      <FaUserShield className="mr-3 text-blue-400" />
+                      Admin Dashboard
+                    </span>
+                  </Link>
+                )}
+                
+                
                 <div className="my-2 border-t border-gray-700"></div>
                 <button
                   onClick={handleLogout}
@@ -187,12 +193,7 @@ export default function Navbar() {
             Your Profile
           </span>
         </Link>
-        <Link href="/dashboard">
-          <span className="flex items-center px-3 py-2 text-base font-medium text-gray-300 transition-colors rounded-md hover:bg-gray-800 hover:text-white">
-            <FaCog className="mr-3 text-blue-400" />
-            Dashboard
-          </span>
-        </Link>
+        
         <button
           onClick={handleLogout}
           className="flex items-center w-full px-3 py-2 mt-3 text-base font-medium text-white transition-colors rounded-md bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800"

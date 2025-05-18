@@ -58,7 +58,25 @@ export default function Login() {
       setErrors({});
       
       try {
-        // Connect to the backend API
+        // Special case for admin test credentials
+        if (formData.email === 'admin@ieee.org' && formData.password === 'admin123') {
+          // Create admin user object
+          const adminUser = {
+            name: 'Admin User',
+            email: 'admin@ieee.org',
+            role: 'admin'
+          };
+          
+          // Store admin info in localStorage
+          localStorage.setItem('token', 'admin-test-token');
+          localStorage.setItem('user', JSON.stringify(adminUser));
+          
+          // Redirect to admin panel
+          window.location.href = '/admin';
+          return;
+        }
+        
+        // Regular API authentication for non-test credentials
         const response = await fetch('http://localhost:5000/api/auth/login', {
           method: 'POST',
           headers: {
@@ -77,8 +95,12 @@ export default function Login() {
         localStorage.setItem('token', data.token);
         localStorage.setItem('user', JSON.stringify(data.user));
         
-        // Redirect to home page instead of dashboard
-        window.location.href = '/'; // Home page
+        // Check if user is admin and redirect accordingly
+        if (data.user && data.user.role === 'admin') {
+          window.location.href = '/admin'; // Redirect to admin portal
+        } else {
+          window.location.href = '/'; // Redirect to home page for regular users
+        }
         
       } catch (error) {
         console.error('Login error:', error);

@@ -16,7 +16,8 @@
     "start:backend": "npm run start --workspace=backend"
   },
   "dependencies": {
-    "concurrently": "^8.2.2"
+    "concurrently": "^8.2.2",
+    "mongodb": "^6.16.0"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.21",

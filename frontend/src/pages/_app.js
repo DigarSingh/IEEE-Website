@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
-import '../styles/globals.css';
 import { useRouter } from 'next/router';
+import { AuthProvider } from '../contexts/AuthContext';
+import '../styles/globals.css';
 
 function MyApp({ Component, pageProps }) {
   const router = useRouter();
@@ -19,8 +20,11 @@ function MyApp({ Component, pageProps }) {
         router.pathname.startsWith(route)
       );
       
+      // Admin routes require additional checks (handled by withAdminAuth)
+      const isAdminRoute = router.pathname.startsWith('/admin');
+      
       // If on a protected route and not logged in, redirect to login
-      if (isProtectedRoute && !token) {
+      if (isProtectedRoute && !token && !isAdminRoute) {
         router.push('/login');
       }
     };
@@ -31,7 +35,11 @@ function MyApp({ Component, pageProps }) {
     }
   }, [router.pathname]);
   
-  return <Component {...pageProps} />;
+  return (
+    <AuthProvider>
+      <Component {...pageProps} />
+    </AuthProvider>
+  );
 }
 
 export default MyApp;

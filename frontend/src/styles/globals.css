@@ -28,3 +28,50 @@ body {
 .transition-all {
   transition: all 0.3s ease;
 }
+
+/* Dashboard specific animations */
+@keyframes pulse-highlight {
+  0%,
+  100% {
+    background-color: rgba(37, 99, 235, 0.1);
+  }
+  50% {
+    background-color: rgba(37, 99, 235, 0.3);
+  }
+}
+
+.pulse-highlight {
+  animation: pulse-highlight 2s infinite;
+}
+
+/* Shimmering effect for loading skeletons */
+.shimmer {
+  background: linear-gradient(
+      to right,
+      rgba(255, 255, 255, 0.1) 0%,
+      rgba(255, 255, 255, 0.2) 20%,
+      rgba(255, 255, 255, 0.1) 40%,
+      rgba(255, 255, 255, 0.1) 100%
+    );
+  background-size: 800px 100%;
+  animation: shimmer 2s infinite linear;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -468px 0;
+  }
+  100% {
+    background-position: 468px 0;
+  }
+}
+
+/* Dashboard card hover animations */
+.dashboard-card {
+  transition: all 0.3s ease;
+}
+
+.dashboard-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+}
