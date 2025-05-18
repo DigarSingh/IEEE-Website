@@ -126,13 +126,13 @@ export default function Footer() {
               <li className="flex items-center">
                 <FaEnvelope className="flex-shrink-0 mr-3 text-ieee-blue" />
                 <a href="mailto:ieeeclub@university.edu" className="text-gray-400 transition-colors hover:text-white">
-                  ieeeclub@university.edu
+                  geu.ieee.studenbranch@gmail
                 </a>
               </li>
               <li className="flex items-center">
                 <FaPhone className="flex-shrink-0 mr-3 text-ieee-blue" />
                 <a href="tel:+1234567890" className="text-gray-400 transition-colors hover:text-white">
-                  (123) 456-7890
+                  +91 7668410473
                 </a>
               </li>
             </ul>
@@ -142,7 +142,7 @@ export default function Footer() {
         {/* Bottom section */}
         <div className="flex flex-col items-center justify-between pt-8 mt-8 border-t border-gray-700 sm:flex-row">
           <p className="text-sm text-gray-400">
-            © {currentYear} IEEE College Club. All rights reserved.
+            © {currentYear} IEEE Club. All rights reserved. <br></br> Developed with ❤ by Digar.
           </p>
           <div className="flex mt-4 space-x-6 sm:mt-0">
             <Link href="/privacy">

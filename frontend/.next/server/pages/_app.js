@@ -12,17 +12,6 @@ exports.id = "pages/_app";
 exports.ids = ["pages/_app"];
 exports.modules = {
 
-/***/ "./src/components/ErrorBoundary.js":
-/*!*****************************************!*\
-  !*** ./src/components/ErrorBoundary.js ***!
-  \*****************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (__WEBPACK_DEFAULT_EXPORT__)\n/* harmony export */ });\n/* harmony import */ var react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react/jsx-dev-runtime */ \"react/jsx-dev-runtime\");\n/* harmony import */ var react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__);\n/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ \"react\");\n/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);\n\n\nclass ErrorBoundary extends (react__WEBPACK_IMPORTED_MODULE_1___default().Component) {\n    constructor(props){\n        super(props);\n        this.state = {\n            hasError: false\n        };\n    }\n    static getDerivedStateFromError(error) {\n        return {\n            hasError: true\n        };\n    }\n    componentDidCatch(error, errorInfo) {\n        console.error(\"Error caught by boundary:\", error, errorInfo);\n    }\n    render() {\n        if (this.state.hasError) {\n            return this.props.fallback || /*#__PURE__*/ (0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV)(\"div\", {\n                className: \"p-4 text-red-500\",\n                children: \"Something went wrong.\"\n            }, void 0, false, {\n                fileName: \"D:\\\\Officel IEEE\\\\frontend\\\\src\\\\components\\\\ErrorBoundary.js\",\n                lineNumber: 19,\n                columnNumber: 37\n            }, this);\n        }\n        return this.props.children;\n    }\n}\n/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (ErrorBoundary);\n//# sourceURL=[module]\n//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiLi9zcmMvY29tcG9uZW50cy9FcnJvckJvdW5kYXJ5LmpzIiwibWFwcGluZ3MiOiI7Ozs7Ozs7OztBQUEwQjtBQUUxQixNQUFNQyxzQkFBc0JELHdEQUFlO0lBQ3pDRyxZQUFZQyxLQUFLLENBQUU7UUFDakIsS0FBSyxDQUFDQTtRQUNOLElBQUksQ0FBQ0MsS0FBSyxHQUFHO1lBQUVDLFVBQVU7UUFBTTtJQUNqQztJQUVBLE9BQU9DLHlCQUF5QkMsS0FBSyxFQUFFO1FBQ3JDLE9BQU87WUFBRUYsVUFBVTtRQUFLO0lBQzFCO0lBRUFHLGtCQUFrQkQsS0FBSyxFQUFFRSxTQUFTLEVBQUU7UUFDbENDLFFBQVFILEtBQUssQ0FBQyw2QkFBNkJBLE9BQU9FO0lBQ3BEO0lBRUFFLFNBQVM7UUFDUCxJQUFJLElBQUksQ0FBQ1AsS0FBSyxDQUFDQyxRQUFRLEVBQUU7WUFDdkIsT0FBTyxJQUFJLENBQUNGLEtBQUssQ0FBQ1MsUUFBUSxrQkFBSSw4REFBQ0M7Z0JBQUlDLFdBQVU7MEJBQW1COzs7Ozs7UUFDbEU7UUFFQSxPQUFPLElBQUksQ0FBQ1gsS0FBSyxDQUFDWSxRQUFRO0lBQzVCO0FBQ0Y7QUFFQSxpRUFBZWYsYUFBYUEsRUFBQyIsInNvdXJjZXMiOlsid2VicGFjazovL2llZWUtY2x1Yi13ZWJzaXRlLy4vc3JjL2NvbXBvbmVudHMvRXJyb3JCb3VuZGFyeS5qcz9mNTJkIl0sInNvdXJjZXNDb250ZW50IjpbImltcG9ydCBSZWFjdCBmcm9tICdyZWFjdCc7XHJcblxyXG5jbGFzcyBFcnJvckJvdW5kYXJ5IGV4dGVuZHMgUmVhY3QuQ29tcG9uZW50IHtcclxuICBjb25zdHJ1Y3Rvcihwcm9wcykge1xyXG4gICAgc3VwZXIocHJvcHMpO1xyXG4gICAgdGhpcy5zdGF0ZSA9IHsgaGFzRXJyb3I6IGZhbHNlIH07XHJcbiAgfVxyXG5cclxuICBzdGF0aWMgZ2V0RGVyaXZlZFN0YXRlRnJvbUVycm9yKGVycm9yKSB7XHJcbiAgICByZXR1cm4geyBoYXNFcnJvcjogdHJ1ZSB9O1xyXG4gIH1cclxuXHJcbiAgY29tcG9uZW50RGlkQ2F0Y2goZXJyb3IsIGVycm9ySW5mbykge1xyXG4gICAgY29uc29sZS5lcnJvcihcIkVycm9yIGNhdWdodCBieSBib3VuZGFyeTpcIiwgZXJyb3IsIGVycm9ySW5mbyk7XHJcbiAgfVxyXG5cclxuICByZW5kZXIoKSB7XHJcbiAgICBpZiAodGhpcy5zdGF0ZS5oYXNFcnJvcikge1xyXG4gICAgICByZXR1cm4gdGhpcy5wcm9wcy5mYWxsYmFjayB8fCA8ZGl2IGNsYXNzTmFtZT1cInAtNCB0ZXh0LXJlZC01MDBcIj5Tb21ldGhpbmcgd2VudCB3cm9uZy48L2Rpdj47XHJcbiAgICB9XHJcblxyXG4gICAgcmV0dXJuIHRoaXMucHJvcHMuY2hpbGRyZW47XHJcbiAgfVxyXG59XHJcblxyXG5leHBvcnQgZGVmYXVsdCBFcnJvckJvdW5kYXJ5O1xyXG4iXSwibmFtZXMiOlsiUmVhY3QiLCJFcnJvckJvdW5kYXJ5IiwiQ29tcG9uZW50IiwiY29uc3RydWN0b3IiLCJwcm9wcyIsInN0YXRlIiwiaGFzRXJyb3IiLCJnZXREZXJpdmVkU3RhdGVGcm9tRXJyb3IiLCJlcnJvciIsImNvbXBvbmVudERpZENhdGNoIiwiZXJyb3JJbmZvIiwiY29uc29sZSIsInJlbmRlciIsImZhbGxiYWNrIiwiZGl2IiwiY2xhc3NOYW1lIiwiY2hpbGRyZW4iXSwic291cmNlUm9vdCI6IiJ9\n//# sourceURL=webpack-internal:///./src/components/ErrorBoundary.js\n");
-
-/***/ }),
-
 /***/ "./src/pages/_app.js":
 /*!***************************!*\
   !*** ./src/pages/_app.js ***!
@@ -30,7 +19,7 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpac
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (__WEBPACK_DEFAULT_EXPORT__)\n/* harmony export */ });\n/* harmony import */ var react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react/jsx-dev-runtime */ \"react/jsx-dev-runtime\");\n/* harmony import */ var react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__);\n/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ \"react\");\n/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);\n/* harmony import */ var _styles_globals_css__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../styles/globals.css */ \"./src/styles/globals.css\");\n/* harmony import */ var _styles_globals_css__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_styles_globals_css__WEBPACK_IMPORTED_MODULE_2__);\n/* harmony import */ var _components_ErrorBoundary__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../components/ErrorBoundary */ \"./src/components/ErrorBoundary.js\");\n\n\n\n\nfunction MyApp({ Component, pageProps }) {\n    const [isClient, setIsClient] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(false);\n    // This effect runs only on client\n    (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(()=>{\n        setIsClient(true);\n    }, []);\n    return /*#__PURE__*/ (0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV)(_components_ErrorBoundary__WEBPACK_IMPORTED_MODULE_3__[\"default\"], {\n        children: isClient ? /*#__PURE__*/ (0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV)(Component, {\n            ...pageProps\n        }, void 0, false, {\n            fileName: \"D:\\\\Officel IEEE\\\\frontend\\\\src\\\\pages\\\\_app.js\",\n            lineNumber: 16,\n            columnNumber: 19\n        }, this) : /*#__PURE__*/ (0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV)(\"div\", {\n            style: {\n                visibility: \"hidden\"\n            },\n            children: /*#__PURE__*/ (0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV)(Component, {\n                ...pageProps\n            }, void 0, false, {\n                fileName: \"D:\\\\Officel IEEE\\\\frontend\\\\src\\\\pages\\\\_app.js\",\n                lineNumber: 18,\n                columnNumber: 11\n            }, this)\n        }, void 0, false, {\n            fileName: \"D:\\\\Officel IEEE\\\\frontend\\\\src\\\\pages\\\\_app.js\",\n            lineNumber: 17,\n            columnNumber: 9\n        }, this)\n    }, void 0, false, {\n        fileName: \"D:\\\\Officel IEEE\\\\frontend\\\\src\\\\pages\\\\_app.js\",\n        lineNumber: 14,\n        columnNumber: 5\n    }, this);\n}\n/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (MyApp);\n//# sourceURL=[module]\n//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiLi9zcmMvcGFnZXMvX2FwcC5qcyIsIm1hcHBpbmdzIjoiOzs7Ozs7Ozs7Ozs7QUFBNEM7QUFDYjtBQUN5QjtBQUV4RCxTQUFTRyxNQUFNLEVBQUVDLFNBQVMsRUFBRUMsU0FBUyxFQUFFO0lBQ3JDLE1BQU0sQ0FBQ0MsVUFBVUMsWUFBWSxHQUFHTiwrQ0FBUUEsQ0FBQztJQUV6QyxrQ0FBa0M7SUFDbENELGdEQUFTQSxDQUFDO1FBQ1JPLFlBQVk7SUFDZCxHQUFHLEVBQUU7SUFFTCxxQkFDRSw4REFBQ0wsaUVBQWFBO2tCQUVYSSx5QkFBVyw4REFBQ0Y7WUFBVyxHQUFHQyxTQUFTOzs7OztpQ0FDbEMsOERBQUNHO1lBQUlDLE9BQU87Z0JBQUVDLFlBQVk7WUFBUztzQkFDakMsNEVBQUNOO2dCQUFXLEdBQUdDLFNBQVM7Ozs7Ozs7Ozs7Ozs7Ozs7QUFLbEM7QUFFQSxpRUFBZUYsS0FBS0EsRUFBQyIsInNvdXJjZXMiOlsid2VicGFjazovL2llZWUtY2x1Yi13ZWJzaXRlLy4vc3JjL3BhZ2VzL19hcHAuanM/OGZkYSJdLCJzb3VyY2VzQ29udGVudCI6WyJpbXBvcnQgeyB1c2VFZmZlY3QsIHVzZVN0YXRlIH0gZnJvbSAncmVhY3QnO1xyXG5pbXBvcnQgJy4uL3N0eWxlcy9nbG9iYWxzLmNzcyc7XHJcbmltcG9ydCBFcnJvckJvdW5kYXJ5IGZyb20gJy4uL2NvbXBvbmVudHMvRXJyb3JCb3VuZGFyeSc7XHJcblxyXG5mdW5jdGlvbiBNeUFwcCh7IENvbXBvbmVudCwgcGFnZVByb3BzIH0pIHtcclxuICBjb25zdCBbaXNDbGllbnQsIHNldElzQ2xpZW50XSA9IHVzZVN0YXRlKGZhbHNlKTtcclxuICBcclxuICAvLyBUaGlzIGVmZmVjdCBydW5zIG9ubHkgb24gY2xpZW50XHJcbiAgdXNlRWZmZWN0KCgpID0+IHtcclxuICAgIHNldElzQ2xpZW50KHRydWUpO1xyXG4gIH0sIFtdKTtcclxuXHJcbiAgcmV0dXJuIChcclxuICAgIDxFcnJvckJvdW5kYXJ5PlxyXG4gICAgICB7LyogUHJldmVudCBoeWRyYXRpb24gZXJyb3JzIGJ5IGNvbmRpdGlvbmFsbHkgcmVuZGVyaW5nIGNvbXBvbmVudHMgdGhhdCBkZXBlbmQgb24gY2xpZW50LXNpZGUgQVBJcyAqL31cclxuICAgICAge2lzQ2xpZW50ID8gPENvbXBvbmVudCB7Li4ucGFnZVByb3BzfSAvPiA6IFxyXG4gICAgICAgIDxkaXYgc3R5bGU9e3sgdmlzaWJpbGl0eTogJ2hpZGRlbicgfX0+XHJcbiAgICAgICAgICA8Q29tcG9uZW50IHsuLi5wYWdlUHJvcHN9IC8+XHJcbiAgICAgICAgPC9kaXY+XHJcbiAgICAgIH1cclxuICAgIDwvRXJyb3JCb3VuZGFyeT5cclxuICApO1xyXG59XHJcblxyXG5leHBvcnQgZGVmYXVsdCBNeUFwcDtcclxuIl0sIm5hbWVzIjpbInVzZUVmZmVjdCIsInVzZVN0YXRlIiwiRXJyb3JCb3VuZGFyeSIsIk15QXBwIiwiQ29tcG9uZW50IiwicGFnZVByb3BzIiwiaXNDbGllbnQiLCJzZXRJc0NsaWVudCIsImRpdiIsInN0eWxlIiwidmlzaWJpbGl0eSJdLCJzb3VyY2VSb290IjoiIn0=\n//# sourceURL=webpack-internal:///./src/pages/_app.js\n");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (__WEBPACK_DEFAULT_EXPORT__)\n/* harmony export */ });\n/* harmony import */ var react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react/jsx-dev-runtime */ \"react/jsx-dev-runtime\");\n/* harmony import */ var react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__);\n/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ \"react\");\n/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);\n/* harmony import */ var _styles_globals_css__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../styles/globals.css */ \"./src/styles/globals.css\");\n/* harmony import */ var _styles_globals_css__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_styles_globals_css__WEBPACK_IMPORTED_MODULE_2__);\n/* harmony import */ var next_router__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! next/router */ \"../node_modules/next/router.js\");\n/* harmony import */ var next_router__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(next_router__WEBPACK_IMPORTED_MODULE_3__);\n\n\n\n\nfunction MyApp({ Component, pageProps }) {\n    const router = (0,next_router__WEBPACK_IMPORTED_MODULE_3__.useRouter)();\n    // This will run whenever the route changes\n    (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(()=>{\n        // Check auth status when component mounts and route changes\n        const checkAuth = ()=>{\n            if (true) return;\n            const token = localStorage.getItem(\"token\");\n            // Check for protected routes that need authentication\n            const protectedRoutes = [\n                \"/dashboard\",\n                \"/profile\",\n                \"/member-area\"\n            ];\n            const isProtectedRoute = protectedRoutes.some((route)=>router.pathname.startsWith(route));\n            // If on a protected route and not logged in, redirect to login\n            if (isProtectedRoute && !token) {\n                router.push(\"/login\");\n            }\n        };\n        // Only run on client-side\n        if (false) {}\n    }, [\n        router.pathname\n    ]);\n    return /*#__PURE__*/ (0,react_jsx_dev_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxDEV)(Component, {\n        ...pageProps\n    }, void 0, false, {\n        fileName: \"D:\\\\Officel IEEE\\\\frontend\\\\src\\\\pages\\\\_app.js\",\n        lineNumber: 34,\n        columnNumber: 10\n    }, this);\n}\n/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (MyApp);\n//# sourceURL=[module]\n//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiLi9zcmMvcGFnZXMvX2FwcC5qcyIsIm1hcHBpbmdzIjoiOzs7Ozs7Ozs7Ozs7O0FBQWtDO0FBQ0g7QUFDUztBQUV4QyxTQUFTRSxNQUFNLEVBQUVDLFNBQVMsRUFBRUMsU0FBUyxFQUFFO0lBQ3JDLE1BQU1DLFNBQVNKLHNEQUFTQTtJQUV4QiwyQ0FBMkM7SUFDM0NELGdEQUFTQSxDQUFDO1FBQ1IsNERBQTREO1FBQzVELE1BQU1NLFlBQVk7WUFDaEIsSUFBSSxJQUFrQixFQUFhO1lBRW5DLE1BQU1DLFFBQVFDLGFBQWFDLE9BQU8sQ0FBQztZQUVuQyxzREFBc0Q7WUFDdEQsTUFBTUMsa0JBQWtCO2dCQUFDO2dCQUFjO2dCQUFZO2FBQWU7WUFDbEUsTUFBTUMsbUJBQW1CRCxnQkFBZ0JFLElBQUksQ0FBQ0MsQ0FBQUEsUUFDNUNSLE9BQU9TLFFBQVEsQ0FBQ0MsVUFBVSxDQUFDRjtZQUc3QiwrREFBK0Q7WUFDL0QsSUFBSUYsb0JBQW9CLENBQUNKLE9BQU87Z0JBQzlCRixPQUFPVyxJQUFJLENBQUM7WUFDZDtRQUNGO1FBRUEsMEJBQTBCO1FBQzFCLElBQUksS0FBa0IsRUFBYSxFQUVsQztJQUNILEdBQUc7UUFBQ1gsT0FBT1MsUUFBUTtLQUFDO0lBRXBCLHFCQUFPLDhEQUFDWDtRQUFXLEdBQUdDLFNBQVM7Ozs7OztBQUNqQztBQUVBLGlFQUFlRixLQUFLQSxFQUFDIiwic291cmNlcyI6WyJ3ZWJwYWNrOi8vaWVlZS1jbHViLXdlYnNpdGUvLi9zcmMvcGFnZXMvX2FwcC5qcz84ZmRhIl0sInNvdXJjZXNDb250ZW50IjpbImltcG9ydCB7IHVzZUVmZmVjdCB9IGZyb20gJ3JlYWN0JztcclxuaW1wb3J0ICcuLi9zdHlsZXMvZ2xvYmFscy5jc3MnO1xyXG5pbXBvcnQgeyB1c2VSb3V0ZXIgfSBmcm9tICduZXh0L3JvdXRlcic7XHJcblxyXG5mdW5jdGlvbiBNeUFwcCh7IENvbXBvbmVudCwgcGFnZVByb3BzIH0pIHtcclxuICBjb25zdCByb3V0ZXIgPSB1c2VSb3V0ZXIoKTtcclxuICBcclxuICAvLyBUaGlzIHdpbGwgcnVuIHdoZW5ldmVyIHRoZSByb3V0ZSBjaGFuZ2VzXHJcbiAgdXNlRWZmZWN0KCgpID0+IHtcclxuICAgIC8vIENoZWNrIGF1dGggc3RhdHVzIHdoZW4gY29tcG9uZW50IG1vdW50cyBhbmQgcm91dGUgY2hhbmdlc1xyXG4gICAgY29uc3QgY2hlY2tBdXRoID0gKCkgPT4ge1xyXG4gICAgICBpZiAodHlwZW9mIHdpbmRvdyA9PT0gJ3VuZGVmaW5lZCcpIHJldHVybjtcclxuICAgICAgXHJcbiAgICAgIGNvbnN0IHRva2VuID0gbG9jYWxTdG9yYWdlLmdldEl0ZW0oJ3Rva2VuJyk7XHJcbiAgICAgIFxyXG4gICAgICAvLyBDaGVjayBmb3IgcHJvdGVjdGVkIHJvdXRlcyB0aGF0IG5lZWQgYXV0aGVudGljYXRpb25cclxuICAgICAgY29uc3QgcHJvdGVjdGVkUm91dGVzID0gWycvZGFzaGJvYXJkJywgJy9wcm9maWxlJywgJy9tZW1iZXItYXJlYSddO1xyXG4gICAgICBjb25zdCBpc1Byb3RlY3RlZFJvdXRlID0gcHJvdGVjdGVkUm91dGVzLnNvbWUocm91dGUgPT4gXHJcbiAgICAgICAgcm91dGVyLnBhdGhuYW1lLnN0YXJ0c1dpdGgocm91dGUpXHJcbiAgICAgICk7XHJcbiAgICAgIFxyXG4gICAgICAvLyBJZiBvbiBhIHByb3RlY3RlZCByb3V0ZSBhbmQgbm90IGxvZ2dlZCBpbiwgcmVkaXJlY3QgdG8gbG9naW5cclxuICAgICAgaWYgKGlzUHJvdGVjdGVkUm91dGUgJiYgIXRva2VuKSB7XHJcbiAgICAgICAgcm91dGVyLnB1c2goJy9sb2dpbicpO1xyXG4gICAgICB9XHJcbiAgICB9O1xyXG4gICAgXHJcbiAgICAvLyBPbmx5IHJ1biBvbiBjbGllbnQtc2lkZVxyXG4gICAgaWYgKHR5cGVvZiB3aW5kb3cgIT09ICd1bmRlZmluZWQnKSB7XHJcbiAgICAgIGNoZWNrQXV0aCgpO1xyXG4gICAgfVxyXG4gIH0sIFtyb3V0ZXIucGF0aG5hbWVdKTtcclxuICBcclxuICByZXR1cm4gPENvbXBvbmVudCB7Li4ucGFnZVByb3BzfSAvPjtcclxufVxyXG5cclxuZXhwb3J0IGRlZmF1bHQgTXlBcHA7XHJcbiJdLCJuYW1lcyI6WyJ1c2VFZmZlY3QiLCJ1c2VSb3V0ZXIiLCJNeUFwcCIsIkNvbXBvbmVudCIsInBhZ2VQcm9wcyIsInJvdXRlciIsImNoZWNrQXV0aCIsInRva2VuIiwibG9jYWxTdG9yYWdlIiwiZ2V0SXRlbSIsInByb3RlY3RlZFJvdXRlcyIsImlzUHJvdGVjdGVkUm91dGUiLCJzb21lIiwicm91dGUiLCJwYXRobmFtZSIsInN0YXJ0c1dpdGgiLCJwdXNoIl0sInNvdXJjZVJvb3QiOiIifQ==\n//# sourceURL=webpack-internal:///./src/pages/_app.js\n");
 
 /***/ }),
 
@@ -41,6 +30,17 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpac
 /***/ (() => {
 
 
+
+/***/ }),
+
+/***/ "next/dist/compiled/next-server/pages.runtime.dev.js":
+/*!**********************************************************************!*\
+  !*** external "next/dist/compiled/next-server/pages.runtime.dev.js" ***!
+  \**********************************************************************/
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("next/dist/compiled/next-server/pages.runtime.dev.js");
 
 /***/ }),
 
@@ -55,6 +55,17 @@ module.exports = require("react");
 
 /***/ }),
 
+/***/ "react-dom":
+/*!****************************!*\
+  !*** external "react-dom" ***!
+  \****************************/
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("react-dom");
+
+/***/ }),
+
 /***/ "react/jsx-dev-runtime":
 /*!****************************************!*\
   !*** external "react/jsx-dev-runtime" ***!
@@ -63,6 +74,50 @@ module.exports = require("react");
 
 "use strict";
 module.exports = require("react/jsx-dev-runtime");
+
+/***/ }),
+
+/***/ "react/jsx-runtime":
+/*!************************************!*\
+  !*** external "react/jsx-runtime" ***!
+  \************************************/
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("react/jsx-runtime");
+
+/***/ }),
+
+/***/ "fs":
+/*!*********************!*\
+  !*** external "fs" ***!
+  \*********************/
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("fs");
+
+/***/ }),
+
+/***/ "stream":
+/*!*************************!*\
+  !*** external "stream" ***!
+  \*************************/
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("stream");
+
+/***/ }),
+
+/***/ "zlib":
+/*!***********************!*\
+  !*** external "zlib" ***!
+  \***********************/
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("zlib");
 
 /***/ })
 
@@ -73,7 +128,7 @@ module.exports = require("react/jsx-dev-runtime");
 var __webpack_require__ = require("../webpack-runtime.js");
 __webpack_require__.C(exports);
 var __webpack_exec__ = (moduleId) => (__webpack_require__(__webpack_require__.s = moduleId))
-var __webpack_exports__ = (__webpack_exec__("./src/pages/_app.js"));
+var __webpack_exports__ = __webpack_require__.X(0, ["vendor-chunks/next","vendor-chunks/@swc"], () => (__webpack_exec__("./src/pages/_app.js")));
 module.exports = __webpack_exports__;
 
 })();

@@ -51,7 +51,7 @@ export default function Membership() {
       <div className="bg-white">
         <Head>
           <title>IEEE Membership - Join Our Community</title>
-          <meta name="description" content="Join the IEEE College Club and access exclusive workshops, projects, and networking opportunities." />
+          <meta name="description" content="Join the IEEE Club and access exclusive workshops, projects, and networking opportunities." />
         </Head>
 
         {/* Enhanced Hero Section */}
@@ -99,7 +99,7 @@ export default function Membership() {
                 transition={{ duration: 0.8, delay: 0.2 }}
                 className="max-w-2xl mx-auto mb-10 text-xl text-gray-100"
               >
-                Become a member of the IEEE College Club and unlock access to exclusive events, projects, and networking opportunities.
+                Become a member of the IEEE Club and unlock access to exclusive events, projects, and networking opportunities.
               </motion.p>
               <motion.div 
                 initial={{ opacity: 0, y: 20 }}

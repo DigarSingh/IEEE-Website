@@ -75,7 +75,7 @@ export default function Home() {
                   Innovate. <span className="text-yellow-300">Learn.</span> Lead.
                 </h1>
                 <p className="max-w-2xl mb-8 text-xl text-gray-100 md:text-2xl">
-                  Join IEEE College Club to build skills, create innovative solutions, and connect with technology leaders worldwide.
+                  Join IEEE Club to build skills, create innovative solutions, and connect with technology leaders worldwide.
                 </p>
                 <div className="flex flex-wrap items-center gap-4">
                   <Link href="/membership">
@@ -138,7 +138,7 @@ export default function Home() {
             >
               <h2 className="mb-6 text-3xl font-bold text-gray-900 md:text-4xl">Empowering the Next Generation of Tech Leaders</h2>
               <p className="text-lg text-gray-600">
-                IEEE College Club provides a platform for students to develop technical skills, leadership abilities, and professional networks through hands-on projects, workshops, and industry connections.
+                IEEE Club provides a platform for students to develop technical skills, leadership abilities, and professional networks through hands-on projects, workshops, and industry connections.
               </p>
             </motion.div>
 
@@ -173,7 +173,7 @@ export default function Home() {
               transition={{ duration: 0.8 }}
               className="max-w-3xl mx-auto mb-16 text-center"
             >
-              <h2 className="mb-6 text-3xl font-bold text-gray-900 md:text-4xl">Why Join IEEE College Club?</h2>
+              <h2 className="mb-6 text-3xl font-bold text-gray-900 md:text-4xl">Why Join IEEE Club?</h2>
             </motion.div>
 
             <div className="grid gap-8 md:grid-cols-3">

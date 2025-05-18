@@ -1,25 +1,37 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import '../styles/globals.css';
-import ErrorBoundary from '../components/ErrorBoundary';
+import { useRouter } from 'next/router';
 
 function MyApp({ Component, pageProps }) {
-  const [isClient, setIsClient] = useState(false);
+  const router = useRouter();
   
-  // This effect runs only on client
+  // This will run whenever the route changes
   useEffect(() => {
-    setIsClient(true);
-  }, []);
-
-  return (
-    <ErrorBoundary>
-      {/* Prevent hydration errors by conditionally rendering components that depend on client-side APIs */}
-      {isClient ? <Component {...pageProps} /> : 
-        <div style={{ visibility: 'hidden' }}>
-          <Component {...pageProps} />
-        </div>
+    // Check auth status when component mounts and route changes
+    const checkAuth = () => {
+      if (typeof window === 'undefined') return;
+      
+      const token = localStorage.getItem('token');
+      
+      // Check for protected routes that need authentication
+      const protectedRoutes = ['/dashboard', '/profile', '/member-area'];
+      const isProtectedRoute = protectedRoutes.some(route => 
+        router.pathname.startsWith(route)
+      );
+      
+      // If on a protected route and not logged in, redirect to login
+      if (isProtectedRoute && !token) {
+        router.push('/login');
       }
-    </ErrorBoundary>
-  );
+    };
+    
+    // Only run on client-side
+    if (typeof window !== 'undefined') {
+      checkAuth();
+    }
+  }, [router.pathname]);
+  
+  return <Component {...pageProps} />;
 }
 
 export default MyApp;

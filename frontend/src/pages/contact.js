@@ -14,7 +14,7 @@ export default function Contact() {
       <div className="min-h-screen overflow-hidden bg-white">
         <Head>
           <title>Contact Us - IEEE Club</title>
-          <meta name="description" content="Get in touch with the IEEE College Club. We'd love to hear from you!" />
+          <meta name="description" content="Get in touch with the IEEE Club. We'd love to hear from you!" />
         </Head>
 
         {/* Enhanced Hero Section */}
@@ -179,10 +179,10 @@ export default function Contact() {
                       <div>
                         <h3 className="mb-2 text-lg font-medium">Email Address</h3>
                         <a 
-                          href="mailto:info@ieeeclub.org" 
+                          href="mailto:geu.ieee.studenbranch@gmail.com" 
                           className="text-blue-100 transition-colors hover:text-white hover:underline"
                         >
-                          info@ieeeclub.org
+                          geu.ieee.studenbranch@gmail.com
                         </a>
                       </div>
                     </motion.div>
@@ -201,7 +201,7 @@ export default function Contact() {
                           href="tel:+911234567890" 
                           className="text-blue-100 transition-colors hover:text-white hover:underline"
                         >
-                          +91 123 456 7890
+                          +91 7668410473
                         </a>
                       </div>
                     </motion.div>
