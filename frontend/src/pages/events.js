@@ -20,8 +20,8 @@ export default function Events() {
     {
       id: 1,
       title: "Machine Learning Workshop",
-      date: "June 15, 2023",
-      time: "10:00 AM - 4:00 PM",
+      date: "May 23, 2025",
+      time: "11:30 Am Onwards",
       location: "Main Campus Auditorium",
       category: "workshop",
       image: "/images/events/ai-workshop.jpg",

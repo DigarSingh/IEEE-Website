@@ -2,7 +2,7 @@ import Head from 'next/head';
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { FaUser, FaLock, FaArrowRight, FaGoogle, FaGithub, FaLinkedinIn } from 'react-icons/fa';
+import { FaUser, FaLock, FaArrowRight, FaEye, FaEyeSlash } from 'react-icons/fa';
 import Layout from '../components/Layout';
 import dynamic from 'next/dynamic';
 
@@ -13,6 +13,7 @@ export default function Login() {
   });
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   // State for client-side rendering
   const [isMounted, setIsMounted] = useState(false);
@@ -111,6 +112,10 @@ export default function Login() {
         setIsSubmitting(false);
       }
     }
+  };
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
   };
 
   const fadeIn = {
@@ -322,15 +327,28 @@ export default function Login() {
                         <FaLock className="text-blue-400" />
                       </div>
                       <motion.input
-                        type="password"
+                        type={showPassword ? "text" : "password"}
                         id="password"
                         name="password"
                         value={formData.password}
                         onChange={handleChange}
-                        className={`block w-full pl-10 pr-3 py-3 border ${errors.password ? 'border-red-500' : 'border-gray-700'} bg-gray-900/60 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-400 focus:border-blue-400 transition-all duration-200 text-white`}
+                        className={`block w-full pl-10 pr-10 py-3 border ${errors.password ? 'border-red-500' : 'border-gray-700'} bg-gray-900/60 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-400 focus:border-blue-400 transition-all duration-200 text-white`}
                         placeholder="••••••••"
                         whileFocus={{ scale: 1.01 }}
                       />
+                      <div className="absolute inset-y-0 right-0 flex items-center pr-3">
+                        <button
+                          type="button"
+                          onClick={togglePasswordVisibility}
+                          className="text-gray-400 hover:text-blue-400 focus:outline-none"
+                        >
+                          {showPassword ? (
+                            <FaEyeSlash className="w-5 h-5" />
+                          ) : (
+                            <FaEye className="w-5 h-5" />
+                          )}
+                        </button>
+                      </div>
                     </div>
                     {errors.password && (
                       <motion.p 
@@ -417,52 +435,6 @@ export default function Login() {
                   </motion.button>
                 </form>
                 
-                <motion.div 
-                  className="relative my-6"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ duration: 0.5, delay: 0.7 }}
-                >
-                  <div className="absolute inset-0 flex items-center">
-                    <div className="w-full border-t border-gray-800"></div>
-                  </div>
-                  <div className="relative flex justify-center text-sm">
-                    <span className="px-2 text-gray-500 bg-[#101926]">Or continue with</span>
-                  </div>
-                </motion.div>
-                
-                <motion.div 
-                  className="grid grid-cols-3 gap-3"
-                  initial={{ y: 20, opacity: 0 }}
-                  animate={{ y: 0, opacity: 1 }}
-                  transition={{ duration: 0.5, delay: 0.8 }}
-                >
-                  <motion.button
-                    type="button"
-                    className="inline-flex justify-center w-full p-3 text-sm font-medium transition-all bg-gray-800 border border-gray-700 rounded-lg hover:bg-gray-700 hover:border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-400"
-                    whileHover={{ y: -4, boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.3)" }}
-                    whileTap={{ y: 0 }}
-                  >
-                    <FaGoogle className="w-5 h-5 text-red-400" />
-                  </motion.button>
-                  <motion.button
-                    type="button"
-                    className="inline-flex justify-center w-full p-3 text-sm font-medium transition-all bg-gray-800 border border-gray-700 rounded-lg hover:bg-gray-700 hover:border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-400"
-                    whileHover={{ y: -4, boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.3)" }}
-                    whileTap={{ y: 0 }}
-                  >
-                    <FaGithub className="w-5 h-5 text-white" />
-                  </motion.button>
-                  <motion.button
-                    type="button"
-                    className="inline-flex justify-center w-full p-3 text-sm font-medium transition-all bg-gray-800 border border-gray-700 rounded-lg hover:bg-gray-700 hover:border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-400"
-                    whileHover={{ y: -4, boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.3)" }}
-                    whileTap={{ y: 0 }}
-                  >
-                    <FaLinkedinIn className="w-5 h-5 text-blue-400" />
-                  </motion.button>
-                </motion.div>
-
                 <motion.div 
                   className="mt-6 text-center"
                   initial={{ opacity: 0 }}

@@ -13,7 +13,7 @@ const RelatedEvents = ({ currentEventId, category }) => {
       {
         id: 1,
         title: "Machine Learning Workshop",
-        date: "June 15, 2023",
+        date: "11:30 Am Onwards",
         image: "/images/events/ai-workshop.jpg",
         category: "workshop"
       },
@@ -58,12 +58,12 @@ const RelatedEvents = ({ currentEventId, category }) => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
-          className="text-2xl font-bold text-gray-900 mb-8"
+          className="mb-8 text-2xl font-bold text-gray-900"
         >
           Related Events
         </motion.h2>
         
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
           {relatedEvents.map((event, index) => (
             <motion.div
               key={event.id}
@@ -71,14 +71,14 @@ const RelatedEvents = ({ currentEventId, category }) => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
-              className="bg-white rounded-xl shadow-sm overflow-hidden cursor-pointer hover:shadow-md transition-all"
+              className="overflow-hidden transition-all bg-white shadow-sm cursor-pointer rounded-xl hover:shadow-md"
               onClick={() => router.push(`/events/${event.id}`)}
             >
               <div className="h-40 overflow-hidden">
                 <img 
                   src={event.image} 
                   alt={event.title} 
-                  className="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
+                  className="object-cover w-full h-full transition-transform duration-700 hover:scale-105"
                 />
               </div>
               <div className="p-4">

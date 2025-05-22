@@ -28,7 +28,7 @@ export default function Home() {
     {
       id: 1,
       title: 'Machine Learning Workshop',
-      date: 'June 15, 2023',
+      date: '11:30 Am Onwards',
       image: '/images/events/ai-workshop.jpg',
       description: 'Hands-on session with industry experts on implementing ML models.'
     },
@@ -101,7 +101,7 @@ export default function Home() {
                 <div className="relative">
                   <div className="absolute w-64 h-64 bg-yellow-300 rounded-full opacity-50 -top-4 -left-4 blur-3xl"></div>
                   <div className="absolute w-64 h-64 rounded-full opacity-50 -bottom-8 -right-8 bg-ieee-blue blur-3xl"></div>
-                  <div className="relative p-6 bg-white border border-white shadow-2xl bg-opacity-10 backdrop-blur-lg rounded-2xl border-opacity-20">
+                  <div className="relative w-4/6 p-5 mx-auto bg-white border border-white shadow-5xl bg-opacity-10 backdrop-blur-lg rounded-2xl border-opacity-20">
                     <img 
                       src="/images/hero/hero.jpeg"
                       alt="IEEE Innovation" 
@@ -266,7 +266,7 @@ export default function Home() {
                 transition={{ duration: 0.5 }}
                 className="text-3xl font-bold text-gray-900 md:text-4xl"
               >
-                Upcoming Events
+                Events
               </motion.h2>
               
               <motion.div
@@ -310,8 +310,8 @@ export default function Home() {
                     <p className="mb-4 text-gray-600">{event.description}</p>
                     <Link href={`/events/${event.id}`}>
                       <span className="inline-flex items-center font-medium transition-all cursor-pointer text-ieee-blue hover:text-ieee-dark">
-                        <span>Learn more</span>
-                        <FaArrowRight className="ml-2" />
+                        <span></span>
+                       
                       </span>
                     </Link>
                   </div>
