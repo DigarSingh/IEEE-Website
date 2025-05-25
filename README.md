@@ -31,11 +31,11 @@ This is a responsive and dynamic website built for the IEEE Student Branch. The 
 ```bash
 git clone https://github.com/DigarSingh/ieee-website.git
 cd ieee-website
-
-✍️ License
+```
+## ✍️ License
 This project is licensed under the MIT License. See the LICENSE file for details.
 
-📬 Contact
+## 📬 Contact
 Made with 💙 by Digar Singh
 📧 Email: digarsingh2004@gmail.com
 🌐 Visit: geuieee.in
