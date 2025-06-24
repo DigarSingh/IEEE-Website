@@ -19,9 +19,9 @@ const RelatedEvents = ({ currentEventId, category }) => {
       },
       {
         id: 2,
-        title: "IEEE Leadership Summit",
+        title: "AWS JAM SKILL BUILDER PROGRAM",
         date: "July 8, 2023",
-        image: "/images/events/leadership-summit.jpg",
+        image: "/images/events/aws.jpg",
         category: "conference"
       },
       {

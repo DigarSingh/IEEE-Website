@@ -34,10 +34,10 @@ export default function Home() {
     },
     {
       id: 2,
-      title: 'IEEE Leadership Summit',
-      date: 'July 8, 2023',
-      image: '/images/events/leadership-summit.jpg',
-      description: 'Annual leadership conference with speakers from top tech companies.'
+      title: 'AWS Jam Skill Builder Program',
+      date: 'May 29, 2025',
+      image: '/images/events/aws.jpg',
+      description: 'The AWS Cloud Quest Tournament and Jam Skill Builder Program is a hands-on, gamified learning experience designed to equip students with real-world cloud computing skills using the AWS platform.'
     },
     {
       id: 3,

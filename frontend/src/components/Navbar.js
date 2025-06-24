@@ -137,7 +137,7 @@ export default function Navbar() {
                 )}
                 
                 
-                <div className="my-2 border-t border-gray-700"></div>
+                 <div className="my-2 border-t border-gray-700"></div>
                 <button
                   onClick={handleLogout}
                   className="flex items-center w-full px-4 py-2 text-sm text-left text-red-400 transition-colors rounded-md hover:bg-gray-700"
@@ -148,7 +148,7 @@ export default function Navbar() {
               </div>
             </motion.div>
           )}
-        </AnimatePresence>
+        </AnimatePresence>Resources
       </div>
     ) : (
       <div className="flex items-center space-x-3">
