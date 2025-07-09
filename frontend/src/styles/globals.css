@@ -75,3 +75,12 @@ body {
   transform: translateY(-5px);
   box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
 }
+
+/* Text shadow effects for better contrast against animations */
+.text-shadow {
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+}
+
+.text-shadow-lg {
+  text-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+}

@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { FaCalendar, FaLightbulb, FaUsers, FaGraduationCap, FaArrowRight } from 'react-icons/fa';
 import { useState, useEffect } from 'react';
 import Layout from '../components/Layout'; // Import Layout component
+import ParticleBackground from '../components/ParticleBackground';
 
 export default function Home() {
   const [isVisible, setIsVisible] = useState(false);
@@ -56,10 +57,13 @@ export default function Home() {
           <meta name="description" content="IEEE Club - Fostering innovation and technology leadership among students" />
         </Head>
 
-        {/* Hero Section with Glass Morphism */}
+        {/* Hero Section with Interactive Tech Background */}
         <section className="relative flex items-center h-screen">
           <div className="absolute inset-0 z-0 bg-gradient-to-r from-ieee-blue to-purple-900"></div>
           <div className="absolute inset-0 bg-[url('/images/hero/circuit-pattern.png')] opacity-20 z-0"></div>
+          <div className="absolute inset-0 z-1">
+            <ParticleBackground />
+          </div>
           <div className="absolute bottom-0 left-0 right-0 z-0 h-24 bg-gradient-to-t from-white to-transparent"></div>
           
           <div className="container relative z-10 px-6 mx-auto">
@@ -71,10 +75,10 @@ export default function Home() {
                 variants={fadeIn}
                 transition={{ duration: 0.8 }}
               >
-                <h1 className="mb-4 text-4xl font-bold md:text-5xl lg:text-6xl">
+                <h1 className="mb-4 text-4xl font-bold text-shadow-lg md:text-5xl lg:text-6xl">
                   Innovate. <span className="text-yellow-300">Learn.</span> Lead.
                 </h1>
-                <p className="max-w-2xl mb-8 text-xl text-gray-100 md:text-2xl">
+                <p className="max-w-2xl mb-8 text-xl text-gray-100 text-shadow md:text-2xl">
                   Join IEEE Club to build skills, create innovative solutions, and connect with technology leaders worldwide.
                 </p>
                 <div className="flex flex-wrap items-center gap-4">
