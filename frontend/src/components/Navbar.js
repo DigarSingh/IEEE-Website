@@ -225,7 +225,7 @@ export default function Navbar() {
     <nav className={`sticky top-0 z-50 transition-all duration-300 border-b ${
       scrolled 
         ? 'bg-transparent border-transparent backdrop-blur-sm' 
-        : 'bg-[#0A1222] shadow-md border-gray-800 backdrop-blur-md'
+        : 'bg-white shadow-md border-gray-200 backdrop-blur-md'
     }`}>
       <div className="container px-4 py-3 mx-auto">
         <div className="flex items-center justify-between">
@@ -239,7 +239,7 @@ export default function Navbar() {
                   className="w-auto mr-2 h-14" 
                 />
                 <span className={`text-xl font-bold ${
-                  scrolled ? 'text-black' : 'text-white'
+                  scrolled ? 'text-black' : 'text-black'
                 }`}></span>
               </div>
             </Link>
@@ -252,7 +252,7 @@ export default function Navbar() {
                 <span className={`text-sm font-medium transition-colors cursor-pointer hover:text-blue-400 ${
                   scrolled
                     ? 'text-black'
-                    : (router.pathname === '/' ? 'text-white' : 'text-gray-300')
+                    : (router.pathname === '/' ? 'text-black' : 'text-gray-700')
                 }`}>
                   Home
                 </span>
@@ -261,7 +261,7 @@ export default function Navbar() {
                 <span className={`text-sm font-medium transition-colors cursor-pointer hover:text-blue-400 ${
                   scrolled
                     ? 'text-black'
-                    : (router.pathname === '/about' ? 'text-white' : 'text-gray-300')
+                    : (router.pathname === '/about' ? 'text-black' : 'text-gray-700')
                 }`}>
                   About
                 </span>
@@ -270,7 +270,7 @@ export default function Navbar() {
                 <span className={`text-sm font-medium transition-colors cursor-pointer hover:text-blue-400 ${
                   scrolled
                     ? 'text-black'
-                    : (router.pathname === '/events' ? 'text-white' : 'text-gray-300')
+                    : (router.pathname === '/events' ? 'text-black' : 'text-gray-700')
                 }`}>
                   Events
                 </span>
@@ -279,7 +279,7 @@ export default function Navbar() {
                 <span className={`text-sm font-medium transition-colors cursor-pointer hover:text-blue-400 ${
                   scrolled
                     ? 'text-black'
-                    : (router.pathname === '/membership' ? 'text-white' : 'text-gray-300')
+                    : (router.pathname === '/membership' ? 'text-black' : 'text-gray-700')
                 }`}>
                   Membership
                 </span>
@@ -288,7 +288,7 @@ export default function Navbar() {
                 <span className={`text-sm font-medium transition-colors cursor-pointer hover:text-blue-400 ${
                   scrolled
                     ? 'text-black'
-                    : (router.pathname === '/contact' ? 'text-white' : 'text-gray-300')
+                    : (router.pathname === '/contact' ? 'text-black' : 'text-gray-700')
                 }`}>
                   Contact
                 </span>
@@ -297,7 +297,7 @@ export default function Navbar() {
 
             <div className="flex items-center space-x-6">
               {/* GEU Logo */}
-              <div className={`h-10 mx-1 border-l ${scrolled ? 'border-gray-300' : 'border-gray-700'}`}></div>
+              <div className={`h-10 mx-1 border-l ${scrolled ? 'border-gray-300' : 'border-gray-300'}`}></div>
               <img 
                 src="/images/geu_logo.png" 
                 alt="GEU Logo" 
@@ -321,7 +321,7 @@ export default function Navbar() {
               className={`p-1 transition-colors rounded-md focus:outline-none ${
                 scrolled 
                   ? 'text-black hover:bg-gray-200' 
-                  : 'text-gray-300 hover:text-white hover:bg-gray-800'
+                  : 'text-black hover:bg-gray-200'
               }`}
             >
               {isOpen ? (
@@ -347,7 +347,7 @@ export default function Navbar() {
             <div className={`px-2 pt-2 pb-3 space-y-1 border-t ${
               scrolled 
                 ? 'bg-white border-gray-200' 
-                : 'bg-[#0A1222] border-gray-800'
+                : 'bg-white border-gray-200'
             }`}>
               <Link href="/">
                 <span className={`block px-3 py-2 text-base font-medium text-black rounded-md hover:bg-gray-100 ${
