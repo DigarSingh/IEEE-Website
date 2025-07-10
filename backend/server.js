@@ -5,7 +5,12 @@ const cors = require('cors');
 const path = require('path');
 
 // Import routes
-const authRoutes = require('./routes/auth');  // Fix the import path to match actual file name
+const authRoutes = require('./routes/auth'); // Using the auth.js file for authentication routes
+const eventsRoutes = require('./routes/eventsRoutes');
+const membersRoutes = require('./routes/membersRoutes-fixed'); // Using the fixed members routes file
+const certificatesRoutes = require('./routes/certificatesRoutes');
+const messagesRoutes = require('./routes/messagesRoutes');
+const adminRoutes = require('./routes/adminRoutes');
 
 // Create Express app
 const app = express();
@@ -27,13 +32,17 @@ mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/ieee_club
     console.log('Connection string:', process.env.MONGODB_URI || 'mongodb://localhost:27017/ieee_club?authMechanism=DEFAULT');
   });
 
-// Routes
-app.use('/api/auth', authRoutes);
+// Import debug routes
+const authRoutesDebug = require('./routes/authRoutes-debug');
 
-// Comment out routes that aren't implemented yet
-// app.use('/api/events', eventsRoutes);
-// app.use('/api/members', membersRoutes);
-// app.use('/api/projects', projectsRoutes);
+// Routes
+app.use('/api/auth', authRoutesDebug); // Using debug routes for testing
+// app.use('/api/auth', authRoutes); // Original routes commented out for testing
+app.use('/api/events', eventsRoutes);
+app.use('/api/members', membersRoutes);
+app.use('/api/certificates', certificatesRoutes);
+app.use('/api/messages', messagesRoutes);
+app.use('/api/admin', adminRoutes);
 
 // Simple health check route
 app.get('/api/health', (req, res) => {

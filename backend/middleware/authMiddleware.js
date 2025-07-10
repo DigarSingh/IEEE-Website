@@ -42,7 +42,43 @@ exports.protect = async (req, res, next) => {
   }
 };
 
-// Admin authorization
+// Admin only middleware
+exports.isAdmin = (req, res, next) => {
+  if (req.user && (req.user.role === 'admin' || req.user.role === 'superadmin')) {
+    next();
+  } else {
+    return res.status(403).json({
+      success: false,
+      message: 'Admin access required for this route'
+    });
+  }
+};
+
+// Superadmin only middleware
+exports.isSuperAdmin = (req, res, next) => {
+  if (req.user && req.user.role === 'superadmin') {
+    next();
+  } else {
+    return res.status(403).json({
+      success: false,
+      message: 'Superadmin access required for this route'
+    });
+  }
+};
+
+// Check if user is verified middleware
+exports.isVerified = (req, res, next) => {
+  if (req.user && req.user.isVerified) {
+    next();
+  } else {
+    return res.status(403).json({
+      success: false,
+      message: 'Account verification required for this route'
+    });
+  }
+};
+
+// For backwards compatibility
 exports.authorize = (role) => {
   return (req, res, next) => {
     if (req.user.role !== role) {

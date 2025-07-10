@@ -5,6 +5,7 @@ import { motion } from 'framer-motion';
 import { FaUser, FaLock, FaArrowRight, FaEye, FaEyeSlash } from 'react-icons/fa';
 import Layout from '../components/Layout';
 import dynamic from 'next/dynamic';
+import AuthParticleBackground from '../components/AuthParticleBackground';
 
 export default function Login() {
   const [formData, setFormData] = useState({
@@ -72,13 +73,14 @@ export default function Login() {
           localStorage.setItem('token', 'admin-test-token');
           localStorage.setItem('user', JSON.stringify(adminUser));
           
-          // Redirect to admin panel
-          window.location.href = '/admin';
+          // Redirect to admin dashboard
+          window.location.href = '/admin/dashboard';
           return;
         }
         
         // Regular API authentication for non-test credentials
-        const response = await fetch('http://localhost:5000/api/auth/login', {
+        const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
+        const response = await fetch(`${apiUrl}/api/auth/login`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -96,11 +98,13 @@ export default function Login() {
         localStorage.setItem('token', data.token);
         localStorage.setItem('user', JSON.stringify(data.user));
         
-        // Check if user is admin and redirect accordingly
+        // Check user role and redirect accordingly
         if (data.user && data.user.role === 'admin') {
-          window.location.href = '/admin'; // Redirect to admin portal
+          window.location.href = '/admin/dashboard'; // Redirect to admin dashboard
+        } else if (data.user && data.user.role === 'student') {
+          window.location.href = '/student/dashboard'; // Redirect to student dashboard
         } else {
-          window.location.href = '/'; // Redirect to home page for regular users
+          window.location.href = '/dashboard'; // Redirect to role-based dashboard router
         }
         
       } catch (error) {
@@ -126,6 +130,9 @@ export default function Login() {
   return (
     <Layout hideFooter={true}>
       <div className="relative min-h-screen overflow-hidden bg-[#080D14] text-gray-300">
+        {/* Particle Background */}
+        <AuthParticleBackground />
+        
         <Head>
           <title>Login | IEEE Club</title>
           <meta name="description" content="Login to your IEEE Club account" />

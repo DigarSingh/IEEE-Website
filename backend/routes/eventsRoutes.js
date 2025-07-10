@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { body, validationResult } = require('express-validator');
-const auth = require('../middleware/auth');
+const { protect, isAdmin } = require('../middleware/authMiddleware');
 const Event = require('../models/Event');
 
 // @route   GET api/events
@@ -77,7 +77,7 @@ router.get('/:id', async (req, res) => {
 // @desc    Create a new event
 // @access  Private
 router.post('/', [
-  auth,
+  protect,
   [
     body('title', 'Title is required').not().isEmpty(),
     body('description', 'Description is required').not().isEmpty(),
@@ -108,7 +108,7 @@ router.post('/', [
 // @route   PUT api/events/:id
 // @desc    Update an event
 // @access  Private
-router.put('/:id', auth, async (req, res) => {
+router.put('/:id', protect, async (req, res) => {
   try {
     let event = await Event.findById(req.params.id);
     
@@ -141,7 +141,7 @@ router.put('/:id', auth, async (req, res) => {
 // @route   DELETE api/events/:id
 // @desc    Delete an event
 // @access  Private
-router.delete('/:id', auth, async (req, res) => {
+router.delete('/:id', protect, async (req, res) => {
   try {
     const event = await Event.findById(req.params.id);
     
@@ -169,7 +169,7 @@ router.delete('/:id', auth, async (req, res) => {
 // @route   POST api/events/:id/register
 // @desc    Register for an event
 // @access  Private
-router.post('/:id/register', auth, async (req, res) => {
+router.post('/:id/register', protect, async (req, res) => {
   try {
     const event = await Event.findById(req.params.id);
     

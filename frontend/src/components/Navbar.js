@@ -148,7 +148,7 @@ export default function Navbar() {
               </div>
             </motion.div>
           )}
-        </AnimatePresence>Resources
+        </AnimatePresence>
       </div>
     ) : (
       <div className="flex items-center space-x-3">

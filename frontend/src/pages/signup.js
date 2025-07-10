@@ -4,12 +4,15 @@ import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { FaUser, FaLock, FaEnvelope, FaUniversity, FaArrowRight, FaGoogle, FaGithub, FaMobileAlt, FaIdCard, FaEye, FaEyeSlash } from 'react-icons/fa';
 import Layout from '../components/Layout';
+import AuthParticleBackground from '../components/AuthParticleBackground';
 
 export default function Signup() {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     college: '',
+    branch: '',
+    year: '',
     mobile: '',
     studentId: '',
     password: '',
@@ -58,6 +61,16 @@ export default function Signup() {
       newErrors.college = 'College name is required';
     }
     
+    // Branch/Department validation
+    if (!formData.branch.trim()) {
+      newErrors.branch = 'Branch/Department is required';
+    }
+    
+    // Year validation
+    if (!formData.year.trim()) {
+      newErrors.year = 'Year of study is required';
+    }
+    
     // Mobile validation
     if (!formData.mobile) {
       newErrors.mobile = 'Mobile number is required';
@@ -97,7 +110,14 @@ export default function Signup() {
         console.log('Submitting registration data:', formData);
         
         // Fix API endpoint and ensure proper error handling
-        const response = await fetch('http://localhost:5000/api/auth/register', {
+        const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
+        console.log('Using API URL:', apiUrl);
+        
+        // Log the request details for debugging
+        console.log('Sending request to:', `${apiUrl}/api/auth/register`);
+        console.log('Request body:', JSON.stringify(formData));
+        
+        const response = await fetch(`${apiUrl}/api/auth/register`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -105,14 +125,25 @@ export default function Signup() {
           body: JSON.stringify(formData),
         });
         
+        console.log('Response status:', response.status);
+        console.log('Response headers:', Object.fromEntries(response.headers.entries()));
+        
         // Check response status first before attempting to parse JSON
         if (!response.ok) {
-          const errorData = await response.json();
-          throw new Error(errorData.message || 'Registration failed');
+          let errorMessage = 'Registration failed';
+          try {
+            const errorData = await response.json();
+            errorMessage = errorData.message || 'Registration failed';
+            console.error('Server error response:', errorData);
+          } catch (parseError) {
+            console.error('Error parsing error response:', parseError);
+          }
+          throw new Error(errorMessage);
         }
         
         // Get the response data
         const data = await response.json();
+        console.log('Successful response data:', data);
         console.log('Registration response:', data);
         
         // Store token in localStorage
@@ -331,6 +362,9 @@ export default function Signup() {
   return (
     <Layout hideFooter={true}>
       <div className="relative min-h-screen overflow-hidden bg-[#080D14] text-gray-300">
+        {/* Particle Background */}
+        <AuthParticleBackground />
+        
         <Head>
           <title>Sign Up | IEEE Club</title>
           <meta name="description" content="Create your IEEE Club account" />
@@ -592,6 +626,59 @@ export default function Signup() {
                       />
                     </div>
                     {errors.college && <p className="mt-1 text-sm text-red-400">{errors.college}</p>}
+                  </motion.div>
+
+                  <motion.div 
+                    className="grid gap-6 md:grid-cols-2"
+                    initial={{ y: 20, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    transition={{ duration: 0.5, delay: 0.8 }}
+                  >
+                    {/* Branch/Department field */}
+                    <div>
+                      <label className="block mb-2 text-sm font-medium text-gray-300" htmlFor="branch">
+                        Branch/Department
+                      </label>
+                      <div className="relative">
+                        <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                          <FaUniversity className="text-blue-400" />
+                        </div>
+                        <motion.input
+                          type="text"
+                          id="branch"
+                          name="branch"
+                          value={formData.branch}
+                          onChange={handleChange}
+                          className={`block w-full pl-10 pr-3 py-3 border ${errors.branch ? 'border-red-500' : 'border-gray-700'} bg-gray-900/60 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-400 focus:border-blue-400 transition-all duration-200 text-white`}
+                          placeholder="e.g. Computer Science"
+                          whileFocus={{ scale: 1.01 }}
+                        />
+                      </div>
+                      {errors.branch && <p className="mt-1 text-sm text-red-400">{errors.branch}</p>}
+                    </div>
+
+                    {/* Year of Study field */}
+                    <div>
+                      <label className="block mb-2 text-sm font-medium text-gray-300" htmlFor="year">
+                        Year of Study
+                      </label>
+                      <div className="relative">
+                        <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                          <FaIdCard className="text-blue-400" />
+                        </div>
+                        <motion.input
+                          type="text"
+                          id="year"
+                          name="year"
+                          value={formData.year}
+                          onChange={handleChange}
+                          className={`block w-full pl-10 pr-3 py-3 border ${errors.year ? 'border-red-500' : 'border-gray-700'} bg-gray-900/60 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-400 focus:border-blue-400 transition-all duration-200 text-white`}
+                          placeholder="e.g. 2nd Year"
+                          whileFocus={{ scale: 1.01 }}
+                        />
+                      </div>
+                      {errors.year && <p className="mt-1 text-sm text-red-400">{errors.year}</p>}
+                    </div>
                   </motion.div>
 
                   <div className="pt-3 space-y-1 text-xs tracking-wide text-blue-400 uppercase">

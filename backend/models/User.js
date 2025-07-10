@@ -20,9 +20,23 @@ const UserSchema = new mongoose.Schema({
     required: [true, 'Password is required'],
     minlength: [6, 'Password must be at least 6 characters']
   },
+  profilePhoto: {
+    type: String,
+    default: 'default-profile.jpg'
+  },
   college: {
     type: String,
     required: [true, 'College name is required'],
+    trim: true
+  },
+  branch: {
+    type: String,
+    required: [true, 'Branch/Department is required'],
+    trim: true
+  },
+  year: {
+    type: String,
+    required: [true, 'Year of study is required'],
     trim: true
   },
   mobile: {
@@ -40,11 +54,25 @@ const UserSchema = new mongoose.Schema({
     type: Boolean,
     default: false
   },
+  ieeeId: {
+    type: String,
+    trim: true,
+    unique: true,
+    sparse: true // Allow null values while still enforcing uniqueness
+  },
   role: {
     type: String,
-    enum: ['user', 'admin'],
-    default: 'user'
+    enum: ['student', 'admin', 'superadmin'],
+    default: 'student'
   },
+  registeredEvents: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Event'
+  }],
+  certificates: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Certificate'
+  }],
   createdAt: {
     type: Date,
     default: Date.now

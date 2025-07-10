@@ -14,8 +14,8 @@ const generateToken = (id) => {
 exports.register = async (req, res) => {
   console.log('Register endpoint called');
   try {
-    const { name, email, password, college, mobile, studentId } = req.body;
-    console.log('Registration data received:', { name, email, college, mobile, studentId, passwordLength: password?.length });
+    const { name, email, password, college, branch, year, mobile, studentId } = req.body;
+    console.log('Registration data received:', { name, email, college, branch, year, mobile, studentId, passwordLength: password?.length });
 
     // Check if user already exists
     const userExists = await User.findOne({ email });
@@ -34,6 +34,8 @@ exports.register = async (req, res) => {
       email,
       password,
       college,
+      branch,
+      year,
       mobile,
       studentId
     });

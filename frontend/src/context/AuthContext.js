@@ -1,33 +1,42 @@
 import { createContext, useContext, useState, useEffect } from 'react';
 import Cookies from 'js-cookie';
 import axios from 'axios';
+import { useRouter } from 'next/router';
 
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
+  const [token, setToken] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [loading, setLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const router = useRouter();
 
   useEffect(() => {
     // Check if user is logged in on mount
     const checkAuth = async () => {
-      const token = Cookies.get('token');
-      if (token) {
+      const storedToken = Cookies.get('token');
+      if (storedToken) {
+        setToken(storedToken);
         try {
           // Verify token with backend
-          const response = await axios.get('/api/auth/me', {
+          const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/me`, {
             headers: {
-              Authorization: `Bearer ${token}`
+              Authorization: `Bearer ${storedToken}`
             }
           });
           
-          setUser(response.data.user);
-          setIsAuthenticated(true);
-        } catch (error) {
-          // If token is invalid, clear it
-          Cookies.remove('token');
-          setUser(null);
+          const data = await response.json();
+          
+          if (data.success) {
+            setUser(data.user);
+            setIsAuthenticated(true);
+          } else {
+            // If token is invalid, clear it
+            Cookies.remove('token');
+            setToken(null);
+            setUser(null);
           setIsAuthenticated(false);
         }
       }

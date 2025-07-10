@@ -107,7 +107,7 @@ export default function Home() {
                   <div className="absolute w-64 h-64 rounded-full opacity-50 -bottom-8 -right-8 bg-ieee-blue blur-3xl"></div>
                   <div className="relative w-4/6 p-5 mx-auto bg-white border border-white shadow-5xl bg-opacity-10 backdrop-blur-lg rounded-2xl border-opacity-20">
                     <img 
-                      src="/images/hero/hero.jpeg"
+                      src="/images/hero/IEEE_hero.jpg"
                       alt="IEEE Innovation" 
                       className="w-full h-auto rounded-xl"
                     />
