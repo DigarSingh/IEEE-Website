@@ -75,13 +75,13 @@ export default function Home() {
                 variants={fadeIn}
                 transition={{ duration: 0.8 }}
               >
-                <h1 className="mb-4 text-4xl font-bold text-shadow-lg md:text-5xl lg:text-6xl">
+                <h1 className="pl-8 mb-4 text-4xl font-bold text-shadow-lg md:text-5xl lg:text-6xl">
                   Innovate. <span className="text-yellow-300">Learn.</span> Lead.
                 </h1>
-                <p className="max-w-2xl mb-8 text-xl text-gray-100 text-shadow md:text-2xl">
+                <p className="max-w-2xl pl-8 mb-8 text-xl text-gray-100 text-shadow md:text-2xl">
                   Join IEEE Club to build skills, create innovative solutions, and connect with technology leaders worldwide.
                 </p>
-                <div className="flex flex-wrap items-center gap-4">
+                <div className="flex flex-wrap items-center gap-4 pl-8">
                   <Link href="/membership">
                     <span className="flex items-center justify-center px-8 py-3 font-medium transition-all bg-white rounded-full shadow-lg cursor-pointer text-ieee-blue hover:bg-yellow-300 hover:text-gray-900">
                       Join Now <FaArrowRight className="ml-2" />
@@ -105,7 +105,7 @@ export default function Home() {
                 <div className="relative">
                   <div className="absolute w-64 h-64 bg-yellow-300 rounded-full opacity-50 -top-4 -left-4 blur-3xl"></div>
                   <div className="absolute w-64 h-64 rounded-full opacity-50 -bottom-8 -right-8 bg-ieee-blue blur-3xl"></div>
-                  <div className="relative w-4/6 p-5 mx-auto bg-white border border-white shadow-5xl bg-opacity-10 backdrop-blur-lg rounded-2xl border-opacity-20">
+                  <div className="relative w-2/4 p-4 mx-auto bg-white border border-white w- shadow-5xl bg-opacity-10 backdrop-blur-lg rounded-2xl border-opacity-20">
                     <img 
                       src="/images/hero/IEEE_hero.jpg"
                       alt="IEEE Innovation" 

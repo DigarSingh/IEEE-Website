@@ -4,40 +4,77 @@ const User = require('../models/User');
 // Protect routes
 exports.protect = async (req, res, next) => {
   let token;
+  console.log('Auth middleware called');
+  console.log('Headers:', req.headers);
 
-  // Get token from header
+  // Check for Authorization header
   if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
+    console.log('Found Bearer token in header');
     token = req.headers.authorization.split(' ')[1];
+  } 
+  // Check for token in cookies as fallback
+  else if (req.cookies && req.cookies.token) {
+    console.log('Found token in cookies');
+    token = req.cookies.token;
   }
+
+  console.log('Token exists:', !!token);
 
   // Check if token exists
   if (!token) {
+    console.log('No token found in request');
     return res.status(401).json({ 
       success: false, 
-      message: 'Not authorized to access this route' 
+      message: 'Authentication required. Please log in.' 
     });
   }
 
   try {
+    // Get JWT secret with fallback for development
+    const jwtSecret = process.env.JWT_SECRET || 'secretkey';
+    if (!process.env.JWT_SECRET) {
+      console.warn('WARNING: Using default JWT secret. Set JWT_SECRET environment variable in production.');
+    }
+    
     // Verify token
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    console.log('Verifying token');
+    const decoded = jwt.verify(token, jwtSecret);
+    console.log('Token verified, user ID:', decoded.id);
 
     // Get user from the token
-    req.user = await User.findById(decoded.id).select('-password');
+    const user = await User.findById(decoded.id).select('-password');
     
-    if (!req.user) {
+    if (!user) {
+      console.log('User not found in database');
       return res.status(401).json({
         success: false,
-        message: 'User no longer exists'
+        message: 'User account not found or deactivated'
       });
     }
 
+    console.log('User authenticated successfully:', user.email);
+    // Add user to request
+    req.user = user;
     next();
   } catch (error) {
     console.error('Auth middleware error:', error);
+    
+    // Different error messages based on error type
+    if (error.name === 'JsonWebTokenError') {
+      return res.status(401).json({ 
+        success: false, 
+        message: 'Invalid token. Please log in again.' 
+      });
+    } else if (error.name === 'TokenExpiredError') {
+      return res.status(401).json({ 
+        success: false, 
+        message: 'Your session has expired. Please log in again.' 
+      });
+    }
+    
     return res.status(401).json({ 
       success: false, 
-      message: 'Not authorized to access this route' 
+      message: 'Authentication failed. Please log in again.' 
     });
   }
 };

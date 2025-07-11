@@ -60,10 +60,14 @@ export default function Login() {
       setErrors({});
       
       try {
+        console.log('Attempting login with:', { email: formData.email });
+        
         // Special case for admin test credentials
         if (formData.email === 'admin@ieee.org' && formData.password === 'admin123') {
+          console.log('Using admin test credentials');
           // Create admin user object
           const adminUser = {
+            id: 'admin-test-id',
             name: 'Admin User',
             email: 'admin@ieee.org',
             role: 'admin'
@@ -80,37 +84,55 @@ export default function Login() {
         
         // Regular API authentication for non-test credentials
         const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
+        console.log(`Using API URL: ${apiUrl}/api/auth/login`);
+        
         const response = await fetch(`${apiUrl}/api/auth/login`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify(formData),
+          credentials: 'include' // Include cookies if your API uses them
         });
         
+        console.log(`Login response status: ${response.status}`);
         const data = await response.json();
+        console.log('Login response data:', { 
+          success: data.success, 
+          hasToken: !!data.token, 
+          hasUser: !!data.user 
+        });
         
         if (!response.ok) {
+          console.error('Login failed:', data);
           throw new Error(data.message || 'Authentication failed');
+        }
+        
+        if (!data.token || !data.user) {
+          throw new Error('Invalid response from server: missing token or user data');
         }
         
         // Store token in localStorage
         localStorage.setItem('token', data.token);
         localStorage.setItem('user', JSON.stringify(data.user));
+        console.log('User data stored in localStorage');
         
         // Check user role and redirect accordingly
         if (data.user && data.user.role === 'admin') {
+          console.log('Redirecting to admin dashboard');
           window.location.href = '/admin/dashboard'; // Redirect to admin dashboard
         } else if (data.user && data.user.role === 'student') {
+          console.log('Redirecting to student dashboard');
           window.location.href = '/student/dashboard'; // Redirect to student dashboard
         } else {
+          console.log('Redirecting to general dashboard');
           window.location.href = '/dashboard'; // Redirect to role-based dashboard router
         }
         
       } catch (error) {
         console.error('Login error:', error);
         setErrors({ 
-          form: 'Invalid email or password. Please try again.' 
+          form: error.message || 'Invalid email or password. Please try again.' 
         });
       } finally {
         setIsSubmitting(false);

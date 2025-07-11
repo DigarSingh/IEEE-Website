@@ -37,49 +37,91 @@ export const AuthProvider = ({ children }) => {
             Cookies.remove('token');
             setToken(null);
             setUser(null);
+            setIsAuthenticated(false);
+          }
+        } catch (error) {
+          console.error('Error verifying token:', error);
+          Cookies.remove('token');
+          setToken(null);
+          setUser(null);
           setIsAuthenticated(false);
         }
       }
-      setLoading(false);
+      setIsLoading(false);
     };
     
     checkAuth();
   }, []);
 
   const login = async (email, password) => {
+    setError(null);
     try {
-      const response = await axios.post('/api/auth/login', { email, password });
-      const { token, user } = response.data;
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
+      console.log(`Using API URL for login: ${apiUrl}`);
+      
+      const response = await axios.post(`${apiUrl}/api/auth/login`, { email, password });
+      const { token: authToken, user: userData } = response.data;
+      
+      if (!authToken || !userData) {
+        throw new Error('Invalid response from server');
+      }
       
       // Save token in cookies
-      Cookies.set('token', token, { expires: 7 }); // Expires in 7 days
+      Cookies.set('token', authToken, { expires: 7 }); // Expires in 7 days
       
-      setUser(user);
+      setToken(authToken);
+      setUser(userData);
       setIsAuthenticated(true);
       return { success: true };
-    } catch (error) {
+    } catch (err) {
+      console.error('Login error:', err);
+      setError(err.response?.data?.message || 'Login failed');
       return { 
         success: false, 
-        message: error.response?.data?.message || 'Login failed' 
+        message: err.response?.data?.message || 'Login failed' 
       };
     }
   };
 
   const register = async (userData) => {
+    setError(null);
     try {
-      const response = await axios.post('/api/auth/register', userData);
-      const { token, user } = response.data;
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
+      console.log(`Using API URL for registration: ${apiUrl}`);
+      
+      // Log the registration data without sensitive information
+      const sanitizedData = { ...userData };
+      if (sanitizedData.password) sanitizedData.password = '[MASKED]';
+      if (sanitizedData.confirmPassword) sanitizedData.confirmPassword = '[MASKED]';
+      console.log('Registering with data:', sanitizedData);
+      
+      // Send registration request
+      const response = await axios.post(`${apiUrl}/api/auth/register`, userData);
+      
+      // Check if we got the expected data structure
+      const { token: authToken, user: newUser } = response.data;
+      
+      if (!authToken || !newUser) {
+        throw new Error('Invalid response from server');
+      }
       
       // Save token in cookies
-      Cookies.set('token', token, { expires: 7 });
+      Cookies.set('token', authToken, { expires: 7 }); // Expires in 7 days
       
-      setUser(user);
+      // Update state
+      setToken(authToken);
+      setUser(newUser);
       setIsAuthenticated(true);
+      
       return { success: true };
-    } catch (error) {
+    } catch (err) {
+      console.error('Registration error:', err);
+      const errorMessage = err.response?.data?.message || 'Registration failed';
+      setError(errorMessage);
+      
       return { 
         success: false, 
-        message: error.response?.data?.message || 'Registration failed' 
+        message: errorMessage
       };
     }
   };
@@ -87,22 +129,43 @@ export const AuthProvider = ({ children }) => {
   const logout = () => {
     // Remove token from cookies
     Cookies.remove('token');
+    setToken(null);
     setUser(null);
     setIsAuthenticated(false);
+    setError(null);
+    router.push('/login');
   };
 
   return (
     <AuthContext.Provider value={{ 
       user, 
+      token,
       isAuthenticated, 
       login, 
       register, 
       logout,
-      loading 
+      isLoading,
+      error
     }}>
       {children}
     </AuthContext.Provider>
   );
-};
+}
 
-export const useAuth = () => useContext(AuthContext);
+export const useAuth = () => {
+  const context = useContext(AuthContext);
+  
+  if (!context) {
+    throw new Error('useAuth must be used within an AuthProvider');
+  }
+  
+  // Add isAdmin helper function
+  const isAdmin = () => {
+    return context.user && context.user.role === 'admin';
+  };
+  
+  return {
+    ...context,
+    isAdmin
+  };
+};

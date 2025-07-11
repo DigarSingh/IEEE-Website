@@ -3,11 +3,15 @@ const router = express.Router();
 const { register, login, getCurrentUser } = require('../controllers/authController');
 const { protect } = require('../middleware/authMiddleware');
 
-// Debug middleware
+// Debug middleware to log requests
 router.use((req, res, next) => {
   console.log(`Auth Route: ${req.method} ${req.originalUrl}`);
   if (req.body) {
-    console.log('Request body:', JSON.stringify(req.body, null, 2));
+    // Log request body but mask password
+    const safeBody = {...req.body};
+    if (safeBody.password) safeBody.password = '********';
+    if (safeBody.confirmPassword) safeBody.confirmPassword = '********';
+    console.log('Request body:', JSON.stringify(safeBody, null, 2));
   }
   next();
 });

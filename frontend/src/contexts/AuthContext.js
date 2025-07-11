@@ -43,24 +43,32 @@ export const AuthProvider = ({ children }) => {
   const login = async (email, password) => {
     try {
       const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
+      console.log(`Using API URL: ${apiUrl}`);
+      
       const response = await fetch(`${apiUrl}/api/auth/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),
       });
       
-      if (!response.ok) {
-        const error = await response.json();
-        throw new Error(error.message || 'Login failed');
-      }
+      // Log response status for debugging
+      console.log(`Login response status: ${response.status}`);
       
       const data = await response.json();
+      
+      if (!response.ok) {
+        console.error('Login error response:', data);
+        throw new Error(data.message || 'Login failed. Please check your credentials.');
+      }
+      
+      console.log('Login successful, storing user data');
       localStorage.setItem('token', data.token);
       localStorage.setItem('user', JSON.stringify(data.user));
       setUser(data.user);
       
       return { success: true };
     } catch (error) {
+      console.error('Login error:', error);
       return { success: false, error: error.message };
     }
   };
@@ -84,24 +92,39 @@ export const AuthProvider = ({ children }) => {
   // Register function
   const register = async (userData) => {
     try {
-      const response = await fetch('http://localhost:5000/api/auth/register', {
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
+      console.log(`Using API URL for registration: ${apiUrl}`);
+      console.log('Registering with data:', {
+        ...userData,
+        password: '[MASKED]',
+        confirmPassword: '[MASKED]'
+      });
+      
+      const response = await fetch(`${apiUrl}/api/auth/register`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(userData),
+        credentials: 'include' // Include cookies if your API uses them
       });
       
-      if (!response.ok) {
-        const error = await response.json();
-        throw new Error(error.message || 'Registration failed');
-      }
+      // Log response status for debugging
+      console.log(`Registration response status: ${response.status}`);
       
       const data = await response.json();
+      
+      if (!response.ok) {
+        console.error('Registration error response:', data);
+        throw new Error(data.message || 'Registration failed');
+      }
+      
+      console.log('Registration successful, storing user data');
       localStorage.setItem('token', data.token);
       localStorage.setItem('user', JSON.stringify(data.user));
       setUser(data.user);
       
       return { success: true };
     } catch (error) {
+      console.error('Registration error:', error);
       return { success: false, error: error.message };
     }
   };

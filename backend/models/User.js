@@ -101,7 +101,24 @@ UserSchema.pre('save', async function(next) {
 
 // Method to compare passwords
 UserSchema.methods.comparePassword = async function(candidatePassword) {
-  return await bcrypt.compare(candidatePassword, this.password);
+  try {
+    // Log that we're comparing passwords (don't log the actual passwords)
+    console.log(`Comparing password for user: ${this.email}`);
+    
+    // Handle undefined password gracefully
+    if (!candidatePassword) {
+      console.error('candidatePassword is undefined or null');
+      return false;
+    }
+    
+    // Do the actual comparison
+    const isMatch = await bcrypt.compare(candidatePassword, this.password);
+    console.log(`Password match result for ${this.email}: ${isMatch}`);
+    return isMatch;
+  } catch (error) {
+    console.error('Error comparing passwords:', error);
+    return false;
+  }
 };
 
 module.exports = mongoose.model('User', UserSchema);

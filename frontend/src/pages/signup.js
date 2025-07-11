@@ -107,44 +107,53 @@ export default function Signup() {
       setErrors({});
       
       try {
-        console.log('Submitting registration data:', formData);
+        // Create a copy of formData without confirmPassword for backend
+        const { confirmPassword, ...registrationData } = formData;
+        console.log('Submitting registration data:', {
+          ...registrationData,
+          password: '[MASKED]'
+        });
         
-        // Fix API endpoint and ensure proper error handling
+        // Use environment variable for API URL with fallback
         const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
-        console.log('Using API URL:', apiUrl);
+        const registerEndpoint = `${apiUrl}/api/auth/register`;
+        console.log('Using API URL:', registerEndpoint);
         
-        // Log the request details for debugging
-        console.log('Sending request to:', `${apiUrl}/api/auth/register`);
-        console.log('Request body:', JSON.stringify(formData));
-        
-        const response = await fetch(`${apiUrl}/api/auth/register`, {
+        const response = await fetch(registerEndpoint, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify(formData),
+          body: JSON.stringify(registrationData),
+          credentials: 'include' // Include cookies if your API uses them
         });
         
         console.log('Response status:', response.status);
-        console.log('Response headers:', Object.fromEntries(response.headers.entries()));
         
-        // Check response status first before attempting to parse JSON
+        // Parse the JSON response
+        let data;
+        try {
+          data = await response.json();
+          console.log('Response data structure:', Object.keys(data));
+        } catch (parseError) {
+          console.error('Error parsing response:', parseError);
+          throw new Error('Unable to parse server response. Please try again.');
+        }
+        
+        // Handle unsuccessful responses
         if (!response.ok) {
-          let errorMessage = 'Registration failed';
-          try {
-            const errorData = await response.json();
-            errorMessage = errorData.message || 'Registration failed';
-            console.error('Server error response:', errorData);
-          } catch (parseError) {
-            console.error('Error parsing error response:', parseError);
-          }
+          console.error('Server error response:', data);
+          const errorMessage = data.message || 'Registration failed. Please try again.';
           throw new Error(errorMessage);
         }
         
-        // Get the response data
-        const data = await response.json();
-        console.log('Successful response data:', data);
-        console.log('Registration response:', data);
+        // Verify we got the expected data
+        if (!data.token || !data.user) {
+          console.error('Invalid server response:', data);
+          throw new Error('Invalid response from server. Missing token or user data.');
+        }
+        
+        console.log('Registration successful, received token and user data');
         
         // Store token in localStorage
         localStorage.setItem('token', data.token);

@@ -36,8 +36,8 @@ mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/ieee_club
 const authRoutesDebug = require('./routes/authRoutes-debug');
 
 // Routes
-app.use('/api/auth', authRoutesDebug); // Using debug routes for testing
-// app.use('/api/auth', authRoutes); // Original routes commented out for testing
+// app.use('/api/auth', authRoutesDebug); // Using debug routes for testing
+app.use('/api/auth', authRoutes); // Using proper auth routes
 app.use('/api/events', eventsRoutes);
 app.use('/api/members', membersRoutes);
 app.use('/api/certificates', certificatesRoutes);
