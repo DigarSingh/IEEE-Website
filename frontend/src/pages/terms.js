@@ -1,6 +1,6 @@
 import Head from 'next/head';
 import { motion } from 'framer-motion';
-import Layout from '../components/Layout';
+import Layout from '@/components/Layout';
 import Link from 'next/link';
 
 export default function TermsOfService() {

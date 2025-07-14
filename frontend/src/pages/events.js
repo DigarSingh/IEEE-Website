@@ -2,9 +2,9 @@ import { useState, useEffect } from 'react';
 import Head from 'next/head';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FaCalendar, FaMapMarkerAlt, FaClock, FaSearch } from 'react-icons/fa';
-import EventCard from '../components/events/EventCard';
-import EventsFilter from '../components/events/EventsFilter';
-import Layout from '../components/Layout'; // Import Layout component
+import EventCard from '@/components/events/EventCard';
+import EventsFilter from '@/components/events/EventsFilter';
+import Layout from '@/components/Layout'; // Import Layout component
 
 export default function Events() {
   const [isVisible, setIsVisible] = useState(false);

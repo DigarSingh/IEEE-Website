@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { FaEnvelope, FaPhone, FaMapMarkerAlt, FaClock, FaFacebook, FaTwitter, FaInstagram, FaLinkedin, FaGithub, FaPaperPlane, FaArrowRight } from 'react-icons/fa';
-import Layout from '../components/Layout';
+import Layout from '@/components/Layout';
 
 export default function Contact() {
   const [formSuccess, setFormSuccess] = useState(false);

@@ -3,9 +3,9 @@ import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { FaUser, FaLock, FaArrowRight, FaEye, FaEyeSlash } from 'react-icons/fa';
-import Layout from '../components/Layout';
+import Layout from '@/components/Layout';
 import dynamic from 'next/dynamic';
-import AuthParticleBackground from '../components/AuthParticleBackground';
+import AuthParticleBackground from '@/components/AuthParticleBackground';
 
 export default function Login() {
   const [formData, setFormData] = useState({

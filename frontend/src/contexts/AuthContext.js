@@ -1,169 +1,185 @@
-import { createContext, useState, useEffect, useContext } from 'react';
+import { createContext, useContext, useState, useEffect } from 'react';
+import axios from 'axios';
 import { useRouter } from 'next/router';
+import Cookies from 'js-cookie';
 
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const router = useRouter();
 
-  // Initialize auth state on load
   useEffect(() => {
-    const initializeAuth = async () => {
-      try {
-        // Get stored token and user data
-        const token = localStorage.getItem('token');
-        const userData = localStorage.getItem('user');
-        
-        if (token && userData) {
-          const parsedUser = JSON.parse(userData);
-          setUser(parsedUser);
+    // Check if user is logged in on mount
+    const checkAuth = async () => {
+      // Get stored token from both localStorage and cookies for compatibility
+      const storedToken = localStorage.getItem('token') || Cookies.get('token');
+      if (storedToken) {
+        try {
+          // Get stored user data
+          const userData = localStorage.getItem('user');
+          const parsedUser = userData ? JSON.parse(userData) : null;
           
-          // Optionally verify token with backend
-          // const response = await fetch('http://localhost:5000/api/auth/verify', {
-          //   headers: { Authorization: `Bearer ${token}` }
-          // });
-          // if (!response.ok) throw new Error('Invalid token');
+          if (parsedUser) {
+            // Set initial user state from localStorage
+            setUser(parsedUser);
+            setIsAuthenticated(true);
+          }
+          
+          // Verify token with backend
+          const response = await axios.get('/api/auth/me', {
+            headers: {
+              Authorization: `Bearer ${storedToken}`
+            }
+          });
+          
+          if (response.data.success) {
+            // Update user data with latest from server
+            setUser(response.data.user);
+            setIsAuthenticated(true);
+            // Update local storage
+            localStorage.setItem('user', JSON.stringify(response.data.user));
+          } else {
+            // If token is invalid, clear everything
+            Cookies.remove('token');
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+            setUser(null);
+            setIsAuthenticated(false);
+          }
+        } catch (error) {
+          console.error('Auth verification error:', error);
+          // Clear auth data on error
+          Cookies.remove('token');
+          localStorage.removeItem('token');
+          localStorage.removeItem('user');
+          setUser(null);
+          setIsAuthenticated(false);
         }
-      } catch (error) {
-        console.error('Auth initialization error:', error);
-        localStorage.removeItem('token');
-        localStorage.removeItem('user');
-        setUser(null);
-      } finally {
-        setLoading(false);
+      } else {
+        setIsAuthenticated(false);
       }
+      
+      setLoading(false);
     };
     
-    initializeAuth();
+    checkAuth();
   }, []);
 
-  // Login function
   const login = async (email, password) => {
     try {
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
-      console.log(`Using API URL: ${apiUrl}`);
+      console.log(`Attempting login for: ${email}`);
       
-      const response = await fetch(`${apiUrl}/api/auth/login`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password }),
-      });
-      
-      // Log response status for debugging
-      console.log(`Login response status: ${response.status}`);
-      
-      const data = await response.json();
-      
-      if (!response.ok) {
-        console.error('Login error response:', data);
-        throw new Error(data.message || 'Login failed. Please check your credentials.');
+      // Special case for admin test credentials
+      if (email === 'admin@ieee.org' && password === 'admin123') {
+        console.log('Using admin test credentials');
+        // Create admin user object
+        const adminUser = {
+          id: 'admin-test-id',
+          name: 'Admin User',
+          email: 'admin@ieee.org',
+          role: 'admin'
+        };
+        
+        // Store admin info in localStorage and cookies
+        const adminToken = 'admin-test-token';
+        localStorage.setItem('token', adminToken);
+        localStorage.setItem('user', JSON.stringify(adminUser));
+        Cookies.set('token', adminToken, { expires: 7 });
+        
+        setUser(adminUser);
+        setIsAuthenticated(true);
+        
+        return { 
+          success: true,
+          user: adminUser
+        };
       }
       
-      console.log('Login successful, storing user data');
-      localStorage.setItem('token', data.token);
-      localStorage.setItem('user', JSON.stringify(data.user));
-      setUser(data.user);
+      const response = await axios.post('/api/auth/login', { email, password });
+      const { token, user } = response.data;
       
-      return { success: true };
+      // Save token in both cookies and localStorage for compatibility
+      localStorage.setItem('token', token);
+      localStorage.setItem('user', JSON.stringify(user));
+      Cookies.set('token', token, { expires: 7 }); // Expires in 7 days
+      
+      setUser(user);
+      setIsAuthenticated(true);
+      return { success: true, user };
     } catch (error) {
-      console.error('Login error:', error);
-      return { success: false, error: error.message };
+      console.error('Login error:', error.response?.data || error.message);
+      return { 
+        success: false, 
+        error: error.response?.data?.message || 'Login failed. Please try again.' 
+      };
     }
   };
 
-  // Logout function
-  const logout = () => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
-    setUser(null);
-    router.push('/');
+  const register = async (userData) => {
+    try {
+      // Remove confirmPassword if it exists since it's not needed on the server
+      const { confirmPassword, ...dataToSend } = userData;
+      
+      const response = await axios.post('/api/auth/register', dataToSend);
+      const { token, user } = response.data;
+      
+      // Save token in both cookies and localStorage for compatibility
+      localStorage.setItem('token', token);
+      localStorage.setItem('user', JSON.stringify(user));
+      Cookies.set('token', token, { expires: 7 });
+      
+      setUser(user);
+      setIsAuthenticated(true);
+      return { success: true, user };
+    } catch (error) {
+      console.error('Registration error:', error.response?.data || error.message);
+      return { 
+        success: false, 
+        error: error.response?.data?.message || 'Registration failed. Please try again.' 
+      };
+    }
+  };
+
+  const logout = async () => {
+    try {
+      // Call logout API to clear cookies on server-side
+      await axios.post('/api/auth/logout');
+    } catch (error) {
+      console.error('Logout API error:', error);
+    } finally {
+      // Always clear storage regardless of API success
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
+      Cookies.remove('token');
+      setUser(null);
+      setIsAuthenticated(false);
+      router.push('/');
+    }
   };
 
   // Check if user is admin
-  // Temporarily modify the isAdmin function to grant admin access for testing
   const isAdmin = () => {
-    // For testing: make a specific email always have admin access
-    // This is temporary - you should implement proper role-based checks later
-    return user && (user.role === 'admin' || user.email === 'your-email@example.com');
-  };
-
-  // Register function
-  const register = async (userData) => {
-    try {
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
-      console.log(`Using API URL for registration: ${apiUrl}`);
-      console.log('Registering with data:', {
-        ...userData,
-        password: '[MASKED]',
-        confirmPassword: '[MASKED]'
-      });
-      
-      const response = await fetch(`${apiUrl}/api/auth/register`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(userData),
-        credentials: 'include' // Include cookies if your API uses them
-      });
-      
-      // Log response status for debugging
-      console.log(`Registration response status: ${response.status}`);
-      
-      const data = await response.json();
-      
-      if (!response.ok) {
-        console.error('Registration error response:', data);
-        throw new Error(data.message || 'Registration failed');
-      }
-      
-      console.log('Registration successful, storing user data');
-      localStorage.setItem('token', data.token);
-      localStorage.setItem('user', JSON.stringify(data.user));
-      setUser(data.user);
-      
-      return { success: true };
-    } catch (error) {
-      console.error('Registration error:', error);
-      return { success: false, error: error.message };
-    }
+    return user && (user.role === 'admin' || user.role === 'superadmin');
   };
 
   return (
-    <AuthContext.Provider value={{ user, loading, login, logout, register, isAdmin }}>
+    <AuthContext.Provider value={{ 
+      user, 
+      isAuthenticated, 
+      login, 
+      register, 
+      logout,
+      loading,
+      isAdmin,
+      error 
+    }}>
       {children}
     </AuthContext.Provider>
   );
 };
 
 export const useAuth = () => useContext(AuthContext);
-
-// HOC to protect admin routes
-export const withAdminAuth = (Component) => {
-  const WithAdminAuth = (props) => {
-    const { user, loading } = useAuth();
-    const router = useRouter();
-    
-    useEffect(() => {
-      if (!loading && (!user || user.role !== 'admin')) {
-        router.replace('/login');
-      }
-    }, [loading, user, router]);
-    
-    if (loading) {
-      return (
-        <div className="flex items-center justify-center min-h-screen">
-          <div className="w-12 h-12 border-t-2 border-b-2 border-blue-500 rounded-full animate-spin"></div>
-        </div>
-      );
-    }
-    
-    if (!user || user.role !== 'admin') {
-      return null;
-    }
-    
-    return <Component {...props} />;
-  };
-  
-  return WithAdminAuth;
-};

@@ -2,7 +2,7 @@ import Head from 'next/head';
 import { motion } from 'framer-motion';
 import { FaUsers, FaLightbulb, FaHistory, FaGlobe, FaAward, FaBullseye, FaLinkedin, FaGithub, FaTwitter } from 'react-icons/fa';
 import { useState } from 'react';
-import Layout from '../components/Layout'; // Import Layout component
+import Layout from '@/components/Layout'; // Import Layout component
 
 export default function About() {
   // Animation variants

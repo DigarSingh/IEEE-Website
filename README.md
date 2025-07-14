@@ -32,10 +32,82 @@ This is a responsive and dynamic website built for the IEEE Student Branch. The 
 git clone https://github.com/DigarSingh/ieee-website.git
 cd ieee-website
 ```
+
+### 2. Install Dependencies
+
+```bash
+npm install
+```
+
+### 3. Run Development Server
+
+```bash
+npm run dev
+```
+
+### 4. Build for Production
+
+```bash
+npm run build
+```
+
+## 🚢 Deployment on Vercel
+
+This project is configured for seamless deployment on Vercel.
+
+### Prerequisites
+
+1. Set up the following environment variables in your Vercel project:
+   - `MONGODB_URI`: Your MongoDB connection string
+   - `JWT_SECRET`: Secret key for JWT authentication
+
+### Deployment Steps
+
+1. Connect your GitHub repository to Vercel
+2. Configure the build settings:
+   - Build Command: `npm run build`
+   - Output Directory: `frontend/.next`
+3. Add the required environment variables
+4. Deploy!
+
+### Build Process
+
+The build process uses a specialized workflow to handle authentication-required pages:
+
+- Creates mock data for static generation
+- Creates build-safe versions of authentication code
+- Temporarily replaces auth-required pages with placeholder components
+- Uses path aliases for better imports
+- Optimizes MongoDB connections during build
+- Restores original files after build is complete
+
+#### Fixing Build Errors
+
+If you encounter build errors with paths like `/admin/dashboard`, `/student/events`, or `/dashboard`, it's likely due to authentication requirements during static generation. Use our enhanced build script:
+
+```bash
+cd frontend
+npm run build:vercel
+```
+
+This script will skip authentication checks during build time while ensuring the final deployed site has proper authentication.
+
+#### Vercel-specific Setup
+
+When deploying to Vercel, make sure to:
+
+1. Use the `build:vercel` script as your build command
+2. Set the `outputDirectory` to `frontend/.next`
+3. Configure these environment variables:
+   - `MONGODB_URI`: Your MongoDB connection string
+   - `JWT_SECRET`: Your authentication secret key
+
 ## ✍️ License
+
 This project is licensed under the MIT License. See the LICENSE file for details.
 
 ## 📬 Contact
-Made with 💙 by Digar Singh
-📧 Email: digarsingh2004@gmail.com
-🌐 Visit: geuieee.in
+
+Made with 💙 by Digar Singh  
+📧 Email: [digarsingh2004@gmail.com](mailto:digarsingh2004@gmail.com)  
+🌐 Visit: [geuieee.in](https://geuieee.in)

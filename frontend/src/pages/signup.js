@@ -3,8 +3,8 @@ import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { FaUser, FaLock, FaEnvelope, FaUniversity, FaArrowRight, FaGoogle, FaGithub, FaMobileAlt, FaIdCard, FaEye, FaEyeSlash } from 'react-icons/fa';
-import Layout from '../components/Layout';
-import AuthParticleBackground from '../components/AuthParticleBackground';
+import Layout from '@/components/Layout';
+import AuthParticleBackground from '@/components/AuthParticleBackground';
 
 export default function Signup() {
   const [formData, setFormData] = useState({

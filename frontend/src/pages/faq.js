@@ -2,7 +2,7 @@ import { useState } from 'react';
 import Head from 'next/head';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FaPlus, FaMinus, FaQuestion, FaSearch } from 'react-icons/fa';
-import Layout from '../components/Layout';
+import Layout from '@/components/Layout';
 
 export default function FAQ() {
   const [searchTerm, setSearchTerm] = useState('');

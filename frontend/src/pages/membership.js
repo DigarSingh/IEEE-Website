@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { FaCheck, FaArrowRight, FaTimes, FaChevronDown, FaChevronUp, FaUserPlus, FaShieldAlt, FaRegLightbulb } from 'react-icons/fa';
 import { useState } from 'react';
-import Layout from '../components/Layout';
+import Layout from '@/components/Layout';
 
 export default function Membership() {
   const benefits = [

@@ -5,6 +5,9 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "build:vercel": "node fix-import-paths.js && node create-mock-data.js && node create-build-safe-auth.js && node skip-auth-pages.js && npx next build && node restore-auth-pages.js && node restore-auth-context.js",
+    "build:safe": "cross-env NODE_ENV=production NEXT_CONFIG_FILE=next.config.build.js next build",
+    "fix-paths": "node fix-import-paths.js",
     "start": "next start",
     "lint": "next lint"
   },
@@ -19,7 +22,7 @@
     "js-cookie": "^3.0.5",
     "jsonwebtoken": "^9.0.2",
     "mongodb": "^5.0.0",
-    "mongoose": "^7.5.0",
+    "mongoose": "^7.8.7",
     "multer": "^1.4.5-lts.1",
     "next": "^14.0.3",
     "next-connect": "^1.0.0",
@@ -35,6 +38,7 @@
   "devDependencies": {
     "@tailwindcss/aspect-ratio": "^0.4.2",
     "autoprefixer": "^10.4.16",
+    "cross-env": "^7.0.3",
     "eslint": "^8.54.0",
     "eslint-config-next": "^14.0.3",
     "postcss": "^8.4.31",

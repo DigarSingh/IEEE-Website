@@ -3,8 +3,8 @@ import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { FaCalendar, FaLightbulb, FaUsers, FaGraduationCap, FaArrowRight } from 'react-icons/fa';
 import { useState, useEffect } from 'react';
-import Layout from '../components/Layout'; // Import Layout component
-import ParticleBackground from '../components/ParticleBackground';
+import Layout from '@/components/Layout'; // Import Layout component
+import ParticleBackground from '@/components/ParticleBackground';
 
 export default function Home() {
   const [isVisible, setIsVisible] = useState(false);

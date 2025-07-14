@@ -2,7 +2,7 @@ import { useState } from 'react';
 import Head from 'next/head';
 import { motion } from 'framer-motion';
 import { FaBook, FaVideo, FaLink, FaDownload, FaSearch, FaFilter, FaTools, FaGraduationCap, FaNewspaper, FaCode } from 'react-icons/fa';
-import Layout from '../components/Layout';
+import Layout from '@/components/Layout';
 
 export default function Resources() {
   const [searchTerm, setSearchTerm] = useState('');
