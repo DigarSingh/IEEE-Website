@@ -65,9 +65,10 @@ This project is configured for seamless deployment on Vercel.
 
 1. Connect your GitHub repository to Vercel
 2. Configure the build settings:
-   - Build Command: `npm run build`
-   - Output Directory: `frontend/.next`
-3. Add the required environment variables
+   - Build Command: `npm run build:vercel` (this command should be detected automatically)
+   - Output Directory: `frontend/.next` (this should be detected automatically)
+   - Install Command: `npm install && npm install --prefix frontend`
+3. Add the required environment variables directly in the Vercel dashboard
 4. Deploy!
 
 ### Build Process
@@ -96,13 +97,15 @@ This script will skip authentication checks during build time while ensuring the
 
 When deploying to Vercel, make sure to:
 
-1. Use the `build:vercel` script as your build command
-2. Set the `outputDirectory` to `frontend/.next`
-3. Configure these environment variables (directly in the Vercel dashboard, not as secrets):
+1. Use the root directory of your repository (where the vercel.json file is located)
+2. Configure these environment variables in the Vercel dashboard under "Settings" > "Environment Variables":
    - `MONGODB_URI`: Your MongoDB connection string (e.g., `mongodb+srv://username:password@cluster.mongodb.net/database?retryWrites=true&w=majority`)
    - `JWT_SECRET`: Your authentication secret key (e.g., `your-strong-secret-key-here`)
 
-> **Important**: Add environment variables directly in the Vercel project settings under "Environment Variables" section, not as referenced secrets.
+> **Important**:  
+>
+> - Add environment variables directly in the Vercel project settings, not as referenced secrets with @ prefix
+> - If the build fails with "No such file or directory: frontend", make sure your repository structure includes the frontend folder at the root level
 
 ## ✍️ License
 

@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "buildCommand": "cd frontend && npm run build:vercel",
+  "buildCommand": "npm run build:vercel --prefix frontend",
   "outputDirectory": "frontend/.next",
-  "installCommand": "npm install",
+  "installCommand": "npm install && npm install --prefix frontend",
   "framework": "nextjs",
   "env": {
     "MONGODB_URI": "mongodb+srv://shivakoranga2004:wmH5pR0YIpTMYYh9@ieee.7fq9giv.mongodb.net/",
