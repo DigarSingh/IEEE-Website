@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
 import { FaSignOutAlt, FaBars, FaTimes, FaUser, FaChevronDown, FaUserCircle, FaCog, FaUserShield } from 'react-icons/fa';
 
 export default function Navbar() {
@@ -12,6 +12,12 @@ export default function Navbar() {
   const [userMenuOpen, setUserMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const router = useRouter();
+  
+  // Get scroll progress for animations
+  const { scrollY } = useScroll();
+  const navbarOpacity = useTransform(scrollY, [0, 100], [1, 0.95]);
+  const navbarBlur = useTransform(scrollY, [0, 100], [0, 5]);
+  const navbarScale = useTransform(scrollY, [0, 100], [1, 0.98]);
 
   // Track scroll position to change navbar style
   useEffect(() => {
@@ -148,7 +154,7 @@ export default function Navbar() {
               </div>
             </motion.div>
           )}
-        </AnimatePresence>
+        </AnimatePresence>Resources
       </div>
     ) : (
       <div className="flex items-center space-x-3">
@@ -222,86 +228,133 @@ export default function Navbar() {
   );
 
   return (
-    <nav className={`sticky top-0 z-50 transition-all duration-300 border-b ${
-      scrolled 
-        ? 'bg-transparent border-transparent backdrop-blur-sm' 
-        : 'bg-white shadow-md border-gray-200 backdrop-blur-md'
-    }`}>
+    <motion.nav 
+      className={`sticky top-0 z-50 transition-all duration-300 ${
+        scrolled 
+          ? 'bg-white/10 border-transparent' 
+          : 'bg-white shadow-md border-b border-gray-200'
+      }`}
+      style={{
+        opacity: navbarOpacity,
+        scale: navbarScale,
+        backdropFilter: scrolled ? `blur(${navbarBlur.get()}px)` : "blur(0px)"
+      }}
+    >
       <div className="container px-4 py-3 mx-auto">
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <div className="flex-shrink-0">
+          <motion.div 
+            className="flex-shrink-0"
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5 }}
+          >
             <Link href="/">
-              <div className="flex items-center cursor-pointer">
-                <img 
+              <motion.div 
+                className="flex items-center cursor-pointer"
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+              >
+                <motion.img 
                   src="/images/logo.png" 
                   alt="IEEE Logo" 
-                  className="w-auto mr-2 h-14" 
+                  className="w-auto mr-2 h-14"
+                  initial={{ rotate: -5 }}
+                  animate={{ rotate: 0 }}
+                  transition={{ duration: 0.5 }}
                 />
                 <span className={`text-xl font-bold ${
-                  scrolled ? 'text-black' : 'text-black'
+                  scrolled ? 'text-gray-800' : 'text-black'
                 }`}></span>
-              </div>
+              </motion.div>
             </Link>
-          </div>
+          </motion.div>
 
           {/* Desktop Menu */}
           <div className="items-center hidden md:flex">
             <div className="flex items-center justify-center mr-6 space-x-6">
               <Link href="/">
-                <span className={`text-sm font-medium transition-colors cursor-pointer hover:text-blue-400 ${
-                  scrolled
-                    ? 'text-black'
-                    : (router.pathname === '/' ? 'text-black' : 'text-gray-700')
-                }`}>
+                <motion.span 
+                  className={`text-sm font-medium transition-colors cursor-pointer hover:text-blue-600 ${
+                    scrolled
+                      ? 'text-gray-800'
+                      : (router.pathname === '/' ? 'text-black' : 'text-gray-700')
+                  }`}
+                  whileHover={{ scale: 1.05, y: -2 }}
+                  whileTap={{ scale: 0.95 }}
+                >
                   Home
-                </span>
+                </motion.span>
               </Link>
               <Link href="/about">
-                <span className={`text-sm font-medium transition-colors cursor-pointer hover:text-blue-400 ${
-                  scrolled
-                    ? 'text-black'
-                    : (router.pathname === '/about' ? 'text-black' : 'text-gray-700')
-                }`}>
+                <motion.span 
+                  className={`text-sm font-medium transition-colors cursor-pointer hover:text-blue-600 ${
+                    scrolled
+                      ? 'text-gray-800'
+                      : (router.pathname === '/about' ? 'text-black' : 'text-gray-700')
+                  }`}
+                  whileHover={{ scale: 1.05, y: -2 }}
+                  whileTap={{ scale: 0.95 }}
+                >
                   About
-                </span>
+                </motion.span>
               </Link>
               <Link href="/events">
-                <span className={`text-sm font-medium transition-colors cursor-pointer hover:text-blue-400 ${
-                  scrolled
-                    ? 'text-black'
-                    : (router.pathname === '/events' ? 'text-black' : 'text-gray-700')
-                }`}>
+                <motion.span 
+                  className={`text-sm font-medium transition-colors cursor-pointer hover:text-blue-600 ${
+                    scrolled
+                      ? 'text-gray-800'
+                      : (router.pathname === '/events' ? 'text-black' : 'text-gray-700')
+                  }`}
+                  whileHover={{ scale: 1.05, y: -2 }}
+                  whileTap={{ scale: 0.95 }}
+                >
                   Events
-                </span>
+                </motion.span>
               </Link>
               <Link href="/membership">
-                <span className={`text-sm font-medium transition-colors cursor-pointer hover:text-blue-400 ${
-                  scrolled
-                    ? 'text-black'
-                    : (router.pathname === '/membership' ? 'text-black' : 'text-gray-700')
-                }`}>
+                <motion.span 
+                  className={`text-sm font-medium transition-colors cursor-pointer hover:text-blue-600 ${
+                    scrolled
+                      ? 'text-gray-800'
+                      : (router.pathname === '/membership' ? 'text-black' : 'text-gray-700')
+                  }`}
+                  whileHover={{ scale: 1.05, y: -2 }}
+                  whileTap={{ scale: 0.95 }}
+                >
                   Membership
-                </span>
+                </motion.span>
               </Link>
               <Link href="/contact">
-                <span className={`text-sm font-medium transition-colors cursor-pointer hover:text-blue-400 ${
-                  scrolled
-                    ? 'text-black'
-                    : (router.pathname === '/contact' ? 'text-black' : 'text-gray-700')
-                }`}>
+                <motion.span 
+                  className={`text-sm font-medium transition-colors cursor-pointer hover:text-blue-600 ${
+                    scrolled
+                      ? 'text-gray-800'
+                      : (router.pathname === '/contact' ? 'text-black' : 'text-gray-700')
+                  }`}
+                  whileHover={{ scale: 1.05, y: -2 }}
+                  whileTap={{ scale: 0.95 }}
+                >
                   Contact
-                </span>
+                </motion.span>
               </Link>
             </div>
 
             <div className="flex items-center space-x-6">
               {/* GEU Logo */}
-              <div className={`h-10 mx-1 border-l ${scrolled ? 'border-gray-300' : 'border-gray-300'}`}></div>
-              <img 
+              <motion.div 
+                className={`h-10 mx-1 border-l ${scrolled ? 'border-gray-300' : 'border-gray-300'}`}
+                initial={{ height: 0 }}
+                animate={{ height: "2.5rem" }}
+                transition={{ delay: 0.2, duration: 0.5 }}
+              ></motion.div>
+              <motion.img 
                 src="/images/geu_logo.png" 
                 alt="GEU Logo" 
-                className="w-auto h-12" 
+                className="w-auto h-12"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3, duration: 0.5 }}
               />
 
               {/* Authentication Links */}
@@ -311,25 +364,48 @@ export default function Navbar() {
 
           {/* Mobile menu button and GEU logo */}
           <div className="flex items-center space-x-4 md:hidden">
-            <img 
+            <motion.img 
               src="/images/geu_logo.png" 
               alt="GEU Logo" 
-              className="w-auto h-14" 
+              className="w-auto h-14"
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.2, duration: 0.5 }}
             />
-            <button
+            <motion.button
               onClick={() => setIsOpen(!isOpen)}
+              whileHover={{ scale: 1.1, rotate: isOpen ? 0 : 10 }}
+              whileTap={{ scale: 0.9 }}
               className={`p-1 transition-colors rounded-md focus:outline-none ${
                 scrolled 
-                  ? 'text-black hover:bg-gray-200' 
-                  : 'text-black hover:bg-gray-200'
+                  ? 'text-gray-800 hover:bg-gray-200/50' 
+                  : 'text-gray-700 hover:text-black hover:bg-gray-200'
               }`}
             >
-              {isOpen ? (
-                <FaTimes className="w-6 h-6" />
-              ) : (
-                <FaBars className="w-6 h-6" />
-              )}
-            </button>
+              <AnimatePresence mode="wait">
+                {isOpen ? (
+                  <motion.div
+                    key="close"
+                    initial={{ rotate: -90, opacity: 0 }}
+                    animate={{ rotate: 0, opacity: 1 }}
+                    exit={{ rotate: 90, opacity: 0 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    <FaTimes className="w-6 h-6" />
+                  </motion.div>
+                ) : (
+                  <motion.div
+                    key="menu"
+                    initial={{ rotate: 90, opacity: 0 }}
+                    animate={{ rotate: 0, opacity: 1 }}
+                    exit={{ rotate: -90, opacity: 0 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    <FaBars className="w-6 h-6" />
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </motion.button>
           </div>
         </div>
       </div>
@@ -339,58 +415,129 @@ export default function Navbar() {
         {isOpen && (
           <motion.div 
             className="md:hidden"
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.2 }}
+            initial={{ opacity: 0, height: 0, y: -20 }}
+            animate={{ opacity: 1, height: 'auto', y: 0 }}
+            exit={{ opacity: 0, height: 0, y: -20 }}
+            transition={{ 
+              duration: 0.3,
+              ease: [0.22, 1, 0.36, 1]
+            }}
           >
-            <div className={`px-2 pt-2 pb-3 space-y-1 border-t ${
-              scrolled 
-                ? 'bg-white border-gray-200' 
-                : 'bg-white border-gray-200'
-            }`}>
-              <Link href="/">
-                <span className={`block px-3 py-2 text-base font-medium text-black rounded-md hover:bg-gray-100 ${
-                  router.pathname === '/' ? 'font-semibold bg-gray-100' : ''
-                }`}>
-                  Home
-                </span>
-              </Link>
-              <Link href="/about">
-                <span className={`block px-3 py-2 text-base font-medium text-black rounded-md hover:bg-gray-100 ${
-                  router.pathname === '/about' ? 'font-semibold bg-gray-100' : ''
-                }`}>
-                  About
-                </span>
-              </Link>
-              <Link href="/events">
-                <span className={`block px-3 py-2 text-base font-medium text-black rounded-md hover:bg-gray-100 ${
-                  router.pathname === '/events' ? 'font-semibold bg-gray-100' : ''
-                }`}>
-                  Events
-                </span>
-              </Link>
-              <Link href="/membership">
-                <span className={`block px-3 py-2 text-base font-medium text-black rounded-md hover:bg-gray-100 ${
-                  router.pathname === '/membership' ? 'font-semibold bg-gray-100' : ''
-                }`}>
-                  Membership
-                </span>
-              </Link>
-              <Link href="/contact">
-                <span className={`block px-3 py-2 text-base font-medium text-black rounded-md hover:bg-gray-100 ${
-                  router.pathname === '/contact' ? 'font-semibold bg-gray-100' : ''
-                }`}>
-                  Contact
-                </span>
-              </Link>
+            <motion.div 
+              className={`px-2 pt-2 pb-3 space-y-1 border-t ${
+                scrolled 
+                  ? 'bg-white border-gray-200' 
+                  : 'bg-white border-gray-200'
+              }`}
+              variants={{
+                hidden: { opacity: 0 },
+                show: {
+                  opacity: 1,
+                  transition: {
+                    staggerChildren: 0.07
+                  }
+                }
+              }}
+              initial="hidden"
+              animate="show"
+            >
+              <motion.div
+                variants={{
+                  hidden: { opacity: 0, x: -20 },
+                  show: { opacity: 1, x: 0 }
+                }}
+              >
+                <Link href="/">
+                  <motion.span 
+                    className={`block px-3 py-2 text-base font-medium text-black rounded-md hover:bg-gray-100 ${
+                      router.pathname === '/' ? 'font-semibold bg-gray-100' : ''
+                    }`}
+                    whileHover={{ x: 5, backgroundColor: "#f3f4f6" }}
+                    whileTap={{ scale: 0.98 }}
+                  >
+                    Home
+                  </motion.span>
+                </Link>
+              </motion.div>
+              <motion.div
+                variants={{
+                  hidden: { opacity: 0, x: -20 },
+                  show: { opacity: 1, x: 0 }
+                }}
+              >
+                <Link href="/about">
+                  <motion.span 
+                    className={`block px-3 py-2 text-base font-medium text-black rounded-md hover:bg-gray-100 ${
+                      router.pathname === '/about' ? 'font-semibold bg-gray-100' : ''
+                    }`}
+                    whileHover={{ x: 5, backgroundColor: "#f3f4f6" }}
+                    whileTap={{ scale: 0.98 }}
+                  >
+                    About
+                  </motion.span>
+                </Link>
+              </motion.div>
+              <motion.div
+                variants={{
+                  hidden: { opacity: 0, x: -20 },
+                  show: { opacity: 1, x: 0 }
+                }}
+              >
+                <Link href="/events">
+                  <motion.span 
+                    className={`block px-3 py-2 text-base font-medium text-black rounded-md hover:bg-gray-100 ${
+                      router.pathname === '/events' ? 'font-semibold bg-gray-100' : ''
+                    }`}
+                    whileHover={{ x: 5, backgroundColor: "#f3f4f6" }}
+                    whileTap={{ scale: 0.98 }}
+                  >
+                    Events
+                  </motion.span>
+                </Link>
+              </motion.div>
+              <motion.div
+                variants={{
+                  hidden: { opacity: 0, x: -20 },
+                  show: { opacity: 1, x: 0 }
+                }}
+              >
+                <Link href="/membership">
+                  <motion.span 
+                    className={`block px-3 py-2 text-base font-medium text-black rounded-md hover:bg-gray-100 ${
+                      router.pathname === '/membership' ? 'font-semibold bg-gray-100' : ''
+                    }`}
+                    whileHover={{ x: 5, backgroundColor: "#f3f4f6" }}
+                    whileTap={{ scale: 0.98 }}
+                  >
+                    Membership
+                  </motion.span>
+                </Link>
+              </motion.div>
+              <motion.div
+                variants={{
+                  hidden: { opacity: 0, x: -20 },
+                  show: { opacity: 1, x: 0 }
+                }}
+              >
+                <Link href="/contact">
+                  <motion.span 
+                    className={`block px-3 py-2 text-base font-medium text-black rounded-md hover:bg-gray-100 ${
+                      router.pathname === '/contact' ? 'font-semibold bg-gray-100' : ''
+                    }`}
+                    whileHover={{ x: 5, backgroundColor: "#f3f4f6" }}
+                    whileTap={{ scale: 0.98 }}
+                  >
+                    Contact
+                  </motion.span>
+                </Link>
+              </motion.div>
 
               {/* Mobile Auth Links */}
               {mobileAuthLinks}
-            </div>
+            </motion.div>
           </motion.div>
         )}
       </AnimatePresence>
-    </nav>
+    </motion.nav>
   );
 }
