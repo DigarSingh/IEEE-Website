@@ -98,9 +98,11 @@ When deploying to Vercel, make sure to:
 
 1. Use the `build:vercel` script as your build command
 2. Set the `outputDirectory` to `frontend/.next`
-3. Configure these environment variables:
-   - `MONGODB_URI`: Your MongoDB connection string
-   - `JWT_SECRET`: Your authentication secret key
+3. Configure these environment variables (directly in the Vercel dashboard, not as secrets):
+   - `MONGODB_URI`: Your MongoDB connection string (e.g., `mongodb+srv://username:password@cluster.mongodb.net/database?retryWrites=true&w=majority`)
+   - `JWT_SECRET`: Your authentication secret key (e.g., `your-strong-secret-key-here`)
+
+> **Important**: Add environment variables directly in the Vercel project settings under "Environment Variables" section, not as referenced secrets.
 
 ## ✍️ License
 
