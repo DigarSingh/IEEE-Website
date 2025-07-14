@@ -19,11 +19,18 @@ const nextConfig = {
     ],
   },
   
-  // API route to handle file uploads (increase limit to 50MB)
-  api: {
-    bodyParser: {
-      sizeLimit: '50mb',
+  // Configure server for larger payloads and file uploads
+  experimental: {
+    serverComponentsExternalPackages: [],
+    serverActions: {
+      bodySizeLimit: '50mb',
     },
+  },
+
+  // Allow file uploads in API routes
+  webpack(config) {
+    config.externals = [...config.externals, 'formidable'];
+    return config;
   },
 
   // Configure redirects for old API routes

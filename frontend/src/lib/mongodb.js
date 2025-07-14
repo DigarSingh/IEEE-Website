@@ -5,7 +5,6 @@ const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/ieee_c
 if (!MONGODB_URI) {
   throw new Error('Please define the MONGODB_URI environment variable');
 }
-mongoose.connect(MONGODB_URI).then (()=>console.log("mongoose connect"))
 /**
  * Global is used here to maintain a cached connection across hot reloads
  * in development. This prevents connections growing exponentially

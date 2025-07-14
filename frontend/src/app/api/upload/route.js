@@ -2,17 +2,27 @@ import { NextResponse } from 'next/server';
 import { authMiddleware } from '@/middleware/authMiddleware';
 import { processFileUpload } from '@/utils/fileUpload';
 
-// Disable default body parser for file uploads
-export const config = {
-  api: {
-    bodyParser: false,
-  },
-};
+// Use the new Next.js App Router configuration
+export const dynamic = 'force-dynamic';
+export const runtime = 'nodejs';
 
 export async function POST(request) {
   try {
     // Verify authentication
-    const authResult = await authMiddleware(request);
+    const token = request.headers.get('authorization')?.split(' ')[1] 
+      || request.cookies.get('token')?.value;
+
+    // Create a request-like object for the authMiddleware
+    const authReq = {
+      headers: { 
+        authorization: token ? `Bearer ${token}` : undefined 
+      },
+      cookies: {
+        token: token
+      }
+    };
+
+    const authResult = await authMiddleware(authReq);
     if (!authResult.success) {
       return NextResponse.json({ 
         success: false, 
