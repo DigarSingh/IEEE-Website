@@ -1,0 +1,12 @@
+# Profile Photos Directory
+
+This directory contains user profile photos uploaded through the profile management system.
+
+Profile photos are automatically resized and optimized when uploaded.
+
+Supported formats:
+- JPEG
+- PNG
+- WebP
+
+Maximum file size: 5MB

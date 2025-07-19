@@ -84,3 +84,41 @@ body {
 .text-shadow-lg {
   text-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
 }
+
+/* Profile page specific styles */
+.profile-avatar {
+  object-fit: cover;
+  object-position: center;
+}
+
+.profile-avatar-placeholder {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+/* Custom focus states for better accessibility */
+.focus-ring:focus {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}
+
+/* Smooth transitions for form elements */
+.form-input {
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.form-input:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+/* Profile form animations */
+.profile-form-enter {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.profile-form-enter-active {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}

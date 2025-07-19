@@ -16,9 +16,14 @@ export async function GET(request) {
     }
 
     // Return user data without password
+    const userWithoutPassword = {
+      ...authResult.user.toObject(),
+    };
+    delete userWithoutPassword.password;
+
     return NextResponse.json({
       success: true,
-      user: authResult.user
+      user: userWithoutPassword
     });
   } catch (error) {
     console.error('Get user error:', error);

@@ -94,8 +94,18 @@ export default function Navbar() {
           whileHover={{ scale: 1.03 }}
         >
           <div className="flex items-center px-3 py-1.5 space-x-2 text-sm rounded-full bg-gradient-to-r from-gray-800 to-gray-900 border border-gray-700 hover:border-blue-500 transition-all duration-200">
-            <div className="flex items-center justify-center overflow-hidden text-white rounded-full shadow-inner w-7 h-7 bg-gradient-to-br from-blue-500 to-violet-600">
-              {user?.name?.charAt(0) || 'U'}
+            <div className="flex items-center justify-center overflow-hidden text-white rounded-full shadow-inner w-7 h-7">
+              {user?.profilePhoto && user.profilePhoto !== 'default-profile.jpg' ? (
+                <img 
+                  src={user.profilePhoto} 
+                  alt={user.name}
+                  className="w-full h-full object-cover"
+                />
+              ) : (
+                <div className="w-full h-full bg-gradient-to-br from-blue-500 to-violet-600 flex items-center justify-center text-xs">
+                  {user?.name?.charAt(0) || 'U'}
+                </div>
+              )}
             </div>
             <span className="hidden font-medium text-gray-200 sm:inline-block">{user?.name?.split(' ')[0] || 'User'}</span>
             <motion.div
@@ -118,8 +128,18 @@ export default function Navbar() {
               transition={{ duration: 0.2 }}
             >
               <div className="p-4 text-center border-b border-gray-700 bg-gradient-to-b from-gray-800 to-gray-900">
-                <div className="flex items-center justify-center w-16 h-16 mx-auto overflow-hidden text-2xl text-white rounded-full shadow-xl bg-gradient-to-br from-blue-500 to-violet-600">
-                  {user?.name?.charAt(0) || 'U'}
+                <div className="flex items-center justify-center w-16 h-16 mx-auto overflow-hidden text-2xl text-white rounded-full shadow-xl">
+                  {user?.profilePhoto && user.profilePhoto !== 'default-profile.jpg' ? (
+                    <img 
+                      src={user.profilePhoto} 
+                      alt={user.name}
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <div className="w-full h-full bg-gradient-to-br from-blue-500 to-violet-600 flex items-center justify-center">
+                      {user?.name?.charAt(0) || 'U'}
+                    </div>
+                  )}
                 </div>
                 <p className="mt-2 font-medium text-white">{user?.name}</p>
                 <p className="text-xs text-gray-400 truncate">{user?.email}</p>
@@ -154,7 +174,7 @@ export default function Navbar() {
               </div>
             </motion.div>
           )}
-        </AnimatePresence>Resources
+        </AnimatePresence>
       </div>
     ) : (
       <div className="flex items-center space-x-3">
@@ -188,8 +208,18 @@ export default function Navbar() {
     isLoggedIn ? (
       <div className="pt-4 mt-4 border-t border-gray-700">
         <div className="flex items-center px-3 py-2 mb-2 text-base font-medium text-white rounded-lg bg-gradient-to-r from-gray-800 to-gray-900">
-          <div className="flex items-center justify-center w-8 h-8 mr-2 overflow-hidden text-white rounded-full bg-gradient-to-br from-blue-500 to-violet-600">
-            {user?.name?.charAt(0) || 'U'}
+          <div className="flex items-center justify-center w-8 h-8 mr-2 overflow-hidden text-white rounded-full">
+            {user?.profilePhoto && user.profilePhoto !== 'default-profile.jpg' ? (
+              <img 
+                src={user.profilePhoto} 
+                alt={user.name}
+                className="w-full h-full object-cover"
+              />
+            ) : (
+              <div className="w-full h-full bg-gradient-to-br from-blue-500 to-violet-600 flex items-center justify-center text-sm">
+                {user?.name?.charAt(0) || 'U'}
+              </div>
+            )}
           </div>
           <span>{user?.name || 'User'}</span>
         </div>
@@ -199,6 +229,16 @@ export default function Navbar() {
             Your Profile
           </span>
         </Link>
+        
+        {/* Add Admin Dashboard link for mobile */}
+        {user?.role === 'admin' && (
+          <Link href="/admin">
+            <span className="flex items-center px-3 py-2 text-base font-medium text-gray-300 transition-colors rounded-md hover:bg-gray-800 hover:text-white">
+              <FaUserShield className="mr-3 text-blue-400" />
+              Admin Dashboard
+            </span>
+          </Link>
+        )}
         
         <button
           onClick={handleLogout}
