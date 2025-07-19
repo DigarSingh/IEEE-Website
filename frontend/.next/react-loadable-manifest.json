@@ -1,9 +1,8 @@
 {
   "components\\Layout.js -> ./Navbar": {
-    "id": 5766,
+    "id": "components\\Layout.js -> ./Navbar",
     "files": [
-      "static/chunks/99.345dbf7bc372a0dd.js",
-      "static/chunks/766.af72123c4333b78e.js"
+      "static/chunks/src_components_Navbar_js.js"
     ]
   }
 }

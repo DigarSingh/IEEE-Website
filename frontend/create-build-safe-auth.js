@@ -1,6 +1,3 @@
-// This script creates a build-safe AuthContext that uses mock data during build
-// It replaces the real AuthContext during build to prevent MongoDB connection errors
-
 const fs = require('fs');
 const path = require('path');
 

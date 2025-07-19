@@ -1,14 +1,4 @@
 {
-  "/api/admin/stats/route": "app/api/admin/stats/route.js",
-  "/api/auth/login/route": "app/api/auth/login/route.js",
-  "/api/auth/logout/route": "app/api/auth/logout/route.js",
-  "/api/auth/me/route": "app/api/auth/me/route.js",
-  "/api/auth/register/route": "app/api/auth/register/route.js",
-  "/api/certificates/route": "app/api/certificates/route.js",
-  "/api/events/[id]/route": "app/api/events/[id]/route.js",
-  "/api/events/create/route": "app/api/events/create/route.js",
-  "/api/events/route": "app/api/events/route.js",
-  "/api/members/route": "app/api/members/route.js",
-  "/api/messages/route": "app/api/messages/route.js",
-  "/api/upload/route": "app/api/upload/route.js"
+  "/_not-found/page": "app/_not-found/page.js",
+  "/api/auth/register/route": "app/api/auth/register/route.js"
 }
