@@ -152,7 +152,17 @@ export default function Navbar() {
                   </span>
                 </Link>
                 
-                {/* Add this Admin Dashboard link */}
+                {/* Student Dashboard link */}
+                {user?.role === 'student' && (
+                  <Link href="/student/dashboard">
+                    <span className="flex items-center px-4 py-2 text-sm text-gray-300 transition-colors rounded-md hover:bg-gray-700">
+                      <FaCog className="mr-3 text-green-400" />
+                      Student Portal
+                    </span>
+                  </Link>
+                )}
+                
+                {/* Admin Dashboard link */}
                 {user?.role === 'admin' && (
                   <Link href="/admin">
                     <span className="flex items-center px-4 py-2 text-sm text-gray-300 transition-colors rounded-md hover:bg-gray-700">
@@ -230,7 +240,17 @@ export default function Navbar() {
           </span>
         </Link>
         
-        {/* Add Admin Dashboard link for mobile */}
+        {/* Student Portal link for mobile */}
+        {user?.role === 'student' && (
+          <Link href="/student/dashboard">
+            <span className="flex items-center px-3 py-2 text-base font-medium text-gray-300 transition-colors rounded-md hover:bg-gray-800 hover:text-white">
+              <FaCog className="mr-3 text-green-400" />
+              Student Portal
+            </span>
+          </Link>
+        )}
+        
+        {/* Admin Dashboard link for mobile */}
         {user?.role === 'admin' && (
           <Link href="/admin">
             <span className="flex items-center px-3 py-2 text-base font-medium text-gray-300 transition-colors rounded-md hover:bg-gray-800 hover:text-white">
