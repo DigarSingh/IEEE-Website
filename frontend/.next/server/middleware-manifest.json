@@ -10,30 +10,15 @@
       "page": "/",
       "matchers": [
         {
-          "regexp": "^(?:\\/(_next\\/data\\/[^/]{1,}))?\\/admin(?:\\/((?:[^\\/#\\?]+?)(?:\\/(?:[^\\/#\\?]+?))*))?(.json)?[\\/#\\?]?$",
-          "originalSource": "/admin/:path*"
-        },
-        {
-          "regexp": "^(?:\\/(_next\\/data\\/[^/]{1,}))?\\/student(?:\\/((?:[^\\/#\\?]+?)(?:\\/(?:[^\\/#\\?]+?))*))?(.json)?[\\/#\\?]?$",
-          "originalSource": "/student/:path*"
-        },
-        {
-          "regexp": "^(?:\\/(_next\\/data\\/[^/]{1,}))?\\/dashboard(.json)?[\\/#\\?]?$",
-          "originalSource": "/dashboard"
-        },
-        {
-          "regexp": "^(?:\\/(_next\\/data\\/[^/]{1,}))?\\/profile(.json)?[\\/#\\?]?$",
-          "originalSource": "/profile"
+          "regexp": "^/.*$",
+          "originalSource": "/:path*"
         }
       ],
       "wasm": [],
       "assets": [],
       "env": {
-        "__NEXT_BUILD_ID": "ieee-website-build",
-        "NEXT_SERVER_ACTIONS_ENCRYPTION_KEY": "E7qSkqDhUBuGB3wz1P3wp6x9UUooHAaA+qwC1io2xgA=",
-        "__NEXT_PREVIEW_MODE_ID": "5ce96e51ea767f64508bb0d9d6a924ff",
-        "__NEXT_PREVIEW_MODE_ENCRYPTION_KEY": "e426ca85c398876a8fd7c0403c3ee687140a1fd3864aadf2d680bdb0be4a4046",
-        "__NEXT_PREVIEW_MODE_SIGNING_KEY": "7c661c311624e4174a9242d43604da107f2163de9528b348882df808a0af0360"
+        "__NEXT_BUILD_ID": "development",
+        "NEXT_SERVER_ACTIONS_ENCRYPTION_KEY": "3P4PymVfB4KMcqnTWnj5kQSBwK6pcp2bLv943cZH/mU="
       }
     }
   },
