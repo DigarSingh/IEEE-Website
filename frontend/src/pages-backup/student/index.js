@@ -1,21 +1,20 @@
-
 // This is a placeholder page for index
 // The original file is temporarily renamed during the build process
-import { useEffect } from 'react';
-import { useRouter } from 'next/router';
+import { useEffect } from "react";
+import { useRouter } from "next/router";
 
-export default function IndexPage() {
+export default function StudentIndex() {
   const router = useRouter();
-  
+
   useEffect(() => {
-    // In real environment, redirect to login
-    router.push('/login');
+    // Redirect to student dashboard
+    router.push("/student/dashboard");
   }, [router]);
-  
+
   return null;
 }
 
 // Skip static generation for this page
 export const getStaticProps = () => {
   return { props: {} };
-}
+};

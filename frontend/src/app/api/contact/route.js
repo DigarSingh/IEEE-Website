@@ -23,7 +23,7 @@ export async function POST(request) {
     // Compose the email
     const mailOptions = {
       from: email,
-      to: process.env.CONTACT_EMAIL || "geu.ieee.studenbranch@gmail.com",
+      to: process.env.SEND_EMAIL || "geu.ieee.studenbranch@gmail.com",
       subject: `[IEEE Website Contact] ${subject}`,
       text: `Name: ${name}\nEmail: ${email}\n\n${message}`,
     };
