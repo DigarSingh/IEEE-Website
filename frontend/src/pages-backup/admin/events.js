@@ -1,35 +1,44 @@
-
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import Head from "next/head";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import {
-  FaCertificate,
+  FaCalendar,
   FaSearch,
   FaPlus,
   FaEdit,
   FaTrash,
-  FaDownload,
+  FaEye,
+  FaUsers,
   FaSpinner,
   FaArrowLeft,
-  FaAward,
+  FaMapMarkerAlt,
+  FaClock,
   FaChevronLeft,
   FaChevronRight
 } from "react-icons/fa";
 import Layout from "@/components/Layout";
 
-export default function AdminCertificatesPage() {
+export default function AdminEventsPage() {
   const [user, setUser] = useState(null);
-  const [certificates, setCertificates] = useState([]);
+  const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [loadingCertificates, setLoadingCertificates] = useState(false);
+  const [loadingEvents, setLoadingEvents] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
+  const [selectedStatus, setSelectedStatus] = useState("all");
   const [currentPage, setCurrentPage] = useState(1);
   const [pagination, setPagination] = useState(null);
   const [message, setMessage] = useState({ type: "", text: "" });
-  const [showIssueModal, setShowIssueModal] = useState(false);
   const router = useRouter();
+
+  const statusOptions = [
+    { value: "all", label: "All Events" },
+    { value: "upcoming", label: "Upcoming" },
+    { value: "ongoing", label: "Ongoing" },
+    { value: "completed", label: "Completed" },
+    { value: "canceled", label: "Canceled" }
+  ];
 
   useEffect(() => {
     // Check authentication
@@ -60,15 +69,16 @@ export default function AdminCertificatesPage() {
 
   useEffect(() => {
     if (!loading) {
-      fetchCertificates();
+      fetchEvents();
     }
-  }, [loading, searchTerm, currentPage]);
+  }, [loading, selectedStatus, searchTerm, currentPage]);
 
-  const fetchCertificates = async () => {
-    setLoadingCertificates(true);
+  const fetchEvents = async () => {
+    setLoadingEvents(true);
     try {
       const token = localStorage.getItem("token");
       const params = new URLSearchParams({
+        status: selectedStatus,
         page: currentPage.toString(),
         limit: "10"
       });
@@ -77,7 +87,7 @@ export default function AdminCertificatesPage() {
         params.append("search", searchTerm);
       }
 
-      const response = await fetch(`/api/admin/certificates?${params}`, {
+      const response = await fetch(`/api/admin/events?${params}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -85,16 +95,16 @@ export default function AdminCertificatesPage() {
 
       const data = await response.json();
       if (data.success) {
-        setCertificates(data.data.certificates);
+        setEvents(data.data.events);
         setPagination(data.data.pagination);
       } else {
         setMessage({ type: "error", text: data.message });
       }
     } catch (error) {
-      console.error("Error fetching certificates:", error);
-      setMessage({ type: "error", text: "Failed to load certificates" });
+      console.error("Error fetching events:", error);
+      setMessage({ type: "error", text: "Failed to load events" });
     } finally {
-      setLoadingCertificates(false);
+      setLoadingEvents(false);
     }
   };
 
@@ -104,6 +114,34 @@ export default function AdminCertificatesPage() {
       day: 'numeric',
       year: 'numeric'
     });
+  };
+
+  const formatTime = (dateString) => {
+    return new Date(dateString).toLocaleTimeString('en-US', {
+      hour: '2-digit',
+      minute: '2-digit'
+    });
+  };
+
+  const getStatusColor = (status) => {
+    switch (status) {
+      case 'upcoming': return 'bg-blue-900 text-blue-300';
+      case 'ongoing': return 'bg-green-900 text-green-300';
+      case 'completed': return 'bg-gray-900 text-gray-300';
+      case 'canceled': return 'bg-red-900 text-red-300';
+      default: return 'bg-gray-900 text-gray-300';
+    }
+  };
+
+  const getCategoryColor = (category) => {
+    switch (category) {
+      case 'Workshop': return 'bg-blue-900 text-blue-300';
+      case 'Webinar': return 'bg-green-900 text-green-300';
+      case 'Conference': return 'bg-purple-900 text-purple-300';
+      case 'Competition': return 'bg-red-900 text-red-300';
+      case 'Social': return 'bg-yellow-900 text-yellow-300';
+      default: return 'bg-gray-900 text-gray-300';
+    }
   };
 
   if (loading) {
@@ -118,7 +156,7 @@ export default function AdminCertificatesPage() {
             >
               <FaSpinner className="h-12 w-12 text-blue-500" />
             </motion.div>
-            <p className="text-gray-400">Loading certificates...</p>
+            <p className="text-gray-400">Loading events...</p>
           </div>
         </div>
       </Layout>
@@ -128,13 +166,13 @@ export default function AdminCertificatesPage() {
   return (
     <Layout>
       <Head>
-        <title>Manage Certificates | IEEE Admin Portal</title>
-        <meta name="description" content="Manage and issue IEEE certificates" />
+        <title>Manage Events | IEEE Admin Portal</title>
+        <meta name="description" content="Manage IEEE events and activities" />
       </Head>
 
       <div className="min-h-screen bg-[#080D14] text-gray-300">
         {/* Header */}
-        <div className="bg-gradient-to-r from-yellow-900/50 to-orange-900/50 border-b border-gray-800">
+        <div className="bg-gradient-to-r from-green-900/50 to-blue-900/50 border-b border-gray-800">
           <div className="container mx-auto px-6 py-6">
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-4">
@@ -144,24 +182,21 @@ export default function AdminCertificatesPage() {
                   </button>
                 </Link>
                 <div>
-                  <h1 className="text-2xl font-bold text-white">Manage Certificates</h1>
-                  <p className="text-gray-400">Issue and manage IEEE certificates</p>
+                  <h1 className="text-2xl font-bold text-white">Manage Events</h1>
+                  <p className="text-gray-400">Create and manage IEEE events</p>
                 </div>
               </div>
               <div className="flex items-center space-x-4">
-                <button
-                  onClick={() => setShowIssueModal(true)}
-                  className="flex items-center px-4 py-2 bg-yellow-600 hover:bg-yellow-700 text-white rounded-lg transition-colors"
-                >
+                <button className="flex items-center px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg transition-colors">
                   <FaPlus className="mr-2" />
-                  Issue Certificate
+                  Create Event
                 </button>
                 <div className="text-right">
-                  <p className="text-2xl font-bold text-white">{pagination?.totalCertificates || 0}</p>
-                  <p className="text-sm text-gray-400">Total Certificates</p>
+                  <p className="text-2xl font-bold text-white">{pagination?.totalEvents || 0}</p>
+                  <p className="text-sm text-gray-400">Total Events</p>
                 </div>
-                <div className="w-12 h-12 bg-gradient-to-br from-yellow-500 to-orange-600 rounded-full flex items-center justify-center">
-                  <FaCertificate className="text-white text-xl" />
+                <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-blue-600 rounded-full flex items-center justify-center">
+                  <FaCalendar className="text-white text-xl" />
                 </div>
               </div>
             </div>
@@ -184,33 +219,61 @@ export default function AdminCertificatesPage() {
             </motion.div>
           )}
 
-          {/* Search */}
+          {/* Filters */}
           <div className="bg-gray-900/50 border border-gray-800 rounded-lg p-6 mb-8">
-            <div className="relative max-w-md">
-              <FaSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-              <input
-                type="text"
-                placeholder="Search certificates..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-10 pr-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:border-yellow-500 focus:ring-1 focus:ring-yellow-500"
-              />
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              {/* Search */}
+              <div className="relative">
+                <FaSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+                <input
+                  type="text"
+                  placeholder="Search events..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="w-full pl-10 pr-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:border-green-500 focus:ring-1 focus:ring-green-500"
+                />
+              </div>
+
+              {/* Status Filter */}
+              <select
+                value={selectedStatus}
+                onChange={(e) => setSelectedStatus(e.target.value)}
+                className="px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white focus:border-green-500 focus:ring-1 focus:ring-green-500"
+              >
+                {statusOptions.map((status) => (
+                  <option key={status.value} value={status.value}>
+                    {status.label}
+                  </option>
+                ))}
+              </select>
+
+              {/* Clear Filters */}
+              <button
+                onClick={() => {
+                  setSearchTerm("");
+                  setSelectedStatus("all");
+                  setCurrentPage(1);
+                }}
+                className="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg transition-colors"
+              >
+                Clear Filters
+              </button>
             </div>
           </div>
 
-          {/* Certificates Table */}
-          {loadingCertificates ? (
+          {/* Events Table */}
+          {loadingEvents ? (
             <div className="text-center py-12">
               <motion.div
                 animate={{ rotate: 360 }}
                 transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
                 className="mx-auto mb-4"
               >
-                <FaSpinner className="h-8 w-8 text-yellow-500" />
+                <FaSpinner className="h-8 w-8 text-green-500" />
               </motion.div>
-              <p className="text-gray-400">Loading certificates...</p>
+              <p className="text-gray-400">Loading events...</p>
             </div>
-          ) : certificates.length > 0 ? (
+          ) : events.length > 0 ? (
             <>
               <div className="bg-gray-900/50 border border-gray-800 rounded-lg overflow-hidden mb-8">
                 <div className="overflow-x-auto">
@@ -218,16 +281,16 @@ export default function AdminCertificatesPage() {
                     <thead className="bg-gray-800">
                       <tr>
                         <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
-                          Certificate
-                        </th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
-                          Recipient
-                        </th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
                           Event
                         </th>
                         <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
-                          Issue Date
+                          Date & Time
+                        </th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
+                          Status
+                        </th>
+                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
+                          Attendees
                         </th>
                         <th className="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
                           Actions
@@ -235,9 +298,9 @@ export default function AdminCertificatesPage() {
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-800">
-                      {certificates.map((certificate, index) => (
+                      {events.map((event, index) => (
                         <motion.tr
-                          key={certificate._id}
+                          key={event._id}
                           className="hover:bg-gray-800/50 transition-colors"
                           initial={{ opacity: 0, y: 20 }}
                           animate={{ opacity: 1, y: 0 }}
@@ -245,41 +308,50 @@ export default function AdminCertificatesPage() {
                         >
                           <td className="px-6 py-4 whitespace-nowrap">
                             <div className="flex items-center">
-                              <div className="w-10 h-10 bg-gradient-to-br from-yellow-500 to-orange-600 rounded-lg flex items-center justify-center">
-                                <FaCertificate className="text-white" />
+                              <div className="w-10 h-10 bg-gradient-to-br from-green-500 to-blue-600 rounded-lg flex items-center justify-center">
+                                <FaCalendar className="text-white" />
                               </div>
                               <div className="ml-4">
-                                <div className="text-sm font-medium text-white">{certificate.name}</div>
-                                {certificate.description && (
-                                  <div className="text-sm text-gray-400 truncate max-w-xs">
-                                    {certificate.description}
+                                <div className="text-sm font-medium text-white">{event.title}</div>
+                                <div className="flex items-center space-x-2 mt-1">
+                                  <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${getCategoryColor(event.category)}`}>
+                                    {event.category}
+                                  </span>
+                                  <div className="flex items-center text-xs text-gray-400">
+                                    <FaMapMarkerAlt className="mr-1" />
+                                    {event.isVirtual ? "Virtual" : event.location}
                                   </div>
-                                )}
+                                </div>
                               </div>
                             </div>
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap">
-                            <div className="text-sm font-medium text-white">
-                              {certificate.user?.name || 'Unknown User'}
-                            </div>
-                            <div className="text-sm text-gray-400">
-                              {certificate.user?.email || 'No email'}
+                            <div className="text-sm text-white">{formatDate(event.date)}</div>
+                            <div className="text-sm text-gray-400 flex items-center">
+                              <FaClock className="mr-1" />
+                              {formatTime(event.date)}
                             </div>
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap">
-                            <div className="text-sm text-gray-300">
-                              {certificate.event?.title || 'No event linked'}
-                            </div>
+                            <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getStatusColor(event.status)}`}>
+                              {event.status}
+                            </span>
                           </td>
-                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-400">
-                            {formatDate(certificate.issueDate)}
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            <div className="flex items-center text-sm text-gray-300">
+                              <FaUsers className="mr-2" />
+                              <span className="text-white font-medium">{event.attendeesCount || 0}</span>
+                              {event.maxAttendees && (
+                                <span className="text-gray-400">/ {event.maxAttendees}</span>
+                              )}
+                            </div>
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                             <div className="flex space-x-2">
-                              <button className="text-green-400 hover:text-green-300">
-                                <FaDownload />
-                              </button>
                               <button className="text-blue-400 hover:text-blue-300">
+                                <FaEye />
+                              </button>
+                              <button className="text-green-400 hover:text-green-300">
                                 <FaEdit />
                               </button>
                               <button className="text-red-400 hover:text-red-300">
@@ -323,80 +395,33 @@ export default function AdminCertificatesPage() {
             </>
           ) : (
             <div className="text-center py-12">
-              <FaCertificate className="mx-auto h-16 w-16 text-gray-600 mb-4" />
-              <h3 className="text-xl font-semibold text-white mb-2">No certificates found</h3>
+              <FaCalendar className="mx-auto h-16 w-16 text-gray-600 mb-4" />
+              <h3 className="text-xl font-semibold text-white mb-2">No events found</h3>
               <p className="text-gray-400 mb-6">
-                {searchTerm 
-                  ? "No certificates match your search criteria."
-                  : "No certificates have been issued yet."}
+                {searchTerm || selectedStatus !== "all" 
+                  ? "No events match your current filters."
+                  : "No events have been created yet."}
               </p>
               <div className="flex justify-center space-x-4">
-                {searchTerm && (
+                {(searchTerm || selectedStatus !== "all") && (
                   <button
-                    onClick={() => setSearchTerm("")}
+                    onClick={() => {
+                      setSearchTerm("");
+                      setSelectedStatus("all");
+                      setCurrentPage(1);
+                    }}
                     className="px-6 py-3 bg-gray-600 hover:bg-gray-700 text-white rounded-lg transition-colors"
                   >
-                    Clear Search
+                    Clear Filters
                   </button>
                 )}
-                <button
-                  onClick={() => setShowIssueModal(true)}
-                  className="flex items-center px-6 py-3 bg-yellow-600 hover:bg-yellow-700 text-white rounded-lg transition-colors"
-                >
+                <button className="flex items-center px-6 py-3 bg-green-600 hover:bg-green-700 text-white rounded-lg transition-colors">
                   <FaPlus className="mr-2" />
-                  Issue Certificate
+                  Create Event
                 </button>
               </div>
             </div>
           )}
-
-          {/* Summary Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
-            <motion.div
-              className="bg-gradient-to-r from-yellow-900/20 to-orange-900/20 border border-gray-800 rounded-lg p-6"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-            >
-              <div className="text-center">
-                <FaAward className="mx-auto h-12 w-12 text-yellow-500 mb-4" />
-                <h3 className="text-xl font-bold text-white mb-2">Digital Certificates</h3>
-                <p className="text-gray-400">
-                  Issue and manage digital certificates for events and achievements
-                </p>
-              </div>
-            </motion.div>
-
-            <motion.div
-              className="bg-gradient-to-r from-blue-900/20 to-green-900/20 border border-gray-800 rounded-lg p-6"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.1 }}
-            >
-              <div className="text-center">
-                <FaDownload className="mx-auto h-12 w-12 text-blue-500 mb-4" />
-                <h3 className="text-xl font-bold text-white mb-2">Easy Download</h3>
-                <p className="text-gray-400">
-                  Recipients can download their certificates instantly
-                </p>
-              </div>
-            </motion.div>
-
-            <motion.div
-              className="bg-gradient-to-r from-purple-900/20 to-pink-900/20 border border-gray-800 rounded-lg p-6"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-            >
-              <div className="text-center">
-                <FaCertificate className="mx-auto h-12 w-12 text-purple-500 mb-4" />
-                <h3 className="text-xl font-bold text-white mb-2">Automated System</h3>
-                <p className="text-gray-400">
-                  Streamlined certificate issuance and management
-                </p>
-              </div>
-            </motion.div>
-          </div>
         </div>
       </div>
     </Layout>

@@ -15,7 +15,7 @@ const AuthParticleBackground = () => {
         fullScreen: {
           enable: false,
         },
-        fpsLimit: 60,
+        fpsLimit: 120,
         particles: {
           color: {
             value: "#0066cc", // IEEE blue color

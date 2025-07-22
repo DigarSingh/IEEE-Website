@@ -1,9 +1,10 @@
 import Head from 'next/head';
+import Link from 'next/link';
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
-import { FaEnvelope, FaPhone, FaMapMarkerAlt, FaClock, FaFacebook, FaTwitter, FaInstagram, FaLinkedin, FaGithub, FaPaperPlane, FaArrowRight } from 'react-icons/fa';
+import { FaEnvelope, FaPhone, FaMapMarkerAlt, FaClock, FaFacebook, FaTwitter, FaInstagram, FaLinkedin, FaGithub, FaPaperPlane, FaArrowRight, FaUsers } from 'react-icons/fa';
 import Layout from '@/components/Layout';
 
 export default function Contact() {
@@ -18,113 +19,248 @@ export default function Contact() {
         </Head>
 
         {/* Enhanced Hero Section */}
-        <section className="relative overflow-hidden py-28">
-          {/* Animated gradient background */}
-          <div className="absolute inset-0 z-0">
-            <div className="absolute inset-0 bg-gradient-to-r from-ieee-blue to-blue-800"></div>
-            <motion.div 
-              className="absolute inset-0 bg-[radial-gradient(circle_at_40%_50%,rgba(59,130,246,0.4),transparent_60%)]"
-              animate={{
-                background: [
-                  'radial-gradient(circle at 40% 50%, rgba(59,130,246,0.4), transparent 60%)',
-                  'radial-gradient(circle at 60% 50%, rgba(59,130,246,0.4), transparent 60%)',
-                  'radial-gradient(circle at 40% 50%, rgba(59,130,246,0.4), transparent 60%)'
-                ]
-              }}
-              transition={{ duration: 15, repeat: Infinity, ease: "easeInOut" }}
-            ></motion.div>
-          </div>
+        <section className="relative min-h-screen flex items-center overflow-hidden">
+          {/* Multi-layer Background */}
+          <div className="absolute inset-0 bg-gradient-to-br from-blue-900 via-purple-900 to-indigo-900"></div>
+          <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-blue-900/30"></div>
           
-          {/* Abstract circuit patterns */}
-          <div className="absolute inset-0 bg-[url('/images/hero/circuit-pattern.png')] opacity-8 z-0"></div>
+          {/* Animated Background Elements */}
+          <motion.div className="absolute inset-0">
+            <div className="absolute top-20 left-10 w-32 h-32 bg-blue-500/10 rounded-full blur-xl animate-pulse"></div>
+            <div className="absolute top-40 right-20 w-48 h-48 bg-purple-500/10 rounded-full blur-2xl animate-pulse delay-1000"></div>
+            <div className="absolute bottom-40 left-20 w-40 h-40 bg-cyan-500/10 rounded-full blur-xl animate-pulse delay-2000"></div>
+            <div className="absolute bottom-20 right-10 w-36 h-36 bg-yellow-500/10 rounded-full blur-xl animate-pulse delay-500"></div>
+          </motion.div>
           
-          {/* Animated decorative elements */}
-          <motion.div
-            className="absolute bg-blue-400 rounded-full w-96 h-96 opacity-10 -top-48 -right-20"
-            animate={{ 
-              scale: [1, 1.1, 1],
-              x: [0, 10, 0],
-              y: [0, 15, 0],
-            }}
-            transition={{ 
-              duration: 12, 
-              repeat: Infinity,
-              repeatType: "reverse",
-              ease: "easeInOut" 
-            }}
-          ></motion.div>
-          
-          <motion.div
-            className="absolute bottom-0 bg-yellow-300 rounded-full w-80 h-80 opacity-10 -left-20"
-            animate={{ 
-              scale: [1, 1.2, 1],
-              x: [0, 20, 0],
-              y: [0, -15, 0],
-            }}
-            transition={{ 
-              duration: 10, 
-              repeat: Infinity,
-              repeatType: "reverse",
-              ease: "easeInOut"
-            }}
-          ></motion.div>
+          {/* Circuit Pattern Overlay */}
+          <div className="absolute inset-0 bg-[url('/images/hero/circuit-pattern.png')] opacity-5"></div>
           
           <div className="container relative z-10 px-6 mx-auto">
-            <div className="max-w-4xl mx-auto text-center text-white">
+            <motion.div 
+              className="max-w-5xl mx-auto text-center text-white"
+              initial="hidden"
+              animate="visible"
+              variants={{
+                hidden: { opacity: 0 },
+                visible: {
+                  opacity: 1,
+                  transition: {
+                    staggerChildren: 0.2,
+                    delayChildren: 0.1
+                  }
+                }
+              }}
+            >
+              {/* Badge */}
               <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 1 }}
-                className="flex justify-center mb-4"
+                className="inline-flex items-center px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full border border-white/20 mb-6"
+                variants={{
+                  hidden: { opacity: 0, y: 20 },
+                  visible: { opacity: 1, y: 0 }
+                }}
               >
-                <div className="w-20 h-1 bg-yellow-300 rounded-full"></div>
+                <FaEnvelope className="text-blue-400 mr-2" />
+                <span className="text-sm font-medium">Let's Connect</span>
               </motion.div>
               
+              {/* Main Title */}
               <motion.h1 
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8 }}
-                className="mb-6 text-4xl font-bold md:text-6xl drop-shadow-sm"
+                className="text-5xl md:text-6xl lg:text-7xl font-bold leading-tight mb-6"
+                variants={{
+                  hidden: { opacity: 0, y: 20 },
+                  visible: { opacity: 1, y: 0 }
+                }}
               >
-                <span className="text-white">Get in </span>
-                <span className="text-yellow-300">Touch</span>
+                <span className="text-white">Get in</span>
+                <br />
+                <span className="bg-gradient-to-r from-blue-400 via-purple-400 to-cyan-400 bg-clip-text text-transparent">
+                  Touch
+                </span>
+                <br />
+                <span className="bg-gradient-to-r from-yellow-400 to-orange-400 bg-clip-text text-transparent">
+                  Today
+                </span>
               </motion.h1>
               
+              {/* Subtitle */}
               <motion.p 
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.2 }}
-                className="max-w-2xl mx-auto mb-8 text-xl text-blue-100"
+                className="text-xl md:text-2xl text-gray-300 leading-relaxed max-w-3xl mx-auto mb-10"
+                variants={{
+                  hidden: { opacity: 0, y: 20 },
+                  visible: { opacity: 1, y: 0 }
+                }}
               >
-                Have a question or want to collaborate? We'd love to hear from you.
+                Have questions about membership, events, or collaboration opportunities? We're here to help and would love to connect with you.
               </motion.p>
               
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.3 }}
-                className="flex justify-center"
+              {/* CTA Buttons */}
+              <motion.div 
+                className="flex flex-col sm:flex-row gap-4 justify-center"
+                variants={{
+                  hidden: { opacity: 0, y: 20 },
+                  visible: { opacity: 1, y: 0 }
+                }}
               >
-                <a 
-                  href="#contact-form" 
-                  className="inline-flex items-center px-8 py-4 font-medium text-blue-900 transition-all bg-white rounded-full shadow-lg hover:bg-yellow-300 hover:scale-105 active:scale-95"
-                >
-                  Send a Message
-                  <FaPaperPlane className="ml-2" />
+                <a href="#contact-form">
+                  <motion.div
+                    className="group relative px-8 py-4 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full font-semibold text-white cursor-pointer overflow-hidden"
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    <div className="absolute inset-0 bg-gradient-to-r from-purple-600 to-blue-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    <span className="relative z-10 flex items-center">
+                      Send Message <FaPaperPlane className="ml-2 group-hover:translate-x-1 transition-transform" />
+                    </span>
+                  </motion.div>
+                </a>
+                
+                <a href="tel:+917668410473">
+                  <motion.div
+                    className="px-8 py-4 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full font-semibold text-white cursor-pointer hover:bg-white/20 transition-all duration-300"
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    <span className="flex items-center">
+                      Call Us <FaPhone className="ml-2" />
+                    </span>
+                  </motion.div>
                 </a>
               </motion.div>
+
+              {/* Contact Info Grid */}
+              <motion.div 
+                className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto pt-8 mt-8 border-t border-white/20"
+                variants={{
+                  hidden: { opacity: 0, y: 20 },
+                  visible: { opacity: 1, y: 0 }
+                }}
+              >
+                <div className="text-center">
+                  <div className="flex justify-center mb-2">
+                    <div className="p-3 bg-blue-500/20 rounded-full">
+                      <FaPhone className="text-blue-400" />
+                    </div>
+                  </div>
+                  <div className="text-sm text-gray-400">Phone</div>
+                  <div className="text-white font-medium">+91 7668410473</div>
+                </div>
+                <div className="text-center">
+                  <div className="flex justify-center mb-2">
+                    <div className="p-3 bg-purple-500/20 rounded-full">
+                      <FaEnvelope className="text-purple-400" />
+                    </div>
+                  </div>
+                  <div className="text-sm text-gray-400">Email</div>
+                  <div className="text-white font-medium">ieee@geu.ac.in</div>
+                </div>
+                <div className="text-center">
+                  <div className="flex justify-center mb-2">
+                    <div className="p-3 bg-yellow-500/20 rounded-full">
+                      <FaMapMarkerAlt className="text-yellow-400" />
+                    </div>
+                  </div>
+                  <div className="text-sm text-gray-400">Location</div>
+                  <div className="text-white font-medium">Dehradun, India</div>
+                </div>
+              </motion.div>
+            </motion.div>
+          </div>
+
+          {/* Enhanced Scroll Indicator */}
+          <motion.div 
+            className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex flex-col items-center text-white/70"
+            animate={{ y: [0, 10, 0] }}
+            transition={{ repeat: Infinity, duration: 2 }}
+          >
+            <span className="text-sm mb-2 font-medium">Send us a message</span>
+            <div className="w-6 h-10 border-2 border-white/30 rounded-full flex justify-center">
+              <motion.div
+                className="w-1 h-3 bg-white rounded-full mt-2"
+                animate={{ y: [0, 12, 0] }}
+                transition={{ repeat: Infinity, duration: 1.5 }}
+              />
             </div>
-          </div>
-          
-          {/* Wave SVG at bottom */}
-          <div className="absolute bottom-0 left-0 w-full">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320" className="w-full text-white">
-              <path fill="currentColor" fillOpacity="1" d="M0,160L48,176C96,192,192,224,288,218.7C384,213,480,171,576,149.3C672,128,768,128,864,149.3C960,171,1056,213,1152,208C1248,203,1344,149,1392,122.7L1440,96L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
-            </svg>
-          </div>
+          </motion.div>
         </section>
 
-        {/* Enhanced Contact Form & Info Section */}
+        {/* Enhanced Why Contact Us Section */}
+        <section className="py-20 bg-gradient-to-br from-gray-50 to-white">
+          <div className="container px-6 mx-auto">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8 }}
+              className="max-w-4xl mx-auto mb-16 text-center"
+            >
+              <h2 className="mb-6 text-4xl font-bold text-transparent md:text-5xl bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text">
+                Why Reach Out to Us?
+              </h2>
+              <p className="text-xl leading-relaxed text-gray-600">
+                Whether you're interested in joining, collaborating, or have questions about our events, we're here to help.
+              </p>
+            </motion.div>
+
+            <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
+              {[
+                {
+                  title: "Quick Response",
+                  description: "We respond to all inquiries within 24-48 hours during business days",
+                  icon: <FaClock className="text-2xl text-blue-500" />,
+                  gradient: "from-blue-500 to-cyan-500"
+                },
+                {
+                  title: "Expert Guidance",
+                  description: "Get advice from experienced IEEE professionals and industry experts",
+                  icon: <FaUsers className="text-2xl text-green-500" />,
+                  gradient: "from-green-500 to-emerald-500"
+                },
+                {
+                  title: "Partnership Opportunities",
+                  description: "Explore collaboration and partnership possibilities with our organization",
+                  icon: <FaArrowRight className="text-2xl text-purple-500" />,
+                  gradient: "from-purple-500 to-pink-500"
+                },
+                {
+                  title: "Technical Support",
+                  description: "Get help with technical questions, projects, and research inquiries",
+                  icon: <FaEnvelope className="text-2xl text-orange-500" />,
+                  gradient: "from-orange-500 to-red-500"
+                }
+              ].map((feature, index) => (
+                <motion.div 
+                  key={index}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.6, delay: index * 0.1 }}
+                  className="relative group"
+                >
+                  <div className="relative h-full p-8 overflow-hidden transition-all duration-500 bg-white border border-gray-100 shadow-lg rounded-3xl hover:shadow-2xl">
+                    {/* Background Gradient */}
+                    <div className={`absolute inset-0 bg-gradient-to-br ${feature.gradient} opacity-0 group-hover:opacity-5 transition-opacity duration-500`}></div>
+                    
+                    {/* Content */}
+                    <div className="relative z-10 text-center">
+                      <div className="flex justify-center mb-4">
+                        <div className={`p-4 rounded-2xl bg-gradient-to-br ${feature.gradient} shadow-lg`}>
+                          <div className="text-white">
+                            {feature.icon}
+                          </div>
+                        </div>
+                      </div>
+                      <h3 className="text-xl font-bold text-gray-900 mb-3">{feature.title}</h3>
+                      <p className="text-gray-600 leading-relaxed">{feature.description}</p>
+                    </div>
+                    
+                    {/* Hover Effect */}
+                    <div className="absolute -top-2 -right-2 w-16 h-16 bg-gradient-to-br from-blue-400 to-purple-400 rounded-full opacity-0 group-hover:opacity-10 transform scale-0 group-hover:scale-100 transition-all duration-500"></div>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </section>
         <section id="contact-form" className="relative z-10 px-4 py-16 lg:py-24">
           <div className="container max-w-6xl mx-auto">
             <div className="grid gap-12 md:grid-cols-5">
@@ -261,7 +397,7 @@ export default function Contact() {
               >
                 {/* Background subtle patterns */}
                 <div className="absolute inset-0 z-0 opacity-5">
-                  <div className="absolute bottom-0 right-0 rounded-full w-96 h-96 bg-ieee-blue -bottom-40 -right-40"></div>
+                  <div className="absolute -bottom-40 -right-40 rounded-full w-96 h-96 bg-ieee-blue"></div>
                   <div className="w-full h-full bg-gradient-to-br from-transparent to-blue-100"></div>
                 </div>
                 
@@ -570,6 +706,55 @@ export default function Contact() {
               >
                 Ask Us Directly <FaArrowRight className="ml-2" />
               </a>
+            </motion.div>
+          </div>
+        </section>
+
+        {/* Enhanced Final CTA Section */}
+        <section className="py-20 text-white bg-gradient-to-r from-blue-600 via-purple-600 to-blue-700 relative overflow-hidden">
+          <div className="absolute inset-0 bg-black/20"></div>
+          <div className="absolute inset-0">
+            <div className="absolute w-32 h-32 rounded-full top-10 left-10 bg-white/10 blur-xl animate-pulse"></div>
+            <div className="absolute w-48 h-48 delay-1000 rounded-full bottom-10 right-10 bg-white/5 blur-2xl animate-pulse"></div>
+          </div>
+          
+          <div className="container relative z-10 px-6 mx-auto">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8 }}
+              className="max-w-4xl mx-auto text-center"
+            >
+              <h2 className="mb-6 text-4xl font-bold md:text-5xl">Ready to Connect?</h2>
+              <p className="mb-8 text-xl leading-relaxed text-blue-100 md:text-2xl">
+                Join our community of innovators and technology enthusiasts. Let's build the future together.
+              </p>
+              
+              <div className="flex flex-col justify-center gap-4 sm:flex-row">
+                <Link href="/gallery">
+                  <motion.div
+                    className="px-8 py-4 text-lg font-bold text-blue-600 transition-all duration-300 bg-white rounded-full shadow-lg cursor-pointer group hover:bg-blue-50"
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    <span className="flex items-center">
+                      View Gallery
+                      <FaArrowRight className="ml-2 transition-transform group-hover:translate-x-1" />
+                    </span>
+                  </motion.div>
+                </Link>
+                
+                <a href="#contact-form">
+                  <motion.div
+                    className="px-8 py-4 text-lg font-bold text-white transition-all duration-300 border-2 border-white rounded-full cursor-pointer hover:bg-white hover:text-blue-600"
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    Send Message
+                  </motion.div>
+                </a>
+              </div>
             </motion.div>
           </div>
         </section>

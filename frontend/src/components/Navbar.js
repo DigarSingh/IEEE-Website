@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
-import { FaSignOutAlt, FaBars, FaTimes, FaUser, FaChevronDown, FaUserCircle, FaCog, FaUserShield } from 'react-icons/fa';
+import { FaSignOutAlt, FaBars, FaTimes, FaUser, FaChevronDown, FaUserCircle, FaCog, FaUserShield, FaBell, FaSearch } from 'react-icons/fa';
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -13,17 +13,17 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const router = useRouter();
   
-  // Get scroll progress for animations
+  // Get scroll progress for enhanced animations
   const { scrollY } = useScroll();
-  const navbarOpacity = useTransform(scrollY, [0, 100], [1, 0.95]);
-  const navbarBlur = useTransform(scrollY, [0, 100], [0, 5]);
-  const navbarScale = useTransform(scrollY, [0, 100], [1, 0.98]);
+  const navbarOpacity = useTransform(scrollY, [0, 100], [1, 0.98]);
+  const navbarBlur = useTransform(scrollY, [0, 100], [0, 20]);
+  const logoScale = useTransform(scrollY, [0, 100], [1, 0.95]);
 
-  // Track scroll position to change navbar style
+  // Enhanced scroll tracking for dynamic navbar
   useEffect(() => {
     const handleScroll = () => {
       const offset = window.scrollY;
-      if (offset > 50) {
+      if (offset > 20) {
         setScrolled(true);
       } else {
         setScrolled(false);
@@ -83,31 +83,44 @@ export default function Navbar() {
     window.location.href = '/';
   };
 
-  // This prevents hydration errors by ensuring the component
-  // renders the same content on both server and client initially
+  // Enhanced auth links component
   const authLinks = mounted ? (
     isLoggedIn ? (
-      <div className="relative flex items-center space-x-3 user-menu-container">
-        <motion.div 
-          className="flex items-center cursor-pointer"
-          onClick={() => setUserMenuOpen(!userMenuOpen)}
-          whileHover={{ scale: 1.03 }}
+      <div className="relative flex items-center space-x-4 user-menu-container">
+        {/* Notification Bell */}
+        <motion.button 
+          className="relative p-2 text-gray-600 transition-colors rounded-full hover:text-blue-600 hover:bg-blue-50"
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.95 }}
         >
-          <div className="flex items-center px-3 py-1.5 space-x-2 text-sm rounded-full bg-gradient-to-r from-gray-800 to-gray-900 border border-gray-700 hover:border-blue-500 transition-all duration-200">
-            <div className="flex items-center justify-center overflow-hidden text-white rounded-full shadow-inner w-7 h-7">
+          <FaBell className="w-5 h-5" />
+          <span className="absolute top-0 right-0 w-3 h-3 bg-red-500 border-2 border-white rounded-full"></span>
+        </motion.button>
+
+        {/* User Menu Trigger */}
+        <motion.div 
+          className="flex items-center cursor-pointer group"
+          onClick={() => setUserMenuOpen(!userMenuOpen)}
+          whileHover={{ scale: 1.02 }}
+        >
+          <div className="flex items-center px-4 py-2 space-x-3 transition-all duration-300 bg-white border border-gray-200 rounded-full shadow-sm group-hover:shadow-lg group-hover:border-blue-300">
+            <div className="flex items-center justify-center w-8 h-8 overflow-hidden rounded-full bg-gradient-to-br from-blue-500 to-purple-600">
               {user?.profilePhoto && user.profilePhoto !== 'default-profile.jpg' ? (
                 <img 
                   src={user.profilePhoto} 
                   alt={user.name}
-                  className="w-full h-full object-cover"
+                  className="object-cover w-full h-full"
                 />
               ) : (
-                <div className="w-full h-full bg-gradient-to-br from-blue-500 to-violet-600 flex items-center justify-center text-xs">
+                <span className="text-sm font-semibold text-white">
                   {user?.name?.charAt(0) || 'U'}
-                </div>
+                </span>
               )}
             </div>
-            <span className="hidden font-medium text-gray-200 sm:inline-block">{user?.name?.split(' ')[0] || 'User'}</span>
+            <div className="hidden sm:block">
+              <p className="text-sm font-medium text-gray-800">{user?.name?.split(' ')[0] || 'User'}</p>
+              <p className="text-xs text-gray-500">{user?.role === 'admin' ? 'Administrator' : 'Member'}</p>
+            </div>
             <motion.div
               animate={{ rotate: userMenuOpen ? 180 : 0 }}
               transition={{ duration: 0.2 }}
@@ -117,94 +130,114 @@ export default function Navbar() {
           </div>
         </motion.div>
         
-        {/* User dropdown */}
+        {/* Enhanced User Dropdown */}
         <AnimatePresence>
           {userMenuOpen && (
             <motion.div 
-              className="absolute right-0 z-10 w-64 mt-2 overflow-hidden bg-gray-800 rounded-lg shadow-lg top-full"
-              initial={{ opacity: 0, y: -10, height: 0 }}
-              animate={{ opacity: 1, y: 0, height: 'auto' }}
-              exit={{ opacity: 0, y: -10, height: 0 }}
+              className="absolute right-0 z-10 mt-2 overflow-hidden bg-white border border-gray-200 shadow-2xl w-72 rounded-2xl top-full"
+              initial={{ opacity: 0, y: -10, scale: 0.95 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: -10, scale: 0.95 }}
               transition={{ duration: 0.2 }}
             >
-              <div className="p-4 text-center border-b border-gray-700 bg-gradient-to-b from-gray-800 to-gray-900">
-                <div className="flex items-center justify-center w-16 h-16 mx-auto overflow-hidden text-2xl text-white rounded-full shadow-xl">
-                  {user?.profilePhoto && user.profilePhoto !== 'default-profile.jpg' ? (
-                    <img 
-                      src={user.profilePhoto} 
-                      alt={user.name}
-                      className="w-full h-full object-cover"
-                    />
-                  ) : (
-                    <div className="w-full h-full bg-gradient-to-br from-blue-500 to-violet-600 flex items-center justify-center">
-                      {user?.name?.charAt(0) || 'U'}
-                    </div>
-                  )}
+              <div className="p-6 border-b border-gray-100 bg-gradient-to-br from-blue-50 to-purple-50">
+                <div className="flex items-center space-x-4">
+                  <div className="flex items-center justify-center w-16 h-16 overflow-hidden rounded-full shadow-lg bg-gradient-to-br from-blue-500 to-purple-600">
+                    {user?.profilePhoto && user.profilePhoto !== 'default-profile.jpg' ? (
+                      <img 
+                        src={user.profilePhoto} 
+                        alt={user.name}
+                        className="object-cover w-full h-full"
+                      />
+                    ) : (
+                      <span className="text-xl font-bold text-white">
+                        {user?.name?.charAt(0) || 'U'}
+                      </span>
+                    )}
+                  </div>
+                  <div>
+                    <p className="font-semibold text-gray-900">{user?.name}</p>
+                    <p className="text-sm text-gray-600 truncate">{user?.email}</p>
+                    <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium mt-1 ${
+                      user?.role === 'admin' 
+                        ? 'bg-purple-100 text-purple-800' 
+                        : 'bg-blue-100 text-blue-800'
+                    }`}>
+                      {user?.role === 'admin' ? 'Administrator' : 'Member'}
+                    </span>
+                  </div>
                 </div>
-                <p className="mt-2 font-medium text-white">{user?.name}</p>
-                <p className="text-xs text-gray-400 truncate">{user?.email}</p>
               </div>
-              <div className="p-2">
+              
+              <div className="py-2">
                 <Link href="/profile">
-                  <span className="flex items-center px-4 py-2 text-sm text-gray-300 transition-colors rounded-md hover:bg-gray-700">
-                    <FaUserCircle className="mr-3 text-blue-400" />
-                    Your Profile
-                  </span>
+                  <motion.div 
+                    className="flex items-center px-6 py-3 text-gray-700 transition-colors cursor-pointer hover:bg-blue-50"
+                    whileHover={{ x: 4 }}
+                  >
+                    <FaUserCircle className="mr-3 text-blue-500" />
+                    View Profile
+                  </motion.div>
                 </Link>
                 
-                {/* Student Dashboard link */}
                 {user?.role === 'student' && (
                   <Link href="/student/dashboard">
-                    <span className="flex items-center px-4 py-2 text-sm text-gray-300 transition-colors rounded-md hover:bg-gray-700">
-                      <FaCog className="mr-3 text-green-400" />
-                      Student Portal
-                    </span>
+                    <motion.div 
+                      className="flex items-center px-6 py-3 text-gray-700 transition-colors cursor-pointer hover:bg-blue-50"
+                      whileHover={{ x: 4 }}
+                    >
+                      <FaCog className="mr-3 text-green-500" />
+                      Student Dashboard
+                    </motion.div>
                   </Link>
                 )}
                 
-                {/* Admin Dashboard link */}
                 {user?.role === 'admin' && (
                   <Link href="/admin">
-                    <span className="flex items-center px-4 py-2 text-sm text-gray-300 transition-colors rounded-md hover:bg-gray-700">
-                      <FaUserShield className="mr-3 text-blue-400" />
-                      Admin Dashboard
-                    </span>
+                    <motion.div 
+                      className="flex items-center px-6 py-3 text-gray-700 transition-colors cursor-pointer hover:bg-red-50"
+                      whileHover={{ x: 4 }}
+                    >
+                      <FaUserShield className="mr-3 text-red-500" />
+                      Admin Panel
+                    </motion.div>
                   </Link>
                 )}
-                
-                
-                 <div className="my-2 border-t border-gray-700"></div>
-                <button
+              </div>
+              
+              <div className="border-t border-gray-100">
+                <motion.button
                   onClick={handleLogout}
-                  className="flex items-center w-full px-4 py-2 text-sm text-left text-red-400 transition-colors rounded-md hover:bg-gray-700"
+                  className="flex items-center w-full px-6 py-3 text-red-600 transition-colors hover:bg-red-50"
+                  whileHover={{ x: 4 }}
                 >
                   <FaSignOutAlt className="mr-3" />
-                  Sign out
-                </button>
+                  Sign Out
+                </motion.button>
               </div>
             </motion.div>
           )}
         </AnimatePresence>
       </div>
     ) : (
-      <div className="flex items-center space-x-3">
+      <div className="flex items-center space-x-4">
         <Link href="/login">
-          <motion.span 
-            className="px-4 py-2 text-sm font-medium text-white transition-all rounded-lg shadow-sm cursor-pointer bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-500 hover:to-blue-600"
-            whileHover={{ scale: 1.05, boxShadow: "0 4px 8px rgba(0,0,0,0.2)" }}
+          <motion.div
+            className="px-6 py-2 text-sm font-medium text-gray-700 transition-all duration-200 border border-gray-300 rounded-full cursor-pointer hover:border-blue-500 hover:text-blue-600"
+            whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
-            Login
-          </motion.span>
+            Sign In
+          </motion.div>
         </Link>
         <Link href="/signup">
-          <motion.span 
-            className="px-4 py-2 text-sm font-medium text-white transition-all border border-gray-700 rounded-lg cursor-pointer bg-gray-800/80 hover:bg-gray-700/80"
-            whileHover={{ scale: 1.05, boxShadow: "0 4px 8px rgba(0,0,0,0.2)" }}
+          <motion.div
+            className="px-6 py-2 text-sm font-medium text-white transition-all duration-200 rounded-full cursor-pointer bg-gradient-to-r from-blue-500 to-purple-600 hover:shadow-lg"
+            whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
-            Sign Up
-          </motion.span>
+            Join IEEE
+          </motion.div>
         </Link>
       </div>
     )
@@ -223,10 +256,10 @@ export default function Navbar() {
               <img 
                 src={user.profilePhoto} 
                 alt={user.name}
-                className="w-full h-full object-cover"
+                className="object-cover w-full h-full"
               />
             ) : (
-              <div className="w-full h-full bg-gradient-to-br from-blue-500 to-violet-600 flex items-center justify-center text-sm">
+              <div className="flex items-center justify-center w-full h-full text-sm bg-gradient-to-br from-blue-500 to-violet-600">
                 {user?.name?.charAt(0) || 'U'}
               </div>
             )}
@@ -289,311 +322,423 @@ export default function Navbar() {
 
   return (
     <motion.nav 
-      className={`sticky top-0 z-50 transition-all duration-300 ${
+      className={`sticky top-0 z-50 transition-all duration-500 ${
         scrolled 
-          ? 'bg-white/10 border-transparent' 
-          : 'bg-white shadow-md border-b border-gray-200'
+          ? 'bg-white/95 backdrop-blur-xl border-white/20 shadow-2xl' 
+          : 'bg-white shadow-lg border-b border-gray-100'
       }`}
       style={{
         opacity: navbarOpacity,
-        scale: navbarScale,
-        backdropFilter: scrolled ? `blur(${navbarBlur.get()}px)` : "blur(0px)"
+        backdropFilter: scrolled ? 'blur(20px) saturate(180%)' : 'none',
       }}
+      initial={{ y: -100 }}
+      animate={{ y: 0 }}
+      transition={{ duration: 0.6, ease: "easeOut" }}
     >
-      <div className="container px-4 py-3 mx-auto">
+      <div className="container px-6 py-4 mx-auto">
         <div className="flex items-center justify-between">
-          {/* Logo */}
+          {/* Enhanced Logo Section */}
           <motion.div 
             className="flex-shrink-0"
-            initial={{ opacity: 0, x: -20 }}
+            initial={{ opacity: 0, x: -30 }}
             animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5 }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+            style={{ scale: logoScale }}
           >
             <Link href="/">
               <motion.div 
-                className="flex items-center cursor-pointer"
-                whileHover={{ scale: 1.02 }}
+                className="relative flex items-center p-2 -m-2 cursor-pointer rounded-xl group"
+                whileHover={{ 
+                  scale: 1.05,
+                  background: "linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(147, 51, 234, 0.1))"
+                }}
                 whileTap={{ scale: 0.98 }}
               >
+                <motion.div
+                  className="absolute inset-0 transition-all duration-300 rounded-xl bg-gradient-to-r from-blue-500/0 to-purple-500/0 group-hover:from-blue-500/10 group-hover:to-purple-500/10"
+                />
                 <motion.img 
                   src="/images/logo.png" 
                   alt="IEEE Logo" 
-                  className="w-auto mr-2 h-14"
-                  initial={{ rotate: -5 }}
-                  animate={{ rotate: 0 }}
+                  className="relative w-auto h-12 mr-3 rounded-lg shadow-lg"
+                  whileHover={{ rotate: [0, -2, 2, 0] }}
                   transition={{ duration: 0.5 }}
                 />
-                <span className={`text-xl font-bold ${
-                  scrolled ? 'text-gray-800' : 'text-black'
-                }`}></span>
+                <motion.div className="relative">
+                  <motion.h1 
+                    className="text-xl font-bold text-transparent bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text"
+                    initial={{ opacity: 0, x: -10 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.5, delay: 0.2 }}
+                  >
+                    IEEE Club
+                  </motion.h1>
+                  <motion.p 
+                    className="-mt-1 text-xs text-gray-500"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.3 }}
+                  >
+                    Graphic Era University
+                  </motion.p>
+                </motion.div>
               </motion.div>
             </Link>
           </motion.div>
 
-          {/* Desktop Menu */}
-          <div className="items-center hidden md:flex">
-            <div className="flex items-center justify-center mr-6 space-x-6">
+          {/* Enhanced Desktop Navigation */}
+          <div className="items-center hidden lg:flex">
+            <motion.div 
+              className="flex items-center mr-8 space-x-8"
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.3 }}
+            >
               <Link href="/">
-                <motion.span 
-                  className={`text-sm font-medium transition-colors cursor-pointer hover:text-blue-600 ${
-                    scrolled
-                      ? 'text-gray-800'
-                      : (router.pathname === '/' ? 'text-black' : 'text-gray-700')
+                <motion.div
+                  className={`relative px-4 py-2 text-sm font-medium transition-all duration-300 cursor-pointer group ${
+                    router.pathname === '/'
+                      ? 'text-blue-600'
+                      : 'text-gray-700 hover:text-blue-600'
                   }`}
                   whileHover={{ scale: 1.05, y: -2 }}
                   whileTap={{ scale: 0.95 }}
                 >
                   Home
-                </motion.span>
+                  <motion.div
+                    className={`absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-blue-500 to-purple-600 origin-left ${
+                      router.pathname === '/' ? 'scale-x-100' : 'scale-x-0'
+                    } group-hover:scale-x-100 transition-transform duration-300`}
+                  />
+                </motion.div>
               </Link>
               <Link href="/about">
-                <motion.span 
-                  className={`text-sm font-medium transition-colors cursor-pointer hover:text-blue-600 ${
-                    scrolled
-                      ? 'text-gray-800'
-                      : (router.pathname === '/about' ? 'text-black' : 'text-gray-700')
+                <motion.div
+                  className={`relative px-4 py-2 text-sm font-medium transition-all duration-300 cursor-pointer group ${
+                    router.pathname === '/about'
+                      ? 'text-blue-600'
+                      : 'text-gray-700 hover:text-blue-600'
                   }`}
                   whileHover={{ scale: 1.05, y: -2 }}
                   whileTap={{ scale: 0.95 }}
                 >
                   About
-                </motion.span>
+                  <motion.div
+                    className={`absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-blue-500 to-purple-600 origin-left ${
+                      router.pathname === '/about' ? 'scale-x-100' : 'scale-x-0'
+                    } group-hover:scale-x-100 transition-transform duration-300`}
+                  />
+                </motion.div>
               </Link>
               <Link href="/events">
-                <motion.span 
-                  className={`text-sm font-medium transition-colors cursor-pointer hover:text-blue-600 ${
-                    scrolled
-                      ? 'text-gray-800'
-                      : (router.pathname === '/events' ? 'text-black' : 'text-gray-700')
+                <motion.div
+                  className={`relative px-4 py-2 text-sm font-medium transition-all duration-300 cursor-pointer group ${
+                    router.pathname === '/events'
+                      ? 'text-blue-600'
+                      : 'text-gray-700 hover:text-blue-600'
                   }`}
                   whileHover={{ scale: 1.05, y: -2 }}
                   whileTap={{ scale: 0.95 }}
                 >
                   Events
-                </motion.span>
+                  <motion.div
+                    className={`absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-blue-500 to-purple-600 origin-left ${
+                      router.pathname === '/events' ? 'scale-x-100' : 'scale-x-0'
+                    } group-hover:scale-x-100 transition-transform duration-300`}
+                  />
+                </motion.div>
               </Link>
-              <Link href="/membership">
-                <motion.span 
-                  className={`text-sm font-medium transition-colors cursor-pointer hover:text-blue-600 ${
-                    scrolled
-                      ? 'text-gray-800'
-                      : (router.pathname === '/membership' ? 'text-black' : 'text-gray-700')
+              <Link href="/gallery">
+                <motion.div
+                  className={`relative px-4 py-2 text-sm font-medium transition-all duration-300 cursor-pointer group ${
+                    router.pathname === '/gallery'
+                      ? 'text-blue-600'
+                      : 'text-gray-700 hover:text-blue-600'
                   }`}
                   whileHover={{ scale: 1.05, y: -2 }}
                   whileTap={{ scale: 0.95 }}
                 >
-                  Membership
-                </motion.span>
+                  Gallery
+                  <motion.div
+                    className={`absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-blue-500 to-purple-600 origin-left ${
+                      router.pathname === '/gallery' ? 'scale-x-100' : 'scale-x-0'
+                    } group-hover:scale-x-100 transition-transform duration-300`}
+                  />
+                </motion.div>
               </Link>
               <Link href="/contact">
-                <motion.span 
-                  className={`text-sm font-medium transition-colors cursor-pointer hover:text-blue-600 ${
-                    scrolled
-                      ? 'text-gray-800'
-                      : (router.pathname === '/contact' ? 'text-black' : 'text-gray-700')
+                <motion.div
+                  className={`relative px-4 py-2 text-sm font-medium transition-all duration-300 cursor-pointer group ${
+                    router.pathname === '/contact'
+                      ? 'text-blue-600'
+                      : 'text-gray-700 hover:text-blue-600'
                   }`}
                   whileHover={{ scale: 1.05, y: -2 }}
                   whileTap={{ scale: 0.95 }}
                 >
                   Contact
-                </motion.span>
+                  <motion.div
+                    className={`absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-blue-500 to-purple-600 origin-left ${
+                      router.pathname === '/contact' ? 'scale-x-100' : 'scale-x-0'
+                    } group-hover:scale-x-100 transition-transform duration-300`}
+                  />
+                </motion.div>
               </Link>
-            </div>
+            </motion.div>
 
-            <div className="flex items-center space-x-6">
-              {/* GEU Logo */}
-              <motion.div 
-                className={`h-10 mx-1 border-l ${scrolled ? 'border-gray-300' : 'border-gray-300'}`}
-                initial={{ height: 0 }}
-                animate={{ height: "2.5rem" }}
-                transition={{ delay: 0.2, duration: 0.5 }}
-              ></motion.div>
-              <motion.img 
-                src="/images/geu_logo.png" 
-                alt="GEU Logo" 
-                className="w-auto h-12"
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.3, duration: 0.5 }}
-              />
+            {/* Divider */}
+            <motion.div 
+              className="w-px h-8 mr-6 bg-gray-300"
+              initial={{ height: 0 }}
+              animate={{ height: "2rem" }}
+              transition={{ delay: 0.8, duration: 0.3 }}
+            />
 
-              {/* Authentication Links */}
-              {authLinks}
-            </div>
-          </div>
-
-          {/* Mobile menu button and GEU logo */}
-          <div className="flex items-center space-x-4 md:hidden">
+            {/* GEU Logo */}
             <motion.img 
               src="/images/geu_logo.png" 
               alt="GEU Logo" 
-              className="w-auto h-14"
-              initial={{ opacity: 0, scale: 0.9 }}
+              className="w-auto h-10 mr-6"
+              initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.2, duration: 0.5 }}
+              transition={{ delay: 0.9, duration: 0.5 }}
             />
-            <motion.button
-              onClick={() => setIsOpen(!isOpen)}
-              whileHover={{ scale: 1.1, rotate: isOpen ? 0 : 10 }}
-              whileTap={{ scale: 0.9 }}
-              className={`p-1 transition-colors rounded-md focus:outline-none ${
-                scrolled 
-                  ? 'text-gray-800 hover:bg-gray-200/50' 
-                  : 'text-gray-700 hover:text-black hover:bg-gray-200'
-              }`}
+
+            {/* Auth Links */}
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.6, delay: 1.0 }}
             >
-              <AnimatePresence mode="wait">
-                {isOpen ? (
-                  <motion.div
-                    key="close"
-                    initial={{ rotate: -90, opacity: 0 }}
-                    animate={{ rotate: 0, opacity: 1 }}
-                    exit={{ rotate: 90, opacity: 0 }}
-                    transition={{ duration: 0.2 }}
-                  >
-                    <FaTimes className="w-6 h-6" />
-                  </motion.div>
-                ) : (
-                  <motion.div
-                    key="menu"
-                    initial={{ rotate: 90, opacity: 0 }}
-                    animate={{ rotate: 0, opacity: 1 }}
-                    exit={{ rotate: -90, opacity: 0 }}
-                    transition={{ duration: 0.2 }}
-                  >
-                    <FaBars className="w-6 h-6" />
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </motion.button>
+              {authLinks}
+            </motion.div>
           </div>
+
+          {/* Enhanced Mobile Menu Button */}
+          <motion.button
+            onClick={() => setIsOpen(!isOpen)}
+            className="relative p-2 text-gray-600 transition-colors lg:hidden hover:text-blue-600"
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.95 }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.5 }}
+          >
+            <motion.div
+              animate={{ rotate: isOpen ? 180 : 0 }}
+              transition={{ duration: 0.3 }}
+            >
+              {isOpen ? <FaTimes className="w-6 h-6" /> : <FaBars className="w-6 h-6" />}
+            </motion.div>
+          </motion.button>
         </div>
       </div>
 
-      {/* Mobile Menu */}
+      {/* Enhanced Mobile Menu */}
       <AnimatePresence>
         {isOpen && (
-          <motion.div 
-            className="md:hidden"
-            initial={{ opacity: 0, height: 0, y: -20 }}
-            animate={{ opacity: 1, height: 'auto', y: 0 }}
-            exit={{ opacity: 0, height: 0, y: -20 }}
-            transition={{ 
-              duration: 0.3,
-              ease: [0.22, 1, 0.36, 1]
-            }}
+          <motion.div
+            className="border-t border-gray-200 lg:hidden bg-white/95 backdrop-blur-xl"
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.3 }}
           >
             <motion.div 
-              className={`px-2 pt-2 pb-3 space-y-1 border-t ${
-                scrolled 
-                  ? 'bg-white border-gray-200' 
-                  : 'bg-white border-gray-200'
-              }`}
+              className="container px-6 py-6 mx-auto"
               variants={{
                 hidden: { opacity: 0 },
                 show: {
                   opacity: 1,
-                  transition: {
-                    staggerChildren: 0.07
-                  }
+                  transition: { staggerChildren: 0.1, delayChildren: 0.1 }
                 }
               }}
               initial="hidden"
               animate="show"
             >
-              <motion.div
-                variants={{
-                  hidden: { opacity: 0, x: -20 },
-                  show: { opacity: 1, x: 0 }
-                }}
-              >
-                <Link href="/">
-                  <motion.span 
-                    className={`block px-3 py-2 text-base font-medium text-black rounded-md hover:bg-gray-100 ${
-                      router.pathname === '/' ? 'font-semibold bg-gray-100' : ''
-                    }`}
-                    whileHover={{ x: 5, backgroundColor: "#f3f4f6" }}
-                    whileTap={{ scale: 0.98 }}
-                  >
-                    Home
-                  </motion.span>
-                </Link>
-              </motion.div>
-              <motion.div
-                variants={{
-                  hidden: { opacity: 0, x: -20 },
-                  show: { opacity: 1, x: 0 }
-                }}
-              >
-                <Link href="/about">
-                  <motion.span 
-                    className={`block px-3 py-2 text-base font-medium text-black rounded-md hover:bg-gray-100 ${
-                      router.pathname === '/about' ? 'font-semibold bg-gray-100' : ''
-                    }`}
-                    whileHover={{ x: 5, backgroundColor: "#f3f4f6" }}
-                    whileTap={{ scale: 0.98 }}
-                  >
-                    About
-                  </motion.span>
-                </Link>
-              </motion.div>
-              <motion.div
-                variants={{
-                  hidden: { opacity: 0, x: -20 },
-                  show: { opacity: 1, x: 0 }
-                }}
-              >
-                <Link href="/events">
-                  <motion.span 
-                    className={`block px-3 py-2 text-base font-medium text-black rounded-md hover:bg-gray-100 ${
-                      router.pathname === '/events' ? 'font-semibold bg-gray-100' : ''
-                    }`}
-                    whileHover={{ x: 5, backgroundColor: "#f3f4f6" }}
-                    whileTap={{ scale: 0.98 }}
-                  >
-                    Events
-                  </motion.span>
-                </Link>
-              </motion.div>
-              <motion.div
-                variants={{
-                  hidden: { opacity: 0, x: -20 },
-                  show: { opacity: 1, x: 0 }
-                }}
-              >
-                <Link href="/membership">
-                  <motion.span 
-                    className={`block px-3 py-2 text-base font-medium text-black rounded-md hover:bg-gray-100 ${
-                      router.pathname === '/membership' ? 'font-semibold bg-gray-100' : ''
-                    }`}
-                    whileHover={{ x: 5, backgroundColor: "#f3f4f6" }}
-                    whileTap={{ scale: 0.98 }}
-                  >
-                    Membership
-                  </motion.span>
-                </Link>
-              </motion.div>
-              <motion.div
-                variants={{
-                  hidden: { opacity: 0, x: -20 },
-                  show: { opacity: 1, x: 0 }
-                }}
-              >
-                <Link href="/contact">
-                  <motion.span 
-                    className={`block px-3 py-2 text-base font-medium text-black rounded-md hover:bg-gray-100 ${
-                      router.pathname === '/contact' ? 'font-semibold bg-gray-100' : ''
-                    }`}
-                    whileHover={{ x: 5, backgroundColor: "#f3f4f6" }}
-                    whileTap={{ scale: 0.98 }}
-                  >
-                    Contact
-                  </motion.span>
-                </Link>
-              </motion.div>
+              {/* Mobile Navigation Links */}
+              <div className="mb-6 space-y-4">
+                <motion.div variants={{ hidden: { opacity: 0, x: -20 }, show: { opacity: 1, x: 0 } }}>
+                  <Link href="/">
+                    <motion.div 
+                      className={`block px-4 py-3 text-base font-medium rounded-xl transition-all cursor-pointer ${
+                        router.pathname === '/' 
+                          ? 'bg-blue-50 text-blue-600 border border-blue-200' 
+                          : 'text-gray-700 hover:bg-gray-50'
+                      }`}
+                      whileHover={{ x: 4, backgroundColor: "#f3f4f6" }}
+                      whileTap={{ scale: 0.98 }}
+                      onClick={() => setIsOpen(false)}
+                    >
+                      Home
+                    </motion.div>
+                  </Link>
+                </motion.div>
+                <motion.div variants={{ hidden: { opacity: 0, x: -20 }, show: { opacity: 1, x: 0 } }}>
+                  <Link href="/about">
+                    <motion.div 
+                      className={`block px-4 py-3 text-base font-medium rounded-xl transition-all cursor-pointer ${
+                        router.pathname === '/about' 
+                          ? 'bg-blue-50 text-blue-600 border border-blue-200' 
+                          : 'text-gray-700 hover:bg-gray-50'
+                      }`}
+                      whileHover={{ x: 4, backgroundColor: "#f3f4f6" }}
+                      whileTap={{ scale: 0.98 }}
+                      onClick={() => setIsOpen(false)}
+                    >
+                      About
+                    </motion.div>
+                  </Link>
+                </motion.div>
+                <motion.div variants={{ hidden: { opacity: 0, x: -20 }, show: { opacity: 1, x: 0 } }}>
+                  <Link href="/events">
+                    <motion.div 
+                      className={`block px-4 py-3 text-base font-medium rounded-xl transition-all cursor-pointer ${
+                        router.pathname === '/events' 
+                          ? 'bg-blue-50 text-blue-600 border border-blue-200' 
+                          : 'text-gray-700 hover:bg-gray-50'
+                      }`}
+                      whileHover={{ x: 4, backgroundColor: "#f3f4f6" }}
+                      whileTap={{ scale: 0.98 }}
+                      onClick={() => setIsOpen(false)}
+                    >
+                      Events
+                    </motion.div>
+                  </Link>
+                </motion.div>
+                <motion.div variants={{ hidden: { opacity: 0, x: -20 }, show: { opacity: 1, x: 0 } }}>
+                  <Link href="/gallery">
+                    <motion.div 
+                      className={`block px-4 py-3 text-base font-medium rounded-xl transition-all cursor-pointer ${
+                        router.pathname === '/gallery' 
+                          ? 'bg-blue-50 text-blue-600 border border-blue-200' 
+                          : 'text-gray-700 hover:bg-gray-50'
+                      }`}
+                      whileHover={{ x: 4, backgroundColor: "#f3f4f6" }}
+                      whileTap={{ scale: 0.98 }}
+                      onClick={() => setIsOpen(false)}
+                    >
+                      Gallery
+                    </motion.div>
+                  </Link>
+                </motion.div>
+                <motion.div variants={{ hidden: { opacity: 0, x: -20 }, show: { opacity: 1, x: 0 } }}>
+                  <Link href="/contact">
+                    <motion.div 
+                      className={`block px-4 py-3 text-base font-medium rounded-xl transition-all cursor-pointer ${
+                        router.pathname === '/contact' 
+                          ? 'bg-blue-50 text-blue-600 border border-blue-200' 
+                          : 'text-gray-700 hover:bg-gray-50'
+                      }`}
+                      whileHover={{ x: 4, backgroundColor: "#f3f4f6" }}
+                      whileTap={{ scale: 0.98 }}
+                      onClick={() => setIsOpen(false)}
+                    >
+                      Contact
+                    </motion.div>
+                  </Link>
+                </motion.div>
+              </div>
 
-              {/* Mobile Auth Links */}
-              {mobileAuthLinks}
+              {/* Mobile Auth Section */}
+              <motion.div
+                variants={{ hidden: { opacity: 0, y: 20 }, show: { opacity: 1, y: 0 } }}
+                className="pt-4 border-t border-gray-200"
+              >
+                {mounted && !isLoggedIn ? (
+                  <div className="space-y-3">
+                    <Link href="/login">
+                      <motion.div
+                        className="block w-full px-4 py-3 text-center text-gray-700 border border-gray-300 cursor-pointer rounded-xl hover:bg-gray-50"
+                        whileTap={{ scale: 0.98 }}
+                        onClick={() => setIsOpen(false)}
+                      >
+                        Sign In
+                      </motion.div>
+                    </Link>
+                    <Link href="/signup">
+                      <motion.div
+                        className="block w-full px-4 py-3 text-center text-white cursor-pointer rounded-xl bg-gradient-to-r from-blue-500 to-purple-600"
+                        whileTap={{ scale: 0.98 }}
+                        onClick={() => setIsOpen(false)}
+                      >
+                        Join IEEE
+                      </motion.div>
+                    </Link>
+                  </div>
+                ) : mounted && isLoggedIn ? (
+                  <div className="space-y-3">
+                    <div className="flex items-center p-4 bg-gradient-to-r from-blue-50 to-purple-50 rounded-xl">
+                      <div className="flex items-center justify-center w-12 h-12 overflow-hidden rounded-full bg-gradient-to-br from-blue-500 to-purple-600">
+                        {user?.profilePhoto && user.profilePhoto !== 'default-profile.jpg' ? (
+                          <img 
+                            src={user.profilePhoto} 
+                            alt={user.name}
+                            className="object-cover w-full h-full"
+                          />
+                        ) : (
+                          <span className="text-sm font-bold text-white">
+                            {user?.name?.charAt(0) || 'U'}
+                          </span>
+                        )}
+                      </div>
+                      <div className="ml-3">
+                        <p className="font-medium text-gray-900">{user?.name}</p>
+                        <p className="text-sm text-gray-600">{user?.role === 'admin' ? 'Administrator' : 'Member'}</p>
+                      </div>
+                    </div>
+                    
+                    <Link href="/profile">
+                      <motion.div
+                        className="flex items-center px-4 py-3 text-gray-700 cursor-pointer rounded-xl hover:bg-gray-50"
+                        whileTap={{ scale: 0.98 }}
+                        onClick={() => setIsOpen(false)}
+                      >
+                        <FaUserCircle className="mr-3 text-blue-500" />
+                        View Profile
+                      </motion.div>
+                    </Link>
+                    
+                    {user?.role === 'student' && (
+                      <Link href="/student/dashboard">
+                        <motion.div
+                          className="flex items-center px-4 py-3 text-gray-700 cursor-pointer rounded-xl hover:bg-gray-50"
+                          whileTap={{ scale: 0.98 }}
+                          onClick={() => setIsOpen(false)}
+                        >
+                          <FaCog className="mr-3 text-green-500" />
+                          Student Dashboard
+                        </motion.div>
+                      </Link>
+                    )}
+                    
+                    {user?.role === 'admin' && (
+                      <Link href="/admin">
+                        <motion.div
+                          className="flex items-center px-4 py-3 text-gray-700 cursor-pointer rounded-xl hover:bg-gray-50"
+                          whileTap={{ scale: 0.98 }}
+                          onClick={() => setIsOpen(false)}
+                        >
+                          <FaUserShield className="mr-3 text-red-500" />
+                          Admin Panel
+                        </motion.div>
+                      </Link>
+                    )}
+                    
+                    <motion.button
+                      onClick={() => {
+                        handleLogout();
+                        setIsOpen(false);
+                      }}
+                      className="flex items-center w-full px-4 py-3 text-red-600 rounded-xl hover:bg-red-50"
+                      whileTap={{ scale: 0.98 }}
+                    >
+                      <FaSignOutAlt className="mr-3" />
+                      Sign Out
+                    </motion.button>
+                  </div>
+                ) : null}
+              </motion.div>
             </motion.div>
           </motion.div>
         )}

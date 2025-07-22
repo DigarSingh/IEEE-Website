@@ -1,14 +1,44 @@
 import Head from 'next/head';
-import { motion } from 'framer-motion';
-import { FaUsers, FaLightbulb, FaHistory, FaGlobe, FaAward, FaBullseye, FaLinkedin, FaGithub, FaTwitter } from 'react-icons/fa';
-import { useState } from 'react';
-import Layout from '@/components/Layout'; // Import Layout component
+import { motion, useScroll, useTransform } from 'framer-motion';
+import { FaUsers, FaLightbulb, FaHistory, FaGlobe, FaAward, FaBullseye, FaLinkedin, FaGithub, FaTwitter, FaRocket, FaHeart, FaCode, FaStar } from 'react-icons/fa';
+import { useState, useRef } from 'react';
+import Layout from '@/components/Layout';
+import { useIntersectionObserver } from '@/hooks/useEnhancedScroll';
 
 export default function About() {
-  // Animation variants
+  const heroRef = useRef(null);
+  
+  // Temporarily disable parallax effects to fix the error
+  // const { scrollY } = useScroll();
+  // const { isVisible, observeElement } = useIntersectionObserver();
+  
+  // Parallax effects - temporarily disabled
+  // const y = useTransform(scrollY, [0, 500], [0, 150]);
+  // const opacity = useTransform(scrollY, [0, 300], [1, 0]);
+
+  // Enhanced animation variants
   const fadeIn = {
     hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0 }
+    visible: { 
+      opacity: 1, 
+      y: 0,
+      transition: {
+        duration: 0.6,
+        ease: "easeOut"
+      }
+    }
+  };
+
+  const slideIn = {
+    hidden: { opacity: 0, x: -50 },
+    visible: { 
+      opacity: 1, 
+      x: 0,
+      transition: {
+        duration: 0.8,
+        ease: "easeOut"
+      }
+    }
   };
 
   const staggerContainer = {
@@ -16,7 +46,8 @@ export default function About() {
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.1
+        staggerChildren: 0.2,
+        delayChildren: 0.1
       }
     }
   };
@@ -24,13 +55,14 @@ export default function About() {
   // State for active team member
   const [activeTeamMember, setActiveTeamMember] = useState(null);
 
-  // Team members data
+  // Enhanced team members data
   const teamMembers = [
     {
-      name: 'Mr.Piyush Agarwal',
+      name: 'Mr. Piyush Agarwal',
       role: 'Faculty Advisor',
       image: '/images/team/advisor.jpg',
-      bio: 'Associate Professor with 15+ years of experience in electrical engineering research and education.',
+      bio: 'Associate Professor with 15+ years of experience in electrical engineering research and education. Leading our academic initiatives and industry partnerships.',
+      expertise: ['Research Leadership', 'Industry Partnerships', 'Academic Excellence'],
       socialLinks: [
         { icon: <FaLinkedin />, url: 'https://linkedin.com' },
         { icon: <FaGithub />, url: 'https://github.com' }
@@ -40,7 +72,8 @@ export default function About() {
       name: 'Ankit Choudhary',
       role: 'Chairperson',
       image: '/images/team/chair.jpg',
-      bio: 'Final year Computer Science student passionate about AI and machine learning.',
+      bio: 'Final year Computer Science student passionate about AI and machine learning. Spearheading our technical vision and strategic initiatives.',
+      expertise: ['AI/ML', 'Leadership', 'Strategic Planning'],
       socialLinks: [
         { icon: <FaLinkedin />, url: 'https://linkedin.com' },
         { icon: <FaGithub />, url: 'https://github.com' },
@@ -51,7 +84,8 @@ export default function About() {
       name: 'Sanjay Singh',
       role: 'Vice-Chairperson',
       image: '/images/team/vice-chair.jpg',
-      bio: 'Computer Science Engineering student with expertise in IoT systems and embedded design.',
+      bio: 'Computer Science Engineering student with expertise in IoT systems and embedded design. Driving innovation in hardware-software integration.',
+      expertise: ['IoT Systems', 'Embedded Design', 'Hardware Integration'],
       socialLinks: [
         { icon: <FaLinkedin />, url: 'https://linkedin.com' },
         { icon: <FaGithub />, url: 'https://github.com' }
@@ -61,7 +95,8 @@ export default function About() {
       name: 'Ninand Gangodkar',
       role: 'Secretary',
       image: '/images/team/secretary.jpg',
-      bio: 'Information Technology student focused on web development and cybersecurity.',
+      bio: 'Information Technology student focused on web development and cybersecurity. Managing our digital presence and security initiatives.',
+      expertise: ['Web Development', 'Cybersecurity', 'Digital Innovation'],
       socialLinks: [
         { icon: <FaLinkedin />, url: 'https://linkedin.com' },
         { icon: <FaGithub />, url: 'https://github.com' }
@@ -71,7 +106,8 @@ export default function About() {
       name: 'Jiya Bisht',
       role: 'Treasurer',
       image: '/images/team/treasurer.jpg',
-      bio: 'Computer Science Engineering student with strong organizational and financial management skills.',
+      bio: 'Computer Science Engineering student with strong organizational and financial management skills. Ensuring fiscal responsibility and growth.',
+      expertise: ['Financial Management', 'Organization', 'Strategic Planning'],
       socialLinks: [
         { icon: <FaLinkedin />, url: 'https://linkedin.com' },
         { icon: <FaGithub />, url: 'https://github.com' }
@@ -81,7 +117,8 @@ export default function About() {
       name: 'Pranav Maheshwari',
       role: 'Technical Lead',
       image: '/images/team/tech-lead.jpg',
-      bio: 'Robotics enthusiast with experience in organizing multiple hackathons and technical workshops.',
+      bio: 'Robotics enthusiast with experience in organizing multiple hackathons and technical workshops. Leading our technical innovation and events.',
+      expertise: ['Robotics', 'Event Management', 'Technical Innovation'],
       socialLinks: [
         { icon: <FaLinkedin />, url: 'https://linkedin.com' },
         { icon: <FaGithub />, url: 'https://github.com' }
@@ -89,127 +126,277 @@ export default function About() {
     }
   ];
 
-  // Milestones data
+  // Enhanced milestones data
   const milestones = [
     {
       year: '2022',
       title: 'IEEE Student Branch Established',
-      description: 'Our journey began with just 20 founding members dedicated to fostering innovation.'
+      description: 'Our journey began with just 20 founding members dedicated to fostering innovation.',
+      icon: <FaRocket className="text-blue-500" />,
+      stats: '20 Founding Members'
     },
     {
       year: '2023',
       title: 'First Annual Technical Symposium',
-      description: 'Successfully launched our flagship event bringing together 300+ participants from various institutions.'
+      description: 'Successfully launched our flagship event bringing together participants from various institutions.',
+      icon: <FaUsers className="text-green-500" />,
+      stats: '300+ Participants'
     },
     {
       year: '2024',
       title: 'Recognition Award',
-      description: 'Received the "Outstanding Student Branch" award from IEEE Regional Council.'
+      description: 'Received the "Outstanding Student Branch" award from IEEE Regional Council.',
+      icon: <FaAward className="text-yellow-500" />,
+      stats: 'Regional Recognition'
     },
     {
       year: '2024',
       title: 'International Conference',
-      description: 'Hosted our first international conference on emerging technologies with global participation.'
+      description: 'Hosted our first international conference on emerging technologies with global participation.',
+      icon: <FaGlobe className="text-purple-500" />,
+      stats: 'Global Reach'
     },
     {
       year: '2025',
       title: 'National Hackathon Hosts',
-      description: 'Organized a major 48-hour hackathon with participants from across the country.'
+      description: 'Organized a major 48-hour hackathon with participants from across the country.',
+      icon: <FaCode className="text-red-500" />,
+      stats: '48-Hour Challenge'
     },
   ];
 
+  // Values data
+  const values = [
+    {
+      title: 'Innovation',
+      description: 'Pushing boundaries and exploring new technological frontiers',
+      icon: <FaLightbulb className="text-yellow-500" />,
+      color: 'from-yellow-500 to-orange-500'
+    },
+    {
+      title: 'Excellence',
+      description: 'Striving for the highest standards in everything we do',
+      icon: <FaStar className="text-blue-500" />,
+      color: 'from-blue-500 to-purple-500'
+    },
+    {
+      title: 'Collaboration',
+      description: 'Building strong partnerships and working together towards common goals',
+      icon: <FaUsers className="text-green-500" />,
+      color: 'from-green-500 to-teal-500'
+    },
+    {
+      title: 'Impact',
+      description: 'Creating meaningful change in technology and society',
+      icon: <FaHeart className="text-red-500" />,
+      color: 'from-red-500 to-pink-500'
+    }
+  ];
+
   return (
-    <Layout> {/* Wrap the entire content with Layout component */}
-      <div className="bg-gray-50">
+    <Layout>
+      <div className="overflow-hidden">
         <Head>
-          <title>About Us | IEEE Club</title>
-          <meta name="description" content="Learn more about the IEEE Student Branch, our mission, history, and team." />
+          <title>About Us | IEEE Club - Empowering Innovation</title>
+          <meta name="description" content="Learn about IEEE Student Branch at GEU - our mission, vision, team, and journey in fostering technological innovation and leadership." />
         </Head>
 
         {/* Enhanced Hero Section */}
-        <section className="relative min-h-[80vh] flex items-center overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-r from-ieee-blue via-blue-800 to-blue-900"></div>
+        <section ref={heroRef} className="relative flex items-center min-h-screen overflow-hidden">
+          {/* Multi-layer Background */}
+          <div className="absolute inset-0 bg-gradient-to-br from-blue-900 via-purple-900 to-indigo-900"></div>
+          <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-blue-900/30"></div>
           
-          {/* Abstract Particles Background */}
-          <div className="absolute inset-0 opacity-20">
-            <div className="relative w-full h-full">
-              {[...Array(20)].map((_, i) => (
-                <motion.div
-                  key={i}
-                  className="absolute bg-white rounded-full"
-                  style={{
-                    width: Math.random() * 10 + 5,
-                    height: Math.random() * 10 + 5,
-                    left: `${Math.random() * 100}%`,
-                    top: `${Math.random() * 100}%`
-                  }}
-                  animate={{
-                    x: [0, Math.random() * 100 - 50],
-                    y: [0, Math.random() * 100 - 50]
-                  }}
-                  transition={{
-                    duration: Math.random() * 20 + 10,
-                    repeat: Infinity,
-                    repeatType: "reverse",
-                    ease: "linear"
-                  }}
-                />
-              ))}
-            </div>
-          </div>
+          {/* Animated Background Elements */}
+          <motion.div 
+            className="absolute inset-0"
+          >
+            <div className="absolute w-32 h-32 rounded-full top-20 left-10 bg-blue-500/10 blur-xl animate-pulse"></div>
+            <div className="absolute w-48 h-48 delay-1000 rounded-full top-40 right-20 bg-purple-500/10 blur-2xl animate-pulse"></div>
+            <div className="absolute w-40 h-40 rounded-full bottom-40 left-20 bg-cyan-500/10 blur-xl animate-pulse delay-2000"></div>
+          </motion.div>
           
-          <div className="container relative z-10 px-4 mx-auto">
-            <div className="max-w-4xl mx-auto">
+          {/* Circuit Pattern Overlay */}
+          <div className="absolute inset-0 bg-[url('/images/hero/circuit-pattern.png')] opacity-5"></div>
+          
+          <div className="container relative z-10 px-6 mx-auto">
+            <motion.div 
+              className="grid items-center gap-12 lg:grid-cols-2"
+              variants={staggerContainer}
+              initial="hidden"
+              animate="visible"
+            >
+              {/* Enhanced Text Content */}
               <motion.div 
-                initial="hidden" 
-                animate="visible" 
-                variants={staggerContainer}
-                className="text-center text-white"
+                className="space-y-8 text-white"
+                variants={slideIn}
               >
-                <motion.div variants={fadeIn} className="mb-6">
-                  <span className="px-4 py-1 text-xs font-semibold tracking-wider uppercase bg-white rounded-full bg-opacity-20">
-                    Established 2022
-                  </span>
-                </motion.div>
+                <div className="space-y-6">
+                  <motion.div
+                    className="inline-flex items-center px-4 py-2 border rounded-full bg-white/10 backdrop-blur-sm border-white/20"
+                    variants={fadeIn}
+                  >
+                    <FaStar className="mr-2 text-yellow-400" />
+                    <span className="text-sm font-medium">Established 2022</span>
+                  </motion.div>
+                  
+                  <motion.h1 
+                    className="text-5xl font-bold leading-tight md:text-6xl lg:text-7xl"
+                    variants={fadeIn}
+                  >
+                    <span className="text-white">About</span>
+                    <br />
+                    <span className="text-transparent bg-gradient-to-r from-blue-400 via-purple-400 to-cyan-400 bg-clip-text">
+                      IEEE
+                    </span>
+                    <br />
+                    <span className="text-transparent bg-gradient-to-r from-yellow-400 to-orange-400 bg-clip-text">
+                      Student Branch
+                    </span>
+                  </motion.h1>
+                  
+                  <motion.p 
+                    className="max-w-2xl text-xl leading-relaxed text-gray-300 md:text-2xl"
+                    variants={fadeIn}
+                  >
+                    Fostering innovation, technical excellence, and leadership among the next generation of technology pioneers.
+                  </motion.p>
+                </div>
                 
-                <motion.h1 
+                <motion.div 
+                  className="flex flex-col gap-4 sm:flex-row"
                   variants={fadeIn}
-                  className="mb-6 text-4xl font-bold leading-tight md:text-6xl lg:text-7xl"
                 >
-                  About <span className="text-yellow-300">IEEE</span><br/>
-                  Student Branch
-                </motion.h1>
-                
-                <motion.p
-                  variants={fadeIn}
-                  className="max-w-2xl mx-auto mb-10 text-xl text-blue-100 md:text-2xl"
-                >
-                  Fostering innovation, technical excellence and leadership among the student community
-                </motion.p>
-                
-                <motion.div variants={fadeIn}>
                   <motion.a
                     href="#mission"
+                    className="relative px-8 py-4 overflow-hidden font-semibold text-white rounded-full cursor-pointer group bg-gradient-to-r from-blue-500 to-purple-600"
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
-                    className="inline-flex items-center px-8 py-3 text-blue-900 transition-all bg-white rounded-full hover:bg-yellow-300"
                   >
-                    Learn More
-                    <svg className="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
-                    </svg>
+                    <div className="absolute inset-0 transition-opacity duration-300 opacity-0 bg-gradient-to-r from-purple-600 to-blue-500 group-hover:opacity-100"></div>
+                    <span className="relative z-10 flex items-center">
+                      Explore Our Mission
+                      <svg className="w-5 h-5 ml-2 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+                      </svg>
+                    </span>
+                  </motion.a>
+                  
+                  <motion.a
+                    href="#team"
+                    className="px-8 py-4 font-semibold text-white transition-all duration-300 border rounded-full cursor-pointer group bg-white/10 backdrop-blur-sm border-white/20 hover:bg-white/20"
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    <span className="flex items-center">
+                      Meet Our Team
+                      <FaUsers className="ml-2" />
+                    </span>
                   </motion.a>
                 </motion.div>
+
+                {/* Enhanced Stats */}
+                <motion.div 
+                  className="grid grid-cols-3 gap-6 pt-8 border-t border-white/20"
+                  variants={fadeIn}
+                >
+                  <div className="text-center">
+                    <div className="text-3xl font-bold text-blue-400">500+</div>
+                    <div className="text-sm text-gray-400">Active Members</div>
+                  </div>
+                  <div className="text-center">
+                    <div className="text-3xl font-bold text-purple-400">50+</div>
+                    <div className="text-sm text-gray-400">Annual Events</div>
+                  </div>
+                  <div className="text-center">
+                    <div className="text-3xl font-bold text-yellow-400">25+</div>
+                    <div className="text-sm text-gray-400">Projects</div>
+                  </div>
+                </motion.div>
               </motion.div>
+
+              {/* Enhanced Visual Content */}
+              <motion.div
+                className="relative"
+                variants={fadeIn}
+              >
+                <div className="relative">
+                  {/* Floating Cards */}
+                  <motion.div
+                    className="absolute w-64 h-64 border -top-4 -left-4 bg-gradient-to-br from-blue-500/20 to-purple-500/20 rounded-3xl backdrop-blur-sm border-white/10"
+                    animate={{ 
+                      y: [0, -20, 0],
+                      rotate: [0, 2, 0]
+                    }}
+                    transition={{ 
+                      duration: 6,
+                      repeat: Infinity,
+                      ease: "easeInOut"
+                    }}
+                  />
+                  
+                  <motion.div
+                    className="absolute w-48 h-48 border -bottom-8 -right-8 bg-gradient-to-br from-yellow-500/20 to-red-500/20 rounded-3xl backdrop-blur-sm border-white/10"
+                    animate={{ 
+                      y: [0, 15, 0],
+                      rotate: [0, -2, 0]
+                    }}
+                    transition={{ 
+                      duration: 8,
+                      repeat: Infinity,
+                      ease: "easeInOut",
+                      delay: 1
+                    }}
+                  />
+                  
+                  <div className="relative p-8 border shadow-2xl bg-white/10 backdrop-blur-lg rounded-3xl border-white/20">
+                    <img 
+                      src="/images/hero/IEEE_hero.jpg"
+                      alt="IEEE Team" 
+                      className="w-2/4 h-auto max-w-md mx-auto shadow-xl rounded-2xl"
+                    />
+                    
+                    {/* Achievement Badge */}
+                    <motion.div
+                      className="absolute p-4 shadow-lg -top-6 -right-6 bg-gradient-to-r from-yellow-500 to-orange-500 rounded-2xl"
+                      animate={{ y: [0, -10, 0] }}
+                      transition={{ duration: 4, repeat: Infinity }}
+                    >
+                      <FaAward className="text-2xl text-white" />
+                    </motion.div>
+                    
+                    {/* Member Count */}
+                    <motion.div
+                      className="absolute p-4 shadow-lg -bottom-4 -left-6 bg-gradient-to-r from-green-500 to-emerald-500 rounded-2xl"
+                      animate={{ y: [0, 10, 0] }}
+                      transition={{ duration: 5, repeat: Infinity, delay: 1 }}
+                    >
+                      <div className="text-center text-white">
+                        <FaUsers className="mb-1 text-xl" />
+                        <div className="text-xs">Active Community</div>
+                      </div>
+                    </motion.div>
+                  </div>
+                </div>
+              </motion.div>
+            </motion.div>
+          </div>
+
+          {/* Enhanced Scroll Indicator */}
+          <motion.div 
+            className="absolute flex flex-col items-center transform -translate-x-1/2 bottom-8 left-1/2 text-white/70"
+            animate={{ y: [0, 10, 0] }}
+            transition={{ repeat: Infinity, duration: 2 }}
+          >
+            <span className="mb-2 text-sm font-medium">Discover Our Story</span>
+            <div className="flex justify-center w-6 h-10 border-2 rounded-full border-white/30">
+              <motion.div
+                className="w-1 h-3 mt-2 bg-white rounded-full"
+                animate={{ y: [0, 12, 0] }}
+                transition={{ repeat: Infinity, duration: 1.5 }}
+              />
             </div>
-          </div>
-          
-          {/* Wave Shapes */}
-          <div className="absolute bottom-0 left-0 right-0">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320" className="text-gray-50">
-              <path fill="currentColor" fillOpacity="1" d="M0,224L48,213.3C96,203,192,181,288,181.3C384,181,480,203,576,218.7C672,235,768,245,864,234.7C960,224,1056,192,1152,186.7C1248,181,1344,203,1392,213.3L1440,224L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
-            </svg>
-          </div>
+          </motion.div>
         </section>
 
         {/* Enhanced Mission & Vision Section */}
@@ -297,6 +484,56 @@ export default function About() {
                   </div>
                 </div>
               </motion.div>
+            </div>
+          </div>
+        </section>
+
+        {/* Enhanced Values Section */}
+        <section className="py-20 bg-gradient-to-b from-gray-50 to-white">
+          <div className="container px-6 mx-auto">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8 }}
+              className="max-w-3xl mx-auto mb-16 text-center"
+            >
+              <h2 className="mb-6 text-4xl font-bold text-gray-900 md:text-5xl">Our Core Values</h2>
+              <p className="text-xl text-gray-600">The principles that guide our actions and define our community</p>
+            </motion.div>
+
+            <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
+              {values.map((value, index) => (
+                <motion.div
+                  key={value.title}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.6, delay: index * 0.1 }}
+                  className="relative group"
+                >
+                  <div className="relative h-full p-8 overflow-hidden transition-all duration-500 bg-white border border-gray-100 shadow-lg rounded-3xl hover:shadow-2xl">
+                    {/* Background Gradient on Hover */}
+                    <div className={`absolute inset-0 bg-gradient-to-br ${value.color} opacity-0 group-hover:opacity-5 transition-opacity duration-500`}></div>
+                    
+                    {/* Content */}
+                    <div className="relative z-10 text-center">
+                      <div className="flex justify-center mb-6">
+                        <div className={`p-4 rounded-2xl bg-gradient-to-br ${value.color} shadow-lg`}>
+                          <div className="text-3xl text-white">
+                            {value.icon}
+                          </div>
+                        </div>
+                      </div>
+                      <h3 className="mb-4 text-xl font-bold text-gray-900">{value.title}</h3>
+                      <p className="leading-relaxed text-gray-600">{value.description}</p>
+                    </div>
+                    
+                    {/* Hover Effect */}
+                    <div className="absolute w-16 h-16 transition-all duration-500 transform scale-0 rounded-full opacity-0 -top-2 -right-2 bg-gradient-to-br from-blue-400 to-purple-400 group-hover:opacity-10 group-hover:scale-100"></div>
+                  </div>
+                </motion.div>
+              ))}
             </div>
           </div>
         </section>
@@ -621,12 +858,12 @@ export default function About() {
                 </p>
                 <div className="flex flex-wrap justify-center gap-4">
                   <motion.a 
-                    href="/membership"
+                    href="/gallery"
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                     className="px-8 py-4 font-medium text-white transition-all rounded-full shadow-lg bg-gradient-to-r from-ieee-blue to-blue-600 hover:from-blue-600 hover:to-blue-700"
                   >
-                    Become a Member
+                    View Gallery
                   </motion.a>
                   <motion.a 
                     href="/contact"

@@ -1,21 +1,31 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Head from 'next/head';
-import { motion, AnimatePresence } from 'framer-motion';
-import { FaCalendar, FaMapMarkerAlt, FaClock, FaSearch } from 'react-icons/fa';
+import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
+import { FaCalendar, FaMapMarkerAlt, FaClock, FaSearch, FaUsers, FaRocket, FaCode, FaStar, FaFilter, FaArrowRight } from 'react-icons/fa';
 import EventCard from '@/components/events/EventCard';
 import EventsFilter from '@/components/events/EventsFilter';
-import Layout from '@/components/Layout'; // Import Layout component
+import Layout from '@/components/Layout';
+import { useIntersectionObserver } from '@/hooks/useEnhancedScroll';
 
 export default function Events() {
   const [isVisible, setIsVisible] = useState(false);
   const [filter, setFilter] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
+  const heroRef = useRef(null);
+  
+  // Temporarily disable parallax effects to fix the error
+  // const { scrollY } = useScroll();
+  // const { isVisible: sectionsVisible, observeElement } = useIntersectionObserver();
+  
+  // Parallax effects - temporarily disabled
+  // const y = useTransform(scrollY, [0, 500], [0, 150]);
+  // const opacity = useTransform(scrollY, [0, 300], [1, 0]);
   
   useEffect(() => {
     setIsVisible(true);
   }, []);
 
-  // Mock events data
+  // Enhanced events data
   const allEvents = [
     {
       id: 1,
@@ -27,6 +37,9 @@ export default function Events() {
       image: "/images/events/ai-workshop.jpg",
       description: "Hands-on session with industry experts on implementing ML models.",
       featured: true,
+      attendees: 120,
+      difficulty: "Intermediate",
+      tags: ["AI", "ML", "Python"]
     },
     {
       id: 2,
@@ -38,6 +51,9 @@ export default function Events() {
       image: "/images/events/aws.jpg",
       description: "The AWS Cloud Quest Tournament and Jam Skill Builder Program is a hands-on, gamified learning experience designed to equip students with real-world cloud computing skills using the AWS platform.",
       featured: true,
+      attendees: 200,
+      difficulty: "Beginner",
+      tags: ["AWS", "Cloud", "DevOps"]
     },
     {
       id: 3,
@@ -171,58 +187,160 @@ export default function Events() {
 
   return (
     <Layout>
-      <Head>
-        <title>Events | IEEE Club</title>
-        <meta name="description" content="Discover workshops, conferences, and networking opportunities with IEEE Club" />
-      </Head>
+      <div className="overflow-hidden">
+        <Head>
+          <title>Events | IEEE Club - Innovation & Learning</title>
+          <meta name="description" content="Discover cutting-edge workshops, conferences, hackathons, and networking opportunities with IEEE Club. Join us in shaping the future of technology." />
+        </Head>
 
-      {/* Hero Banner with enhanced styling */}
-      <section className="relative py-20 overflow-hidden text-white bg-gradient-to-r from-ieee-blue to-blue-700">
-        <div className="absolute inset-0 z-0 opacity-10 bg-[url('/images/hero/circuit-pattern.png')] bg-repeat"></div>
-        <div 
-          className="absolute inset-0 z-0 opacity-20"
-          style={{
-            backgroundImage: 'radial-gradient(circle at 25% 100%, rgba(255,255,255,0.2) 0%, transparent 25%), radial-gradient(circle at 75% 0%, rgba(255,255,255,0.2) 0%, transparent 25%)'
-          }}
-        ></div>
-        <div className="container relative z-10 px-6 mx-auto">
-          <motion.div
-            initial="hidden"
-            animate={isVisible ? "visible" : "hidden"}
-            variants={fadeIn}
-            transition={{ duration: 0.8 }}
-            className="max-w-4xl mx-auto text-center"
+        {/* Enhanced Hero Section */}
+        <section ref={heroRef} className="relative flex items-center min-h-screen overflow-hidden">
+          {/* Multi-layer Background */}
+          <div className="absolute inset-0 bg-gradient-to-br from-blue-900 via-indigo-900 to-purple-900"></div>
+          <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-blue-900/30"></div>
+          
+          {/* Animated Background Elements */}
+          <motion.div 
+            className="absolute inset-0"
           >
-            <h1 className="mb-4 text-5xl font-extrabold md:text-6xl">
-              <span className="text-white drop-shadow-md">IEEE </span>
-              <span className="text-yellow-300 drop-shadow-md">Events</span>
-            </h1>
-            <p className="max-w-3xl mx-auto mb-10 text-xl text-blue-100">
-              Discover workshops, conferences, competitions, and networking opportunities to enhance your skills and connect with industry professionals.
-            </p>
-            
-            {/* Search Bar with enhanced styling */}
-            <div className="relative max-w-2xl mx-auto transform transition-all duration-300 hover:scale-[1.02]">
-              <input
-                type="text"
-                placeholder="Search events..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full py-4 pl-12 pr-4 text-gray-800 rounded-full shadow-xl focus:outline-none focus:ring-4 focus:ring-yellow-300/50"
+            <div className="absolute w-32 h-32 rounded-full top-20 left-10 bg-blue-500/10 blur-xl animate-pulse"></div>
+            <div className="absolute w-48 h-48 delay-1000 rounded-full top-40 right-20 bg-purple-500/10 blur-2xl animate-pulse"></div>
+            <div className="absolute w-40 h-40 rounded-full bottom-40 left-20 bg-cyan-500/10 blur-xl animate-pulse delay-2000"></div>
+          </motion.div>
+          
+          {/* Circuit Pattern Overlay */}
+          <div className="absolute inset-0 bg-[url('/images/hero/circuit-pattern.png')] opacity-5"></div>
+          
+          <div className="container relative z-10 px-6 mx-auto">
+            <motion.div 
+              className="max-w-5xl mx-auto space-y-8 text-center text-white"
+              initial="hidden"
+              animate={isVisible ? "visible" : "hidden"}
+              variants={{
+                hidden: { opacity: 0 },
+                visible: {
+                  opacity: 1,
+                  transition: {
+                    staggerChildren: 0.2,
+                    delayChildren: 0.1
+                  }
+                }
+              }}
+            >
+              {/* Badge */}
+              <motion.div
+                className="inline-flex items-center px-4 py-2 border rounded-full bg-white/10 backdrop-blur-sm border-white/20"
+                variants={{
+                  hidden: { opacity: 0, y: 20 },
+                  visible: { opacity: 1, y: 0 }
+                }}
+              >
+                <FaRocket className="mr-2 text-yellow-400" />
+                <span className="text-sm font-medium">• Join the Innovation</span>
+              </motion.div>
+              
+              {/* Main Title */}
+              <motion.h1 
+                className="text-5xl font-bold leading-tight md:text-6xl lg:text-7xl"
+                variants={{
+                  hidden: { opacity: 0, y: 20 },
+                  visible: { opacity: 1, y: 0 }
+                }}
+              >
+                <span className="text-white">IEEE</span>
+                <br />
+                <span className="text-transparent bg-gradient-to-r from-blue-400 via-purple-400 to-cyan-400 bg-clip-text">
+                  Events
+                </span>
+                <br />
+                <span className="text-transparent bg-gradient-to-r from-yellow-400 to-orange-400 bg-clip-text">
+                  & Workshops
+                </span>
+              </motion.h1>
+              
+              {/* Subtitle */}
+              <motion.p 
+                className="max-w-3xl mx-auto text-xl leading-relaxed text-gray-300 md:text-2xl"
+                variants={{
+                  hidden: { opacity: 0, y: 20 },
+                  visible: { opacity: 1, y: 0 }
+                }}
+              >
+                Discover cutting-edge workshops, conferences, hackathons, and networking opportunities. Join us in shaping the future of technology.
+              </motion.p>
+              
+              {/* Enhanced Search Bar */}
+              <motion.div 
+                className="max-w-2xl mx-auto"
+                variants={{
+                  hidden: { opacity: 0, y: 20 },
+                  visible: { opacity: 1, y: 0 }
+                }}
+              >
+                <div className="relative group">
+                  <div className="absolute inset-0 transition duration-300 rounded-full opacity-25 bg-gradient-to-r from-blue-500 to-purple-600 blur group-hover:opacity-40"></div>
+                  <div className="relative p-1 border rounded-full bg-white/10 backdrop-blur-lg border-white/20">
+                    <div className="flex items-center">
+                      <div className="flex-shrink-0 p-3">
+                        <FaSearch className="text-lg text-white/70" />
+                      </div>
+                      <input
+                        type="text"
+                        placeholder="Search events, workshops, hackathons..."
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        className="flex-1 px-4 py-3 text-lg text-white bg-transparent placeholder-white/50 focus:outline-none"
+                      />
+                      <button className="flex-shrink-0 px-6 py-3 font-semibold text-white transition-all duration-300 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 hover:shadow-lg">
+                        <FaFilter className="mr-2" />
+                        Filter
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+
+              {/* Stats Grid */}
+              <motion.div 
+                className="grid max-w-2xl grid-cols-3 gap-6 pt-8 mx-auto"
+                variants={{
+                  hidden: { opacity: 0, y: 20 },
+                  visible: { opacity: 1, y: 0 }
+                }}
+              >
+                <div className="text-center">
+                  <div className="text-3xl font-bold text-blue-400">50+</div>
+                  <div className="text-sm text-gray-400">Annual Events</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-3xl font-bold text-purple-400">5K+</div>
+                  <div className="text-sm text-gray-400">Participants</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-3xl font-bold text-yellow-400">25+</div>
+                  <div className="text-sm text-gray-400">Industry Partners</div>
+                </div>
+              </motion.div>
+
+            </motion.div>
+          </div>
+
+          {/* Enhanced Scroll Indicator */}
+          <motion.div 
+            className="absolute flex flex-col items-center transform -translate-x-1/2 bottom-8 left-1/2 text-white/70"
+            animate={{ y: [0, 10, 0] }}
+            transition={{ repeat: Infinity, duration: 2 }}
+          >
+            <span className="mb-2 text-sm font-medium">Explore Events</span>
+            <div className="flex justify-center w-6 h-10 border-2 rounded-full border-white/30">
+              <motion.div
+                className="w-1 h-3 mt-2 bg-white rounded-full"
+                animate={{ y: [0, 12, 0] }}
+                transition={{ repeat: Infinity, duration: 1.5 }}
               />
-              <FaSearch className="absolute text-lg text-gray-500 top-5 left-5" />
             </div>
           </motion.div>
-        </div>
-        
-        {/* Decorative wave element at bottom */}
-        <div className="absolute bottom-0 left-0 w-full h-16 bg-gradient-to-b from-transparent to-gray-50"></div>
-        <div className="absolute left-0 w-full -bottom-10">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320" className="w-full text-gray-50">
-            <path fill="currentColor" fillOpacity="1" d="M0,128L48,144C96,160,192,192,288,181.3C384,171,480,117,576,117.3C672,117,768,171,864,197.3C960,224,1056,224,1152,208C1248,192,1344,160,1392,144L1440,128L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
-          </svg>
-        </div>
-      </section>
+        </section>
 
       <section className="py-16 bg-gradient-to-b from-gray-50 to-white">
         <div className="container px-6 mx-auto">
@@ -376,6 +494,7 @@ export default function Events() {
           </motion.div>
         </div>
       </section>
+      </div>
     </Layout>
   );
 }

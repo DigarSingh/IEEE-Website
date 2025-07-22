@@ -58,7 +58,7 @@ const AdminLayout = ({ children }) => {
       >
         <div className="flex flex-col h-full">
           {/* Logo */}
-          <div className="flex items-center justify-between px-4 py-5 bg-ieee-blue text-white">
+          <div className="flex items-center justify-between px-4 py-5 text-white bg-ieee-blue">
             <Link href="/admin/dashboard">
               <span className="flex items-center cursor-pointer">
                 <img
