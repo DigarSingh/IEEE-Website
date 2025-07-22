@@ -1,3 +1,9 @@
 {
+<<<<<<< HEAD
   "/_not-found/page": "app/_not-found/page.js"
+=======
+  "/_not-found/page": "app/_not-found/page.js",
+  "/api/contact/route": "app/api/contact/route.js",
+  "/api/auth/me/route": "app/api/auth/me/route.js"
+>>>>>>> 6ab1b231e7c9d4f9384f0552f446877d526bf92e
 }

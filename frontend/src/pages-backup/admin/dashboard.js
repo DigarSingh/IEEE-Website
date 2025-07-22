@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/router";
 import Head from "next/head";
@@ -29,6 +30,16 @@ export default function AdminDashboard() {
   const { scrollY, scrollToTop } = useSmoothScroll();
   const { isVisible, observeElement } = useIntersectionObserver();
   const parallaxOffset = useParallax(0.3);
+=======
+import { useState, useEffect } from "react";
+import { useRouter } from "next/router";
+import Head from "next/head";
+
+export default function AdminDashboardSimple() {
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const router = useRouter();
+>>>>>>> 6ab1b231e7c9d4f9384f0552f446877d526bf92e
 
   useEffect(() => {
     // Check authentication
@@ -48,9 +59,12 @@ export default function AdminDashboard() {
         router.push("/login");
         return;
       }
+<<<<<<< HEAD
 
       // Fetch dashboard stats
       fetchStats();
+=======
+>>>>>>> 6ab1b231e7c9d4f9384f0552f446877d526bf92e
     } catch (error) {
       console.error("Error parsing user data:", error);
       router.push("/login");
@@ -60,6 +74,7 @@ export default function AdminDashboard() {
     setLoading(false);
   }, [router]);
 
+<<<<<<< HEAD
   const fetchStats = async () => {
     try {
       const token = localStorage.getItem("token");
@@ -101,18 +116,31 @@ export default function AdminDashboard() {
               <div className="w-2 h-2 bg-blue-500 rounded-full animate-bounce delay-200"></div>
             </div>
           </div>
+=======
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-[#080D14]">
+        <div className="text-center">
+          <div className="w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-gray-400">Loading admin dashboard...</p>
+>>>>>>> 6ab1b231e7c9d4f9384f0552f446877d526bf92e
         </div>
       </div>
     );
   }
 
   return (
+<<<<<<< HEAD
     <div className="min-h-screen bg-gradient-to-br from-[#080D14] via-[#0F1419] to-[#1a1f2e] text-white relative overflow-x-hidden">
+=======
+    <div className="min-h-screen bg-[#080D14] text-white">
+>>>>>>> 6ab1b231e7c9d4f9384f0552f446877d526bf92e
       <Head>
         <title>Admin Dashboard | IEEE Portal</title>
         <meta name="description" content="IEEE Admin Dashboard - Manage users, events, and portal" />
       </Head>
 
+<<<<<<< HEAD
       {/* Animated Background Elements */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
         <div className="absolute -top-40 -right-40 w-80 h-80 bg-blue-500/5 rounded-full blur-3xl animate-pulse"></div>
@@ -367,6 +395,49 @@ export default function AdminDashboard() {
           <FaArrowUp className="text-white" />
         </button>
       )}
+=======
+      <div className="container mx-auto px-6 py-8">
+        <h1 className="text-3xl font-bold mb-8">Admin Dashboard</h1>
+        <p className="text-gray-400 mb-8">Welcome back, {user?.name}</p>
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="bg-gray-900/50 border border-gray-800 rounded-lg p-6">
+            <h3 className="text-lg font-semibold mb-2">Total Members</h3>
+            <p className="text-2xl font-bold text-blue-400">Loading...</p>
+          </div>
+          
+          <div className="bg-gray-900/50 border border-gray-800 rounded-lg p-6">
+            <h3 className="text-lg font-semibold mb-2">Total Events</h3>
+            <p className="text-2xl font-bold text-green-400">Loading...</p>
+          </div>
+          
+          <div className="bg-gray-900/50 border border-gray-800 rounded-lg p-6">
+            <h3 className="text-lg font-semibold mb-2">Certificates</h3>
+            <p className="text-2xl font-bold text-purple-400">Loading...</p>
+          </div>
+          
+          <div className="bg-gray-900/50 border border-gray-800 rounded-lg p-6">
+            <h3 className="text-lg font-semibold mb-2">Messages</h3>
+            <p className="text-2xl font-bold text-yellow-400">Loading...</p>
+          </div>
+        </div>
+        
+        <div className="mt-8">
+          <h2 className="text-xl font-semibold mb-4">Quick Actions</h2>
+          <div className="flex flex-wrap gap-4">
+            <button className="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-lg transition-colors">
+              View Members
+            </button>
+            <button className="bg-green-600 hover:bg-green-700 px-4 py-2 rounded-lg transition-colors">
+              Manage Events
+            </button>
+            <button className="bg-purple-600 hover:bg-purple-700 px-4 py-2 rounded-lg transition-colors">
+              Generate Certificates
+            </button>
+          </div>
+        </div>
+      </div>
+>>>>>>> 6ab1b231e7c9d4f9384f0552f446877d526bf92e
     </div>
   );
 }
