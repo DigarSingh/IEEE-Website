@@ -1,13 +1,3 @@
-<<<<<<< HEAD
-import Head from 'next/head';
-import Link from 'next/link';
-import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Formik, Form, Field, ErrorMessage } from 'formik';
-import * as Yup from 'yup';
-import { FaEnvelope, FaPhone, FaMapMarkerAlt, FaClock, FaFacebook, FaTwitter, FaInstagram, FaLinkedin, FaGithub, FaPaperPlane, FaArrowRight, FaUsers } from 'react-icons/fa';
-import Layout from '@/components/Layout';
-=======
 import Head from "next/head";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -25,12 +15,14 @@ import {
   FaGithub,
   FaPaperPlane,
   FaArrowRight,
+  FaUsers,
+  FaGraduationCap,
 } from "react-icons/fa";
 import Layout from "@/components/Layout";
->>>>>>> 6ab1b231e7c9d4f9384f0552f446877d526bf92e
 
 export default function Contact() {
   const [formSuccess, setFormSuccess] = useState(false);
+  const [formError, setFormError] = useState("");
 
   return (
     <Layout>
@@ -43,521 +35,437 @@ export default function Contact() {
           />
         </Head>
 
-        {/* Enhanced Hero Section */}
-<<<<<<< HEAD
-        <section className="relative min-h-screen flex items-center overflow-hidden">
+        {/* Enhanced Hero Section with IEEE Branding */}
+        <section className="relative flex items-center min-h-screen overflow-hidden">
           {/* Multi-layer Background */}
           <div className="absolute inset-0 bg-gradient-to-br from-blue-900 via-purple-900 to-indigo-900"></div>
           <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-blue-900/30"></div>
           
-          {/* Animated Background Elements */}
-          <motion.div className="absolute inset-0">
-            <div className="absolute top-20 left-10 w-32 h-32 bg-blue-500/10 rounded-full blur-xl animate-pulse"></div>
-            <div className="absolute top-40 right-20 w-48 h-48 bg-purple-500/10 rounded-full blur-2xl animate-pulse delay-1000"></div>
-            <div className="absolute bottom-40 left-20 w-40 h-40 bg-cyan-500/10 rounded-full blur-xl animate-pulse delay-2000"></div>
-            <div className="absolute bottom-20 right-10 w-36 h-36 bg-yellow-500/10 rounded-full blur-xl animate-pulse delay-500"></div>
-          </motion.div>
-          
-          {/* Circuit Pattern Overlay */}
-          <div className="absolute inset-0 bg-[url('/images/hero/circuit-pattern.png')] opacity-5"></div>
-          
-=======
-        <section className="relative overflow-hidden py-28">
-          {/* Animated gradient background */}
-          <div className="absolute inset-0 z-0">
-            <div className="absolute inset-0 bg-gradient-to-r from-ieee-blue to-blue-800"></div>
+          {/* IEEE Logo */}
+          <div className="absolute top-8 left-8 z-20">
             <motion.div
-              className="absolute inset-0 bg-[radial-gradient(circle_at_40%_50%,rgba(59,130,246,0.4),transparent_60%)]"
-              animate={{
-                background: [
-                  "radial-gradient(circle at 40% 50%, rgba(59,130,246,0.4), transparent 60%)",
-                  "radial-gradient(circle at 60% 50%, rgba(59,130,246,0.4), transparent 60%)",
-                  "radial-gradient(circle at 40% 50%, rgba(59,130,246,0.4), transparent 60%)",
-                ],
-              }}
-              transition={{ duration: 15, repeat: Infinity, ease: "easeInOut" }}
-            ></motion.div>
-          </div>
-
-          {/* Abstract circuit patterns */}
-          <div className="absolute inset-0 bg-[url('/images/hero/circuit-pattern.png')] opacity-8 z-0"></div>
-
-          {/* Animated decorative elements */}
-          <motion.div
-            className="absolute bg-blue-400 rounded-full w-96 h-96 opacity-10 -top-48 -right-20"
-            animate={{
-              scale: [1, 1.1, 1],
-              x: [0, 10, 0],
-              y: [0, 15, 0],
-            }}
-            transition={{
-              duration: 12,
-              repeat: Infinity,
-              repeatType: "reverse",
-              ease: "easeInOut",
-            }}
-          ></motion.div>
-
-          <motion.div
-            className="absolute bottom-0 bg-yellow-300 rounded-full w-80 h-80 opacity-10 -left-20"
-            animate={{
-              scale: [1, 1.2, 1],
-              x: [0, 20, 0],
-              y: [0, -15, 0],
-            }}
-            transition={{
-              duration: 10,
-              repeat: Infinity,
-              repeatType: "reverse",
-              ease: "easeInOut",
-            }}
-          ></motion.div>
-
->>>>>>> 6ab1b231e7c9d4f9384f0552f446877d526bf92e
-          <div className="container relative z-10 px-6 mx-auto">
-            <motion.div 
-              className="max-w-5xl mx-auto text-center text-white"
-              initial="hidden"
-              animate="visible"
-              variants={{
-                hidden: { opacity: 0 },
-                visible: {
-                  opacity: 1,
-                  transition: {
-                    staggerChildren: 0.2,
-                    delayChildren: 0.1
-                  }
-                }
-              }}
-            >
-              {/* Badge */}
-              <motion.div
-                className="inline-flex items-center px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full border border-white/20 mb-6"
-                variants={{
-                  hidden: { opacity: 0, y: 20 },
-                  visible: { opacity: 1, y: 0 }
-                }}
-              >
-                <FaEnvelope className="text-blue-400 mr-2" />
-                <span className="text-sm font-medium">Let's Connect</span>
-              </motion.div>
-<<<<<<< HEAD
-              
-              {/* Main Title */}
-              <motion.h1 
-                className="text-5xl md:text-6xl lg:text-7xl font-bold leading-tight mb-6"
-                variants={{
-                  hidden: { opacity: 0, y: 20 },
-                  visible: { opacity: 1, y: 0 }
-                }}
-=======
-
-              <motion.h1
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8 }}
-                className="mb-6 text-4xl font-bold md:text-6xl drop-shadow-sm"
->>>>>>> 6ab1b231e7c9d4f9384f0552f446877d526bf92e
-              >
-                <span className="text-white">Get in</span>
-                <br />
-                <span className="bg-gradient-to-r from-blue-400 via-purple-400 to-cyan-400 bg-clip-text text-transparent">
-                  Touch
-                </span>
-                <br />
-                <span className="bg-gradient-to-r from-yellow-400 to-orange-400 bg-clip-text text-transparent">
-                  Today
-                </span>
-              </motion.h1>
-<<<<<<< HEAD
-              
-              {/* Subtitle */}
-              <motion.p 
-                className="text-xl md:text-2xl text-gray-300 leading-relaxed max-w-3xl mx-auto mb-10"
-                variants={{
-                  hidden: { opacity: 0, y: 20 },
-                  visible: { opacity: 1, y: 0 }
-                }}
-              >
-                Have questions about membership, events, or collaboration opportunities? We're here to help and would love to connect with you.
-              </motion.p>
-              
-              {/* CTA Buttons */}
-              <motion.div 
-                className="flex flex-col sm:flex-row gap-4 justify-center"
-                variants={{
-                  hidden: { opacity: 0, y: 20 },
-                  visible: { opacity: 1, y: 0 }
-                }}
-              >
-                <a href="#contact-form">
-                  <motion.div
-                    className="group relative px-8 py-4 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full font-semibold text-white cursor-pointer overflow-hidden"
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                  >
-                    <div className="absolute inset-0 bg-gradient-to-r from-purple-600 to-blue-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                    <span className="relative z-10 flex items-center">
-                      Send Message <FaPaperPlane className="ml-2 group-hover:translate-x-1 transition-transform" />
-                    </span>
-                  </motion.div>
-                </a>
-                
-                <a href="tel:+917668410473">
-                  <motion.div
-                    className="px-8 py-4 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full font-semibold text-white cursor-pointer hover:bg-white/20 transition-all duration-300"
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                  >
-                    <span className="flex items-center">
-                      Call Us <FaPhone className="ml-2" />
-                    </span>
-                  </motion.div>
-=======
-
-              <motion.p
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.2 }}
-                className="max-w-2xl mx-auto mb-8 text-xl text-blue-100"
-              >
-                Have a question or want to collaborate? We'd love to hear from
-                you.
-              </motion.p>
-
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.3 }}
-                className="flex justify-center"
-              >
-                <a
-                  href="#contact-form"
-                  className="inline-flex items-center px-8 py-4 font-medium text-blue-900 transition-all bg-white rounded-full shadow-lg hover:bg-yellow-300 hover:scale-105 active:scale-95"
-                >
-                  Send a Message
-                  <FaPaperPlane className="ml-2" />
->>>>>>> 6ab1b231e7c9d4f9384f0552f446877d526bf92e
-                </a>
-              </motion.div>
-
-              {/* Contact Info Grid */}
-              <motion.div 
-                className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto pt-8 mt-8 border-t border-white/20"
-                variants={{
-                  hidden: { opacity: 0, y: 20 },
-                  visible: { opacity: 1, y: 0 }
-                }}
-              >
-                <div className="text-center">
-                  <div className="flex justify-center mb-2">
-                    <div className="p-3 bg-blue-500/20 rounded-full">
-                      <FaPhone className="text-blue-400" />
-                    </div>
-                  </div>
-                  <div className="text-sm text-gray-400">Phone</div>
-                  <div className="text-white font-medium">+91 7668410473</div>
-                </div>
-                <div className="text-center">
-                  <div className="flex justify-center mb-2">
-                    <div className="p-3 bg-purple-500/20 rounded-full">
-                      <FaEnvelope className="text-purple-400" />
-                    </div>
-                  </div>
-                  <div className="text-sm text-gray-400">Email</div>
-                  <div className="text-white font-medium">ieee@geu.ac.in</div>
-                </div>
-                <div className="text-center">
-                  <div className="flex justify-center mb-2">
-                    <div className="p-3 bg-yellow-500/20 rounded-full">
-                      <FaMapMarkerAlt className="text-yellow-400" />
-                    </div>
-                  </div>
-                  <div className="text-sm text-gray-400">Location</div>
-                  <div className="text-white font-medium">Dehradun, India</div>
-                </div>
-              </motion.div>
-            </motion.div>
-          </div>
-
-          {/* Enhanced Scroll Indicator */}
-          <motion.div 
-            className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex flex-col items-center text-white/70"
-            animate={{ y: [0, 10, 0] }}
-            transition={{ repeat: Infinity, duration: 2 }}
-          >
-            <span className="text-sm mb-2 font-medium">Send us a message</span>
-            <div className="w-6 h-10 border-2 border-white/30 rounded-full flex justify-center">
-              <motion.div
-                className="w-1 h-3 bg-white rounded-full mt-2"
-                animate={{ y: [0, 12, 0] }}
-                transition={{ repeat: Infinity, duration: 1.5 }}
-              />
-            </div>
-<<<<<<< HEAD
-          </motion.div>
-        </section>
-
-        {/* Enhanced Why Contact Us Section */}
-        <section className="py-20 bg-gradient-to-br from-gray-50 to-white">
-          <div className="container px-6 mx-auto">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.8 }}
-              className="max-w-4xl mx-auto mb-16 text-center"
+              className="flex items-center space-x-3"
             >
-              <h2 className="mb-6 text-4xl font-bold text-transparent md:text-5xl bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text">
-                Why Reach Out to Us?
-              </h2>
-              <p className="text-xl leading-relaxed text-gray-600">
-                Whether you're interested in joining, collaborating, or have questions about our events, we're here to help.
-              </p>
+              <div className="relative">
+                <img 
+                  src="/images/logo.png" 
+                  alt="IEEE Logo" 
+                  className="h-16 w-16 object-contain rounded-lg shadow-lg border-2 border-white/20"
+                />
+                <div className="absolute inset-0 bg-gradient-to-br from-blue-400/20 to-purple-400/20 rounded-lg"></div>
+              </div>
+              <div className="text-white">
+                <h3 className="text-lg font-bold bg-gradient-to-r from-blue-200 to-white bg-clip-text text-transparent">
+                  IEEE Student Branch
+                </h3>
+                <p className="text-sm text-blue-200">Graphic Era University</p>
+              </div>
             </motion.div>
+          </div>
+          
+          {/* Quick Stats */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.5 }}
+            className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8"
+          >
+            <div className="p-4 bg-white/10 backdrop-blur-sm rounded-xl border border-white/20 text-center">
+              <FaUsers className="text-2xl text-blue-300 mb-2 mx-auto" />
+              <p className="text-2xl font-bold">500+</p>
+              <p className="text-sm text-blue-100">Active Members</p>
+            </div>
+            <div className="p-4 bg-white/10 backdrop-blur-sm rounded-xl border border-white/20 text-center">
+              <FaClock className="text-2xl text-purple-300 mb-2 mx-auto" />
+              <p className="text-2xl font-bold">24hrs</p>
+              <p className="text-sm text-blue-100">Response Time</p>
+            </div>
+            <div className="p-4 bg-white/10 backdrop-blur-sm rounded-xl border border-white/20 text-center">
+              <FaGraduationCap className="text-2xl text-green-300 mb-2 mx-auto" />
+              <p className="text-2xl font-bold">100+</p>
+              <p className="text-sm text-blue-100">Events Hosted</p>
+            </div>
+          </motion.div>
 
-            <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
-              {[
-                {
-                  title: "Quick Response",
-                  description: "We respond to all inquiries within 24-48 hours during business days",
-                  icon: <FaClock className="text-2xl text-blue-500" />,
-                  gradient: "from-blue-500 to-cyan-500"
-                },
-                {
-                  title: "Expert Guidance",
-                  description: "Get advice from experienced IEEE professionals and industry experts",
-                  icon: <FaUsers className="text-2xl text-green-500" />,
-                  gradient: "from-green-500 to-emerald-500"
-                },
-                {
-                  title: "Partnership Opportunities",
-                  description: "Explore collaboration and partnership possibilities with our organization",
-                  icon: <FaArrowRight className="text-2xl text-purple-500" />,
-                  gradient: "from-purple-500 to-pink-500"
-                },
-                {
-                  title: "Technical Support",
-                  description: "Get help with technical questions, projects, and research inquiries",
-                  icon: <FaEnvelope className="text-2xl text-orange-500" />,
-                  gradient: "from-orange-500 to-red-500"
-                }
-              ].map((feature, index) => (
-                <motion.div 
-                  key={index}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.6, delay: index * 0.1 }}
-                  className="relative group"
+          {/* Animated Background Particles */}
+          <div className="absolute inset-0 overflow-hidden">
+            {[...Array(20)].map((_, i) => (
+              <motion.div
+                key={i}
+                className="absolute w-2 h-2 rounded-full bg-white/20"
+                style={{
+                  left: `${Math.random() * 100}%`,
+                  top: `${Math.random() * 100}%`,
+                }}
+                animate={{
+                  y: [0, -30, 0],
+                  opacity: [0.2, 0.8, 0.2],
+                }}
+                transition={{
+                  duration: 3 + Math.random() * 2,
+                  repeat: Infinity,
+                  delay: Math.random() * 2,
+                }}
+              />
+            ))}
+          </div>
+
+          {/* Main Content */}
+          <div className="container relative z-10 px-6 mx-auto lg:px-8">
+            <div className="grid items-center gap-12 lg:grid-cols-2">
+              {/* Left Content */}
+              <motion.div
+                initial={{ opacity: 0, x: -50 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.8 }}
+                className="text-white"
+              >
+                <motion.div
+                  initial={{ opacity: 0, y: 30 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: 0.2 }}
+                  className="inline-flex items-center px-4 py-2 mb-6 text-sm font-medium border rounded-full bg-white/10 backdrop-blur-sm border-white/20"
                 >
-                  <div className="relative h-full p-8 overflow-hidden transition-all duration-500 bg-white border border-gray-100 shadow-lg rounded-3xl hover:shadow-2xl">
-                    {/* Background Gradient */}
-                    <div className={`absolute inset-0 bg-gradient-to-br ${feature.gradient} opacity-0 group-hover:opacity-5 transition-opacity duration-500`}></div>
-                    
-                    {/* Content */}
-                    <div className="relative z-10 text-center">
-                      <div className="flex justify-center mb-4">
-                        <div className={`p-4 rounded-2xl bg-gradient-to-br ${feature.gradient} shadow-lg`}>
-                          <div className="text-white">
-                            {feature.icon}
-                          </div>
-                        </div>
-                      </div>
-                      <h3 className="text-xl font-bold text-gray-900 mb-3">{feature.title}</h3>
-                      <p className="text-gray-600 leading-relaxed">{feature.description}</p>
-                    </div>
-                    
-                    {/* Hover Effect */}
-                    <div className="absolute -top-2 -right-2 w-16 h-16 bg-gradient-to-br from-blue-400 to-purple-400 rounded-full opacity-0 group-hover:opacity-10 transform scale-0 group-hover:scale-100 transition-all duration-500"></div>
-                  </div>
+                  <FaEnvelope className="mr-2" />
+                  Get In Touch
                 </motion.div>
-              ))}
+                
+                <motion.h1
+                  initial={{ opacity: 0, y: 30 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: 0.3 }}
+                  className="mb-6 text-5xl font-bold leading-tight lg:text-7xl"
+                >
+                  Let's{' '}
+                  <span className="text-transparent bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text">
+                    Connect
+                  </span>
+                  <br />
+                  and{' '}
+                  <span className="text-transparent bg-gradient-to-r from-yellow-400 to-orange-400 bg-clip-text">
+                    Collaborate
+                  </span>
+                </motion.h1>
+                
+                <motion.p
+                  initial={{ opacity: 0, y: 30 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: 0.4 }}
+                  className="max-w-lg mb-8 text-xl leading-relaxed text-blue-100"
+                >
+                  Have questions about IEEE membership? Want to collaborate on innovative projects? 
+                  We're here to help you advance your engineering career and make meaningful connections.
+                </motion.p>
+
+                
+
+                <motion.div
+                  initial={{ opacity: 0, y: 30 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: 0.6 }}
+                  className="flex flex-wrap gap-4"
+                >
+                  <motion.a
+                    href="#contact-form"
+                    whileHover={{ scale: 1.05, y: -2 }}
+                    whileTap={{ scale: 0.95 }}
+                    className="flex items-center gap-2 px-8 py-4 font-semibold transition-all bg-gradient-to-r from-blue-500 to-purple-600 rounded-xl hover:shadow-xl hover:shadow-blue-500/25"
+                  >
+                    Send Message
+                    <FaArrowRight className="text-sm" />
+                  </motion.a>
+                  <motion.a
+                    href="tel:+917668410473"
+                    whileHover={{ scale: 1.05, y: -2 }}
+                    whileTap={{ scale: 0.95 }}
+                    className="flex items-center gap-2 px-8 py-4 font-semibold transition-all border bg-white/10 backdrop-blur-sm border-white/20 rounded-xl hover:bg-white/20"
+                  >
+                    <FaPhone />
+                    Call Now
+                  </motion.a>
+                </motion.div>
+              </motion.div>
+
+              {/* Right Content - Interactive Contact Preview */}
+              <motion.div
+                initial={{ opacity: 0, x: 50 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.8, delay: 0.2 }}
+                className="relative"
+              >
+                <div className="p-8 border shadow-2xl bg-white/10 backdrop-blur-xl rounded-2xl border-white/20">
+                  <h3 className="mb-6 text-2xl font-bold text-white">Quick Contact</h3>
+                  <div className="space-y-4">
+                    <motion.div 
+                      className="flex items-center gap-4 p-4 cursor-pointer bg-white/10 rounded-xl"
+                      whileHover={{ scale: 1.02, backgroundColor: "rgba(255,255,255,0.15)" }}
+                      transition={{ duration: 0.2 }}
+                    >
+                      <div className="p-3 rounded-lg bg-gradient-to-br from-blue-500 to-blue-600">
+                        <FaEnvelope className="text-white" />
+                      </div>
+                      <div>
+                        <p className="text-sm text-blue-100">Email Us</p>
+                        <p className="font-medium text-white">geu.ieee.studenbranch@gmail.com</p>
+                      </div>
+                    </motion.div>
+                    <motion.div 
+                      className="flex items-center gap-4 p-4 cursor-pointer bg-white/10 rounded-xl"
+                      whileHover={{ scale: 1.02, backgroundColor: "rgba(255,255,255,0.15)" }}
+                      transition={{ duration: 0.2 }}
+                    >
+                      <div className="p-3 rounded-lg bg-gradient-to-br from-purple-500 to-purple-600">
+                        <FaPhone className="text-white" />
+                      </div>
+                      <div>
+                        <p className="text-sm text-blue-100">Call Us</p>
+                        <p className="font-medium text-white">+91 7668410473</p>
+                      </div>
+                    </motion.div>
+                    <motion.div 
+                      className="flex items-center gap-4 p-4 cursor-pointer bg-white/10 rounded-xl"
+                      whileHover={{ scale: 1.02, backgroundColor: "rgba(255,255,255,0.15)" }}
+                      transition={{ duration: 0.2 }}
+                    >
+                      <div className="p-3 rounded-lg bg-gradient-to-br from-green-500 to-green-600">
+                        <FaMapMarkerAlt className="text-white" />
+                      </div>
+                      <div>
+                        <p className="text-sm text-blue-100">Visit Us</p>
+                        <p className="font-medium text-white">GEU Campus, Dehradun</p>
+                      </div>
+                    </motion.div>
+                  </div>
+                  
+                  {/* Office Hours */}
+                  <div className="mt-6 p-4 bg-white/5 rounded-xl border border-white/10">
+                    <h4 className="text-white font-semibold mb-3 flex items-center gap-2">
+                      <FaClock className="text-blue-300" />
+                      Office Hours
+                    </h4>
+                    <div className="space-y-2 text-sm">
+                      <div className="flex justify-between text-blue-100">
+                        <span>Monday - Friday</span>
+                        <span>9:00 AM - 6:00 PM</span>
+                      </div>
+                      <div className="flex justify-between text-blue-100">
+                        <span>Saturday</span>
+                        <span>10:00 AM - 4:00 PM</span>
+                      </div>
+                      <div className="flex justify-between text-blue-100">
+                        <span>Sunday</span>
+                        <span>Closed</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
             </div>
           </div>
-        </section>
-        <section id="contact-form" className="relative z-10 px-4 py-16 lg:py-24">
-=======
-          </div>
 
-          {/* Wave SVG at bottom */}
-          <div className="absolute bottom-0 left-0 w-full">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 1440 320"
-              className="w-full text-white"
+          {/* Scroll Indicator */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 1, duration: 0.5 }}
+            className="absolute transform -translate-x-1/2 bottom-8 left-1/2"
+          >
+            <motion.div
+              animate={{ y: [0, 10, 0] }}
+              transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+              className="flex justify-center w-6 h-10 border-2 rounded-full cursor-pointer border-white/30"
+              onClick={() => document.getElementById('contact-form').scrollIntoView({ behavior: 'smooth' })}
             >
-              <path
-                fill="currentColor"
-                fillOpacity="1"
-                d="M0,160L48,176C96,192,192,224,288,218.7C384,213,480,171,576,149.3C672,128,768,128,864,149.3C960,171,1056,213,1152,208C1248,203,1344,149,1392,122.7L1440,96L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"
-              ></path>
-            </svg>
-          </div>
+              <motion.div
+                animate={{ y: [0, 16, 0] }}
+                transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                className="w-1 h-3 mt-2 rounded-full bg-white/50"
+              />
+            </motion.div>
+          </motion.div>
         </section>
 
         {/* Enhanced Contact Form & Info Section */}
         <section
           id="contact-form"
-          className="relative z-10 px-4 py-16 lg:py-24"
+          className="relative py-20 bg-gradient-to-br from-gray-50 via-blue-50/30 to-purple-50/30"
         >
->>>>>>> 6ab1b231e7c9d4f9384f0552f446877d526bf92e
-          <div className="container max-w-6xl mx-auto">
-            <div className="grid gap-12 md:grid-cols-5">
-              {/* Contact Information Card */}
+          {/* Background decoration */}
+          <div className="absolute inset-0 overflow-hidden">
+            <div className="absolute top-0 left-0 bg-blue-200 rounded-full w-72 h-72 mix-blend-multiply filter blur-xl opacity-30 animate-blob"></div>
+            <div className="absolute top-0 right-0 bg-purple-200 rounded-full w-72 h-72 mix-blend-multiply filter blur-xl opacity-30 animate-blob animation-delay-2000"></div>
+            <div className="absolute bg-pink-200 rounded-full -bottom-32 left-20 w-72 h-72 mix-blend-multiply filter blur-xl opacity-30 animate-blob animation-delay-4000"></div>
+          </div>
+          
+          <div className="container relative z-10 px-6 mx-auto max-w-7xl">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              viewport={{ once: true }}
+              className="mb-16 text-center"
+            >
+              <div className="inline-flex items-center px-4 py-2 mb-4 text-sm font-medium text-blue-800 bg-blue-100 rounded-full">
+                <FaPaperPlane className="mr-2" />
+                Contact Form
+              </div>
+              <h2 className="mb-4 text-4xl font-bold text-gray-900 lg:text-5xl">
+                Send Us a{' '}
+                <span className="text-transparent bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text">
+                  Message
+                </span>
+              </h2>
+              <p className="max-w-3xl mx-auto text-xl text-gray-600">
+                Fill out the form below and we'll get back to you within 24 hours. 
+                Our team is here to help with any questions or collaboration opportunities.
+              </p>
+            </motion.div>
+
+            <div className="grid gap-12 lg:grid-cols-5">
+              {/* Enhanced Contact Information Card */}
               <motion.div
                 initial={{ opacity: 0, x: -50 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.8 }}
-                className="relative p-8 overflow-hidden text-white shadow-2xl md:col-span-2 rounded-3xl bg-gradient-to-br from-ieee-blue via-blue-700 to-blue-800"
+                className="relative lg:col-span-2"
               >
-                {/* Background elements */}
-                <div className="absolute top-0 left-0 w-full h-full overflow-hidden opacity-10">
-                  <div className="absolute bg-white rounded-full w-96 h-96 -top-20 -right-20"></div>
-                  <div className="absolute bg-blue-300 rounded-full w-80 h-80 -bottom-20 -left-20"></div>
-                  <div className="w-full h-full bg-[url('/images/hero/circuit-pattern.png')] opacity-20"></div>
-                </div>
-
-                <div className="relative z-10">
-                  <h2 className="mb-6 text-2xl font-bold">
-                    Contact Information
-                  </h2>
-                  <p className="mb-8 text-blue-100">
-                    Fill out the form and our team will get back to you within
-                    24 hours.
-                  </p>
-
-                  <div className="space-y-8">
-                    <motion.div
-                      className="flex items-start"
-                      whileHover={{ x: 5 }}
-                      transition={{ type: "spring", stiffness: 300 }}
-                    >
-                      <div className="flex items-center justify-center flex-shrink-0 w-12 h-12 mt-1 mr-4 rounded-full bg-white/20 backdrop-blur-sm">
-                        <FaMapMarkerAlt className="text-xl text-white" />
-                      </div>
-                      <div>
-                        <h3 className="mb-2 text-lg font-medium">
-                          Our Location
-                        </h3>
-                        <address className="not-italic leading-relaxed text-blue-100">
-                          566/6, Bell Road, Society Area,
-                          <br />
-                          Clement Town,
-                          <br />
-                          Dehradun, Uttarakhand, PIN : 248002
-                        </address>
-                      </div>
-                    </motion.div>
-
-                    <motion.div
-                      className="flex items-start"
-                      whileHover={{ x: 5 }}
-                      transition={{ type: "spring", stiffness: 300 }}
-                    >
-                      <div className="flex items-center justify-center flex-shrink-0 w-12 h-12 mt-1 mr-4 rounded-full bg-white/20 backdrop-blur-sm">
-                        <FaEnvelope className="text-xl text-white" />
-                      </div>
-                      <div>
-                        <h3 className="mb-2 text-lg font-medium">
-                          Email Address
-                        </h3>
-                        <a
-                          href="mailto:geu.ieee.studenbranch@gmail.com"
-                          className="text-blue-100 transition-colors hover:text-white hover:underline"
-                        >
-                          geu.ieee.studenbranch@gmail.com
-                        </a>
-                      </div>
-                    </motion.div>
-
-                    <motion.div
-                      className="flex items-start"
-                      whileHover={{ x: 5 }}
-                      transition={{ type: "spring", stiffness: 300 }}
-                    >
-                      <div className="flex items-center justify-center flex-shrink-0 w-12 h-12 mt-1 mr-4 rounded-full bg-white/20 backdrop-blur-sm">
-                        <FaPhone className="text-xl text-white" />
-                      </div>
-                      <div>
-                        <h3 className="mb-2 text-lg font-medium">
-                          Phone Number
-                        </h3>
-                        <a
-                          href="tel:+911234567890"
-                          className="text-blue-100 transition-colors hover:text-white hover:underline"
-                        >
-                          +91 7668410473
-                        </a>
-                      </div>
-                    </motion.div>
-
-                    <motion.div
-                      className="flex items-start"
-                      whileHover={{ x: 5 }}
-                      transition={{ type: "spring", stiffness: 300 }}
-                    >
-                      <div className="flex items-center justify-center flex-shrink-0 w-12 h-12 mt-1 mr-4 rounded-full bg-white/20 backdrop-blur-sm">
-                        <FaClock className="text-xl text-white" />
-                      </div>
-                      <div>
-                        <h3 className="mb-2 text-lg font-medium">
-                          Office Hours
-                        </h3>
-                        <p className="text-blue-100">
-                          Monday - Friday: 9:00 AM - 5:00 PM
-                          <br />
-                          Saturday & Sunday: Closed
-                        </p>
-                      </div>
-                    </motion.div>
+                <div className="relative p-8 overflow-hidden text-white shadow-2xl rounded-3xl bg-gradient-to-br from-blue-600 via-blue-700 to-purple-800">
+                  {/* Background Pattern */}
+                  <div className="absolute inset-0 opacity-10">
+                    <div className="absolute top-0 right-0 w-40 h-40 -mt-20 -mr-20 bg-white rounded-full"></div>
+                    <div className="absolute bottom-0 left-0 w-32 h-32 -mb-16 -ml-16 bg-blue-300 rounded-full"></div>
+                    <div className="absolute w-64 h-64 transform -translate-x-1/2 -translate-y-1/2 border rounded-full top-1/2 left-1/2 border-white/20"></div>
                   </div>
 
-                  <div className="pt-8 mt-12 border-t border-white/20">
-                    <h3 className="mb-6 text-lg font-medium">
-                      Connect With Us
-                    </h3>
-                    <div className="flex space-x-4">
-                      {[
-                        {
-                          icon: <FaFacebook />,
-                          url: "https://facebook.com",
-                          color: "hover:bg-[#1877F2]",
-                        },
-                        {
-                          icon: <FaTwitter />,
-                          url: "https://twitter.com",
-                          color: "hover:bg-[#1DA1F2]",
-                        },
-                        {
-                          icon: <FaInstagram />,
-                          url: "https://instagram.com",
-                          color: "hover:bg-[#E4405F]",
-                        },
-                        {
-                          icon: <FaLinkedin />,
-                          url: "https://linkedin.com",
-                          color: "hover:bg-[#0A66C2]",
-                        },
-                        {
-                          icon: <FaGithub />,
-                          url: "https://github.com",
-                          color: "hover:bg-[#333333]",
-                        },
-                      ].map((social, index) => (
-                        <motion.a
-                          key={index}
-                          href={social.url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className={`flex items-center justify-center w-12 h-12 transition-all rounded-full bg-white/20 backdrop-blur-sm ${social.color} hover:scale-110`}
-                          whileHover={{ y: -4 }}
-                          whileTap={{ scale: 0.95 }}
-                        >
-                          {social.icon}
-                        </motion.a>
-                      ))}
+                  <div className="relative z-10">
+                    <div className="flex items-center mb-6">
+                      <div className="p-3 mr-4 bg-white/20 rounded-xl backdrop-blur-sm">
+                        <FaEnvelope className="text-2xl" />
+                      </div>
+                      <div>
+                        <h2 className="text-2xl font-bold">Contact Information</h2>
+                        <p className="text-blue-100">Let's start a conversation</p>
+                      </div>
+                    </div>
+                    
+                    <p className="mb-8 leading-relaxed text-blue-100">
+                      Fill out the form and our team will get back to you within 24 hours. 
+                      We're here to help you with any questions about IEEE membership, events, or collaboration opportunities.
+                    </p>
+
+                    <div className="space-y-6">
+                      <motion.div
+                        className="flex items-start group"
+                        whileHover={{ x: 5 }}
+                        transition={{ type: "spring", stiffness: 300 }}
+                      >
+                        <div className="flex items-center justify-center flex-shrink-0 w-12 h-12 mt-1 mr-4 transition-all rounded-xl bg-gradient-to-br from-blue-400 to-blue-500 group-hover:from-blue-300 group-hover:to-blue-400">
+                          <FaMapMarkerAlt className="text-xl text-white" />
+                        </div>
+                        <div>
+                          <h3 className="mb-2 text-lg font-semibold">Our Location</h3>
+                          <address className="not-italic leading-relaxed text-blue-100">
+                            566/6, Bell Road, Society Area,<br />
+                            Clement Town,<br />
+                            Dehradun, Uttarakhand, PIN : 248002
+                          </address>
+                        </div>
+                      </motion.div>
+
+                      <motion.div
+                        className="flex items-start group"
+                        whileHover={{ x: 5 }}
+                        transition={{ type: "spring", stiffness: 300 }}
+                      >
+                        <div className="flex items-center justify-center flex-shrink-0 w-12 h-12 mt-1 mr-4 transition-all rounded-xl bg-gradient-to-br from-purple-400 to-purple-500 group-hover:from-purple-300 group-hover:to-purple-400">
+                          <FaEnvelope className="text-xl text-white" />
+                        </div>
+                        <div>
+                          <h3 className="mb-2 text-lg font-semibold">Email Address</h3>
+                          <a
+                            href="mailto:geu.ieee.studenbranch@gmail.com"
+                            className="text-blue-100 break-all transition-colors hover:text-white hover:underline"
+                          >
+                            geu.ieee.studenbranch@gmail.com
+                          </a>
+                        </div>
+                      </motion.div>
+
+                      <motion.div
+                        className="flex items-start group"
+                        whileHover={{ x: 5 }}
+                        transition={{ type: "spring", stiffness: 300 }}
+                      >
+                        <div className="flex items-center justify-center flex-shrink-0 w-12 h-12 mt-1 mr-4 transition-all rounded-xl bg-gradient-to-br from-green-400 to-green-500 group-hover:from-green-300 group-hover:to-green-400">
+                          <FaPhone className="text-xl text-white" />
+                        </div>
+                        <div>
+                          <h3 className="mb-2 text-lg font-semibold">Phone Number</h3>
+                          <a
+                            href="tel:+917668410473"
+                            className="text-blue-100 transition-colors hover:text-white hover:underline"
+                          >
+                            +91 7668410473
+                          </a>
+                        </div>
+                      </motion.div>
+
+                      <motion.div
+                        className="flex items-start group"
+                        whileHover={{ x: 5 }}
+                        transition={{ type: "spring", stiffness: 300 }}
+                      >
+                        <div className="flex items-center justify-center flex-shrink-0 w-12 h-12 mt-1 mr-4 transition-all rounded-xl bg-gradient-to-br from-yellow-400 to-orange-400 group-hover:from-yellow-300 group-hover:to-orange-300">
+                          <FaClock className="text-xl text-white" />
+                        </div>
+                        <div>
+                          <h3 className="mb-2 text-lg font-semibold">Office Hours</h3>
+                          <div className="space-y-1 text-blue-100">
+                            <p>Monday - Friday: 9:00 AM - 6:00 PM</p>
+                            <p>Saturday: 10:00 AM - 4:00 PM</p>
+                            <p>Sunday: Closed</p>
+                          </div>
+                        </div>
+                      </motion.div>
+                    </div>
+
+                    {/* Enhanced Social Links */}
+                    <div className="pt-8 mt-8 border-t border-white/20">
+                      <h3 className="flex items-center gap-2 mb-6 text-lg font-semibold">
+                        <div className="w-6 h-6 rounded-full bg-gradient-to-r from-blue-400 to-purple-400"></div>
+                        Connect With Us
+                      </h3>
+                      <div className="grid grid-cols-5 gap-3">
+                        {[
+                          { icon: <FaFacebook />, url: "https://facebook.com", color: "bg-[#1877F2]", name: "Facebook" },
+                          { icon: <FaTwitter />, url: "https://twitter.com", color: "bg-[#1DA1F2]", name: "Twitter" },
+                          { icon: <FaInstagram />, url: "https://instagram.com", color: "bg-[#E4405F]", name: "Instagram" },
+                          { icon: <FaLinkedin />, url: "https://linkedin.com", color: "bg-[#0A66C2]", name: "LinkedIn" },
+                          { icon: <FaGithub />, url: "https://github.com", color: "bg-[#333333]", name: "GitHub" },
+                        ].map((social, index) => (
+                          <motion.a
+                            key={index}
+                            href={social.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className={`relative group flex items-center justify-center w-12 h-12 rounded-xl bg-white/20 backdrop-blur-sm border border-white/30 hover:${social.color} transition-all duration-300`}
+                            whileHover={{ y: -4, scale: 1.1 }}
+                            whileTap={{ scale: 0.95 }}
+                            title={social.name}
+                          >
+                            <span className="text-lg transition-transform group-hover:scale-110">
+                              {social.icon}
+                            </span>
+                            <div className="absolute px-2 py-1 text-xs text-white transition-opacity transform -translate-x-1/2 rounded opacity-0 -bottom-8 left-1/2 bg-black/80 group-hover:opacity-100 whitespace-nowrap">
+                              {social.name}
+                            </div>
+                          </motion.a>
+                        ))}
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -569,299 +477,356 @@ export default function Contact() {
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.8 }}
-                className="relative p-8 overflow-hidden bg-white border border-gray-100 shadow-2xl md:col-span-3 rounded-3xl"
+                className="relative lg:col-span-3"
               >
-                {/* Background subtle patterns */}
-                <div className="absolute inset-0 z-0 opacity-5">
-                  <div className="absolute -bottom-40 -right-40 rounded-full w-96 h-96 bg-ieee-blue"></div>
-                  <div className="w-full h-full bg-gradient-to-br from-transparent to-blue-100"></div>
-                </div>
+                <div className="relative p-8 overflow-hidden border shadow-2xl bg-white/80 backdrop-blur-xl border-white/20 rounded-3xl">
+                  {/* Background Gradient */}
+                  <div className="absolute inset-0 bg-gradient-to-br from-white via-blue-50/30 to-purple-50/30 rounded-3xl"></div>
+                  
+                  {/* Decorative Elements */}
+                  <div className="absolute top-0 right-0 w-32 h-32 -mt-16 -mr-16 rounded-full bg-gradient-to-br from-blue-400/10 to-purple-400/10"></div>
+                  <div className="absolute bottom-0 left-0 w-24 h-24 -mb-12 -ml-12 rounded-full bg-gradient-to-br from-pink-400/10 to-yellow-400/10"></div>
 
-                <div className="relative z-10">
-                  <div className="mb-8">
-                    <h2 className="mb-2 text-2xl font-bold text-gray-900">
-                      Send Us a Message
-                    </h2>
-                    <p className="text-gray-600">
-                      We'd love to hear from you. Fill out the form below.
-                    </p>
-                  </div>
+                  <div className="relative z-10">
+                    <div className="mb-8">
+                      <div className="flex items-center mb-4">
+                        <div className="p-2 mr-3 rounded-lg bg-gradient-to-br from-blue-500 to-purple-600">
+                          <FaPaperPlane className="text-white" />
+                        </div>
+                        <div>
+                          <h2 className="text-2xl font-bold text-gray-900">Send Us a Message</h2>
+                          <p className="text-gray-600">We'd love to hear from you</p>
+                        </div>
+                      </div>
+                    </div>
 
-                  {/* Success message with animation */}
-                  <AnimatePresence>
-                    {formSuccess && (
-                      <motion.div
-                        initial={{ opacity: 0, height: 0 }}
-                        animate={{ opacity: 1, height: "auto" }}
-                        exit={{ opacity: 0, height: 0 }}
-                        transition={{ duration: 0.3 }}
-                        className="flex items-center p-6 mb-8 border-l-4 border-green-500 rounded-lg bg-green-50"
-                      >
-                        <div className="flex-shrink-0 mr-4">
-                          <div className="flex items-center justify-center w-12 h-12 bg-green-100 rounded-full">
-                            <svg
-                              className="w-6 h-6 text-green-500"
-                              xmlns="http://www.w3.org/2000/svg"
-                              fill="none"
-                              viewBox="0 0 24 24"
-                              stroke="currentColor"
+                    {/* Success message with enhanced animation */}
+                    <AnimatePresence>
+                      {formSuccess && (
+                        <motion.div
+                          initial={{ opacity: 0, height: 0, scale: 0.9 }}
+                          animate={{ opacity: 1, height: "auto", scale: 1 }}
+                          exit={{ opacity: 0, height: 0, scale: 0.9 }}
+                          transition={{ duration: 0.4, ease: "easeOut" }}
+                          className="mb-8 overflow-hidden"
+                        >
+                          <div className="flex items-center p-6 border-l-4 border-green-500 shadow-lg rounded-xl bg-gradient-to-r from-green-50 to-emerald-50">
+                            <motion.div 
+                              className="flex-shrink-0 mr-4"
+                              initial={{ rotate: 0 }}
+                              animate={{ rotate: 360 }}
+                              transition={{ duration: 0.6, delay: 0.2 }}
                             >
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth="2"
-                                d="M5 13l4 4L19 7"
-                              />
-                            </svg>
-                          </div>
-                        </div>
-                        <div>
-                          <h3 className="mb-1 text-lg font-medium text-green-800">
-                            Message Sent Successfully!
-                          </h3>
-                          <p className="text-green-700">
-                            Thank you for reaching out. We'll get back to you
-                            shortly.
-                          </p>
-                        </div>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-
-                  <Formik
-                    initialValues={{
-                      name: "",
-                      email: "",
-                      subject: "",
-                      message: "",
-                    }}
-                    validationSchema={Yup.object({
-                      name: Yup.string().required("Name is required"),
-                      email: Yup.string()
-                        .email("Invalid email address")
-                        .required("Email is required"),
-                      subject: Yup.string().required("Subject is required"),
-                      message: Yup.string()
-                        .required("Message is required")
-                        .min(10, "Message must be at least 10 characters"),
-                    })}
-                    onSubmit={async (values, { setSubmitting, resetForm }) => {
-                      try {
-                        const response = await fetch("/api/contact", {
-                          method: "POST",
-                          headers: { "Content-Type": "application/json" },
-                          body: JSON.stringify(values),
-                        });
-                        const data = await response.json();
-                        if (!response.ok || !data.success) {
-                          throw new Error(
-                            data.message || "Failed to send message."
-                          );
-                        }
-                        setFormSuccess(true);
-                        resetForm();
-                        setTimeout(() => setFormSuccess(false), 5000);
-                      } catch (error) {
-                        console.error("Error submitting form:", error);
-                        alert(error.message || "Failed to send message.");
-                      } finally {
-                        setSubmitting(false);
-                      }
-                    }}
-                  >
-                    {({ isSubmitting, errors, touched }) => (
-                      <Form className="space-y-6">
-                        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
-                          {/* Name Field */}
-                          <div>
-                            <label
-                              htmlFor="name"
-                              className="block mb-2 text-sm font-medium text-gray-700"
-                            >
-                              Your Name
-                            </label>
-                            <div className="relative">
-                              <Field
-                                id="name"
-                                name="name"
-                                type="text"
-                                className={`appearance-none block w-full px-5 py-4 border ${
-                                  errors.name && touched.name
-                                    ? "border-red-300 focus:ring-red-500 focus:border-red-500"
-                                    : "border-gray-300 focus:ring-ieee-blue focus:border-ieee-blue"
-                                } rounded-xl shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 sm:text-sm transition-all`}
-                                placeholder="John Doe"
-                              />
-                              {errors.name && touched.name ? (
-                                <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
-                                  <svg
-                                    className="w-5 h-5 text-red-500"
-                                    fill="currentColor"
-                                    viewBox="0 0 20 20"
-                                  >
-                                    <path
-                                      fillRule="evenodd"
-                                      d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
-                                      clipRule="evenodd"
-                                    />
-                                  </svg>
-                                </div>
-                              ) : null}
-                            </div>
-                            <ErrorMessage
-                              name="name"
-                              component="p"
-                              className="mt-2 text-sm text-red-600"
-                            />
-                          </div>
-
-                          {/* Email Field */}
-                          <div>
-                            <label
-                              htmlFor="email"
-                              className="block mb-2 text-sm font-medium text-gray-700"
-                            >
-                              Your Email
-                            </label>
-                            <div className="relative">
-                              <Field
-                                id="email"
-                                name="email"
-                                type="email"
-                                className={`appearance-none block w-full px-5 py-4 border ${
-                                  errors.email && touched.email
-                                    ? "border-red-300 focus:ring-red-500 focus:border-red-500"
-                                    : "border-gray-300 focus:ring-ieee-blue focus:border-ieee-blue"
-                                } rounded-xl shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 sm:text-sm transition-all`}
-                                placeholder="johndoe@example.com"
-                              />
-                              {errors.email && touched.email ? (
-                                <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
-                                  <svg
-                                    className="w-5 h-5 text-red-500"
-                                    fill="currentColor"
-                                    viewBox="0 0 20 20"
-                                  >
-                                    <path
-                                      fillRule="evenodd"
-                                      d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
-                                      clipRule="evenodd"
-                                    />
-                                  </svg>
-                                </div>
-                              ) : null}
-                            </div>
-                            <ErrorMessage
-                              name="email"
-                              component="p"
-                              className="mt-2 text-sm text-red-600"
-                            />
-                          </div>
-                        </div>
-
-                        {/* Subject Field */}
-                        <div>
-                          <label
-                            htmlFor="subject"
-                            className="block mb-2 text-sm font-medium text-gray-700"
-                          >
-                            Subject
-                          </label>
-                          <Field
-                            id="subject"
-                            name="subject"
-                            type="text"
-                            className={`appearance-none block w-full px-5 py-4 border ${
-                              errors.subject && touched.subject
-                                ? "border-red-300 focus:ring-red-500 focus:border-red-500"
-                                : "border-gray-300 focus:ring-ieee-blue focus:border-ieee-blue"
-                            } rounded-xl shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 sm:text-sm transition-all`}
-                            placeholder="How can we help you?"
-                          />
-                          <ErrorMessage
-                            name="subject"
-                            component="p"
-                            className="mt-2 text-sm text-red-600"
-                          />
-                        </div>
-
-                        {/* Message Field */}
-                        <div>
-                          <label
-                            htmlFor="message"
-                            className="block mb-2 text-sm font-medium text-gray-700"
-                          >
-                            Your Message
-                          </label>
-                          <Field
-                            as="textarea"
-                            id="message"
-                            name="message"
-                            rows={5}
-                            className={`appearance-none block w-full px-5 py-4 border ${
-                              errors.message && touched.message
-                                ? "border-red-300 focus:ring-red-500 focus:border-red-500"
-                                : "border-gray-300 focus:ring-ieee-blue focus:border-ieee-blue"
-                            } rounded-xl shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 sm:text-sm transition-all`}
-                            placeholder="Write your message here..."
-                          />
-                          <ErrorMessage
-                            name="message"
-                            component="p"
-                            className="mt-2 text-sm text-red-600"
-                          />
-                        </div>
-
-                        <div>
-                          <motion.button
-                            whileHover={{
-                              scale: 1.02,
-                              boxShadow:
-                                "0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)",
-                            }}
-                            whileTap={{ scale: 0.98 }}
-                            type="submit"
-                            disabled={isSubmitting}
-                            className={`w-full flex justify-center py-4 px-4 border border-transparent rounded-xl shadow-lg text-white bg-gradient-to-r from-ieee-blue to-blue-700 hover:from-ieee-blue hover:to-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-ieee-blue transition-all ${
-                              isSubmitting
-                                ? "opacity-70 cursor-not-allowed"
-                                : ""
-                            }`}
-                          >
-                            {isSubmitting ? (
-                              <>
+                              <div className="flex items-center justify-center w-12 h-12 rounded-full shadow-lg bg-gradient-to-br from-green-400 to-green-500">
                                 <svg
-                                  className="w-5 h-5 mr-3 -ml-1 text-white animate-spin"
+                                  className="w-6 h-6 text-white"
                                   xmlns="http://www.w3.org/2000/svg"
                                   fill="none"
                                   viewBox="0 0 24 24"
+                                  stroke="currentColor"
                                 >
-                                  <circle
-                                    className="opacity-25"
-                                    cx="12"
-                                    cy="12"
-                                    r="10"
-                                    stroke="currentColor"
-                                    strokeWidth="4"
-                                  ></circle>
                                   <path
-                                    className="opacity-75"
-                                    fill="currentColor"
-                                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                                  ></path>
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth="2"
+                                    d="M5 13l4 4L19 7"
+                                  />
                                 </svg>
-                                Sending...
-                              </>
-                            ) : (
-                              <span className="flex items-center">
-                                <FaPaperPlane className="mr-2" /> Send Message
-                              </span>
-                            )}
-                          </motion.button>
-                        </div>
-                      </Form>
-                    )}
-                  </Formik>
+                              </div>
+                            </motion.div>
+                            <div>
+                              <h3 className="mb-1 text-lg font-semibold text-green-800">
+                                Message Sent Successfully!
+                              </h3>
+                              <p className="text-green-700">
+                                Thank you for reaching out. We'll get back to you within 24 hours.
+                              </p>
+                            </div>
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+
+                    {/* Error message */}
+                    <AnimatePresence>
+                      {formError && (
+                        <motion.div
+                          initial={{ opacity: 0, height: 0, scale: 0.9 }}
+                          animate={{ opacity: 1, height: "auto", scale: 1 }}
+                          exit={{ opacity: 0, height: 0, scale: 0.9 }}
+                          transition={{ duration: 0.4, ease: "easeOut" }}
+                          className="mb-8 overflow-hidden"
+                        >
+                          <div className="flex items-center p-6 border-l-4 border-red-500 shadow-lg rounded-xl bg-gradient-to-r from-red-50 to-rose-50">
+                            <div className="flex-shrink-0 mr-4">
+                              <div className="flex items-center justify-center w-12 h-12 rounded-full shadow-lg bg-gradient-to-br from-red-400 to-red-500">
+                                <svg
+                                  className="w-6 h-6 text-white"
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  fill="none"
+                                  viewBox="0 0 24 24"
+                                  stroke="currentColor"
+                                >
+                                  <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth="2"
+                                    d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.732-.833-2.5 0L4.268 18.5c-.77.833.192 2.5 1.732 2.5z"
+                                  />
+                                </svg>
+                              </div>
+                            </div>
+                            <div>
+                              <h3 className="mb-1 text-lg font-semibold text-red-800">
+                                Failed to Send Message
+                              </h3>
+                              <p className="text-red-700">
+                                {formError}
+                              </p>
+                            </div>
+                            <button
+                              onClick={() => setFormError("")}
+                              className="ml-auto text-red-400 hover:text-red-600 transition-colors"
+                            >
+                              <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
+                              </svg>
+                            </button>
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+
+                    <Formik
+                      initialValues={{
+                        name: "",
+                        email: "",
+                        subject: "",
+                        message: "",
+                      }}
+                      validationSchema={Yup.object({
+                        name: Yup.string().required("Name is required"),
+                        email: Yup.string()
+                          .email("Invalid email address")
+                          .required("Email is required"),
+                        subject: Yup.string().required("Subject is required"),
+                        message: Yup.string()
+                          .required("Message is required")
+                          .min(10, "Message must be at least 10 characters"),
+                      })}
+                      onSubmit={async (values, { setSubmitting, resetForm }) => {
+                        try {
+                          // Clear any previous errors
+                          setFormError("");
+                          
+                          const response = await fetch("/api/contact", {
+                            method: "POST",
+                            headers: { 
+                              "Content-Type": "application/json",
+                            },
+                            body: JSON.stringify(values),
+                          });
+                          
+                          const data = await response.json();
+                          
+                          if (!response.ok || !data.success) {
+                            throw new Error(data.message || "Failed to send message.");
+                          }
+                          
+                          setFormSuccess(true);
+                          resetForm();
+                          setTimeout(() => setFormSuccess(false), 5000);
+                        } catch (error) {
+                          console.error("Error submitting form:", error);
+                          setFormError(error.message || "Failed to send message. Please try again.");
+                        } finally {
+                          setSubmitting(false);
+                        }
+                      }}
+                    >
+                      {({ isSubmitting, errors, touched }) => (
+                        <Form className="space-y-6">
+                          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+                            {/* Enhanced Name Field */}
+                            <motion.div
+                              initial={{ opacity: 0, y: 20 }}
+                              whileInView={{ opacity: 1, y: 0 }}
+                              transition={{ duration: 0.5, delay: 0.1 }}
+                              viewport={{ once: true }}
+                            >
+                              <label
+                                htmlFor="name"
+                                className="block mb-3 text-sm font-semibold text-gray-700"
+                              >
+                                Your Name *
+                              </label>
+                              <div className="relative group">
+                                <Field
+                                  id="name"
+                                  name="name"
+                                  type="text"
+                                  className={`appearance-none block w-full px-5 py-4 border-2 ${
+                                    errors.name && touched.name
+                                      ? "border-red-300 focus:ring-red-500 focus:border-red-500"
+                                      : "border-gray-200 focus:ring-blue-500 focus:border-blue-500 group-hover:border-gray-300"
+                                  } rounded-xl shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-opacity-50 text-sm transition-all duration-200 bg-white/50 backdrop-blur-sm`}
+                                  placeholder="Enter your full name"
+                                />
+                                {errors.name && touched.name ? (
+                                  <motion.div 
+                                    className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none"
+                                    initial={{ scale: 0 }}
+                                    animate={{ scale: 1 }}
+                                    transition={{ duration: 0.2 }}
+                                  >
+                                    <svg className="w-5 h-5 text-red-500" fill="currentColor" viewBox="0 0 20 20">
+                                      <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                                    </svg>
+                                  </motion.div>
+                                ) : null}
+                              </div>
+                              <ErrorMessage name="name" component="p" className="mt-2 text-sm font-medium text-red-600" />
+                            </motion.div>
+
+                            {/* Enhanced Email Field */}
+                            <motion.div
+                              initial={{ opacity: 0, y: 20 }}
+                              whileInView={{ opacity: 1, y: 0 }}
+                              transition={{ duration: 0.5, delay: 0.2 }}
+                              viewport={{ once: true }}
+                            >
+                              <label
+                                htmlFor="email"
+                                className="block mb-3 text-sm font-semibold text-gray-700"
+                              >
+                                Your Email *
+                              </label>
+                              <div className="relative group">
+                                <Field
+                                  id="email"
+                                  name="email"
+                                  type="email"
+                                  className={`appearance-none block w-full px-5 py-4 border-2 ${
+                                    errors.email && touched.email
+                                      ? "border-red-300 focus:ring-red-500 focus:border-red-500"
+                                      : "border-gray-200 focus:ring-blue-500 focus:border-blue-500 group-hover:border-gray-300"
+                                  } rounded-xl shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-opacity-50 text-sm transition-all duration-200 bg-white/50 backdrop-blur-sm`}
+                                  placeholder="your.email@example.com"
+                                />
+                                {errors.email && touched.email ? (
+                                  <motion.div 
+                                    className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none"
+                                    initial={{ scale: 0 }}
+                                    animate={{ scale: 1 }}
+                                    transition={{ duration: 0.2 }}
+                                  >
+                                    <svg className="w-5 h-5 text-red-500" fill="currentColor" viewBox="0 0 20 20">
+                                      <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                                    </svg>
+                                  </motion.div>
+                                ) : null}
+                              </div>
+                              <ErrorMessage name="email" component="p" className="mt-2 text-sm font-medium text-red-600" />
+                            </motion.div>
+                          </div>
+
+                          {/* Enhanced Subject Field */}
+                          <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.5, delay: 0.3 }}
+                            viewport={{ once: true }}
+                          >
+                            <label
+                              htmlFor="subject"
+                              className="block mb-3 text-sm font-semibold text-gray-700"
+                            >
+                              Subject *
+                            </label>
+                            <Field
+                              id="subject"
+                              name="subject"
+                              type="text"
+                              className={`appearance-none block w-full px-5 py-4 border-2 ${
+                                errors.subject && touched.subject
+                                  ? "border-red-300 focus:ring-red-500 focus:border-red-500"
+                                  : "border-gray-200 focus:ring-blue-500 focus:border-blue-500 hover:border-gray-300"
+                              } rounded-xl shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-opacity-50 text-sm transition-all duration-200 bg-white/50 backdrop-blur-sm`}
+                              placeholder="What's this about?"
+                            />
+                            <ErrorMessage name="subject" component="p" className="mt-2 text-sm font-medium text-red-600" />
+                          </motion.div>
+
+                          {/* Enhanced Message Field */}
+                          <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.5, delay: 0.4 }}
+                            viewport={{ once: true }}
+                          >
+                            <label
+                              htmlFor="message"
+                              className="block mb-3 text-sm font-semibold text-gray-700"
+                            >
+                              Your Message *
+                            </label>
+                            <Field
+                              as="textarea"
+                              id="message"
+                              name="message"
+                              rows={6}
+                              className={`appearance-none block w-full px-5 py-4 border-2 ${
+                                errors.message && touched.message
+                                  ? "border-red-300 focus:ring-red-500 focus:border-red-500"
+                                  : "border-gray-200 focus:ring-blue-500 focus:border-blue-500 hover:border-gray-300"
+                              } rounded-xl shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-opacity-50 text-sm transition-all duration-200 resize-none bg-white/50 backdrop-blur-sm`}
+                              placeholder="Tell us more about your inquiry..."
+                            />
+                            <ErrorMessage name="message" component="p" className="mt-2 text-sm font-medium text-red-600" />
+                          </motion.div>
+
+                          {/* Enhanced Submit Button */}
+                          <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.5, delay: 0.5 }}
+                            viewport={{ once: true }}
+                          >
+                            <motion.button
+                              type="submit"
+                              disabled={isSubmitting}
+                              whileHover={{ scale: 1.02, y: -2 }}
+                              whileTap={{ scale: 0.98 }}
+                              className={`relative w-full flex justify-center items-center py-4 px-6 border border-transparent rounded-xl shadow-lg text-white bg-gradient-to-r from-blue-600 via-blue-700 to-purple-700 hover:from-blue-700 hover:via-blue-800 hover:to-purple-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-300 font-semibold text-lg ${
+                                isSubmitting
+                                  ? "opacity-70 cursor-not-allowed"
+                                  : "hover:shadow-blue-500/25"
+                              }`}
+                            >
+                              {/* Background shine effect */}
+                              <div className="absolute inset-0 transition-transform duration-1000 transform -translate-x-full -skew-x-12 rounded-xl bg-gradient-to-r from-transparent via-white/10 to-transparent group-hover:translate-x-full"></div>
+                              
+                              {isSubmitting ? (
+                                <>
+                                  <svg className="w-5 h-5 mr-3 -ml-1 text-white animate-spin" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                  </svg>
+                                  Sending Message...
+                                </>
+                              ) : (
+                                <span className="relative z-10 flex items-center">
+                                  <FaPaperPlane className="mr-3" />
+                                  Send Message
+                                  <FaArrowRight className="ml-2 opacity-70" />
+                                </span>
+                              )}
+                            </motion.button>
+                          </motion.div>
+                        </Form>
+                      )}
+                    </Formik>
+                  </div>
                 </div>
               </motion.div>
             </div>
@@ -916,131 +881,149 @@ export default function Contact() {
         </section>
 
         {/* Enhanced FAQ Section */}
-        <section className="px-4 py-24 bg-white">
-          <div className="container max-w-4xl mx-auto">
+        <section className="relative py-24 bg-gradient-to-br from-white via-blue-50/30 to-purple-50/30">
+          {/* Background decoration */}
+          <div className="absolute inset-0 overflow-hidden">
+            <div className="absolute w-64 h-64 bg-blue-200 rounded-full top-20 right-10 mix-blend-multiply filter blur-xl opacity-20 animate-blob animation-delay-2000"></div>
+            <div className="absolute bg-purple-200 rounded-full bottom-20 left-10 w-80 h-80 mix-blend-multiply filter blur-xl opacity-20 animate-blob animation-delay-4000"></div>
+          </div>
+          
+          <div className="container relative z-10 max-w-5xl px-6 mx-auto">
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.8 }}
               className="mb-16 text-center"
             >
-              <div className="flex justify-center mb-4">
-                <div className="w-20 h-1 rounded-full bg-ieee-blue"></div>
-              </div>
-              <h2 className="mb-4 text-3xl font-bold text-gray-900">
+              <div className="inline-flex items-center px-4 py-2 mb-6 text-sm font-medium text-blue-800 rounded-full bg-gradient-to-r from-blue-100 to-purple-100">
+                <span className="w-2 h-2 mr-2 bg-blue-500 rounded-full"></span>
                 Frequently Asked Questions
+              </div>
+              <h2 className="mb-6 text-4xl font-bold text-gray-900 lg:text-5xl">
+                Got{' '}
+                <span className="text-transparent bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text">
+                  Questions?
+                </span>
+                <br />
+                We've Got Answers
               </h2>
-              <p className="max-w-2xl mx-auto text-lg text-gray-600">
-                Find quick answers to common questions about contacting us
+              <p className="max-w-3xl mx-auto text-xl leading-relaxed text-gray-600">
+                Find quick answers to common questions about contacting us, IEEE membership, and collaboration opportunities
               </p>
             </motion.div>
 
-            <div className="space-y-6">
+            <div className="grid gap-8 lg:gap-6">
               {[
                 {
                   question: "How quickly will you respond to my inquiry?",
-                  answer:
-                    "We aim to respond to all inquiries within 24-48 hours during business days. For urgent matters, please contact us directly by phone.",
+                  answer: "We aim to respond to all inquiries within 24-48 hours during business days. For urgent matters, please contact us directly by phone at +91 7668410473.",
+                  icon: "⚡",
+                  gradient: "from-yellow-400 to-orange-500"
                 },
                 {
                   question: "Can I visit your office without an appointment?",
-                  answer:
-                    "We recommend scheduling an appointment in advance to ensure that we can dedicate proper time to address your needs. Please contact us via email or phone to arrange a visit.",
+                  answer: "We recommend scheduling an appointment in advance to ensure that we can dedicate proper time to address your needs. Please contact us via email or phone to arrange a visit to our GEU campus location.",
+                  icon: "🏢",
+                  gradient: "from-blue-400 to-purple-500"
                 },
                 {
-                  question: "How can I join your mailing list?",
-                  answer:
-                    "You can subscribe to our newsletter by filling out the contact form on this page and checking the option to receive updates, or by visiting our homepage and using the newsletter signup form at the bottom of the page.",
+                  question: "How can I join IEEE and what are the benefits?",
+                  answer: "IEEE membership offers access to cutting-edge research, networking opportunities, professional development resources, and industry standards. Contact us to learn about student membership benefits and how to apply.",
+                  icon: "🎓",
+                  gradient: "from-green-400 to-teal-500"
+                },
+                {
+                  question: "Do you offer collaboration opportunities for students?",
+                  answer: "Yes! We actively seek collaboration with students, researchers, and industry professionals. We offer project partnerships, internship opportunities, research collaborations, and technical workshops.",
+                  icon: "🤝",
+                  gradient: "from-pink-400 to-rose-500"
+                },
+                {
+                  question: "What events and workshops do you organize?",
+                  answer: "We organize regular technical workshops, hackathons, guest lectures, industry visits, and networking events. Check our events page or contact us to stay updated on upcoming activities.",
+                  icon: "🎯",
+                  gradient: "from-indigo-400 to-blue-500"
                 },
               ].map((faq, index) => (
                 <motion.div
                   key={index}
-                  initial={{ opacity: 0, y: 20 }}
+                  initial={{ opacity: 0, y: 30 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                  whileHover={{ scale: 1.02 }}
-                  className="p-8 border border-gray-100 shadow-lg bg-gradient-to-br from-white to-blue-50 rounded-2xl"
+                  transition={{ duration: 0.6, delay: index * 0.1 }}
+                  whileHover={{ scale: 1.02, y: -5 }}
+                  className="relative group"
                 >
-                  <h3 className="flex items-center mb-4 text-xl font-bold text-gray-900">
-                    <span className="flex items-center justify-center w-8 h-8 mr-4 text-sm text-white rounded-full bg-ieee-blue">
-                      {index + 1}
-                    </span>
-                    {faq.question}
-                  </h3>
-                  <p className="ml-12 leading-relaxed text-gray-600">
-                    {faq.answer}
-                  </p>
+                  <div className="relative p-8 overflow-hidden transition-all duration-300 border border-gray-200 shadow-lg bg-white/80 backdrop-blur-sm rounded-2xl hover:shadow-xl">
+                    {/* Gradient border effect */}
+                    <div className={`absolute inset-0 bg-gradient-to-r ${faq.gradient} opacity-0 group-hover:opacity-10 transition-opacity duration-300 rounded-2xl`}></div>
+                    
+                    {/* Question header */}
+                    <div className="flex items-start mb-4">
+                      <div className={`flex items-center justify-center w-12 h-12 rounded-xl bg-gradient-to-r ${faq.gradient} text-white text-xl font-bold mr-4 flex-shrink-0 shadow-lg`}>
+                        {faq.icon}
+                      </div>
+                      <div className="flex-1">
+                        <h3 className="text-xl font-bold leading-tight text-gray-900 transition-colors duration-300 group-hover:text-blue-700">
+                          {faq.question}
+                        </h3>
+                      </div>
+                    </div>
+                    
+                    {/* Answer */}
+                    <div className="ml-16">
+                      <p className="leading-relaxed text-gray-600 transition-colors duration-300 group-hover:text-gray-700">
+                        {faq.answer}
+                      </p>
+                    </div>
+
+                    {/* Hover effect indicator */}
+                    <div className="absolute transition-opacity duration-300 opacity-0 bottom-4 right-4 group-hover:opacity-100">
+                      <div className={`w-6 h-6 rounded-full bg-gradient-to-r ${faq.gradient} flex items-center justify-center`}>
+                        <FaArrowRight className="text-xs text-white" />
+                      </div>
+                    </div>
+                  </div>
                 </motion.div>
               ))}
             </div>
 
-            {/* Additional CTA */}
+            {/* Enhanced CTA */}
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.8, delay: 0.3 }}
+              transition={{ duration: 0.8, delay: 0.6 }}
               className="mt-16 text-center"
             >
-              <p className="mb-6 text-lg text-gray-600">
-                Didn't find what you were looking for?
-              </p>
-              <a
-                href="#contact-form"
-                className="inline-flex items-center px-8 py-3 font-medium text-white transition-all rounded-full shadow-lg bg-ieee-blue hover:bg-blue-700 hover:shadow-blue-500/30"
-              >
-                Ask Us Directly <FaArrowRight className="ml-2" />
-              </a>
-            </motion.div>
-          </div>
-        </section>
-
-        {/* Enhanced Final CTA Section */}
-        <section className="py-20 text-white bg-gradient-to-r from-blue-600 via-purple-600 to-blue-700 relative overflow-hidden">
-          <div className="absolute inset-0 bg-black/20"></div>
-          <div className="absolute inset-0">
-            <div className="absolute w-32 h-32 rounded-full top-10 left-10 bg-white/10 blur-xl animate-pulse"></div>
-            <div className="absolute w-48 h-48 delay-1000 rounded-full bottom-10 right-10 bg-white/5 blur-2xl animate-pulse"></div>
-          </div>
-          
-          <div className="container relative z-10 px-6 mx-auto">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8 }}
-              className="max-w-4xl mx-auto text-center"
-            >
-              <h2 className="mb-6 text-4xl font-bold md:text-5xl">Ready to Connect?</h2>
-              <p className="mb-8 text-xl leading-relaxed text-blue-100 md:text-2xl">
-                Join our community of innovators and technology enthusiasts. Let's build the future together.
-              </p>
-              
-              <div className="flex flex-col justify-center gap-4 sm:flex-row">
-                <Link href="/gallery">
-                  <motion.div
-                    className="px-8 py-4 text-lg font-bold text-blue-600 transition-all duration-300 bg-white rounded-full shadow-lg cursor-pointer group hover:bg-blue-50"
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                  >
-                    <span className="flex items-center">
-                      View Gallery
-                      <FaArrowRight className="ml-2 transition-transform group-hover:translate-x-1" />
-                    </span>
-                  </motion.div>
-                </Link>
-                
-                <a href="#contact-form">
-                  <motion.div
-                    className="px-8 py-4 text-lg font-bold text-white transition-all duration-300 border-2 border-white rounded-full cursor-pointer hover:bg-white hover:text-blue-600"
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                  >
-                    Send Message
-                  </motion.div>
-                </a>
+              <div className="relative inline-block">
+                <div className="absolute inset-0 opacity-25 bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl blur-lg"></div>
+                <div className="relative p-8 bg-white border border-gray-200 shadow-xl rounded-2xl">
+                  <p className="mb-6 text-lg text-gray-600">
+                    Still have questions? We're here to help!
+                  </p>
+                  <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
+                    <motion.a
+                      href="#contact-form"
+                      whileHover={{ scale: 1.05, y: -2 }}
+                      whileTap={{ scale: 0.95 }}
+                      className="inline-flex items-center px-8 py-4 font-semibold text-white transition-all shadow-lg bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl hover:shadow-blue-500/25"
+                    >
+                      Ask Us Directly
+                      <FaArrowRight className="ml-2" />
+                    </motion.a>
+                    <motion.a
+                      href="tel:+917668410473"
+                      whileHover={{ scale: 1.05, y: -2 }}
+                      whileTap={{ scale: 0.95 }}
+                      className="inline-flex items-center px-8 py-4 font-semibold text-blue-600 transition-all border-2 border-blue-200 bg-blue-50 rounded-xl hover:bg-blue-100 hover:border-blue-300"
+                    >
+                      <FaPhone className="mr-2" />
+                      Call Now
+                    </motion.a>
+                  </div>
+                </div>
               </div>
             </motion.div>
           </div>
