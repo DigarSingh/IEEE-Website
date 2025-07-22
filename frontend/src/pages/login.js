@@ -68,41 +68,13 @@ export default function Login() {
       try {
         console.log("Attempting login with:", { email: formData.email });
 
-        // Special case for admin test credentials
-        if (
-          formData.email === "admin@ieee.org" &&
-          formData.password === "admin123"
-        ) {
-          console.log("Using admin test credentials");
-          // Create admin user object
-          const adminUser = {
-            id: "admin-test-id",
-            name: "Admin User",
-            email: "admin@ieee.org",
-            role: "admin",
-          };
-
-          // Store admin info in localStorage
-          localStorage.setItem("token", "admin-test-token");
-          localStorage.setItem("user", JSON.stringify(adminUser));
-
-          // Redirect to admin dashboard
-          window.location.href = "/admin/dashboard";
-          return;
-        }
-
-        // Regular API authentication for non-test credentials
-        const apiUrl =
-          process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
-        console.log(`Using API URL: ${apiUrl}/api/auth/login`);
-
-        const response = await fetch(`${apiUrl}/api/auth/login`, {
+        // Use the local Next.js API route
+        const response = await fetch("/api/auth/login", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
           body: JSON.stringify(formData),
-          credentials: "include", // Include cookies if your API uses them
         });
 
         console.log(`Login response status: ${response.status}`);

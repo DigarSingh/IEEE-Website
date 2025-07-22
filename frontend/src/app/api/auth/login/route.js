@@ -8,8 +8,7 @@ import bcrypt from "bcryptjs";
 export async function POST(request) {
   try {
     console.log("Login endpoint called");
-    await dbConnect();
-
+    
     const body = await request.json();
     const { email, password } = body;
 
@@ -25,6 +24,31 @@ export async function POST(request) {
       );
     }
 
+    // Special case for admin login
+    if (email === "admin@ieee.org" && password === "admin123") {
+      console.log("Admin login successful");
+      
+      // Use a valid MongoDB ObjectId for admin
+      const adminId = "507f1f77bcf86cd799439011";
+      const token = generateToken(adminId, "admin");
+      
+      return NextResponse.json({
+        success: true,
+        token,
+        user: {
+          id: adminId,
+          name: "IEEE Admin",
+          email: "admin@ieee.org",
+          college: "IEEE Admin Portal",
+          role: "admin",
+          isVerified: true,
+          studentId: "ADMIN001",
+        },
+      });
+    }
+
+    // For other users, connect to database
+    await dbConnect();
     console.log("Looking up user by email:", email);
 
     // Check for user email
@@ -41,9 +65,13 @@ export async function POST(request) {
     }
 
     console.log("User found, checking password");
+    console.log("Stored password hash:", user.password.substring(0, 20) + "...");
+    console.log("Input password:", password);
 
-    // Check password using simple comparison
-    const isMatch = password == user.password;
+    // Check password using bcrypt comparison
+    const isMatch = await bcrypt.compare(password, user.password);
+    console.log("Password match result:", isMatch);
+    
     if (!isMatch) {
       console.log("Password does not match");
       return NextResponse.json(
