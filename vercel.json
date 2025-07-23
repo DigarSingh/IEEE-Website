@@ -1,7 +1,7 @@
 {
   "version": 2,
   "buildCommand": "npm run build:vercel --prefix ",
-  "outputDirectory": "frontend/.next",
+  "outputDirectory": ".next",
   "installCommand": "npm install && npm install --prefix ",
   "framework": "nextjs",
   "env": {
