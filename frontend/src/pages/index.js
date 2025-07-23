@@ -339,7 +339,7 @@ export default function Home() {
                       transition={{ duration: 4, repeat: Infinity }}
                     >
                       <div className="text-center text-white">
-                        <div className="text-2xl font-bold">10+</div>
+                        <div className="text-2xl font-bold">50+</div>
                         <div className="text-xs">Events</div>
                       </div>
                     </motion.div>
