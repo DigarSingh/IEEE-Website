@@ -42,7 +42,7 @@ export default function Contact() {
           <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-blue-900/30"></div>
           
           {/* IEEE Logo */}
-          <div className="absolute top-8 left-8 z-20">
+          <div className="absolute z-20 top-8 left-8">
             <motion.div
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -53,42 +53,18 @@ export default function Contact() {
                 <img 
                   src="/images/logo.png" 
                   alt="IEEE Logo" 
-                  className="h-16 w-16 object-contain rounded-lg shadow-lg border-2 border-white/20"
+                  className="object-contain w-16 h-16 border-2 rounded-lg shadow-lg border-white/20"
                 />
-                <div className="absolute inset-0 bg-gradient-to-br from-blue-400/20 to-purple-400/20 rounded-lg"></div>
+                <div className="absolute inset-0 rounded-lg bg-gradient-to-br from-blue-400/20 to-purple-400/20"></div>
               </div>
               <div className="text-white">
-                <h3 className="text-lg font-bold bg-gradient-to-r from-blue-200 to-white bg-clip-text text-transparent">
+                <h3 className="text-lg font-bold text-transparent bg-gradient-to-r from-blue-200 to-white bg-clip-text">
                   IEEE Student Branch
                 </h3>
                 <p className="text-sm text-blue-200">Graphic Era University</p>
               </div>
             </motion.div>
           </div>
-          
-          {/* Quick Stats */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.5 }}
-            className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8"
-          >
-            <div className="p-4 bg-white/10 backdrop-blur-sm rounded-xl border border-white/20 text-center">
-              <FaUsers className="text-2xl text-blue-300 mb-2 mx-auto" />
-              <p className="text-2xl font-bold">500+</p>
-              <p className="text-sm text-blue-100">Active Members</p>
-            </div>
-            <div className="p-4 bg-white/10 backdrop-blur-sm rounded-xl border border-white/20 text-center">
-              <FaClock className="text-2xl text-purple-300 mb-2 mx-auto" />
-              <p className="text-2xl font-bold">24hrs</p>
-              <p className="text-sm text-blue-100">Response Time</p>
-            </div>
-            <div className="p-4 bg-white/10 backdrop-blur-sm rounded-xl border border-white/20 text-center">
-              <FaGraduationCap className="text-2xl text-green-300 mb-2 mx-auto" />
-              <p className="text-2xl font-bold">100+</p>
-              <p className="text-sm text-blue-100">Events Hosted</p>
-            </div>
-          </motion.div>
 
           {/* Animated Background Particles */}
           <div className="absolute inset-0 overflow-hidden">
@@ -209,7 +185,7 @@ export default function Contact() {
                       </div>
                       <div>
                         <p className="text-sm text-blue-100">Email Us</p>
-                        <p className="font-medium text-white">geu.ieee.studenbranch@gmail.com</p>
+                        <p className="font-medium text-white">geu.ieee.studentbranch@gmail.com</p>
                       </div>
                     </motion.div>
                     <motion.div 
@@ -238,28 +214,6 @@ export default function Contact() {
                         <p className="font-medium text-white">GEU Campus, Dehradun</p>
                       </div>
                     </motion.div>
-                  </div>
-                  
-                  {/* Office Hours */}
-                  <div className="mt-6 p-4 bg-white/5 rounded-xl border border-white/10">
-                    <h4 className="text-white font-semibold mb-3 flex items-center gap-2">
-                      <FaClock className="text-blue-300" />
-                      Office Hours
-                    </h4>
-                    <div className="space-y-2 text-sm">
-                      <div className="flex justify-between text-blue-100">
-                        <span>Monday - Friday</span>
-                        <span>9:00 AM - 6:00 PM</span>
-                      </div>
-                      <div className="flex justify-between text-blue-100">
-                        <span>Saturday</span>
-                        <span>10:00 AM - 4:00 PM</span>
-                      </div>
-                      <div className="flex justify-between text-blue-100">
-                        <span>Sunday</span>
-                        <span>Closed</span>
-                      </div>
-                    </div>
                   </div>
                 </div>
               </motion.div>
@@ -390,7 +344,7 @@ export default function Contact() {
                             href="mailto:geu.ieee.studenbranch@gmail.com"
                             className="text-blue-100 break-all transition-colors hover:text-white hover:underline"
                           >
-                            geu.ieee.studenbranch@gmail.com
+                            geu.ieee.studentbranch@gmail.com
                           </a>
                         </div>
                       </motion.div>
@@ -419,17 +373,6 @@ export default function Contact() {
                         whileHover={{ x: 5 }}
                         transition={{ type: "spring", stiffness: 300 }}
                       >
-                        <div className="flex items-center justify-center flex-shrink-0 w-12 h-12 mt-1 mr-4 transition-all rounded-xl bg-gradient-to-br from-yellow-400 to-orange-400 group-hover:from-yellow-300 group-hover:to-orange-300">
-                          <FaClock className="text-xl text-white" />
-                        </div>
-                        <div>
-                          <h3 className="mb-2 text-lg font-semibold">Office Hours</h3>
-                          <div className="space-y-1 text-blue-100">
-                            <p>Monday - Friday: 9:00 AM - 6:00 PM</p>
-                            <p>Saturday: 10:00 AM - 4:00 PM</p>
-                            <p>Sunday: Closed</p>
-                          </div>
-                        </div>
                       </motion.div>
                     </div>
 
@@ -441,11 +384,9 @@ export default function Contact() {
                       </h3>
                       <div className="grid grid-cols-5 gap-3">
                         {[
-                          { icon: <FaFacebook />, url: "https://facebook.com", color: "bg-[#1877F2]", name: "Facebook" },
-                          { icon: <FaTwitter />, url: "https://twitter.com", color: "bg-[#1DA1F2]", name: "Twitter" },
-                          { icon: <FaInstagram />, url: "https://instagram.com", color: "bg-[#E4405F]", name: "Instagram" },
-                          { icon: <FaLinkedin />, url: "https://linkedin.com", color: "bg-[#0A66C2]", name: "LinkedIn" },
-                          { icon: <FaGithub />, url: "https://github.com", color: "bg-[#333333]", name: "GitHub" },
+                          { icon: <FaTwitter />, url: "https://www.instagram.com/ieee.geu/", color: "bg-[#1DA1F2]", name: "Twitter" },
+                          { icon: <FaInstagram />, url: "https://www.instagram.com/ieee.geu/", color: "bg-[#E4405F]", name: "Instagram" },
+                          { icon: <FaLinkedin />, url: "https://www.linkedin.com/company/geu-ieee-student-branch/", color: "bg-[#0A66C2]", name: "LinkedIn" },
                         ].map((social, index) => (
                           <motion.a
                             key={index}
@@ -586,7 +527,7 @@ export default function Contact() {
                             </div>
                             <button
                               onClick={() => setFormError("")}
-                              className="ml-auto text-red-400 hover:text-red-600 transition-colors"
+                              className="ml-auto text-red-400 transition-colors hover:text-red-600"
                             >
                               <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
                                 <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
@@ -619,6 +560,8 @@ export default function Contact() {
                           // Clear any previous errors
                           setFormError("");
                           
+                          console.log("Submitting form with values:", values);
+                          
                           const response = await fetch("/api/contact", {
                             method: "POST",
                             headers: { 
@@ -627,7 +570,9 @@ export default function Contact() {
                             body: JSON.stringify(values),
                           });
                           
+                          console.log("Response status:", response.status);
                           const data = await response.json();
+                          console.log("Response data:", data);
                           
                           if (!response.ok || !data.success) {
                             throw new Error(data.message || "Failed to send message.");

@@ -97,10 +97,9 @@ export default function Footer() {
                 {/* Enhanced Social Links */}
                 <div className="flex space-x-4">
                   {[
-                    { icon: FaFacebook, href: "https://facebook.com", color: "from-blue-600 to-blue-700" },
-                    { icon: FaTwitter, href: "https://twitter.com", color: "from-sky-400 to-sky-600" },
-                    { icon: FaInstagram, href: "https://instagram.com", color: "from-pink-500 to-purple-600" },
-                    { icon: FaLinkedin, href: "https://linkedin.com", color: "from-blue-500 to-blue-700" },
+                    { icon: FaTwitter, href: "https://www.instagram.com/ieee.geu/", color: "from-sky-400 to-sky-600" },
+                    { icon: FaInstagram, href: "https://www.instagram.com/ieee.geu/", color: "from-pink-500 to-purple-600" },
+                    { icon: FaLinkedin, href: "https://www.linkedin.com/company/geu-ieee-student-branch/", color: "from-blue-500 to-blue-700" },
                   ].map((social, index) => (
                     <motion.a
                       key={index}

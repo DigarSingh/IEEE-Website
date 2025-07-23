@@ -301,11 +301,11 @@ export default function About() {
                   variants={fadeIn}
                 >
                   <div className="text-center">
-                    <div className="text-3xl font-bold text-blue-400">500+</div>
+                    <div className="text-3xl font-bold text-blue-400">100+</div>
                     <div className="text-sm text-gray-400">Active Members</div>
                   </div>
                   <div className="text-center">
-                    <div className="text-3xl font-bold text-purple-400">50+</div>
+                    <div className="text-3xl font-bold text-purple-400">10+</div>
                     <div className="text-sm text-gray-400">Annual Events</div>
                   </div>
                   <div className="text-center">
