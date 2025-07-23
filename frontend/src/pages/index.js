@@ -64,7 +64,7 @@ export default function Home() {
       color: 'from-blue-500 to-cyan-500'
     },
     { 
-      value: '10+', 
+      value: '50+', 
       label: 'Annual Events', 
       icon: <FaCalendar className="text-3xl text-green-400" />,
       description: 'Technical workshops, seminars, and competitions',
@@ -149,7 +149,7 @@ export default function Home() {
     }
   ];
 
-  const upcomingEvents = [
+  const Events = [
     {
       id: 1,
       title: 'Machine Learning Workshop',
