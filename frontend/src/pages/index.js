@@ -508,7 +508,7 @@ export default function Home() {
             </div>
             
             <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-              {upcomingEvents.map((event, index) => (
+              {Events.map((event, index) => (
                 <motion.div
                   key={event.id}
                   initial={{ opacity: 0, y: 20 }}

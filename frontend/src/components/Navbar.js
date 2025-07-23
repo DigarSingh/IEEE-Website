@@ -371,7 +371,7 @@ export default function Navbar() {
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ duration: 0.5, delay: 0.2 }}
                   >
-                    IEEE Club
+                    IEEE Student Branch
                   </motion.h1>
                   <motion.p 
                     className="-mt-1 text-xs text-gray-500"

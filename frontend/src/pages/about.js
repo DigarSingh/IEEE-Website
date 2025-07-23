@@ -72,10 +72,10 @@ export default function About() {
       name: 'Ankit Choudhary',
       role: 'Chairperson',
       image: '/images/team/chair.jpg',
-      bio: 'Final year Computer Science student passionate about AI and machine learning. Spearheading our technical vision and strategic initiatives.',
-      expertise: ['AI/ML', 'Leadership', 'Strategic Planning'],
+      bio: 'Final year Computer Science student passionate about CyberSecurity (GRC). Spearheading our technical vision and strategic initiatives.',
+      expertise: ['CyberSecurity', 'Leadership', 'Strategic Planning'],
       socialLinks: [
-        { icon: <FaLinkedin />, url: 'https://linkedin.com' },
+        { icon: <FaLinkedin />, url: 'https://www.linkedin.com/in/ankit-choudhary-551014249/' },
         { icon: <FaGithub />, url: 'https://github.com' },
         { icon: <FaTwitter />, url: 'https://twitter.com' }
       ]
@@ -87,7 +87,7 @@ export default function About() {
       bio: 'Computer Science Engineering student with expertise in IoT systems and embedded design. Driving innovation in hardware-software integration.',
       expertise: ['IoT Systems', 'Embedded Design', 'Hardware Integration'],
       socialLinks: [
-        { icon: <FaLinkedin />, url: 'https://linkedin.com' },
+        { icon: <FaLinkedin />, url: 'https://www.linkedin.com/in/sanjay-singh-83329a289/' },
         { icon: <FaGithub />, url: 'https://github.com' }
       ]
     },
@@ -109,7 +109,7 @@ export default function About() {
       bio: 'Computer Science Engineering student with strong organizational and financial management skills. Ensuring fiscal responsibility and growth.',
       expertise: ['Financial Management', 'Organization', 'Strategic Planning'],
       socialLinks: [
-        { icon: <FaLinkedin />, url: 'https://linkedin.com' },
+        { icon: <FaLinkedin />, url: 'https://www.linkedin.com/in/jiya-bisht-861aa1244/' },
         { icon: <FaGithub />, url: 'https://github.com' }
       ]
     },
@@ -120,7 +120,7 @@ export default function About() {
       bio: 'Robotics enthusiast with experience in organizing multiple hackathons and technical workshops. Leading our technical innovation and events.',
       expertise: ['Robotics', 'Event Management', 'Technical Innovation'],
       socialLinks: [
-        { icon: <FaLinkedin />, url: 'https://linkedin.com' },
+        { icon: <FaLinkedin />, url: 'https://www.linkedin.com/in/pranav-maheshwari-b76894187/' },
         { icon: <FaGithub />, url: 'https://github.com' }
       ]
     }
