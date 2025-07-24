@@ -116,7 +116,7 @@ export default function Signup() {
         
         // Use environment variable for API URL with fallback
         const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
-        const registerEndpoint = `${apiUrl}/api/auth/register`;
+        const registerEndpoint = `/api/auth/register`;
         console.log('Using API URL:', registerEndpoint);
         
         const response = await fetch(registerEndpoint, {
