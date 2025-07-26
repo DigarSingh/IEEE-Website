@@ -185,30 +185,6 @@ export default function Home() {
           <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-purple-900 to-slate-800"></div>
           <div className="absolute inset-0 bg-gradient-to-t from-blue-900/50 via-transparent to-purple-900/30"></div>
           
-          {/* IEEE Logo */}
-          <div className="absolute z-20 top-8 left-8">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.8 }}
-              className="flex items-center space-x-3"
-            >
-              <div className="relative p-2 bg-white rounded-lg shadow-lg">
-                <img 
-                  src="/images/logo.png" 
-                  alt="IEEE Logo" 
-                  className="object-contain w-12 h-12"
-                />
-              </div>
-              <div className="text-white">
-                <h3 className="text-lg font-bold text-transparent bg-gradient-to-r from-blue-200 to-white bg-clip-text">
-                  IEEE Student Branch
-                </h3>
-                <p className="text-sm text-blue-200">Graphic Era University</p>
-              </div>
-            </motion.div>
-          </div>
-          
           {/* Animated Background Elements */}
           <motion.div 
             className="absolute inset-0"
