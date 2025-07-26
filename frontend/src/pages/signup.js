@@ -107,6 +107,7 @@ export default function Signup() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     
+<<<<<<< HEAD
     const newErrors = validateForm();
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
@@ -133,6 +134,75 @@ export default function Signup() {
         console.log('Registration successful');
       } else {
         setErrors({ form: data.message || 'Registration failed' });
+=======
+    if (validateForm()) {
+      setIsSubmitting(true);
+      setErrors({});
+      
+      try {
+        // Create a copy of formData without confirmPassword for backend
+        const { confirmPassword, ...registrationData } = formData;
+        console.log('Submitting registration data:', {
+          ...registrationData,
+          password: '[MASKED]'
+        });
+        
+        // Use environment variable for API URL with fallback
+        const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
+        const registerEndpoint = `/api/auth/register`;
+        console.log('Using API URL:', registerEndpoint);
+        
+        const response = await fetch(registerEndpoint, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(registrationData),
+          credentials: 'include' // Include cookies if your API uses them
+        });
+        
+        console.log('Response status:', response.status);
+        
+        // Parse the JSON response
+        let data;
+        try {
+          data = await response.json();
+          console.log('Response data structure:', Object.keys(data));
+        } catch (parseError) {
+          console.error('Error parsing response:', parseError);
+          throw new Error('Unable to parse server response. Please try again.');
+        }
+        
+        // Handle unsuccessful responses
+        if (!response.ok) {
+          console.error('Server error response:', data);
+          const errorMessage = data.message || 'Registration failed. Please try again.';
+          throw new Error(errorMessage);
+        }
+        
+        // Verify we got the expected data
+        if (!data.token || !data.user) {
+          console.error('Invalid server response:', data);
+          throw new Error('Invalid response from server. Missing token or user data.');
+        }
+        
+        console.log('Registration successful, received token and user data');
+        
+        // Store token in localStorage
+        localStorage.setItem('token', data.token);
+        localStorage.setItem('user', JSON.stringify(data.user));
+        
+        // Show success message
+        setRegistrationSuccess(true);
+        
+      } catch (error) {
+        console.error('Registration error:', error);
+        setErrors({ 
+          form: error.message || 'Registration failed. Please try again.' 
+        });
+      } finally {
+        setIsSubmitting(false);
+>>>>>>> 17c9f40c1436d96787327cf7375f550efb02ab19
       }
     } catch (error) {
       setErrors({ form: 'Network error. Please try again.' });
