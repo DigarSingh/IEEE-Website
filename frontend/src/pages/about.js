@@ -165,7 +165,7 @@ export default function About() {
       year: '2022',
       title: 'IEEE Student Branch Established',
       description: 'Our journey began with just 20 founding members dedicated to fostering innovation.',
-      icon: <FaRocket className="text-blue-500" />,
+      icon: <FaRocket className="text-orange-500" />,
       stats: '20 Founding Members'
     },
     {
@@ -186,7 +186,7 @@ export default function About() {
       year: '2024',
       title: 'International Conference',
       description: 'Hosted our first international conference on emerging technologies with global participation.',
-      icon: <FaGlobe className="text-purple-500" />,
+      icon: <FaGlobe className="text-white-500" />,
       stats: 'Global Reach'
     },
     {
