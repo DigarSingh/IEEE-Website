@@ -136,6 +136,17 @@ export default function About() {
       ]
     },
     {
+      name: 'Rajat Sisodia',
+      role: 'PR Head',
+      image: '/images/team/pr-head.jpg',
+      bio: 'Rajat Sisodia is the PR Head of the IEEE Student Branch at Graphic Era University. He manages public relations, outreach, and communication strategies to enhance the branch’s visibility and engagement within the tech community.',
+      expertise: ['Robotics', 'Event Management', 'Technical Innovation'],
+      socialLinks: [
+        { icon: <FaLinkedin />, url: 'https://www.linkedin.com' },
+        { icon: <FaGithub />, url: 'https://github.com' }
+      ]
+    },
+    {
       name: 'Parinita Teli',
       role: 'Content Writer',
       image: '/images/team/content.jpg',
@@ -146,17 +157,6 @@ export default function About() {
         { icon: <FaGithub />, url: 'https://github.com' }
       ]
     },
-    {
-      name: 'Rajat Sisodia',
-      role: 'PR Head',
-      image: '/images/team/pr-head.jpg',
-      bio: 'Rajat Sisodia is the PR Head of the IEEE Student Branch at Graphic Era University. He manages public relations, outreach, and communication strategies to enhance the branch’s visibility and engagement within the tech community.',
-      expertise: ['Robotics', 'Event Management', 'Technical Innovation'],
-      socialLinks: [
-        { icon: <FaLinkedin />, url: 'https://www.linkedin.com' },
-        { icon: <FaGithub />, url: 'https://github.com' }
-      ]
-    }
   ];
 
   // Enhanced milestones data
@@ -641,7 +641,7 @@ export default function About() {
           </div>
         </section>
 
-        {/* Enhanced Team Members Section */}
+        {/*Team Members Section */}
         <section id="team" className="py-20 bg-gray-50">
           <div className="container px-4 mx-auto">
             <motion.div 
