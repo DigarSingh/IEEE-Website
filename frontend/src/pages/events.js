@@ -313,7 +313,7 @@ export default function Events() {
                   <div className="text-sm text-gray-400">Annual Events</div>
                 </div>
                 <div className="text-center">
-                  <div className="text-3xl font-bold text-purple-400">5K+</div>
+                  <div className="text-3xl font-bold text-purple-400">10K+</div>
                   <div className="text-sm text-gray-400">Participants</div>
                 </div>
                 <div className="text-center">

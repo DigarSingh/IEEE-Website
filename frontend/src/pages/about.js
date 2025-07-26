@@ -3,6 +3,7 @@ import { motion, useScroll, useTransform } from 'framer-motion';
 import { FaUsers, FaLightbulb, FaHistory, FaGlobe, FaAward, FaBullseye, FaLinkedin, FaGithub, FaTwitter, FaRocket, FaHeart, FaCode, FaStar } from 'react-icons/fa';
 import { useState, useRef } from 'react';
 import Layout from '@/components/Layout';
+import ParticleBackground from '@/components/ParticleBackground';
 import { useIntersectionObserver } from '@/hooks/useEnhancedScroll';
 
 export default function About() {
@@ -59,9 +60,9 @@ export default function About() {
   const teamMembers = [
     {
       name: 'Mr. Piyush Agarwal',
-      role: 'Faculty Advisor',
-      image: '/images/team/advisor.jpg',
-      bio: 'Associate Professor with 15+ years of experience in electrical engineering research and education. Leading our academic initiatives and industry partnerships.',
+      role: 'Branch Counsellor',
+      image: '/images/team/Counsellor.jpg',
+      bio: 'Mr.Piyush Agarwal is an Assistant Professor at Graphic Era University, Dehradun, specializing in technology and engineering. An alumnus of IIIT, he is actively involved in teaching, research, and mentoring students. He contributes to initiatives like the GEU IEEE Student Branch, promoting innovation and professional growth among learners.',
       expertise: ['Research Leadership', 'Industry Partnerships', 'Academic Excellence'],
       socialLinks: [
         { icon: <FaLinkedin />, url: 'https://linkedin.com' },
@@ -76,8 +77,7 @@ export default function About() {
       expertise: ['CyberSecurity', 'Leadership', 'Strategic Planning'],
       socialLinks: [
         { icon: <FaLinkedin />, url: 'https://www.linkedin.com/in/ankit-choudhary-551014249/' },
-        { icon: <FaGithub />, url: 'https://github.com' },
-        { icon: <FaTwitter />, url: 'https://twitter.com' }
+        { icon: <FaGithub />, url: 'https://github.com' }
       ]
     },
     {
@@ -110,7 +110,7 @@ export default function About() {
       expertise: ['Financial Management', 'Organization', 'Strategic Planning'],
       socialLinks: [
         { icon: <FaLinkedin />, url: 'https://www.linkedin.com/in/jiya-bisht-861aa1244/' },
-        { icon: <FaGithub />, url: 'https://github.com' }
+        { icon: <FaGithub />, url: 'https://github.com/Jiyabisht' }
       ]
     },
     {
@@ -121,6 +121,39 @@ export default function About() {
       expertise: ['Robotics', 'Event Management', 'Technical Innovation'],
       socialLinks: [
         { icon: <FaLinkedin />, url: 'https://www.linkedin.com/in/pranav-maheshwari-b76894187/' },
+        { icon: <FaGithub />, url: 'https://github.com' }
+      ]
+    },
+    {
+      name: 'Krish Aggarwal',
+      role: 'Co Manager',
+      image: '/images/team/co-manager.jpg',
+      bio: 'Krish Aggarwal is the Co-Manager of the IEEE Student Branch at Graphic Era University. He plays a key role in organizing technical events, fostering teamwork, and promoting student engagement in the field of engineering and technology.',
+      expertise: ['Robotics', 'Event Management', 'Technical Innovation'],
+      socialLinks: [
+        { icon: <FaLinkedin />, url: 'https://www.linkedin.com' },
+        { icon: <FaGithub />, url: 'https://github.com' }
+      ]
+    },
+    {
+      name: 'Parinita Teli',
+      role: 'Content Writer',
+      image: '/images/team/content.jpg',
+      bio: 'Parinita Teli is the Content Writer for the IEEE Student Branch at Graphic Era University. She is responsible for creating engaging and informative content that highlights the branch initiatives, events, and achievements.',
+      expertise: ['Robotics', 'Event Management', 'Technical Innovation'],
+      socialLinks: [
+        { icon: <FaLinkedin />, url: 'https://www.linkedin.com' },
+        { icon: <FaGithub />, url: 'https://github.com' }
+      ]
+    },
+    {
+      name: 'Rajat Sisodia',
+      role: 'PR Head',
+      image: '/images/team/pr-head.jpg',
+      bio: 'Rajat Sisodia is the PR Head of the IEEE Student Branch at Graphic Era University. He manages public relations, outreach, and communication strategies to enhance the branch’s visibility and engagement within the tech community.',
+      expertise: ['Robotics', 'Event Management', 'Technical Innovation'],
+      socialLinks: [
+        { icon: <FaLinkedin />, url: 'https://www.linkedin.com' },
         { icon: <FaGithub />, url: 'https://github.com' }
       ]
     }
@@ -170,25 +203,25 @@ export default function About() {
     {
       title: 'Innovation',
       description: 'Pushing boundaries and exploring new technological frontiers',
-      icon: <FaLightbulb className="text-yellow-500" />,
+      icon: FaLightbulb,
       color: 'from-yellow-500 to-orange-500'
     },
     {
       title: 'Excellence',
       description: 'Striving for the highest standards in everything we do',
-      icon: <FaStar className="text-blue-500" />,
+      icon: FaStar,
       color: 'from-blue-500 to-purple-500'
     },
     {
       title: 'Collaboration',
       description: 'Building strong partnerships and working together towards common goals',
-      icon: <FaUsers className="text-green-500" />,
+      icon: FaUsers,
       color: 'from-green-500 to-teal-500'
     },
     {
       title: 'Impact',
       description: 'Creating meaningful change in technology and society',
-      icon: <FaHeart className="text-red-500" />,
+      icon: FaHeart,
       color: 'from-red-500 to-pink-500'
     }
   ];
@@ -206,6 +239,9 @@ export default function About() {
           {/* Multi-layer Background */}
           <div className="absolute inset-0 bg-gradient-to-br from-blue-900 via-purple-900 to-indigo-900"></div>
           <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-blue-900/30"></div>
+          
+          {/* Particle Background */}
+          <ParticleBackground />
           
           {/* Animated Background Elements */}
           <motion.div 
@@ -382,7 +418,7 @@ export default function About() {
             </motion.div>
           </div>
 
-          {/* Enhanced Scroll Indicator */}
+          {/*Scroll Indicator */}
           <motion.div 
             className="absolute flex flex-col items-center transform -translate-x-1/2 bottom-8 left-1/2 text-white/70"
             animate={{ y: [0, 10, 0] }}
@@ -423,22 +459,6 @@ export default function About() {
                 <p className="text-lg leading-relaxed text-gray-700">
                   We aim to bridge the gap between theoretical knowledge and practical implementation through experiential learning opportunities, industry collaboration, and community engagement.
                 </p>
-                
-                <div className="mt-8 overflow-hidden">
-                  <div className="relative h-1 overflow-hidden bg-gray-200 rounded-full">
-                    <motion.div 
-                      className="absolute top-0 left-0 h-full rounded-full bg-ieee-blue"
-                      initial={{ width: 0 }}
-                      whileInView={{ width: "85%" }}
-                      viewport={{ once: true }}
-                      transition={{ duration: 1, delay: 0.5 }}
-                    ></motion.div>
-                  </div>
-                  <div className="flex justify-between mt-2 text-sm font-medium">
-                    <span>Our Progress</span>
-                    <span>85%</span>
-                  </div>
-                </div>
               </motion.div>
 
               <motion.div 
@@ -521,7 +541,7 @@ export default function About() {
                       <div className="flex justify-center mb-6">
                         <div className={`p-4 rounded-2xl bg-gradient-to-br ${value.color} shadow-lg`}>
                           <div className="text-3xl text-white">
-                            {value.icon}
+                            <value.icon />
                           </div>
                         </div>
                       </div>
@@ -622,7 +642,7 @@ export default function About() {
         </section>
 
         {/* Enhanced Team Members Section */}
-        <section className="py-20 bg-gray-50">
+        <section id="team" className="py-20 bg-gray-50">
           <div className="container px-4 mx-auto">
             <motion.div 
               initial="hidden" 
@@ -666,7 +686,7 @@ export default function About() {
                     <img 
                       src={member.image} 
                       alt={member.name}
-                      className="object-cover object-center w-full h-full transition-transform duration-700 group-hover:scale-110"
+                      className="object-cover object-center w-full h-full transition-transform duration-700 group-hover:scale-105"
                     />
                     
                     {/* Social links overlay */}
@@ -738,11 +758,14 @@ export default function About() {
             </motion.div>
 
             <div className="relative">
-              {/* Timeline line */}
-              <div className="absolute w-1 h-full transform -translate-x-1/2 left-1/2 bg-ieee-light"></div>
+              {/* Timeline line - Hidden on mobile, visible on desktop */}
+              <div className="absolute hidden w-1 h-full transform -translate-x-1/2 md:block left-1/2 bg-ieee-light"></div>
+              
+              {/* Mobile Timeline line - Left aligned */}
+              <div className="absolute w-1 h-full bg-ieee-light left-6 md:hidden"></div>
               
               {/* Timeline items */}
-              <div className="space-y-12">
+              <div className="space-y-8 md:space-y-12">
                 {milestones.map((milestone, index) => (
                   <motion.div 
                     key={index}
@@ -751,20 +774,56 @@ export default function About() {
                     viewport={{ once: true }}
                     variants={fadeIn}
                     transition={{ duration: 0.5, delay: index * 0.1 }}
-                    className={`relative flex items-center ${index % 2 === 0 ? 'justify-start' : 'justify-end'} md:justify-between`}
+                    className={`relative flex items-center md:justify-between ${index % 2 === 0 ? 'md:justify-start' : 'md:justify-end'}`}
                   >
-                    <div className={`w-full md:w-5/12 ${index % 2 === 0 ? 'md:text-right md:pr-8' : 'md:text-left md:pl-8'}`}>
+                    {/* Mobile Layout */}
+                    <div className="flex items-start w-full md:hidden">
+                      {/* Mobile timeline dot */}
+                      <div className="relative z-10 flex items-center justify-center flex-shrink-0 w-12 h-12 mr-4 text-white rounded-full bg-ieee-blue">
+                        <div className="flex items-center justify-center w-8 h-8 text-sm font-bold rounded-full bg-white/20">
+                          {milestone.icon}
+                        </div>
+                      </div>
+                      
+                      {/* Mobile content */}
+                      <div className="flex-1 min-w-0">
+                        <div className="p-4 shadow-sm bg-gray-50 rounded-xl">
+                          <div className="flex flex-col mb-3 sm:flex-row sm:items-center sm:justify-between">
+                            <span className="inline-block px-3 py-1 mb-2 text-sm font-bold text-white rounded-full sm:mb-0 bg-ieee-blue w-fit">
+                              {milestone.year}
+                            </span>
+                            <span className="text-sm font-medium text-ieee-blue">
+                              {milestone.stats}
+                            </span>
+                          </div>
+                          <h3 className="mb-2 text-lg font-bold text-gray-900">{milestone.title}</h3>
+                          <p className="text-sm leading-relaxed text-gray-700">{milestone.description}</p>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Desktop Layout */}
+                    <div className={`hidden md:block w-full md:w-5/12 ${index % 2 === 0 ? 'md:text-right md:pr-8' : 'md:text-left md:pl-8'}`}>
                       <div className="p-6 shadow-sm bg-gray-50 rounded-xl">
-                        <span className="inline-block px-3 py-1 mb-2 text-sm font-bold text-white rounded-full bg-ieee-blue">
-                          {milestone.year}
-                        </span>
+                        <div className="flex items-center justify-between mb-3">
+                          <span className="inline-block px-3 py-1 text-sm font-bold text-white rounded-full bg-ieee-blue">
+                            {milestone.year}
+                          </span>
+                          <div className="flex items-center text-ieee-blue">
+                            {milestone.icon}
+                            <span className="ml-2 text-sm font-medium">{milestone.stats}</span>
+                          </div>
+                        </div>
                         <h3 className="mb-2 text-xl font-bold text-gray-900">{milestone.title}</h3>
                         <p className="text-gray-700">{milestone.description}</p>
                       </div>
                     </div>
 
-                    <div className="absolute z-10 flex items-center justify-center w-10 h-10 text-white transform -translate-x-1/2 rounded-full left-1/2 bg-ieee-blue">
-                      {index + 1}
+                    {/* Desktop timeline dot */}
+                    <div className="absolute z-10 items-center justify-center hidden w-12 h-12 text-white transform -translate-x-1/2 rounded-full md:flex left-1/2 bg-ieee-blue">
+                      <div className="flex items-center justify-center w-8 h-8 text-sm font-bold rounded-full bg-white/20">
+                        {index + 1}
+                      </div>
                     </div>
                   </motion.div>
                 ))}

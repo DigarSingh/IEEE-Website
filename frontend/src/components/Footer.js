@@ -94,10 +94,9 @@ export default function Footer() {
                   Join us in shaping the future of engineering and technology.
                 </p>
                 
-                {/* Enhanced Social Links */}
+                {/*Social Links */}
                 <div className="flex space-x-4">
                   {[
-                    { icon: FaTwitter, href: "https://www.instagram.com/ieee.geu/", color: "from-sky-400 to-sky-600" },
                     { icon: FaInstagram, href: "https://www.instagram.com/ieee.geu/", color: "from-pink-500 to-purple-600" },
                     { icon: FaLinkedin, href: "https://www.linkedin.com/company/geu-ieee-student-branch/", color: "from-blue-500 to-blue-700" },
                   ].map((social, index) => (
@@ -156,7 +155,7 @@ export default function Footer() {
                 ))}
               </ul>
             </motion.div>
-            {/* Enhanced Resources */}
+            {/*Resources */}
             <motion.div
               variants={{
                 hidden: { opacity: 0, y: 20 },
@@ -225,8 +224,8 @@ export default function Footer() {
                   whileHover={{ x: 5 }}
                   transition={{ duration: 0.2 }}
                 >
-                  <div className="flex items-center justify-center w-10 h-10 mt-1 mr-4 transition-all rounded-lg bg-gradient-to-r from-blue-500 to-blue-600 group-hover:from-blue-600 group-hover:to-blue-700">
-                    <FaMapMarkerAlt className="text-white" />
+                  <div className="flex items-center justify-center flex-shrink-0 w-10 h-10 mr-4 transition-all rounded-lg bg-gradient-to-r from-blue-500 to-blue-600 group-hover:from-blue-600 group-hover:to-blue-700">
+                    <FaMapMarkerAlt className="w-4 h-4 text-white" />
                   </div>
                   <span className="text-gray-300 transition-colors group-hover:text-white">
                     566/6, Bell Road, Society Area,<br />
@@ -240,12 +239,12 @@ export default function Footer() {
                   whileHover={{ x: 5 }}
                   transition={{ duration: 0.2 }}
                 >
-                  <div className="flex items-center justify-center w-10 h-10 mr-4 transition-all rounded-lg bg-gradient-to-r from-green-500 to-green-600 group-hover:from-green-600 group-hover:to-green-700">
-                    <FaEnvelope size={40} className="text-white" />
+                  <div className="flex items-center justify-center flex-shrink-0 w-10 h-10 mr-4 transition-all rounded-lg bg-gradient-to-r from-green-500 to-green-600 group-hover:from-green-600 group-hover:to-green-700">
+                    <FaEnvelope className="w-4 h-4 text-white" />
                   </div>
                   <a 
-                    href="mailto:" 
-                    className="text-gray-300 transition-colors group-hover:text-white"
+                    href="mailto:geu.ieee.studentbranch@gmail.com" 
+                    className="text-gray-300 break-all transition-colors group-hover:text-white"
                   >
                     geu.ieee.studentbranch@gmail.com
                   </a>
@@ -256,8 +255,8 @@ export default function Footer() {
                   whileHover={{ x: 5 }}
                   transition={{ duration: 0.2 }}
                 >
-                  <div className="flex items-center justify-center w-10 h-10 mr-4 transition-all rounded-lg bg-gradient-to-r from-purple-500 to-purple-600 group-hover:from-purple-600 group-hover:to-purple-700">
-                    <FaPhone className="text-white" />
+                  <div className="flex items-center justify-center flex-shrink-0 w-10 h-10 mr-4 transition-all rounded-lg bg-gradient-to-r from-purple-500 to-purple-600 group-hover:from-purple-600 group-hover:to-purple-700">
+                    <FaPhone className="w-4 h-4 text-white" />
                   </div>
                   <a 
                     href="tel:+917668410473" 
@@ -271,7 +270,7 @@ export default function Footer() {
           </motion.div>
         </div>
 
-        {/* Enhanced Bottom Section */}
+        {/*Bottom Section */}
         <motion.div
           className="pt-8 mt-12 border-t border-white/10"
           initial={{ opacity: 0 }}

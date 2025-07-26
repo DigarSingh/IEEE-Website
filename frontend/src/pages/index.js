@@ -11,14 +11,6 @@ export default function Home() {
   const [isVisible, setIsVisible] = useState(false);
   const [currentTestimonial, setCurrentTestimonial] = useState(0);
   const heroRef = useRef(null);
-  
-  // Temporarily disable parallax effects to fix the error
-  // const { scrollY } = useScroll();
-  // const { isVisible: sectionsVisible, observeElement } = useIntersectionObserver();
-  
-  // Parallax effects - temporarily disabled
-  // const y = useTransform(scrollY, [0, 500], [0, 150]);
-  // const opacity = useTransform(scrollY, [0, 300], [1, 0]);
 
   useEffect(() => {
     setIsVisible(true);
@@ -59,28 +51,28 @@ export default function Home() {
     { 
       value: '100+', 
       label: 'Active Members', 
-      icon: <FaUsers className="text-3xl text-blue-400" />,
+      icon: <FaUsers className="text-3xl text-white" />,
       description: 'Students actively participating in IEEE activities',
       color: 'from-blue-500 to-cyan-500'
     },
     { 
       value: '50+', 
       label: 'Annual Events', 
-      icon: <FaCalendar className="text-3xl text-green-400" />,
+      icon: <FaCalendar className="text-3xl text-white" />,
       description: 'Technical workshops, seminars, and competitions',
       color: 'from-green-500 to-emerald-500'
     },
     { 
       value: '25+', 
       label: 'Innovation Projects', 
-      icon: <FaLightbulb className="text-3xl text-yellow-400" />,
+      icon: <FaLightbulb className="text-3xl text-white" />,
       description: 'Cutting-edge research and development initiatives',
       color: 'from-yellow-500 to-orange-500'
     },
     { 
       value: '10+', 
       label: 'Industry Partners', 
-      icon: <FaGraduationCap className="text-3xl text-purple-400" />,
+      icon: <FaGraduationCap className="text-3xl text-white" />,
       description: 'Leading companies collaborating with our students',
       color: 'from-purple-500 to-pink-500'
     },
@@ -192,6 +184,30 @@ export default function Home() {
           {/* Multi-layer Background */}
           <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-purple-900 to-slate-800"></div>
           <div className="absolute inset-0 bg-gradient-to-t from-blue-900/50 via-transparent to-purple-900/30"></div>
+          
+          {/* IEEE Logo */}
+          <div className="absolute z-20 top-8 left-8">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.8 }}
+              className="flex items-center space-x-3"
+            >
+              <div className="relative p-2 bg-white rounded-lg shadow-lg">
+                <img 
+                  src="/images/logo.png" 
+                  alt="IEEE Logo" 
+                  className="object-contain w-12 h-12"
+                />
+              </div>
+              <div className="text-white">
+                <h3 className="text-lg font-bold text-transparent bg-gradient-to-r from-blue-200 to-white bg-clip-text">
+                  IEEE Student Branch
+                </h3>
+                <p className="text-sm text-blue-200">Graphic Era University</p>
+              </div>
+            </motion.div>
+          </div>
           
           {/* Animated Background Elements */}
           <motion.div 

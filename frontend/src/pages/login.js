@@ -8,10 +8,13 @@ import {
   FaArrowRight,
   FaEye,
   FaEyeSlash,
+  FaShieldAlt,
+  FaRocket,
+  FaCheckCircle,
 } from "react-icons/fa";
 import Layout from "@/components/Layout";
+import ParticleBackground from '@/components/ParticleBackground';
 import dynamic from "next/dynamic";
-import AuthParticleBackground from "@/components/AuthParticleBackground";
 
 export default function Login() {
   const [formData, setFormData] = useState({
@@ -136,460 +139,316 @@ export default function Login() {
 
   const fadeIn = {
     hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0 },
+    visible: { 
+      opacity: 1, 
+      y: 0,
+      transition: { duration: 0.6, ease: "easeOut" }
+    }
+  };
+
+  const staggerContainer = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+        delayChildren: 0.2
+      }
+    }
   };
 
   return (
     <Layout hideFooter={true}>
-      <div className="relative min-h-screen overflow-hidden bg-[#080D14] text-gray-300">
-        {/* Particle Background */}
-        <AuthParticleBackground />
-
+      <div className="relative min-h-screen overflow-hidden bg-gradient-to-br from-blue-900 via-purple-900 to-indigo-900">
         <Head>
-          <title>Login | IEEE Club</title>
-          <meta name="description" content="Login to your IEEE Club account" />
+          <title>Login | IEEE GEU Student Branch</title>
+          <meta name="description" content="Sign in to your IEEE GEU Student Branch account" />
         </Head>
 
-        {/* Only render animations on client-side */}
-        {isMounted && (
-          <>
-            {/* Tech background elements */}
-            <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none opacity-20">
-              <div className="absolute top-0 right-0 w-full h-full">
-                <svg
-                  viewBox="0 0 100 100"
-                  preserveAspectRatio="none"
-                  className="absolute top-0 left-0 w-full h-full"
-                >
-                  <motion.path
-                    d="M0,0 L100,0 L100,5 L0,20 Z"
-                    fill="rgba(59, 130, 246, 0.5)"
-                    animate={{ opacity: [0.4, 0.6, 0.4] }}
-                    transition={{ duration: 4, repeat: Infinity }}
-                  />
-                  <motion.path
-                    d="M0,30 L100,15 L100,25 L0,40 Z"
-                    fill="rgba(79, 70, 229, 0.5)"
-                    animate={{ opacity: [0.3, 0.5, 0.3] }}
-                    transition={{ duration: 3, repeat: Infinity, delay: 0.5 }}
-                  />
-                  <motion.path
-                    d="M0,50 L100,40 L100,45 L0,55 Z"
-                    fill="rgba(16, 185, 129, 0.5)"
-                    animate={{ opacity: [0.5, 0.7, 0.5] }}
-                    transition={{ duration: 4, repeat: Infinity, delay: 1 }}
-                  />
-                  <motion.path
-                    d="M0,70 L100,65 L100,75 L0,85 Z"
-                    fill="rgba(236, 72, 153, 0.5)"
-                    animate={{ opacity: [0.4, 0.6, 0.4] }}
-                    transition={{ duration: 5, repeat: Infinity, delay: 1.5 }}
-                  />
-                  <motion.path
-                    d="M0,100 L100,90 L100,100 L0,100 Z"
-                    fill="rgba(124, 58, 237, 0.5)"
-                    animate={{ opacity: [0.5, 0.8, 0.5] }}
-                    transition={{ duration: 4, repeat: Infinity, delay: 0.8 }}
-                  />
-                </svg>
-              </div>
+        {/* Background Elements */}
+        <ParticleBackground />
+        <div className="absolute inset-0">
+          {/* Gradient Overlays */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-blue-900/30"></div>
+          
+          {/* Animated Background Patterns */}
+          <div className="absolute inset-0 opacity-10">
+            <div className="absolute inset-0" style={{
+              backgroundImage: `radial-gradient(circle at 25px 25px, rgba(255,255,255,0.2) 2%, transparent 0%), 
+                               radial-gradient(circle at 75px 75px, rgba(255,255,255,0.1) 2%, transparent 0%)`,
+              backgroundSize: '100px 100px'
+            }}></div>
+          </div>
 
-              {/* Binary code effect - with deterministic positioning */}
-              <div className="absolute inset-0 flex flex-wrap opacity-10">
-                {[...Array(100)].map((_, i) => (
-                  <motion.div
-                    key={`binary-${i}`}
-                    className="font-mono text-xs text-blue-400"
-                    style={{
-                      position: "absolute",
-                      left: `${(i * 1.8) % 100}%`,
-                      top: `${(i * 1.1) % 100}%`,
-                    }}
-                    animate={{ opacity: [0, 1, 0] }}
-                    transition={{
-                      duration: 3 + (i % 5),
-                      repeat: Infinity,
-                      delay: i * 0.1,
-                    }}
-                  >
-                    {i % 2 === 0 ? "1" : "0"}
-                  </motion.div>
-                ))}
-              </div>
+          {/* Floating Elements */}
+          {isMounted && (
+            <>
+              <motion.div 
+                className="absolute w-32 h-32 rounded-full top-20 left-10 bg-blue-500/10 blur-xl"
+                animate={{ 
+                  y: [0, -20, 0],
+                  scale: [1, 1.1, 1]
+                }}
+                transition={{ 
+                  duration: 6,
+                  repeat: Infinity,
+                  ease: "easeInOut"
+                }}
+              />
+              <motion.div 
+                className="absolute w-48 h-48 rounded-full top-40 right-20 bg-purple-500/10 blur-2xl"
+                animate={{ 
+                  y: [0, 15, 0],
+                  scale: [1, 0.9, 1]
+                }}
+                transition={{ 
+                  duration: 8,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                  delay: 1
+                }}
+              />
+              <motion.div 
+                className="absolute w-40 h-40 rounded-full bottom-40 left-20 bg-cyan-500/10 blur-xl"
+                animate={{ 
+                  y: [0, -15, 0],
+                  scale: [1, 1.2, 1]
+                }}
+                transition={{ 
+                  duration: 7,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                  delay: 2
+                }}
+              />
+            </>
+          )}
+        </div>
 
-              {/* Circuit pattern */}
-              <div className="absolute inset-0">
-                <svg width="100%" height="100%" className="opacity-10">
-                  <pattern
-                    id="circuit-pattern"
-                    x="0"
-                    y="0"
-                    width="100"
-                    height="100"
-                    patternUnits="userSpaceOnUse"
-                  >
-                    <circle
-                      cx="10"
-                      cy="10"
-                      r="2"
-                      fill="rgba(59, 130, 246, 0.5)"
-                    />
-                    <line
-                      x1="10"
-                      y1="10"
-                      x2="50"
-                      y2="10"
-                      stroke="rgba(59, 130, 246, 0.5)"
-                      strokeWidth="1"
-                    />
-                    <circle
-                      cx="50"
-                      cy="10"
-                      r="2"
-                      fill="rgba(59, 130, 246, 0.5)"
-                    />
-                    <line
-                      x1="50"
-                      y1="10"
-                      x2="50"
-                      y2="50"
-                      stroke="rgba(59, 130, 246, 0.5)"
-                      strokeWidth="1"
-                    />
-                    <circle
-                      cx="50"
-                      cy="50"
-                      r="2"
-                      fill="rgba(59, 130, 246, 0.5)"
-                    />
-                    <line
-                      x1="50"
-                      y1="50"
-                      x2="90"
-                      y2="50"
-                      stroke="rgba(59, 130, 246, 0.5)"
-                      strokeWidth="1"
-                    />
-                    <circle
-                      cx="90"
-                      cy="50"
-                      r="2"
-                      fill="rgba(59, 130, 246, 0.5)"
-                    />
-                    <line
-                      x1="90"
-                      y1="50"
-                      x2="90"
-                      y2="90"
-                      stroke="rgba(59, 130, 246, 0.5)"
-                      strokeWidth="1"
-                    />
-                    <circle
-                      cx="90"
-                      cy="90"
-                      r="2"
-                      fill="rgba(59, 130, 246, 0.5)"
-                    />
-                    <line
-                      x1="90"
-                      y1="90"
-                      x2="10"
-                      y2="90"
-                      stroke="rgba(59, 130, 246, 0.5)"
-                      strokeWidth="1"
-                    />
-                    <circle
-                      cx="10"
-                      cy="90"
-                      r="2"
-                      fill="rgba(59, 130, 246, 0.5)"
-                    />
-                  </pattern>
-                  <rect
-                    x="0"
-                    y="0"
-                    width="100%"
-                    height="100%"
-                    fill="url(#circuit-pattern)"
-                  />
-                </svg>
-              </div>
-            </div>
-          </>
-        )}
-
-        <div className="container relative z-10 px-6 py-16 mx-auto">
-          <div className="flex justify-center">
+        {/* Main Content */}
+        <div className="container relative z-10 flex items-center justify-center min-h-screen px-6 py-8 mx-auto">
+          <motion.div
+            className="w-full max-w-md"
+            initial="hidden"
+            animate="visible"
+            variants={staggerContainer}
+          >
+            {/* Enhanced Login Card */}
             <motion.div
-              className="w-full max-w-md"
-              initial="hidden"
-              animate="visible"
               variants={fadeIn}
-              transition={{ duration: 0.5 }}
+              className="relative p-8 overflow-hidden border shadow-2xl bg-white/10 backdrop-blur-xl border-white/20 rounded-3xl"
+              whileHover={{ 
+                boxShadow: "0 25px 50px rgba(0, 0, 0, 0.3)",
+                scale: 1.02
+              }}
+              transition={{ duration: 0.3 }}
             >
-              <motion.div
-                className="p-8 overflow-hidden border border-gray-800 shadow-2xl bg-[#101926]/70 backdrop-blur-lg rounded-2xl"
-                whileHover={{ boxShadow: "0 20px 40px rgba(0, 0, 0, 0.4)" }}
-                transition={{ duration: 0.3 }}
+              {/* Header Section */}
+              <motion.div 
+                variants={fadeIn}
+                className="mb-8 text-center"
               >
-                <div className="mb-8 text-center">
-                  <motion.div
-                    initial={{ y: -20, opacity: 0 }}
-                    animate={{ y: 0, opacity: 1 }}
-                    transition={{ duration: 0.5 }}
-                  >
-                    <Link href="/">
-                      <img
-                        src="/images/logo.png"
-                        alt="IEEE Logo"
-                        className="h-20 mx-auto mb-4 cursor-pointer"
-                      />
-                    </Link>
-                  </motion.div>
-
-                  <motion.h2
-                    className="mb-1 text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500"
-                    initial={{ y: -10, opacity: 0 }}
-                    animate={{ y: 0, opacity: 1 }}
-                    transition={{ duration: 0.5, delay: 0.1 }}
-                  >
-                    Access Portal
-                  </motion.h2>
-
-                  <motion.p
-                    className="text-gray-400"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ duration: 0.5, delay: 0.2 }}
-                  >
-                    Sign in to your IEEE account
-                  </motion.p>
-                </div>
-
-                {errors.form && (
-                  <motion.div
-                    className="p-4 mb-6 text-sm text-red-400 rounded-lg bg-red-900/30"
-                    initial={{ opacity: 0, y: -10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.3 }}
-                  >
-                    {errors.form}
-                  </motion.div>
-                )}
-
-                <form onSubmit={handleSubmit} className="space-y-5">
-                  <motion.div
-                    className="space-y-2"
-                    initial={{ x: -20, opacity: 0 }}
-                    animate={{ x: 0, opacity: 1 }}
-                    transition={{ duration: 0.5, delay: 0.3 }}
-                  >
-                    <label
-                      className="block text-sm font-medium text-gray-300"
-                      htmlFor="email"
-                    >
-                      Email Address
-                    </label>
-                    <div className="relative">
-                      <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                        <FaUser className="text-blue-400" />
-                      </div>
-                      <motion.input
-                        type="email"
-                        id="email"
-                        name="email"
-                        value={formData.email}
-                        onChange={handleChange}
-                        className={`block w-full pl-10 pr-3 py-3 border ${
-                          errors.email ? "border-red-500" : "border-gray-700"
-                        } bg-gray-900/60 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-400 focus:border-blue-400 transition-all duration-200 text-white`}
-                        placeholder="you@example.com"
-                        whileFocus={{ scale: 1.01 }}
-                      />
-                    </div>
-                    {errors.email && (
-                      <motion.p
-                        className="mt-1 text-sm text-red-400"
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ duration: 0.3 }}
-                      >
-                        {errors.email}
-                      </motion.p>
-                    )}
-                  </motion.div>
-
-                  <motion.div
-                    className="space-y-2"
-                    initial={{ x: -20, opacity: 0 }}
-                    animate={{ x: 0, opacity: 1 }}
-                    transition={{ duration: 0.5, delay: 0.4 }}
-                  >
-                    <label
-                      className="block text-sm font-medium text-gray-300"
-                      htmlFor="password"
-                    >
-                      Password
-                    </label>
-                    <div className="relative">
-                      <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                        <FaLock className="text-blue-400" />
-                      </div>
-                      <motion.input
-                        type={showPassword ? "text" : "password"}
-                        id="password"
-                        name="password"
-                        value={formData.password}
-                        onChange={handleChange}
-                        className={`block w-full pl-10 pr-10 py-3 border ${
-                          errors.password ? "border-red-500" : "border-gray-700"
-                        } bg-gray-900/60 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-400 focus:border-blue-400 transition-all duration-200 text-white`}
-                        placeholder="••••••••"
-                        whileFocus={{ scale: 1.01 }}
-                      />
-                      <div className="absolute inset-y-0 right-0 flex items-center pr-3">
-                        <button
-                          type="button"
-                          onClick={togglePasswordVisibility}
-                          className="text-gray-400 hover:text-blue-400 focus:outline-none"
-                        >
-                          {showPassword ? (
-                            <FaEyeSlash className="w-5 h-5" />
-                          ) : (
-                            <FaEye className="w-5 h-5" />
-                          )}
-                        </button>
-                      </div>
-                    </div>
-                    {errors.password && (
-                      <motion.p
-                        className="mt-1 text-sm text-red-400"
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ duration: 0.3 }}
-                      >
-                        {errors.password}
-                      </motion.p>
-                    )}
-                  </motion.div>
-
-                  <motion.div
-                    className="flex items-center justify-between"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ duration: 0.5, delay: 0.5 }}
-                  >
-                    <div className="flex items-center">
-                      <input
-                        id="remember"
-                        type="checkbox"
-                        className="w-4 h-4 text-blue-500 bg-gray-900 border-gray-700 rounded focus:ring-blue-400"
-                      />
-                      <label
-                        htmlFor="remember"
-                        className="block ml-2 text-sm text-gray-300"
-                      >
-                        Remember me
-                      </label>
-                    </div>
-                    <Link href="/forgot-password">
-                      <span className="text-sm text-blue-400 hover:text-blue-300">
-                        Forgot password?
-                      </span>
-                    </Link>
-                  </motion.div>
-
-                  <motion.button
-                    type="submit"
-                    disabled={isSubmitting}
-                    className="relative flex items-center justify-center w-full px-4 py-3 mt-2 overflow-hidden text-white transition-all rounded-lg bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-900 focus:ring-blue-400"
-                    whileHover={{
-                      scale: 1.02,
-                      boxShadow:
-                        "0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.15)",
-                    }}
-                    whileTap={{ scale: 0.98 }}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5, delay: 0.6 }}
-                  >
-                    {/* Button shine effect */}
-                    <motion.div
-                      className="absolute top-0 -left-4 w-1/4 h-full bg-white opacity-30 skew-x-[30deg]"
-                      animate={{
-                        x: ["0%", "400%"],
-                      }}
-                      transition={{
-                        duration: 2.5,
-                        repeat: Infinity,
-                        repeatType: "loop",
-                        ease: "easeInOut",
-                        repeatDelay: 1,
-                      }}
-                    />
-
-                    <span className="relative z-10 flex items-center">
-                      {isSubmitting ? (
-                        <svg
-                          className="w-5 h-5 mr-3 -ml-1 text-white animate-spin"
-                          xmlns="http://www.w3.org/2000/svg"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                        >
-                          <circle
-                            className="opacity-25"
-                            cx="12"
-                            cy="12"
-                            r="10"
-                            stroke="currentColor"
-                            strokeWidth="4"
-                          ></circle>
-                          <path
-                            className="opacity-75"
-                            fill="currentColor"
-                            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                          ></path>
-                        </svg>
-                      ) : (
-                        <>
-                          Sign In
-                          <motion.span
-                            animate={{ x: [0, 5, 0] }}
-                            transition={{ repeat: Infinity, duration: 1.5 }}
-                            className="ml-2"
-                          >
-                            <FaArrowRight />
-                          </motion.span>
-                        </>
-                      )}
-                    </span>
-                  </motion.button>
-                </form>
-
                 <motion.div
-                  className="mt-6 text-center"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ duration: 0.5, delay: 0.9 }}
+                  className="inline-flex items-center justify-center w-20 h-20 mb-6 overflow-hidden shadow-lg bg-white rounded-2xl"
+                  whileHover={{ rotate: 360 }}
+                  transition={{ duration: 0.8 }}
                 >
-                  <p className="text-sm text-gray-400">
-                    Don't have an account?{" "}
-                    <Link href="/signup">
-                      <motion.span
-                        className="font-medium text-blue-400 hover:text-blue-300"
-                        whileHover={{
-                          scale: 1.05,
-                          textDecoration: "underline",
-                        }}
-                      >
-                        Sign up
-                      </motion.span>
-                    </Link>
-                  </p>
+                  <img 
+                    src="/images/logo.png" 
+                    alt="IEEE Logo" 
+                    className="w-16 h-16 object-contain"
+                  />
                 </motion.div>
+
+                <motion.h1 
+                  variants={fadeIn}
+                  className="mb-2 text-3xl font-bold text-white"
+                >
+                  Welcome Back
+                </motion.h1>
+                
+                <motion.p 
+                  variants={fadeIn}
+                  className="text-blue-100"
+                >
+                  Sign in to access your IEEE dashboard
+                </motion.p>
+              </motion.div>
+
+              {/* Error Alert */}
+              {errors.form && (
+                <motion.div
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="p-4 mb-6 text-red-200 border rounded-xl bg-red-500/20 border-red-500/30"
+                >
+                  <div className="flex items-center">
+                    <FaShieldAlt className="mr-2 text-red-400" />
+                    {errors.form}
+                  </div>
+                </motion.div>
+              )}
+
+              {/* Login Form */}
+              <form onSubmit={handleSubmit} className="space-y-6">
+                {/* Email Field */}
+                <motion.div variants={fadeIn}>
+                  <label className="block mb-2 text-sm font-medium text-blue-100">
+                    Email Address
+                  </label>
+                  <div className="relative group">
+                    <div className="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none">
+                      <FaUser className={`text-lg transition-colors ${errors.email ? 'text-red-400' : 'text-blue-400 group-focus-within:text-purple-400'}`} />
+                    </div>
+                    <motion.input
+                      type="email"
+                      name="email"
+                      value={formData.email}
+                      onChange={handleChange}
+                      className={`w-full pl-12 pr-4 py-4 bg-white/10 border rounded-xl text-white placeholder-blue-200/50 transition-all duration-300 focus:outline-none focus:ring-2 backdrop-blur-sm ${
+                        errors.email 
+                          ? 'border-red-500/50 focus:ring-red-500/50' 
+                          : 'border-white/20 focus:border-blue-400/50 focus:ring-blue-400/50'
+                      }`}
+                      placeholder="Enter your email"
+                      whileFocus={{ scale: 1.02 }}
+                    />
+                  </div>
+                  {errors.email && (
+                    <motion.p
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      className="mt-2 text-sm text-red-300"
+                    >
+                      {errors.email}
+                    </motion.p>
+                  )}
+                </motion.div>
+
+                {/* Password Field */}
+                <motion.div variants={fadeIn}>
+                  <label className="block mb-2 text-sm font-medium text-blue-100">
+                    Password
+                  </label>
+                  <div className="relative group">
+                    <div className="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none">
+                      <FaLock className={`text-lg transition-colors ${errors.password ? 'text-red-400' : 'text-blue-400 group-focus-within:text-purple-400'}`} />
+                    </div>
+                    <motion.input
+                      type={showPassword ? "text" : "password"}
+                      name="password"
+                      value={formData.password}
+                      onChange={handleChange}
+                      className={`w-full pl-12 pr-12 py-4 bg-white/10 border rounded-xl text-white placeholder-blue-200/50 transition-all duration-300 focus:outline-none focus:ring-2 backdrop-blur-sm ${
+                        errors.password 
+                          ? 'border-red-500/50 focus:ring-red-500/50' 
+                          : 'border-white/20 focus:border-blue-400/50 focus:ring-blue-400/50'
+                      }`}
+                      placeholder="Enter your password"
+                      whileFocus={{ scale: 1.02 }}
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword(!showPassword)}
+                      className="absolute inset-y-0 right-0 flex items-center pr-4 text-blue-400 transition-colors hover:text-purple-400"
+                    >
+                      {showPassword ? <FaEyeSlash /> : <FaEye />}
+                    </button>
+                  </div>
+                  {errors.password && (
+                    <motion.p
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      className="mt-2 text-sm text-red-300"
+                    >
+                      {errors.password}
+                    </motion.p>
+                  )}
+                </motion.div>
+
+                {/* Remember Me & Forgot Password */}
+                <motion.div 
+                  variants={fadeIn}
+                  className="flex items-center justify-between"
+                >
+                  <label className="flex items-center">
+                    <input
+                      type="checkbox"
+                      className="w-4 h-4 text-blue-500 rounded bg-white/10 border-white/20 focus:ring-blue-400/50"
+                    />
+                    <span className="ml-2 text-sm text-blue-100">Remember me</span>
+                  </label>
+                  <Link href="/forgot-password">
+                    <span className="text-sm text-blue-300 transition-colors cursor-pointer hover:text-purple-300">
+                      Forgot password?
+                    </span>
+                  </Link>
+                </motion.div>
+
+                {/* Submit Button */}
+                <motion.button
+                  type="submit"
+                  disabled={isSubmitting}
+                  variants={fadeIn}
+                  className="relative w-full px-6 py-4 overflow-hidden font-semibold text-white transition-all duration-300 bg-gradient-to-r from-blue-500 to-purple-600 rounded-xl hover:from-blue-600 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-blue-400/50 disabled:opacity-70 group"
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  {/* Button Shimmer Effect */}
+                  <div className="absolute inset-0 transition-transform duration-1000 -translate-x-full -skew-x-12 bg-gradient-to-r from-transparent via-white/20 to-transparent group-hover:translate-x-full"></div>
+                  
+                  <span className="relative flex items-center justify-center">
+                    {isSubmitting ? (
+                      <div className="flex items-center">
+                        <svg className="w-5 h-5 mr-3 animate-spin" fill="none" viewBox="0 0 24 24">
+                          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                        Signing In...
+                      </div>
+                    ) : (
+                      <div className="flex items-center">
+                        Sign In
+                        <FaArrowRight className="ml-2 transition-transform group-hover:translate-x-1" />
+                      </div>
+                    )}
+                  </span>
+                </motion.button>
+              </form>
+
+              {/* Sign Up Link */}
+              <motion.div 
+                variants={fadeIn}
+                className="mt-8 text-center"
+              >
+                <p className="text-blue-100">
+                  Don't have an account?{' '}
+                  <Link href="/signup">
+                    <span className="font-semibold text-blue-300 transition-colors cursor-pointer hover:text-purple-300">
+                      Create Account
+                    </span>
+                  </Link>
+                </p>
+              </motion.div>
+
+              {/* Features */}
+              <motion.div 
+                variants={fadeIn}
+                className="pt-6 mt-8 border-t border-white/10"
+              >
+                <div className="grid grid-cols-2 gap-4 text-center">
+                  <div className="flex flex-col items-center p-3 rounded-xl bg-white/5">
+                    <FaRocket className="mb-2 text-2xl text-blue-400" />
+                    <span className="text-xs text-blue-100">Fast Access</span>
+                  </div>
+                  <div className="flex flex-col items-center p-3 rounded-xl bg-white/5">
+                    <FaCheckCircle className="mb-2 text-2xl text-green-400" />
+                    <span className="text-xs text-blue-100">Secure Login</span>
+                  </div>
+                </div>
               </motion.div>
             </motion.div>
-          </div>
+          </motion.div>
         </div>
       </div>
     </Layout>

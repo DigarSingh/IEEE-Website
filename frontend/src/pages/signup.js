@@ -2,15 +2,26 @@ import Head from 'next/head';
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { FaUser, FaLock, FaEnvelope, FaUniversity, FaArrowRight, FaGoogle, FaGithub, FaMobileAlt, FaIdCard, FaEye, FaEyeSlash } from 'react-icons/fa';
+import { 
+  FaUser, 
+  FaLock, 
+  FaEnvelope, 
+  FaArrowRight, 
+  FaMobileAlt, 
+  FaIdCard, 
+  FaEye, 
+  FaEyeSlash,
+  FaUserPlus,
+  FaGraduationCap,
+  FaCalendarAlt
+} from 'react-icons/fa';
+import ParticleBackground from '@/components/ParticleBackground';
 import Layout from '@/components/Layout';
-import AuthParticleBackground from '@/components/AuthParticleBackground';
 
 export default function Signup() {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
-    college: '',
     branch: '',
     year: '',
     mobile: '',
@@ -20,7 +31,6 @@ export default function Signup() {
   });
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [registrationSuccess, setRegistrationSuccess] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
@@ -34,142 +44,100 @@ export default function Signup() {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+    
     // Clear error when user starts typing
     if (errors[name]) {
-      setErrors({ ...errors, [name]: '' });
+      setErrors(prev => ({
+        ...prev,
+        [name]: ''
+      }));
     }
   };
 
   const validateForm = () => {
     const newErrors = {};
-    
-    // Name validation
+
     if (!formData.name.trim()) {
       newErrors.name = 'Name is required';
     }
-    
-    // Email validation
-    if (!formData.email) {
+
+    if (!formData.email.trim()) {
       newErrors.email = 'Email is required';
     } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      newErrors.email = 'Email is invalid';
+      newErrors.email = 'Please enter a valid email';
     }
-    
-    // College validation
-    if (!formData.college.trim()) {
-      newErrors.college = 'College name is required';
-    }
-    
-    // Branch/Department validation
-    if (!formData.branch.trim()) {
-      newErrors.branch = 'Branch/Department is required';
-    }
-    
-    // Year validation
-    if (!formData.year.trim()) {
-      newErrors.year = 'Year of study is required';
-    }
-    
-    // Mobile validation
-    if (!formData.mobile) {
+
+    if (!formData.mobile.trim()) {
       newErrors.mobile = 'Mobile number is required';
     } else if (!/^\d{10}$/.test(formData.mobile)) {
-      newErrors.mobile = 'Enter a valid 10-digit mobile number';
+      newErrors.mobile = 'Please enter a valid 10-digit mobile number';
     }
-    
-    // Student ID validation
+
     if (!formData.studentId.trim()) {
       newErrors.studentId = 'Student ID is required';
     }
-    
-    // Password validation
+
+    if (!formData.branch.trim()) {
+      newErrors.branch = 'Branch/Department is required';
+    }
+
+    if (!formData.year.trim()) {
+      newErrors.year = 'Year of study is required';
+    }
+
     if (!formData.password) {
       newErrors.password = 'Password is required';
     } else if (formData.password.length < 6) {
       newErrors.password = 'Password must be at least 6 characters';
     }
-    
-    // Confirm password validation
-    if (formData.password !== formData.confirmPassword) {
+
+    if (!formData.confirmPassword) {
+      newErrors.confirmPassword = 'Please confirm your password';
+    } else if (formData.password !== formData.confirmPassword) {
       newErrors.confirmPassword = 'Passwords do not match';
     }
-    
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
+
+    return newErrors;
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     
-    if (validateForm()) {
-      setIsSubmitting(true);
-      setErrors({});
-      
-      try {
-        // Create a copy of formData without confirmPassword for backend
-        const { confirmPassword, ...registrationData } = formData;
-        console.log('Submitting registration data:', {
-          ...registrationData,
-          password: '[MASKED]'
-        });
-        
-        // Use environment variable for API URL with fallback
-        const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
-        const registerEndpoint = `${apiUrl}/api/auth/register`;
-        console.log('Using API URL:', registerEndpoint);
-        
-        const response = await fetch(registerEndpoint, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(registrationData),
-          credentials: 'include' // Include cookies if your API uses them
-        });
-        
-        console.log('Response status:', response.status);
-        
-        // Parse the JSON response
-        let data;
-        try {
-          data = await response.json();
-          console.log('Response data structure:', Object.keys(data));
-        } catch (parseError) {
-          console.error('Error parsing response:', parseError);
-          throw new Error('Unable to parse server response. Please try again.');
-        }
-        
-        // Handle unsuccessful responses
-        if (!response.ok) {
-          console.error('Server error response:', data);
-          const errorMessage = data.message || 'Registration failed. Please try again.';
-          throw new Error(errorMessage);
-        }
-        
-        // Verify we got the expected data
-        if (!data.token || !data.user) {
-          console.error('Invalid server response:', data);
-          throw new Error('Invalid response from server. Missing token or user data.');
-        }
-        
-        console.log('Registration successful, received token and user data');
-        
-        // Store token in localStorage
-        localStorage.setItem('token', data.token);
-        localStorage.setItem('user', JSON.stringify(data.user));
-        
-        // Show success message
-        setRegistrationSuccess(true);
-        
-      } catch (error) {
-        console.error('Registration error:', error);
-        setErrors({ 
-          form: error.message || 'Registration failed. Please try again.' 
-        });
-      } finally {
-        setIsSubmitting(false);
+    const newErrors = validateForm();
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return;
+    }
+
+    setIsSubmitting(true);
+    setErrors({});
+
+    try {
+      const response = await fetch('/api/auth/signup', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        // Optionally redirect to login or dashboard
+        // router.push('/login');
+        console.log('Registration successful');
+      } else {
+        setErrors({ form: data.message || 'Registration failed' });
       }
+    } catch (error) {
+      setErrors({ form: 'Network error. Please try again.' });
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -181,308 +149,79 @@ export default function Signup() {
     setShowConfirmPassword(!showConfirmPassword);
   };
 
-  const fadeIn = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0 }
-  };
-
-  // Registration success screen
-  if (registrationSuccess) {
-    return (
-      <Layout hideFooter={true}>
-        <div className="relative min-h-screen overflow-hidden bg-[#080D14] text-gray-300">
-          <Head>
-            <title>Registration Success | IEEE Club</title>
-          </Head>
-          
-          {/* Only render animations on client-side */}
-          {isMounted && (
-            <>
-              {/* Tech success background elements */}
-              <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none opacity-20">
-                <div className="absolute inset-0">
-                  <svg viewBox="0 0 100 100" preserveAspectRatio="none" className="absolute top-0 left-0 w-full h-full">
-                    <motion.path 
-                      d="M0,0 L100,0 L100,5 L0,20 Z" 
-                      fill="rgba(16, 185, 129, 0.5)"
-                      animate={{ opacity: [0.4, 0.6, 0.4] }}
-                      transition={{ duration: 4, repeat: Infinity }}
-                    />
-                    <motion.path 
-                      d="M0,30 L100,15 L100,25 L0,40 Z" 
-                      fill="rgba(5, 150, 105, 0.5)"
-                      animate={{ opacity: [0.3, 0.5, 0.3] }}
-                      transition={{ duration: 3, repeat: Infinity, delay: 0.5 }}
-                    />
-                    <motion.path 
-                      d="M0,50 L100,40 L100,45 L0,55 Z" 
-                      fill="rgba(16, 185, 129, 0.5)"
-                      animate={{ opacity: [0.5, 0.7, 0.5] }}
-                      transition={{ duration: 4, repeat: Infinity, delay: 1 }}
-                    />
-                    <motion.path 
-                      d="M0,70 L100,65 L100,75 L0,85 Z" 
-                      fill="rgba(5, 150, 105, 0.5)"
-                      animate={{ opacity: [0.4, 0.6, 0.4] }}
-                      transition={{ duration: 5, repeat: Infinity, delay: 1.5 }}
-                    />
-                    <motion.path 
-                      d="M0,100 L100,90 L100,100 L0,100 Z" 
-                      fill="rgba(16, 185, 129, 0.5)"
-                      animate={{ opacity: [0.5, 0.8, 0.5] }}
-                      transition={{ duration: 4, repeat: Infinity, delay: 0.8 }}
-                    />
-                  </svg>
-                </div>
-              </div>
-
-              {/* Success floating particles */}
-              <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
-                {[...Array(25)].map((_, i) => (
-                  <motion.div
-                    key={`particle-${i}`}
-                    className={`absolute w-2 h-2 rounded-full ${
-                      ['bg-green-400', 'bg-green-500', 'bg-teal-400', 'bg-emerald-500'][i % 4]
-                    }`}
-                    initial={{ 
-                      x: `${i * 4}%`, 
-                      y: -20,
-                      opacity: 0
-                    }}
-                    animate={{ 
-                      y: '120%',
-                      opacity: [0, 1, 0],
-                      rotate: i * 14
-                    }}
-                    transition={{ 
-                      duration: (i % 5) + 2,
-                      repeat: Infinity,
-                      repeatType: 'loop',
-                      delay: (i % 5) * 0.4
-                    }}
-                    style={{ left: `${(i * 4) % 100}%` }}
-                  />
-                ))}
-              </div>
-            </>
-          )}
-
-          <div className="container relative z-10 px-6 py-24 mx-auto">
-            <motion.div 
-              className="max-w-md p-10 mx-auto overflow-hidden border border-gray-800 shadow-2xl bg-[#101926]/70 backdrop-blur-lg rounded-2xl"
-              initial={{ scale: 0.9, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              transition={{ type: "spring", stiffness: 260, damping: 20 }}
-            >
-              <div className="text-center">
-                <motion.div 
-                  className="flex items-center justify-center w-24 h-24 mx-auto mb-6 rounded-full bg-gradient-to-br from-green-500 to-emerald-700"
-                  initial={{ scale: 0 }}
-                  animate={{ scale: [0, 1.2, 1] }}
-                  transition={{ duration: 0.8, times: [0, 0.6, 1] }}
-                >
-                  <motion.svg 
-                    className="w-12 h-12 text-white" 
-                    fill="none" 
-                    stroke="currentColor" 
-                    viewBox="0 0 24 24" 
-                    xmlns="http://www.w3.org/2000/svg"
-                    initial={{ pathLength: 0, opacity: 0 }}
-                    animate={{ pathLength: 1, opacity: 1 }}
-                    transition={{ delay: 0.3, duration: 0.8 }}
-                  >
-                    <motion.path 
-                      strokeLinecap="round" 
-                      strokeLinejoin="round" 
-                      strokeWidth="2" 
-                      d="M5 13l4 4L19 7"
-                      initial={{ pathLength: 0 }}
-                      animate={{ pathLength: 1 }}
-                      transition={{ delay: 0.3, duration: 0.8 }}
-                    />
-                  </motion.svg>
-                </motion.div>
-                <motion.h2 
-                  className="mb-2 text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-emerald-500"
-                  initial={{ y: 20, opacity: 0 }}
-                  animate={{ y: 0, opacity: 1 }}
-                  transition={{ delay: 0.4 }}
-                >
-                  Registration Successful!
-                </motion.h2>
-                
-                <motion.p 
-                  className="mb-8 text-gray-400"
-                  initial={{ y: 20, opacity: 0 }}
-                  animate={{ y: 0, opacity: 1 }}
-                  transition={{ delay: 0.5 }}
-                >
-                  Thank you for registering with IEEE. Please check your email to verify your account.
-                </motion.p>
-                
-                <motion.div
-                  initial={{ y: 20, opacity: 0 }}
-                  animate={{ y: 0, opacity: 1 }}
-                  transition={{ delay: 0.6 }}
-                >
-                  <Link href="/login">
-                    <motion.span 
-                      className="relative inline-flex items-center justify-center px-6 py-3 overflow-hidden font-medium text-white transition-all rounded-lg cursor-pointer bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700"
-                      whileHover={{ 
-                        scale: 1.05,
-                        boxShadow: "0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.15)"
-                      }}
-                      whileTap={{ scale: 0.98 }}
-                    >
-                      {/* Button shine effect */}
-                      <motion.div 
-                        className="absolute top-0 -left-4 w-1/4 h-full bg-white opacity-30 skew-x-[30deg]"
-                        animate={{ x: ["0%", "400%"] }}
-                        transition={{ 
-                          duration: 2.5, 
-                          repeat: Infinity,
-                          repeatType: "loop",
-                          ease: "easeInOut",
-                          repeatDelay: 1
-                        }}
-                      />
-                      <span className="relative z-10 flex items-center">
-                        Go to Login 
-                        <motion.span
-                          animate={{ x: [0, 5, 0] }}
-                          transition={{ repeat: Infinity, duration: 1.5 }}
-                          className="ml-2"
-                        >
-                          <FaArrowRight />
-                        </motion.span>
-                      </span>
-                    </motion.span>
-                  </Link>
-                </motion.div>
-              </div>
-            </motion.div>
-          </div>
-        </div>
-      </Layout>
-    );
+  // Don't render until mounted to prevent hydration mismatch
+  if (!isMounted) {
+    return null;
   }
 
-  // Main signup form
   return (
     <Layout hideFooter={true}>
-      <div className="relative min-h-screen overflow-hidden bg-[#080D14] text-gray-300">
-        {/* Particle Background */}
-        <AuthParticleBackground />
-        
-        <Head>
-          <title>Sign Up | IEEE Club</title>
-          <meta name="description" content="Create your IEEE Club account" />
-        </Head>
-        
-        {/* Only render animations on client-side */}
-        {isMounted && (
-          <>
-            {/* Tech background elements */}
-            <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none opacity-20">
-              <div className="absolute top-0 right-0 w-full h-full">
-                <svg viewBox="0 0 100 100" preserveAspectRatio="none" className="absolute top-0 left-0 w-full h-full">
-                  <motion.path 
-                    d="M0,0 L100,0 L100,5 L0,20 Z" 
-                    fill="rgba(59, 130, 246, 0.5)"
-                    animate={{ opacity: [0.4, 0.6, 0.4] }}
-                    transition={{ duration: 4, repeat: Infinity }}
-                  />
-                  <motion.path 
-                    d="M0,30 L100,15 L100,25 L0,40 Z" 
-                    fill="rgba(79, 70, 229, 0.5)"
-                    animate={{ opacity: [0.3, 0.5, 0.3] }}
-                    transition={{ duration: 3, repeat: Infinity, delay: 0.5 }}
-                  />
-                  <motion.path 
-                    d="M0,50 L100,40 L100,45 L0,55 Z" 
-                    fill="rgba(16, 185, 129, 0.5)"
-                    animate={{ opacity: [0.5, 0.7, 0.5] }}
-                    transition={{ duration: 4, repeat: Infinity, delay: 1 }}
-                  />
-                  <motion.path 
-                    d="M0,70 L100,65 L100,75 L0,85 Z" 
-                    fill="rgba(236, 72, 153, 0.5)"
-                    animate={{ opacity: [0.4, 0.6, 0.4] }}
-                    transition={{ duration: 5, repeat: Infinity, delay: 1.5 }}
-                  />
-                  <motion.path 
-                    d="M0,100 L100,90 L100,100 L0,100 Z" 
-                    fill="rgba(124, 58, 237, 0.5)"
-                    animate={{ opacity: [0.5, 0.8, 0.5] }}
-                    transition={{ duration: 4, repeat: Infinity, delay: 0.8 }}
-                  />
-                </svg>
-              </div>
-              
-              {/* Code symbols effect - with deterministic positioning */}
-              <div className="absolute inset-0 flex flex-wrap opacity-10">
-                {[...Array(30)].map((_, i) => (
-                  <motion.div 
-                    key={`symbol-${i}`}
-                    className="font-mono text-xs text-blue-400"
-                    style={{ 
-                      position: 'absolute', 
-                      left: `${(i * 3) % 100}%`, 
-                      top: `${(i * 3.3) % 100}%`,
-                      fontSize: `${8 + (i % 8)}px`
-                    }}
-                    animate={{ opacity: [0, 1, 0] }}
-                    transition={{ 
-                      duration: 3 + (i % 5),
-                      repeat: Infinity, 
-                      delay: i * 0.3
-                    }}
-                  >
-                    {['{ }', '[ ]', '( )', '//', '/* */', '&&', '||', '<=>', '=>', '==='][i % 10]}
-                  </motion.div>
-                ))}
-              </div>
-            </div>
-          </>
-        )}
+      <Head>
+        <title>Sign Up - IEEE GEU Student Branch</title>
+        <meta name="description" content="Join IEEE GEU Student Branch and be part of the world's largest technical professional organization." />
+      </Head>
 
-        <div className="container relative z-10 px-6 py-10 mx-auto md:py-16">
-          <div className="flex justify-center">
+      {/* Background gradient */}
+      <div className="relative min-h-screen overflow-hidden bg-gradient-to-br from-blue-900 via-purple-900 to-indigo-900">
+        {/* Particle Background */}
+        <ParticleBackground />
+        {/* Animated background elements */}
+        <div className="absolute inset-0">
+          <div className="absolute w-64 h-64 rounded-full top-20 left-20 bg-blue-500/10 blur-xl animate-pulse"></div>
+          <div className="absolute delay-75 rounded-full bottom-20 right-20 w-80 h-80 bg-purple-500/10 blur-xl animate-pulse"></div>
+          <div className="absolute delay-150 rounded-full top-1/2 left-1/2 w-96 h-96 bg-indigo-500/5 blur-xl animate-pulse"></div>
+        </div>
+
+        <div className="relative flex items-center justify-center min-h-screen px-4 py-12 sm:px-6 lg:px-8">
+          <div className="w-full max-w-4xl">
             <motion.div 
-              className="w-full max-w-2xl"
-              initial="hidden"
-              animate="visible"
-              variants={fadeIn}
-              transition={{ duration: 0.5 }}
+              className="overflow-hidden border shadow-2xl backdrop-blur-xl bg-white/10 rounded-3xl border-white/20"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
             >
               <motion.div 
-                className="p-8 overflow-hidden border border-gray-800 shadow-2xl bg-[#101926]/70 backdrop-blur-lg rounded-2xl"
-                whileHover={{ boxShadow: "0 20px 40px rgba(0, 0, 0, 0.4)" }}
-                transition={{ duration: 0.3 }}
+                className="px-8 py-12 sm:px-12"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.8, delay: 0.2 }}
               >
-                <div className="mb-8 text-center">
-                  <Link href="/">
+                {/* Header */}
+                <div className="mb-10 text-center">
+                  <motion.div
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    transition={{ 
+                      type: "spring",
+                      stiffness: 260,
+                      damping: 20,
+                      delay: 0.1 
+                    }}
+                    className="inline-flex items-center justify-center w-20 h-20 mx-auto mb-6 overflow-hidden bg-white rounded-full"
+                  >
                     <img 
                       src="/images/logo.png" 
                       alt="IEEE Logo" 
-                      className="h-16 mx-auto mb-4 cursor-pointer" 
+                      className="object-contain w-16 h-16"
                     />
-                  </Link>
-                  <motion.h2 
-                    className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500"
-                    initial={{ y: -10, opacity: 0 }}
+                  </motion.div>
+                  
+                  <motion.h1 
+                    className="mb-4 text-4xl font-bold text-white"
+                    initial={{ y: 20, opacity: 0 }}
                     animate={{ y: 0, opacity: 1 }}
-                    transition={{ duration: 0.5, delay: 0.1 }}
+                    transition={{ duration: 0.6, delay: 0.3 }}
                   >
-                    Join IEEE Network
-                  </motion.h2>
+                    Join IEEE GEU
+                  </motion.h1>
+                  
                   <motion.p 
-                    className="mt-2 text-gray-400"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ duration: 0.5, delay: 0.2 }}
+                    className="max-w-md mx-auto text-xl text-gray-300"
+                    initial={{ y: 20, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    transition={{ duration: 0.6, delay: 0.4 }}
                   >
-                    Create your account to access exclusive resources
+                    Create your account and become part of the college's largest technical professional club
                   </motion.p>
                 </div>
 
@@ -510,7 +249,7 @@ export default function Signup() {
                     animate={{ y: 0, opacity: 1 }}
                     transition={{ duration: 0.5, delay: 0.5 }}
                   >
-                    {/* Existing name field */}
+                    {/* Name field */}
                     <div>
                       <label className="block mb-2 text-sm font-medium text-gray-300" htmlFor="name">
                         Full Name
@@ -533,7 +272,7 @@ export default function Signup() {
                       {errors.name && <p className="mt-1 text-sm text-red-400">{errors.name}</p>}
                     </div>
 
-                    {/* Existing email field */}
+                    {/* Email field */}
                     <div>
                       <label className="block mb-2 text-sm font-medium text-gray-300" htmlFor="email">
                         Email Address
@@ -549,7 +288,7 @@ export default function Signup() {
                           value={formData.email}
                           onChange={handleChange}
                           className={`block w-full pl-10 pr-3 py-3 border ${errors.email ? 'border-red-500' : 'border-gray-700'} bg-gray-900/60 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-400 focus:border-blue-400 transition-all duration-200 text-white`}
-                          placeholder="you@gamil.com"
+                          placeholder="you@example.com"
                           whileFocus={{ scale: 1.01 }}
                         />
                       </div>
@@ -563,7 +302,7 @@ export default function Signup() {
                     animate={{ y: 0, opacity: 1 }}
                     transition={{ duration: 0.5, delay: 0.6 }}
                   >
-                    {/* New mobile field */}
+                    {/* Mobile field */}
                     <div>
                       <label className="block mb-2 text-sm font-medium text-gray-300" htmlFor="mobile">
                         Mobile Number
@@ -587,7 +326,7 @@ export default function Signup() {
                       {errors.mobile && <p className="mt-1 text-sm text-red-400">{errors.mobile}</p>}
                     </div>
 
-                    {/* New student ID field */}
+                    {/* Student ID field */}
                     <div>
                       <label className="block mb-2 text-sm font-medium text-gray-300" htmlFor="studentId">
                         Student ID
@@ -603,7 +342,7 @@ export default function Signup() {
                           value={formData.studentId}
                           onChange={handleChange}
                           className={`block w-full pl-10 pr-3 py-3 border ${errors.studentId ? 'border-red-500' : 'border-gray-700'} bg-gray-900/60 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-400 focus:border-blue-400 transition-all duration-200 text-white`}
-                          placeholder="e.g.2025001"
+                          placeholder="e.g. 2025001"
                           whileFocus={{ scale: 1.01 }}
                         />
                       </div>
@@ -611,37 +350,11 @@ export default function Signup() {
                     </div>
                   </motion.div>
 
-                  <motion.div
-                    initial={{ y: 20, opacity: 0 }}
-                    animate={{ y: 0, opacity: 1 }}
-                    transition={{ duration: 0.5, delay: 0.7 }}
-                  >
-                    <label className="block mb-2 text-sm font-medium text-gray-300" htmlFor="college">
-                      College / University
-                    </label>
-                    <div className="relative">
-                      <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                        <FaUniversity className="text-blue-400" />
-                      </div>
-                      <motion.input
-                        type="text"
-                        id="college"
-                        name="college"
-                        value={formData.college}
-                        onChange={handleChange}
-                        className={`block w-full pl-10 pr-3 py-3 border ${errors.college ? 'border-red-500' : 'border-gray-700'} bg-gray-900/60 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-400 focus:border-blue-400 transition-all duration-200 text-white`}
-                        placeholder="Your college name"
-                        whileFocus={{ scale: 1.01 }}
-                      />
-                    </div>
-                    {errors.college && <p className="mt-1 text-sm text-red-400">{errors.college}</p>}
-                  </motion.div>
-
                   <motion.div 
                     className="grid gap-6 md:grid-cols-2"
                     initial={{ y: 20, opacity: 0 }}
                     animate={{ y: 0, opacity: 1 }}
-                    transition={{ duration: 0.5, delay: 0.8 }}
+                    transition={{ duration: 0.5, delay: 0.7 }}
                   >
                     {/* Branch/Department field */}
                     <div>
@@ -650,7 +363,7 @@ export default function Signup() {
                       </label>
                       <div className="relative">
                         <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                          <FaUniversity className="text-blue-400" />
+                          <FaGraduationCap className="text-blue-400" />
                         </div>
                         <motion.input
                           type="text"
@@ -673,7 +386,7 @@ export default function Signup() {
                       </label>
                       <div className="relative">
                         <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                          <FaIdCard className="text-blue-400" />
+                          <FaCalendarAlt className="text-blue-400" />
                         </div>
                         <motion.input
                           type="text"
@@ -689,10 +402,6 @@ export default function Signup() {
                       {errors.year && <p className="mt-1 text-sm text-red-400">{errors.year}</p>}
                     </div>
                   </motion.div>
-
-                  <div className="pt-3 space-y-1 text-xs tracking-wide text-blue-400 uppercase">
-                    <h3 className="text-lg font-medium tracking-wide text-white uppercase">Security Settings</h3>
-                  </div>
 
                   <motion.div 
                     className="grid gap-6 md:grid-cols-2"
@@ -776,7 +485,7 @@ export default function Signup() {
                     whileHover={{ backgroundColor: 'rgba(30, 41, 59, 0.5)' }}
                     initial={{ y: 20, opacity: 0 }}
                     animate={{ y: 0, opacity: 1 }}
-                    transition={{ duration: 0.5, delay: 0.8 }}
+                    transition={{ duration: 0.5, delay: 0.9 }}
                   >
                     <div className="flex items-center h-5">
                       <motion.input
@@ -815,7 +524,7 @@ export default function Signup() {
                     whileTap={{ scale: 0.98 }}
                     initial={{ y: 20, opacity: 0 }}
                     animate={{ y: 0, opacity: 1 }}
-                    transition={{ duration: 0.5, delay: 0.9 }}
+                    transition={{ duration: 0.5, delay: 1.0 }}
                   >
                     {/* Button shine effect */}
                     <motion.div 
@@ -840,6 +549,7 @@ export default function Signup() {
                         </svg>
                       ) : (
                         <>
+                          <FaUserPlus className="mr-3" />
                           Create Account 
                           <motion.span
                             animate={{ x: [0, 5, 0] }}
@@ -854,13 +564,11 @@ export default function Signup() {
                   </motion.button>
                 </motion.form>
                 
-                {/* Remove "Or sign up with" divider and social buttons */}
-                
                 <motion.div 
                   className="mt-6 text-center"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
-                  transition={{ duration: 0.5, delay: 1.2 }}
+                  transition={{ duration: 0.5, delay: 1.1 }}
                 >
                   <p className="text-sm text-gray-400">
                     Already have an account?{' '}
@@ -883,7 +591,7 @@ export default function Signup() {
                 className="p-4 mt-6 backdrop-blur-lg rounded-lg bg-[#101926]/30 border border-gray-800/30"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 1.3 }}
+                transition={{ duration: 0.5, delay: 1.2 }}
               >
                 <p className="text-xs text-center text-gray-400">
                   By signing up, you'll get access to exclusive IEEE events, workshops, and networking opportunities to help advance your career in technology.

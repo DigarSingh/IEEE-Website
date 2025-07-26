@@ -19,6 +19,7 @@ import {
   FaGraduationCap,
 } from "react-icons/fa";
 import Layout from "@/components/Layout";
+import ParticleBackground from "@/components/ParticleBackground";
 
 export default function Contact() {
   const [formSuccess, setFormSuccess] = useState(false);
@@ -41,6 +42,9 @@ export default function Contact() {
           <div className="absolute inset-0 bg-gradient-to-br from-blue-900 via-purple-900 to-indigo-900"></div>
           <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-blue-900/30"></div>
           
+          {/* Particle Background */}
+          <ParticleBackground />
+          
           {/* IEEE Logo */}
           <div className="absolute z-20 top-8 left-8">
             <motion.div
@@ -49,13 +53,12 @@ export default function Contact() {
               transition={{ duration: 0.8 }}
               className="flex items-center space-x-3"
             >
-              <div className="relative">
+              <div className="relative p-2 bg-white rounded-lg shadow-lg">
                 <img 
                   src="/images/logo.png" 
                   alt="IEEE Logo" 
-                  className="object-contain w-16 h-16 border-2 rounded-lg shadow-lg border-white/20"
+                  className="object-contain w-12 h-12"
                 />
-                <div className="absolute inset-0 rounded-lg bg-gradient-to-br from-blue-400/20 to-purple-400/20"></div>
               </div>
               <div className="text-white">
                 <h3 className="text-lg font-bold text-transparent bg-gradient-to-r from-blue-200 to-white bg-clip-text">
@@ -201,6 +204,22 @@ export default function Contact() {
                         <p className="font-medium text-white">+91 7668410473</p>
                       </div>
                     </motion.div>
+                    <motion.a 
+                      href="https://www.instagram.com/ieee.geu/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-4 p-4 cursor-pointer bg-white/10 rounded-xl"
+                      whileHover={{ scale: 1.02, backgroundColor: "rgba(255,255,255,0.15)" }}
+                      transition={{ duration: 0.2 }}
+                    >
+                      <div className="p-3 rounded-lg bg-gradient-to-br from-pink-500 to-rose-600">
+                        <FaInstagram className="text-white" />
+                      </div>
+                      <div>
+                        <p className="text-sm text-blue-100">Follow Us</p>
+                        <p className="font-medium text-white">@ieee.geu</p>
+                      </div>
+                    </motion.a>
                     <motion.div 
                       className="flex items-center gap-4 p-4 cursor-pointer bg-white/10 rounded-xl"
                       whileHover={{ scale: 1.02, backgroundColor: "rgba(255,255,255,0.15)" }}
