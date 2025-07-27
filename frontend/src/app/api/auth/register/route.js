@@ -24,7 +24,7 @@ export async function POST(request) {
     });
     
     // Validate required fields
-    const requiredFields = ['name', 'email', 'password', 'college', 'branch', 'year', 'mobile', 'studentId'];
+    const requiredFields = ['name', 'email', 'password', 'branch', 'year', 'mobile', 'studentId'];
     const missingFields = requiredFields.filter(field => !body[field]);
     
     if (missingFields.length > 0) {
@@ -61,7 +61,7 @@ export async function POST(request) {
       name,
       email,
       password,
-      college,
+      college: 'GEU',
       branch,
       year,
       mobile,

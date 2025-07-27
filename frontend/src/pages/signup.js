@@ -24,6 +24,7 @@ export default function Signup() {
     email: '',
     branch: '',
     year: '',
+    college: 'Graphic Era Deemed to be University',
     mobile: '',
     studentId: '',
     password: '',
