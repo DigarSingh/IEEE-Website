@@ -1,185 +1,174 @@
+
 import { createContext, useContext, useState, useEffect } from 'react';
-import axios from 'axios';
 import { useRouter } from 'next/router';
-import Cookies from 'js-cookie';
 
-const AuthContext = createContext();
+// Create auth context
+const AuthContext = createContext({
+  user: null,
+  loading: true,
+  login: async () => {},
+  logout: async () => {},
+  register: async () => {},
+  refreshUser: async () => {}
+});
 
-export const AuthProvider = ({ children }) => {
+// Mock data for build-time
+const MOCK_USER = {
+  _id: 'mock-user-id',
+  name: 'Mock User',
+  email: 'mock@example.com',
+  role: 'user',
+  profileImage: '/images/testimonials/member1.jpg',
+  membershipType: 'student'
+};
+
+export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
   const router = useRouter();
 
+  // Function to check if we're in build/SSG mode
+  const isBuildTime = () => {
+    return process.env.NODE_ENV === 'production' && typeof window === 'undefined';
+  };
+
   useEffect(() => {
-    // Check if user is logged in on mount
-    const checkAuth = async () => {
-      // Get stored token from both localStorage and cookies for compatibility
-      const storedToken = localStorage.getItem('token') || Cookies.get('token');
-      if (storedToken) {
-        try {
-          // Get stored user data
-          const userData = localStorage.getItem('user');
-          const parsedUser = userData ? JSON.parse(userData) : null;
-          
-          if (parsedUser) {
-            // Set initial user state from localStorage
-            setUser(parsedUser);
-            setIsAuthenticated(true);
-          }
-          
-          // Verify token with backend
-          const response = await axios.get('/api/auth/me', {
-            headers: {
-              Authorization: `Bearer ${storedToken}`
-            }
-          });
-          
-          if (response.data.success) {
-            // Update user data with latest from server
-            setUser(response.data.user);
-            setIsAuthenticated(true);
-            // Update local storage
-            localStorage.setItem('user', JSON.stringify(response.data.user));
-          } else {
-            // If token is invalid, clear everything
-            Cookies.remove('token');
-            localStorage.removeItem('token');
-            localStorage.removeItem('user');
-            setUser(null);
-            setIsAuthenticated(false);
-          }
-        } catch (error) {
-          console.error('Auth verification error:', error);
-          // Clear auth data on error
-          Cookies.remove('token');
-          localStorage.removeItem('token');
-          localStorage.removeItem('user');
-          setUser(null);
-          setIsAuthenticated(false);
-        }
-      } else {
-        setIsAuthenticated(false);
-      }
-      
+    // During build/SSG, use mock data instead of real API calls
+    if (isBuildTime()) {
+      setUser(MOCK_USER);
       setLoading(false);
-    };
+      return;
+    }
+
+    // In runtime, attempt to fetch user data
+    async function loadUserFromAPI() {
+      try {
+        setLoading(true);
+        const res = await fetch('/api/auth/me');
+        if (res.ok) {
+          const userData = await res.json();
+          setUser(userData.user);
+        } else {
+          setUser(null);
+        }
+      } catch (error) {
+        console.error('Failed to fetch user:', error);
+        setUser(null);
+      } finally {
+        setLoading(false);
+      }
+    }
     
-    checkAuth();
+    loadUserFromAPI();
   }, []);
 
+  // Login function
   const login = async (email, password) => {
+    // Mock login during build
+    if (isBuildTime()) {
+      setUser(MOCK_USER);
+      return { success: true };
+    }
+
+    setLoading(true);
     try {
-      console.log(`Attempting login for: ${email}`);
-      
-      // Special case for admin test credentials
-      if (email === 'admin@ieee.org' && password === 'admin123') {
-        console.log('Using admin test credentials');
-        // Create admin user object
-        const adminUser = {
-          id: 'admin-test-id',
-          name: 'Admin User',
-          email: 'admin@ieee.org',
-          role: 'admin'
-        };
-        
-        // Store admin info in localStorage and cookies
-        const adminToken = 'admin-test-token';
-        localStorage.setItem('token', adminToken);
-        localStorage.setItem('user', JSON.stringify(adminUser));
-        Cookies.set('token', adminToken, { expires: 7 });
-        
-        setUser(adminUser);
-        setIsAuthenticated(true);
-        
-        return { 
-          success: true,
-          user: adminUser
-        };
+      const res = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const data = await res.json();
+      if (res.ok) {
+        setUser(data.user);
+        return { success: true, user: data.user };
+      } else {
+        return { success: false, error: data.error || 'Login failed' };
       }
-      
-      const response = await axios.post('/api/auth/login', { email, password });
-      const { token, user } = response.data;
-      
-      // Save token in both cookies and localStorage for compatibility
-      localStorage.setItem('token', token);
-      localStorage.setItem('user', JSON.stringify(user));
-      Cookies.set('token', token, { expires: 7 }); // Expires in 7 days
-      
-      setUser(user);
-      setIsAuthenticated(true);
-      return { success: true, user };
     } catch (error) {
-      console.error('Login error:', error.response?.data || error.message);
-      return { 
-        success: false, 
-        error: error.response?.data?.message || 'Login failed. Please try again.' 
-      };
-    }
-  };
-
-  const register = async (userData) => {
-    try {
-      // Remove confirmPassword if it exists since it's not needed on the server
-      const { confirmPassword, ...dataToSend } = userData;
-      
-      const response = await axios.post('/api/auth/register', dataToSend);
-      const { token, user } = response.data;
-      
-      // Save token in both cookies and localStorage for compatibility
-      localStorage.setItem('token', token);
-      localStorage.setItem('user', JSON.stringify(user));
-      Cookies.set('token', token, { expires: 7 });
-      
-      setUser(user);
-      setIsAuthenticated(true);
-      return { success: true, user };
-    } catch (error) {
-      console.error('Registration error:', error.response?.data || error.message);
-      return { 
-        success: false, 
-        error: error.response?.data?.message || 'Registration failed. Please try again.' 
-      };
-    }
-  };
-
-  const logout = async () => {
-    try {
-      // Call logout API to clear cookies on server-side
-      await axios.post('/api/auth/logout');
-    } catch (error) {
-      console.error('Logout API error:', error);
+      return { success: false, error: error.message };
     } finally {
-      // Always clear storage regardless of API success
-      localStorage.removeItem('token');
-      localStorage.removeItem('user');
-      Cookies.remove('token');
-      setUser(null);
-      setIsAuthenticated(false);
-      router.push('/');
+      setLoading(false);
     }
   };
 
-  // Check if user is admin
-  const isAdmin = () => {
-    return user && (user.role === 'admin' || user.role === 'superadmin');
+  // Logout function
+  const logout = async () => {
+    // Mock logout during build
+    if (isBuildTime()) {
+      setUser(null);
+      return { success: true };
+    }
+
+    try {
+      const res = await fetch('/api/auth/logout');
+      if (res.ok) {
+        setUser(null);
+        router.push('/');
+        return { success: true };
+      } else {
+        return { success: false };
+      }
+    } catch (error) {
+      return { success: false, error: error.message };
+    }
+  };
+
+  // Register function
+  const register = async (userData) => {
+    // Mock register during build
+    if (isBuildTime()) {
+      setUser(MOCK_USER);
+      return { success: true };
+    }
+
+    setLoading(true);
+    try {
+      const res = await fetch('/api/auth/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(userData),
+      });
+
+      const data = await res.json();
+      if (res.ok) {
+        setUser(data.user);
+        return { success: true, user: data.user };
+      } else {
+        return { success: false, error: data.error || 'Registration failed' };
+      }
+    } catch (error) {
+      return { success: false, error: error.message };
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Refresh user data
+  const refreshUser = async () => {
+    // Skip refresh during build
+    if (isBuildTime()) return;
+
+    try {
+      const res = await fetch('/api/auth/me');
+      if (res.ok) {
+        const userData = await res.json();
+        setUser(userData.user);
+      }
+    } catch (error) {
+      console.error('Error refreshing user data:', error);
+    }
   };
 
   return (
-    <AuthContext.Provider value={{ 
-      user, 
-      isAuthenticated, 
-      login, 
-      register, 
-      logout,
-      loading,
-      isAdmin,
-      error 
-    }}>
+    <AuthContext.Provider value={{ user, loading, login, logout, register, refreshUser }}>
       {children}
     </AuthContext.Provider>
   );
-};
+}
 
-export const useAuth = () => useContext(AuthContext);
+export function useAuth() {
+  return useContext(AuthContext);
+}
+
+export default AuthContext;

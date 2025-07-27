@@ -28,7 +28,7 @@ export default function Signup() {
     studentId: "",
     password: "",
     confirmPassword: "",
-    college: "geu", // Default college
+    college: "GEU", // Default college
   });
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);

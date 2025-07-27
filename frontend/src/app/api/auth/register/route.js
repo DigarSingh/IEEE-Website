@@ -30,14 +30,12 @@ export async function POST(request) {
       "name",
       "email",
       "password",
-      "college", // Default college
       "branch",
       "year",
       "mobile",
       "studentId",
     ];
     const missingFields = requiredFields.filter((field) => !body[field]);
-
     if (missingFields.length > 0) {
       console.log("Missing required fields:", missingFields);
       return NextResponse.json(
@@ -81,7 +79,7 @@ export async function POST(request) {
       name,
       email,
       password,
-      college: "geu",
+      college: "GEU",
       branch,
       year,
       mobile,
