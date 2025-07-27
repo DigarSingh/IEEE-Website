@@ -63,10 +63,7 @@ export async function GET(req) {
 
     return Response.json({
       success: true,
-      data: {
-        members,
-        pagination
-      }
+      members
     });
 
   } catch (error) {

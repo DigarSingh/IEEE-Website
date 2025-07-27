@@ -62,10 +62,7 @@ export async function GET(req) {
 
     return Response.json({
       success: true,
-      data: {
-        events,
-        pagination
-      }
+      events
     });
 
   } catch (error) {
