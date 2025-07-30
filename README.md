@@ -115,4 +115,4 @@ This project is licensed under the MIT License. See the LICENSE file for details
 
 Made with 💙 by Digar Singh  
 📧 Email: [digarsingh2004@gmail.com](mailto:digarsingh2004@gmail.com)  
-🌐 Visit: [geuieee.in](https://geuieee.in)
+🌐 Visit: [geuieee.in](https://geuieee.com)
