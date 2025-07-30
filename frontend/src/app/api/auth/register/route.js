@@ -2,28 +2,13 @@ import { NextResponse } from "next/server";
 import dbConnect from "@/lib/mongodb";
 import User from "@/models/User";
 import { generateToken } from "@/middleware/authMiddleware";
-import mongoose from "mongoose";
 
-// Register new user
 export async function POST(request) {
   try {
-    console.log("Register endpoint called");
     await dbConnect();
 
     const body = await request.json();
-    const { name, email, password, college, branch, year, mobile, studentId } =
-      body;
-
-    console.log("Registration data received:", {
-      name,
-      email,
-      college,
-      branch,
-      year,
-      mobile,
-      studentId,
-      passwordProvided: !!password,
-    });
+    const { name, email, password, branch, year, mobile, studentId } = body;
 
     // Validate required fields
     const requiredFields = [
@@ -37,7 +22,6 @@ export async function POST(request) {
     ];
     const missingFields = requiredFields.filter((field) => !body[field]);
     if (missingFields.length > 0) {
-      console.log("Missing required fields:", missingFields);
       return NextResponse.json(
         {
           success: false,
@@ -47,10 +31,9 @@ export async function POST(request) {
       );
     }
 
-    // Check if user already exists
+    // Check if email or studentId already exists
     const userExists = await User.findOne({ email });
     if (userExists) {
-      console.log("User already exists:", email);
       return NextResponse.json(
         {
           success: false,
@@ -60,10 +43,8 @@ export async function POST(request) {
       );
     }
 
-    // Check if student ID already exists
     const studentIdExists = await User.findOne({ studentId });
     if (studentIdExists) {
-      console.log("Student ID already exists:", studentId);
       return NextResponse.json(
         {
           success: false,
@@ -74,18 +55,15 @@ export async function POST(request) {
     }
 
     // Create user
-    console.log("Creating new user...");
     const user = await User.create({
       name,
       email,
       password,
-      college: "GEU",
       branch,
       year,
       mobile,
       studentId,
     });
-    console.log("User created successfully:", user._id);
 
     // Generate token
     const token = generateToken(user._id);
@@ -99,7 +77,6 @@ export async function POST(request) {
           id: user._id,
           name: user.name,
           email: user.email,
-          college: user.college,
           role: user.role,
           isVerified: user.isVerified,
         },
@@ -110,7 +87,6 @@ export async function POST(request) {
   } catch (error) {
     console.error("Registration error:", error);
 
-    // Handle validation errors
     if (error.name === "ValidationError") {
       const messages = Object.values(error.errors).map((val) => val.message);
       return NextResponse.json(
@@ -122,7 +98,6 @@ export async function POST(request) {
       );
     }
 
-    // Handle duplicate key error
     if (error.code === 11000) {
       const field = Object.keys(error.keyValue)[0];
       return NextResponse.json(

@@ -1,6 +1,7 @@
 import Head from "next/head";
 import Link from "next/link";
 import { useState, useEffect } from "react";
+import { useRouter } from "next/router"; // <-- Add this import
 import { motion } from "framer-motion";
 import {
   FaUser,
@@ -28,7 +29,7 @@ export default function Signup() {
     studentId: "",
     password: "",
     confirmPassword: "",
-    college: "GEU", // Default college
+    // Default college
   });
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -37,6 +38,8 @@ export default function Signup() {
 
   // State for client-side rendering
   const [isMounted, setIsMounted] = useState(false);
+
+  const router = useRouter(); // <-- Add this line
 
   // Handle client-side mounting
   useEffect(() => {
@@ -129,9 +132,8 @@ export default function Signup() {
       const data = await response.json();
 
       if (response.ok) {
-        // Optionally redirect to login or dashboard
-        // router.push('/login');
-        console.log("Registration successful");
+        // Redirect to dashboard after successful registration
+        router.push("/");
       } else {
         setErrors({ form: data.message || "Registration failed" });
       }
