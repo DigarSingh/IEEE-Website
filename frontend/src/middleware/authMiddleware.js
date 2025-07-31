@@ -19,18 +19,6 @@ export const generateToken = (id, role = "student") => {
 // Auth middleware for API routes
 export const authMiddleware = async (req) => {
   try {
-    // Skip database connection during build time
-    if (
-      process.env.NODE_ENV === "production" ||
-      process.env.SKIP_MONGODB === "true"
-    ) {
-      return {
-        success: false,
-        message: "Authentication disabled during build",
-        status: 401,
-      };
-    }
-
     // Connect to database
     await dbConnect();
 
@@ -67,7 +55,9 @@ export const authMiddleware = async (req) => {
           id: "507f1f77bcf86cd799439011",
           name: "IEEE Admin",
           email: "admin@ieee.org",
-          college: "IEEE Admin Portal",
+          branch: "IEEE Admin Portal",
+          year: "Admin",
+          mobile: "0000000000",
           role: "admin",
           isVerified: true,
           studentId: "ADMIN001",

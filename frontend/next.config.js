@@ -1,12 +1,5 @@
 /** @type {import('next').NextConfig} */
 
-// Check if we should use the special build config file
-if (process.env.NEXT_CONFIG_FILE === 'next.config.build.js') {
-  console.log('🔧 Using special build configuration');
-  module.exports = require('./next.config.build.js');
-  return;
-}
-
 const nextConfig = {
   reactStrictMode: true,
   // Prevent hydration issues with framer-motion
@@ -81,15 +74,26 @@ const nextConfig = {
   swcMinify: true,
   
   // Prevent static generation from failing on auth-required pages
-  // This is handled by the skip-auth-pages.js script
   staticPageGenerationTimeout: 120,
   
-  // Skip MongoDB connection issues during build
+  // Configure to handle API routes properly
   onDemandEntries: {
     // period (in ms) where the server will keep pages in the buffer
     maxInactiveAge: 120 * 1000,
     // number of pages that should be kept simultaneously without being disposed
     pagesBufferLength: 5,
+  },
+
+  // Prevent API routes from being statically generated
+  async headers() {
+    return [
+      {
+        source: '/api/:path*',
+        headers: [
+          { key: 'Cache-Control', value: 'no-store, must-revalidate' },
+        ],
+      },
+    ];
   },
 }
 

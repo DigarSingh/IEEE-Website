@@ -6,17 +6,6 @@ import dbConnect from "@/lib/mongodb";
 
 export async function POST(request) {
   try {
-    // Skip database connection during build time
-    if (
-      process.env.NODE_ENV === "production" ||
-      process.env.SKIP_MONGODB === "true"
-    ) {
-      return NextResponse.json(
-        { success: false, message: "Service temporarily unavailable" },
-        { status: 503 }
-      );
-    }
-
     await dbConnect();
 
     const { email, password } = await request.json();

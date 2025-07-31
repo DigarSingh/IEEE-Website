@@ -176,7 +176,7 @@ export default function Gallery() {
           </motion.div>
           
           {/* Circuit Pattern Overlay */}
-          <div className="absolute inset-0 bg-[url('/images/hero/circuit-pattern.png')] opacity-5"></div>
+          {/* <div className="absolute inset-0 bg-[url('/images/hero/circuit-pattern.png')] opacity-5"></div> */}
           
           <div className="container relative z-10 px-6 mx-auto">
             <motion.div 

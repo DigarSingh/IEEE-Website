@@ -20,22 +20,6 @@ const studentRoutes = [
   "/student/profile",
 ];
 
-// Helper function to determine if we're in build/static generation mode
-const isBuildTime = () => {
-  try {
-    // Additional check for Vercel build environment
-    if (process.env.NEXT_CONFIG_FILE === "next.config.build.js") {
-      return true;
-    }
-    return (
-      process.env.NODE_ENV === "production" && typeof window === "undefined"
-    );
-  } catch (e) {
-    // If any error occurs, assume we're in build time to be safe
-    return true;
-  }
-};
-
 // Middleware for route protection
 export function middleware(request) {
   const { pathname } = request.nextUrl;
@@ -43,11 +27,6 @@ export function middleware(request) {
   // Temporarily disable middleware for testing
   console.log("Middleware called for path:", pathname);
   return NextResponse.next();
-
-  // Skip auth checks during build/static generation
-  if (isBuildTime()) {
-    return NextResponse.next();
-  }
 
   // Check for protected routes
   const isAdminRoute = adminRoutes.some((route) => pathname.startsWith(route));

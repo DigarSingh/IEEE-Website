@@ -5,9 +5,6 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "build:vercel": "node fix-import-paths.js && node create-mock-data.js && node create-build-safe-auth.js && node skip-auth-pages.js && npx next build && node restore-auth-pages.js && node restore-auth-context.js",
-    "build:safe": "cross-env NODE_ENV=production NEXT_CONFIG_FILE=next.config.build.js next build",
-    "fix-paths": "node fix-import-paths.js",
     "start": "next start",
     "lint": "next lint",
     "create-test-user": "node src/lib/create-test-user.js"
