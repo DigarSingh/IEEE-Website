@@ -1,0 +1,10 @@
+{
+  "_id": "mock-user-id",
+  "name": "Mock User",
+  "email": "mock@example.com",
+  "role": "user",
+  "profileImage": "/images/testimonials/member1.jpg",
+  "membershipType": "student",
+  "createdAt": "2025-07-31T02:49:55.835Z",
+  "updatedAt": "2025-07-31T02:49:55.835Z"
+}

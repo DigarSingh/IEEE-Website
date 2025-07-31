@@ -1,26 +1,16 @@
 
+// This is a placeholder page for index
+// The original file is temporarily renamed during the build process
 import { useEffect } from 'react';
 import { useRouter } from 'next/router';
-import { useAuth } from '../../contexts/AuthContext';
 
-export default function AdminIndexPage() {
+export default function IndexPage() {
   const router = useRouter();
-  const { isAuthenticated, isAdmin } = useAuth();
   
   useEffect(() => {
-    if (!isAuthenticated) {
-      router.push('/login');
-      return;
-    }
-    
-    if (!isAdmin()) {
-      router.push('/login');
-      return;
-    }
-    
-    // Redirect to admin dashboard
-    router.push('/admin/dashboard');
-  }, [isAuthenticated, isAdmin, router]);
+    // In real environment, redirect to login
+    router.push('/login');
+  }, [router]);
   
   return null;
 }

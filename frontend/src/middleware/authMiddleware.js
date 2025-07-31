@@ -19,6 +19,15 @@ export const generateToken = (id, role = "student") => {
 // Auth middleware for API routes
 export const authMiddleware = async (req) => {
   try {
+    // Skip database connection during build time
+    if (process.env.NODE_ENV === 'production' && process.env.SKIP_MONGODB === 'true') {
+      return {
+        success: false,
+        message: "Authentication disabled during build",
+        status: 401
+      };
+    }
+    
     // Connect to database
     await dbConnect();
     

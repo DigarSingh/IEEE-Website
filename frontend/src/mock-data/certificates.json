@@ -1,0 +1,12 @@
+[
+  {
+    "_id": "cert-1",
+    "title": "Web Development Participation",
+    "user": "mock-user-id",
+    "event": "Web Development Bootcamp",
+    "issueDate": "2025-07-31T02:49:55.835Z",
+    "certificateUrl": "/uploads/certificates/mock-certificate.pdf",
+    "createdAt": "2025-07-31T02:49:55.835Z",
+    "updatedAt": "2025-07-31T02:49:55.835Z"
+  }
+]

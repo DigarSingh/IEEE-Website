@@ -1,0 +1,26 @@
+[
+  {
+    "_id": "event-1",
+    "title": "AI Workshop",
+    "description": "Learn about artificial intelligence and machine learning fundamentals",
+    "date": "2025-07-31T02:49:55.835Z",
+    "location": "Online",
+    "image": "/images/events/ai-workshop.jpg",
+    "category": "workshop",
+    "isRegistrationOpen": true,
+    "createdAt": "2025-07-31T02:49:55.835Z",
+    "updatedAt": "2025-07-31T02:49:55.835Z"
+  },
+  {
+    "_id": "event-2",
+    "title": "Web Development Bootcamp",
+    "description": "Master modern web development technologies",
+    "date": "2025-07-31T02:49:55.835Z",
+    "location": "Room 101",
+    "image": "/images/events/webdev.jpg",
+    "category": "bootcamp",
+    "isRegistrationOpen": true,
+    "createdAt": "2025-07-31T02:49:55.835Z",
+    "updatedAt": "2025-07-31T02:49:55.835Z"
+  }
+]
