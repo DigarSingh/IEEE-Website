@@ -66,9 +66,6 @@ async function dbConnect() {
       // Add these options for better serverless compatibility
       keepAlive: true,
       keepAliveInitialDelay: 300000,
-      // Disable buffering for serverless
-      bufferMaxEntries: 0,
-      bufferCommands: false,
     };
 
     cached.promise = connectWithRetry(MONGODB_URI, opts).catch((error) => {
