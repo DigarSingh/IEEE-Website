@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 const MONGODB_URI =
   process.env.MONGODB_URI ||
-  "mongodb+srv://digarsingh90:nFH2FjprhO6VSf0R@cluster0.sjhwbjk.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
+  "mongodb+srv://shivakoranga2004:wmH5pR0YIpTMYYh9@ieee.7fq9giv.mongodb.net/ieee?retryWrites=true&w=majority&appName=IEEE-Website";
 
 /**
  * Global is used here to maintain a cached connection across hot reloads
@@ -55,14 +55,20 @@ async function dbConnect() {
     const opts = {
       bufferCommands: false,
       serverSelectionTimeoutMS: 10000,
-      maxPoolSize: 10,
-      minPoolSize: 1,
+      maxPoolSize: 1,
+      minPoolSize: 0,
       maxIdleTimeMS: 30000,
       connectTimeoutMS: 10000,
       socketTimeoutMS: 45000,
       family: 4,
       retryWrites: true,
       w: "majority",
+      // Add these options for better serverless compatibility
+      keepAlive: true,
+      keepAliveInitialDelay: 300000,
+      // Disable buffering for serverless
+      bufferMaxEntries: 0,
+      bufferCommands: false,
     };
 
     cached.promise = connectWithRetry(MONGODB_URI, opts).catch((error) => {
