@@ -23,13 +23,23 @@ export async function POST(request) {
       name,
       email,
       password,
-      college,
+      branch,
+      year,
+      mobile,
       studentId,
       role = "student",
     } = await request.json();
 
     // Validate required fields
-    if (!name || !email || !password || !college || !studentId) {
+    if (
+      !name ||
+      !email ||
+      !password ||
+      !branch ||
+      !year ||
+      !mobile ||
+      !studentId
+    ) {
       return NextResponse.json(
         { success: false, message: "All fields are required" },
         { status: 400 }
@@ -63,7 +73,9 @@ export async function POST(request) {
       name,
       email,
       password: hashedPassword,
-      college,
+      branch,
+      year,
+      mobile,
       studentId,
       role,
       isVerified: false, // Default to false, admin can verify later
@@ -79,7 +91,9 @@ export async function POST(request) {
       id: newUser._id,
       name: newUser.name,
       email: newUser.email,
-      college: newUser.college,
+      branch: newUser.branch,
+      year: newUser.year,
+      mobile: newUser.mobile,
       role: newUser.role,
       isVerified: newUser.isVerified,
       studentId: newUser.studentId,
