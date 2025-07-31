@@ -43,7 +43,7 @@ const vercelConfig = {
     JWT_SECRET: "@jwt-secret",
     NODE_ENV: "production",
   },
-  buildCommand: "cd frontend && npm run build",
+  buildCommand: "npm run build",
   outputDirectory: "frontend/.next",
 };
 

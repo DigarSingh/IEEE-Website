@@ -67,7 +67,7 @@ This project is configured for seamless deployment on Vercel.
 2. Configure the build settings:
    - Build Command: `npm run build` (this command should be detected automatically)
    - Output Directory: `frontend/.next` (this should be detected automatically)
-   - Install Command: `npm install && cd frontend && npm install`
+   - Install Command: `npm install` (dependencies are installed at root level)
 3. Add the required environment variables directly in the Vercel dashboard
 4. Deploy!
 
@@ -99,7 +99,7 @@ When deploying to Vercel, make sure to:
    - `MONGODB_URI`: Your MongoDB connection string (e.g., `mongodb+srv://username:password@cluster.mongodb.net/database?retryWrites=true&w=majority`)
    - `JWT_SECRET`: Your authentication secret key (e.g., `your-strong-secret-key-here`)
 
-> **Important**:  
+> **Important**:
 >
 > - Add environment variables directly in the Vercel project settings, not as referenced secrets with @ prefix
 > - If the build fails with "No such file or directory: frontend", make sure your repository structure includes the frontend folder at the root level
