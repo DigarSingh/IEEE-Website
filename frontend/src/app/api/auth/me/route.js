@@ -1,6 +1,9 @@
 import { NextResponse } from "next/server";
 import { authMiddleware } from "@/middleware/authMiddleware";
 
+// Force dynamic rendering
+export const dynamic = 'force-dynamic';
+
 export async function GET(request) {
   try {
     const authResult = await authMiddleware(request);
