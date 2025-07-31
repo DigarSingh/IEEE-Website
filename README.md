@@ -19,8 +19,8 @@ This is a responsive and dynamic website built for the IEEE Student Branch. The 
 
 - **Frontend**: Next.js
 - **Framework**: Bootstrap / Tailwind CSS
-- **Backend**: Node.js / Mongo DB
-- **Deployment**: GitHub Pages / Netlify / Vercel
+- **Backend**: Mongo DB
+- **Deployment**: GitHub Pages / Vercel
 
 ---
 
@@ -115,4 +115,4 @@ This project is licensed under the MIT License. See the LICENSE file for details
 
 Made with 💙 by Digar Singh  
 📧 Email: [digarsingh2004@gmail.com](mailto:digarsingh2004@gmail.com)  
-🌐 Visit: [geuieee.in](https://geuieee.in)
+🌐 Visit: [geuieee.com](https://geuieee.com)
