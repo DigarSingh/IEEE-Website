@@ -20,42 +20,45 @@ export const generateToken = (id, role = "student") => {
 export const authMiddleware = async (req) => {
   try {
     // Skip database connection during build time
-    if (process.env.NODE_ENV === 'production' && process.env.SKIP_MONGODB === 'true') {
+    if (
+      process.env.NODE_ENV === "production" ||
+      process.env.SKIP_MONGODB === "true"
+    ) {
       return {
         success: false,
         message: "Authentication disabled during build",
-        status: 401
+        status: 401,
       };
     }
-    
+
     // Connect to database
     await dbConnect();
-    
+
     // Get token from Authorization header
     const authHeader = req.headers.get("authorization");
-    
+
     if (!authHeader || !authHeader.startsWith("Bearer ")) {
       return {
         success: false,
         message: "Access denied. No token provided.",
-        status: 401
+        status: 401,
       };
     }
 
     const token = authHeader.substring(7); // Remove 'Bearer ' prefix
-    
+
     if (!token) {
       return {
         success: false,
         message: "Access denied. No token provided.",
-        status: 401
+        status: 401,
       };
     }
 
     // Verify token
     const jwtSecret = process.env.JWT_SECRET || "secretkey";
     const decoded = jwt.verify(token, jwtSecret);
-    
+
     // Handle admin case specially
     if (decoded.id === "507f1f77bcf86cd799439011" && decoded.role === "admin") {
       return {
@@ -68,18 +71,18 @@ export const authMiddleware = async (req) => {
           role: "admin",
           isVerified: true,
           studentId: "ADMIN001",
-        }
+        },
       };
     }
-    
+
     // Get user from database for regular users
-    const user = await User.findById(decoded.id).select('-password');
-    
+    const user = await User.findById(decoded.id).select("-password");
+
     if (!user) {
       return {
         success: false,
         message: "Token is not valid. User not found.",
-        status: 401
+        status: 401,
       };
     }
 
@@ -93,32 +96,31 @@ export const authMiddleware = async (req) => {
         role: user.role,
         isVerified: user.isVerified,
         studentId: user.studentId,
-      }
+      },
     };
-
   } catch (error) {
     console.error("Auth middleware error:", error);
-    
+
     if (error.name === "JsonWebTokenError") {
       return {
         success: false,
         message: "Token is not valid.",
-        status: 401
+        status: 401,
       };
     }
-    
+
     if (error.name === "TokenExpiredError") {
       return {
         success: false,
         message: "Token has expired.",
-        status: 401
+        status: 401,
       };
     }
 
     return {
       success: false,
       message: "Token verification failed.",
-      status: 500
+      status: 500,
     };
   }
 };
