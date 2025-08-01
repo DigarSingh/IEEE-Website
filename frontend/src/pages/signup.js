@@ -1,34 +1,35 @@
-import Head from 'next/head';
-import Link from 'next/link';
-import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
-import { 
-  FaUser, 
-  FaLock, 
-  FaEnvelope, 
-  FaArrowRight, 
-  FaMobileAlt, 
-  FaIdCard, 
-  FaEye, 
+import Head from "next/head";
+import Link from "next/link";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/router"; // <-- Add this import
+import { motion } from "framer-motion";
+import {
+  FaUser,
+  FaLock,
+  FaEnvelope,
+  FaArrowRight,
+  FaMobileAlt,
+  FaIdCard,
+  FaEye,
   FaEyeSlash,
   FaUserPlus,
   FaGraduationCap,
-  FaCalendarAlt
-} from 'react-icons/fa';
-import ParticleBackground from '@/components/ParticleBackground';
-import Layout from '@/components/Layout';
+  FaCalendarAlt,
+} from "react-icons/fa";
+import ParticleBackground from "@/components/ParticleBackground";
+import Layout from "@/components/Layout";
 
 export default function Signup() {
   const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    branch: '',
-    year: '',
-    college: 'Graphic Era Deemed to be University',
-    mobile: '',
-    studentId: '',
-    password: '',
-    confirmPassword: ''
+    name: "",
+    email: "",
+    branch: "",
+    year: "",
+    mobile: "",
+    studentId: "",
+    password: "",
+    confirmPassword: "",
+    // Default college
   });
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -38,6 +39,8 @@ export default function Signup() {
   // State for client-side rendering
   const [isMounted, setIsMounted] = useState(false);
 
+  const router = useRouter(); // <-- Add this line
+
   // Handle client-side mounting
   useEffect(() => {
     setIsMounted(true);
@@ -45,16 +48,16 @@ export default function Signup() {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
-    
+
     // Clear error when user starts typing
     if (errors[name]) {
-      setErrors(prev => ({
+      setErrors((prev) => ({
         ...prev,
-        [name]: ''
+        [name]: "",
       }));
     }
   };
@@ -63,43 +66,43 @@ export default function Signup() {
     const newErrors = {};
 
     if (!formData.name.trim()) {
-      newErrors.name = 'Name is required';
+      newErrors.name = "Name is required";
     }
 
     if (!formData.email.trim()) {
-      newErrors.email = 'Email is required';
+      newErrors.email = "Email is required";
     } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      newErrors.email = 'Please enter a valid email';
+      newErrors.email = "Please enter a valid email";
     }
 
     if (!formData.mobile.trim()) {
-      newErrors.mobile = 'Mobile number is required';
+      newErrors.mobile = "Mobile number is required";
     } else if (!/^\d{10}$/.test(formData.mobile)) {
-      newErrors.mobile = 'Please enter a valid 10-digit mobile number';
+      newErrors.mobile = "Please enter a valid 10-digit mobile number";
     }
 
     if (!formData.studentId.trim()) {
-      newErrors.studentId = 'Student ID is required';
+      newErrors.studentId = "Student ID is required";
     }
 
     if (!formData.branch.trim()) {
-      newErrors.branch = 'Branch/Department is required';
+      newErrors.branch = "Branch/Department is required";
     }
 
     if (!formData.year.trim()) {
-      newErrors.year = 'Year of study is required';
+      newErrors.year = "Year of study is required";
     }
 
     if (!formData.password) {
-      newErrors.password = 'Password is required';
+      newErrors.password = "Password is required";
     } else if (formData.password.length < 6) {
-      newErrors.password = 'Password must be at least 6 characters';
+      newErrors.password = "Password must be at least 6 characters";
     }
 
     if (!formData.confirmPassword) {
-      newErrors.confirmPassword = 'Please confirm your password';
+      newErrors.confirmPassword = "Please confirm your password";
     } else if (formData.password !== formData.confirmPassword) {
-      newErrors.confirmPassword = 'Passwords do not match';
+      newErrors.confirmPassword = "Passwords do not match";
     }
 
     return newErrors;
@@ -107,7 +110,7 @@ export default function Signup() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     const newErrors = validateForm();
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
@@ -118,10 +121,10 @@ export default function Signup() {
     setErrors({});
 
     try {
-      const response = await fetch('/api/auth/register', {
-        method: 'POST',
+      const response = await fetch("/api/auth/register", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(formData),
       });
@@ -129,14 +132,13 @@ export default function Signup() {
       const data = await response.json();
 
       if (response.ok) {
-        // Optionally redirect to login or dashboard
-        // router.push('/login');
-        console.log('Registration successful');
+        // Redirect to dashboard after successful registration
+        router.push("/");
       } else {
-        setErrors({ form: data.message || 'Registration failed' });
+        setErrors({ form: data.message || "Registration failed" });
       }
     } catch (error) {
-      setErrors({ form: 'Network error. Please try again.' });
+      setErrors({ form: "Network error. Please try again." });
     } finally {
       setIsSubmitting(false);
     }
@@ -159,7 +161,10 @@ export default function Signup() {
     <Layout hideFooter={true}>
       <Head>
         <title>Sign Up - IEEE GEU Student Branch</title>
-        <meta name="description" content="Join IEEE GEU Student Branch and be part of the world's largest technical professional organization." />
+        <meta
+          name="description"
+          content="Join IEEE GEU Student Branch and be part of the world's largest technical professional organization."
+        />
       </Head>
 
       {/* Background gradient */}
@@ -175,13 +180,13 @@ export default function Signup() {
 
         <div className="relative flex items-center justify-center min-h-screen px-4 py-12 sm:px-6 lg:px-8">
           <div className="w-full max-w-4xl">
-            <motion.div 
+            <motion.div
               className="overflow-hidden border shadow-2xl backdrop-blur-xl bg-white/10 rounded-3xl border-white/20"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
             >
-              <motion.div 
+              <motion.div
                 className="px-8 py-12 sm:px-12"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
@@ -192,22 +197,22 @@ export default function Signup() {
                   <motion.div
                     initial={{ scale: 0 }}
                     animate={{ scale: 1 }}
-                    transition={{ 
+                    transition={{
                       type: "spring",
                       stiffness: 260,
                       damping: 20,
-                      delay: 0.1 
+                      delay: 0.1,
                     }}
                     className="inline-flex items-center justify-center w-20 h-20 mx-auto mb-6 overflow-hidden bg-white rounded-full"
                   >
-                    <img 
-                      src="/images/logo.png" 
-                      alt="IEEE Logo" 
+                    <img
+                      src="/images/logo.png"
+                      alt="IEEE Logo"
                       className="object-contain w-16 h-16"
                     />
                   </motion.div>
-                  
-                  <motion.h1 
+
+                  <motion.h1
                     className="mb-4 text-4xl font-bold text-white"
                     initial={{ y: 20, opacity: 0 }}
                     animate={{ y: 0, opacity: 1 }}
@@ -215,36 +220,41 @@ export default function Signup() {
                   >
                     Join IEEE GEU
                   </motion.h1>
-                  
-                  <motion.p 
+
+                  <motion.p
                     className="max-w-md mx-auto text-xl text-gray-300"
                     initial={{ y: 20, opacity: 0 }}
                     animate={{ y: 0, opacity: 1 }}
                     transition={{ duration: 0.6, delay: 0.4 }}
                   >
-                    Create your account and become part of the college's largest technical professional club
+                    Create your account and become part of the college's largest
+                    technical professional club
                   </motion.p>
                 </div>
 
                 {errors.form && (
-                  <motion.div 
+                  <motion.div
                     className="p-4 mb-6 text-sm text-red-400 rounded-lg bg-red-900/30"
                     initial={{ opacity: 0, y: -10, height: 0 }}
-                    animate={{ opacity: 1, y: 0, height: 'auto' }}
+                    animate={{ opacity: 1, y: 0, height: "auto" }}
                     transition={{ duration: 0.3 }}
                   >
                     {errors.form}
                   </motion.div>
                 )}
 
-                <motion.form 
-                  onSubmit={handleSubmit} 
+                <motion.form
+                  onSubmit={handleSubmit}
                   className="space-y-6"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
-                  transition={{ duration: 0.5, delay: 0.4, staggerChildren: 0.1 }}
+                  transition={{
+                    duration: 0.5,
+                    delay: 0.4,
+                    staggerChildren: 0.1,
+                  }}
                 >
-                  <motion.div 
+                  <motion.div
                     className="grid gap-6 md:grid-cols-2"
                     initial={{ y: 20, opacity: 0 }}
                     animate={{ y: 0, opacity: 1 }}
@@ -252,7 +262,10 @@ export default function Signup() {
                   >
                     {/* Name field */}
                     <div>
-                      <label className="block mb-2 text-sm font-medium text-gray-300" htmlFor="name">
+                      <label
+                        className="block mb-2 text-sm font-medium text-gray-300"
+                        htmlFor="name"
+                      >
                         Full Name
                       </label>
                       <div className="relative">
@@ -265,17 +278,26 @@ export default function Signup() {
                           name="name"
                           value={formData.name}
                           onChange={handleChange}
-                          className={`block w-full pl-10 pr-3 py-3 border ${errors.name ? 'border-red-500' : 'border-gray-700'} bg-gray-900/60 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-400 focus:border-blue-400 transition-all duration-200 text-white`}
+                          className={`block w-full pl-10 pr-3 py-3 border ${
+                            errors.name ? "border-red-500" : "border-gray-700"
+                          } bg-gray-900/60 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-400 focus:border-blue-400 transition-all duration-200 text-white`}
                           placeholder="Your Name"
                           whileFocus={{ scale: 1.01 }}
                         />
                       </div>
-                      {errors.name && <p className="mt-1 text-sm text-red-400">{errors.name}</p>}
+                      {errors.name && (
+                        <p className="mt-1 text-sm text-red-400">
+                          {errors.name}
+                        </p>
+                      )}
                     </div>
 
                     {/* Email field */}
                     <div>
-                      <label className="block mb-2 text-sm font-medium text-gray-300" htmlFor="email">
+                      <label
+                        className="block mb-2 text-sm font-medium text-gray-300"
+                        htmlFor="email"
+                      >
                         Email Address
                       </label>
                       <div className="relative">
@@ -288,16 +310,22 @@ export default function Signup() {
                           name="email"
                           value={formData.email}
                           onChange={handleChange}
-                          className={`block w-full pl-10 pr-3 py-3 border ${errors.email ? 'border-red-500' : 'border-gray-700'} bg-gray-900/60 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-400 focus:border-blue-400 transition-all duration-200 text-white`}
+                          className={`block w-full pl-10 pr-3 py-3 border ${
+                            errors.email ? "border-red-500" : "border-gray-700"
+                          } bg-gray-900/60 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-400 focus:border-blue-400 transition-all duration-200 text-white`}
                           placeholder="you@example.com"
                           whileFocus={{ scale: 1.01 }}
                         />
                       </div>
-                      {errors.email && <p className="mt-1 text-sm text-red-400">{errors.email}</p>}
+                      {errors.email && (
+                        <p className="mt-1 text-sm text-red-400">
+                          {errors.email}
+                        </p>
+                      )}
                     </div>
                   </motion.div>
 
-                  <motion.div 
+                  <motion.div
                     className="grid gap-6 md:grid-cols-2"
                     initial={{ y: 20, opacity: 0 }}
                     animate={{ y: 0, opacity: 1 }}
@@ -305,7 +333,10 @@ export default function Signup() {
                   >
                     {/* Mobile field */}
                     <div>
-                      <label className="block mb-2 text-sm font-medium text-gray-300" htmlFor="mobile">
+                      <label
+                        className="block mb-2 text-sm font-medium text-gray-300"
+                        htmlFor="mobile"
+                      >
                         Mobile Number
                       </label>
                       <div className="relative">
@@ -318,18 +349,27 @@ export default function Signup() {
                           name="mobile"
                           value={formData.mobile}
                           onChange={handleChange}
-                          className={`block w-full pl-10 pr-3 py-3 border ${errors.mobile ? 'border-red-500' : 'border-gray-700'} bg-gray-900/60 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-400 focus:border-blue-400 transition-all duration-200 text-white`}
+                          className={`block w-full pl-10 pr-3 py-3 border ${
+                            errors.mobile ? "border-red-500" : "border-gray-700"
+                          } bg-gray-900/60 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-400 focus:border-blue-400 transition-all duration-200 text-white`}
                           placeholder="9876543210"
                           maxLength={10}
                           whileFocus={{ scale: 1.01 }}
                         />
                       </div>
-                      {errors.mobile && <p className="mt-1 text-sm text-red-400">{errors.mobile}</p>}
+                      {errors.mobile && (
+                        <p className="mt-1 text-sm text-red-400">
+                          {errors.mobile}
+                        </p>
+                      )}
                     </div>
 
                     {/* Student ID field */}
                     <div>
-                      <label className="block mb-2 text-sm font-medium text-gray-300" htmlFor="studentId">
+                      <label
+                        className="block mb-2 text-sm font-medium text-gray-300"
+                        htmlFor="studentId"
+                      >
                         Student ID
                       </label>
                       <div className="relative">
@@ -342,16 +382,24 @@ export default function Signup() {
                           name="studentId"
                           value={formData.studentId}
                           onChange={handleChange}
-                          className={`block w-full pl-10 pr-3 py-3 border ${errors.studentId ? 'border-red-500' : 'border-gray-700'} bg-gray-900/60 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-400 focus:border-blue-400 transition-all duration-200 text-white`}
+                          className={`block w-full pl-10 pr-3 py-3 border ${
+                            errors.studentId
+                              ? "border-red-500"
+                              : "border-gray-700"
+                          } bg-gray-900/60 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-400 focus:border-blue-400 transition-all duration-200 text-white`}
                           placeholder="e.g. 2025001"
                           whileFocus={{ scale: 1.01 }}
                         />
                       </div>
-                      {errors.studentId && <p className="mt-1 text-sm text-red-400">{errors.studentId}</p>}
+                      {errors.studentId && (
+                        <p className="mt-1 text-sm text-red-400">
+                          {errors.studentId}
+                        </p>
+                      )}
                     </div>
                   </motion.div>
 
-                  <motion.div 
+                  <motion.div
                     className="grid gap-6 md:grid-cols-2"
                     initial={{ y: 20, opacity: 0 }}
                     animate={{ y: 0, opacity: 1 }}
@@ -359,7 +407,10 @@ export default function Signup() {
                   >
                     {/* Branch/Department field */}
                     <div>
-                      <label className="block mb-2 text-sm font-medium text-gray-300" htmlFor="branch">
+                      <label
+                        className="block mb-2 text-sm font-medium text-gray-300"
+                        htmlFor="branch"
+                      >
                         Branch/Department
                       </label>
                       <div className="relative">
@@ -372,17 +423,26 @@ export default function Signup() {
                           name="branch"
                           value={formData.branch}
                           onChange={handleChange}
-                          className={`block w-full pl-10 pr-3 py-3 border ${errors.branch ? 'border-red-500' : 'border-gray-700'} bg-gray-900/60 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-400 focus:border-blue-400 transition-all duration-200 text-white`}
+                          className={`block w-full pl-10 pr-3 py-3 border ${
+                            errors.branch ? "border-red-500" : "border-gray-700"
+                          } bg-gray-900/60 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-400 focus:border-blue-400 transition-all duration-200 text-white`}
                           placeholder="e.g. Computer Science"
                           whileFocus={{ scale: 1.01 }}
                         />
                       </div>
-                      {errors.branch && <p className="mt-1 text-sm text-red-400">{errors.branch}</p>}
+                      {errors.branch && (
+                        <p className="mt-1 text-sm text-red-400">
+                          {errors.branch}
+                        </p>
+                      )}
                     </div>
 
                     {/* Year of Study field */}
                     <div>
-                      <label className="block mb-2 text-sm font-medium text-gray-300" htmlFor="year">
+                      <label
+                        className="block mb-2 text-sm font-medium text-gray-300"
+                        htmlFor="year"
+                      >
                         Year of Study
                       </label>
                       <div className="relative">
@@ -395,23 +455,32 @@ export default function Signup() {
                           name="year"
                           value={formData.year}
                           onChange={handleChange}
-                          className={`block w-full pl-10 pr-3 py-3 border ${errors.year ? 'border-red-500' : 'border-gray-700'} bg-gray-900/60 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-400 focus:border-blue-400 transition-all duration-200 text-white`}
+                          className={`block w-full pl-10 pr-3 py-3 border ${
+                            errors.year ? "border-red-500" : "border-gray-700"
+                          } bg-gray-900/60 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-400 focus:border-blue-400 transition-all duration-200 text-white`}
                           placeholder="e.g. 2nd Year"
                           whileFocus={{ scale: 1.01 }}
                         />
                       </div>
-                      {errors.year && <p className="mt-1 text-sm text-red-400">{errors.year}</p>}
+                      {errors.year && (
+                        <p className="mt-1 text-sm text-red-400">
+                          {errors.year}
+                        </p>
+                      )}
                     </div>
                   </motion.div>
 
-                  <motion.div 
+                  <motion.div
                     className="grid gap-6 md:grid-cols-2"
                     initial={{ y: 20, opacity: 0 }}
                     animate={{ y: 0, opacity: 1 }}
                     transition={{ duration: 0.5, delay: 0.8 }}
                   >
                     <div>
-                      <label className="block mb-2 text-sm font-medium text-gray-300" htmlFor="password">
+                      <label
+                        className="block mb-2 text-sm font-medium text-gray-300"
+                        htmlFor="password"
+                      >
                         Password
                       </label>
                       <div className="relative">
@@ -424,7 +493,11 @@ export default function Signup() {
                           name="password"
                           value={formData.password}
                           onChange={handleChange}
-                          className={`block w-full pl-10 pr-10 py-3 border ${errors.password ? 'border-red-500' : 'border-gray-700'} bg-gray-900/60 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-400 focus:border-blue-400 transition-all duration-200 text-white`}
+                          className={`block w-full pl-10 pr-10 py-3 border ${
+                            errors.password
+                              ? "border-red-500"
+                              : "border-gray-700"
+                          } bg-gray-900/60 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-400 focus:border-blue-400 transition-all duration-200 text-white`}
                           placeholder="••••••••"
                           whileFocus={{ scale: 1.01 }}
                         />
@@ -442,11 +515,18 @@ export default function Signup() {
                           </button>
                         </div>
                       </div>
-                      {errors.password && <p className="mt-1 text-sm text-red-400">{errors.password}</p>}
+                      {errors.password && (
+                        <p className="mt-1 text-sm text-red-400">
+                          {errors.password}
+                        </p>
+                      )}
                     </div>
 
                     <div>
-                      <label className="block mb-2 text-sm font-medium text-gray-300" htmlFor="confirmPassword">
+                      <label
+                        className="block mb-2 text-sm font-medium text-gray-300"
+                        htmlFor="confirmPassword"
+                      >
                         Confirm Password
                       </label>
                       <div className="relative">
@@ -459,7 +539,11 @@ export default function Signup() {
                           name="confirmPassword"
                           value={formData.confirmPassword}
                           onChange={handleChange}
-                          className={`block w-full pl-10 pr-10 py-3 border ${errors.confirmPassword ? 'border-red-500' : 'border-gray-700'} bg-gray-900/60 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-400 focus:border-blue-400 transition-all duration-200 text-white`}
+                          className={`block w-full pl-10 pr-10 py-3 border ${
+                            errors.confirmPassword
+                              ? "border-red-500"
+                              : "border-gray-700"
+                          } bg-gray-900/60 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-400 focus:border-blue-400 transition-all duration-200 text-white`}
                           placeholder="••••••••"
                           whileFocus={{ scale: 1.01 }}
                         />
@@ -477,13 +561,17 @@ export default function Signup() {
                           </button>
                         </div>
                       </div>
-                      {errors.confirmPassword && <p className="mt-1 text-sm text-red-400">{errors.confirmPassword}</p>}
+                      {errors.confirmPassword && (
+                        <p className="mt-1 text-sm text-red-400">
+                          {errors.confirmPassword}
+                        </p>
+                      )}
                     </div>
                   </motion.div>
 
-                  <motion.div 
+                  <motion.div
                     className="flex items-start p-4 rounded-lg bg-gray-800/50"
-                    whileHover={{ backgroundColor: 'rgba(30, 41, 59, 0.5)' }}
+                    whileHover={{ backgroundColor: "rgba(30, 41, 59, 0.5)" }}
                     initial={{ y: 20, opacity: 0 }}
                     animate={{ y: 0, opacity: 1 }}
                     transition={{ duration: 0.5, delay: 0.9 }}
@@ -499,10 +587,13 @@ export default function Signup() {
                       />
                     </div>
                     <div className="ml-3 text-sm">
-                      <label htmlFor="terms" className="font-medium text-gray-300">
-                        I agree to the{' '}
+                      <label
+                        htmlFor="terms"
+                        className="font-medium text-gray-300"
+                      >
+                        I agree to the{" "}
                         <Link href="/terms">
-                          <motion.span 
+                          <motion.span
                             className="font-medium text-blue-400 hover:text-blue-300"
                             whileHover={{ textDecoration: "underline" }}
                           >
@@ -510,7 +601,10 @@ export default function Signup() {
                           </motion.span>
                         </Link>
                       </label>
-                      <p className="mt-1 text-xs text-gray-500">By signing up, you agree to our terms of service and privacy policy.</p>
+                      <p className="mt-1 text-xs text-gray-500">
+                        By signing up, you agree to our terms of service and
+                        privacy policy.
+                      </p>
                     </div>
                   </motion.div>
 
@@ -518,9 +612,10 @@ export default function Signup() {
                     type="submit"
                     disabled={isSubmitting}
                     className="relative flex items-center justify-center w-full px-4 py-3 overflow-hidden text-white transition-all rounded-lg bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-900 focus:ring-blue-400"
-                    whileHover={{ 
+                    whileHover={{
                       scale: 1.02,
-                      boxShadow: "0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.15)"
+                      boxShadow:
+                        "0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.15)",
                     }}
                     whileTap={{ scale: 0.98 }}
                     initial={{ y: 20, opacity: 0 }}
@@ -528,30 +623,46 @@ export default function Signup() {
                     transition={{ duration: 0.5, delay: 1.0 }}
                   >
                     {/* Button shine effect */}
-                    <motion.div 
+                    <motion.div
                       className="absolute top-0 -left-4 w-1/4 h-full bg-white opacity-30 skew-x-[30deg]"
-                      animate={{ 
+                      animate={{
                         x: ["0%", "400%"],
                       }}
-                      transition={{ 
+                      transition={{
                         duration: 2.5,
                         repeat: Infinity,
                         repeatType: "loop",
                         ease: "easeInOut",
-                        repeatDelay: 1
+                        repeatDelay: 1,
                       }}
                     />
-                    
+
                     <span className="relative z-10 flex items-center">
                       {isSubmitting ? (
-                        <svg className="w-5 h-5 mr-3 -ml-1 text-white animate-spin" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        <svg
+                          className="w-5 h-5 mr-3 -ml-1 text-white animate-spin"
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                        >
+                          <circle
+                            className="opacity-25"
+                            cx="12"
+                            cy="12"
+                            r="10"
+                            stroke="currentColor"
+                            strokeWidth="4"
+                          ></circle>
+                          <path
+                            className="opacity-75"
+                            fill="currentColor"
+                            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                          ></path>
                         </svg>
                       ) : (
                         <>
                           <FaUserPlus className="mr-3" />
-                          Create Account 
+                          Create Account
                           <motion.span
                             animate={{ x: [0, 5, 0] }}
                             transition={{ repeat: Infinity, duration: 1.5 }}
@@ -564,21 +675,21 @@ export default function Signup() {
                     </span>
                   </motion.button>
                 </motion.form>
-                
-                <motion.div 
+
+                <motion.div
                   className="mt-6 text-center"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ duration: 0.5, delay: 1.1 }}
                 >
                   <p className="text-sm text-gray-400">
-                    Already have an account?{' '}
+                    Already have an account?{" "}
                     <Link href="/login">
-                      <motion.span 
+                      <motion.span
                         className="font-medium text-blue-400 hover:text-blue-300"
-                        whileHover={{ 
+                        whileHover={{
                           scale: 1.05,
-                          textDecoration: "underline" 
+                          textDecoration: "underline",
                         }}
                       >
                         Sign in
@@ -587,15 +698,17 @@ export default function Signup() {
                   </p>
                 </motion.div>
               </motion.div>
-              
-              <motion.div 
+
+              <motion.div
                 className="p-4 mt-6 backdrop-blur-lg rounded-lg bg-[#101926]/30 border border-gray-800/30"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: 1.2 }}
               >
                 <p className="text-xs text-center text-gray-400">
-                  By signing up, you'll get access to exclusive IEEE events, workshops, and networking opportunities to help advance your career in technology.
+                  By signing up, you'll get access to exclusive IEEE events,
+                  workshops, and networking opportunities to help advance your
+                  career in technology.
                 </p>
               </motion.div>
             </motion.div>

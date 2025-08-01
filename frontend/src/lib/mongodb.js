@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 
 const MONGODB_URI =
   process.env.MONGODB_URI ||
+<<<<<<< HEAD
   "mongodb+srv://digarsingh90:4190550P*mongodb@cluster0.sjhwbjk.mongodb.net/";
 
 // Helper function to determine if we're in build/static generation mode
@@ -27,6 +28,9 @@ const isBuildTime = () => {
     return true;
   }
 };
+=======
+  "mongodb+srv://shivakoranga2004:wmH5pR0YIpTMYYh9@ieee.7fq9giv.mongodb.net/ieee?retryWrites=true&w=majority&appName=IEEE-Website";
+>>>>>>> 7f4e11f29815578104edf3a60d59b44885b312c4
 
 /**
  * Global is used here to maintain a cached connection across hot reloads
@@ -39,13 +43,33 @@ if (!cached) {
   cached = global.mongoose = { conn: null, promise: null };
 }
 
-async function dbConnect() {
-  // During build time, return a mock connection to prevent errors
-  if (isBuildTime()) {
-    console.log("🔄 Build mode detected, skipping MongoDB connection");
-    return { connection: { readyState: 1 }, model: () => ({}) };
+// Retry connection function
+async function connectWithRetry(uri, options, maxRetries = 3) {
+  for (let i = 0; i < maxRetries; i++) {
+    try {
+      console.log(
+        `🔄 Attempting MongoDB connection (attempt ${i + 1}/${maxRetries})`
+      );
+      const result = await mongoose.connect(uri, options);
+      console.log("✅ Connected to MongoDB successfully");
+      return result;
+    } catch (error) {
+      console.error(
+        `❌ MongoDB connection attempt ${i + 1} failed:`,
+        error.message
+      );
+      if (i === maxRetries - 1) {
+        throw error;
+      }
+      // Wait before retrying (exponential backoff)
+      const delay = Math.pow(2, i) * 1000;
+      console.log(`⏳ Waiting ${delay}ms before retry...`);
+      await new Promise((resolve) => setTimeout(resolve, delay));
+    }
   }
+}
 
+async function dbConnect() {
   if (cached.conn) {
     return cached.conn;
   }
@@ -53,29 +77,29 @@ async function dbConnect() {
   if (!cached.promise) {
     // Validate MongoDB URI
     if (!MONGODB_URI) {
-      console.warn("⚠️ No MongoDB URI provided, using fallback");
+      throw new Error("MONGODB_URI is not defined");
     }
 
     const opts = {
       bufferCommands: false,
-      serverSelectionTimeoutMS: 5000, // Timeout after 5s instead of 30s
-      maxPoolSize: 10, // Maintain up to 10 socket connections
+      serverSelectionTimeoutMS: 10000,
+      maxPoolSize: 1,
+      minPoolSize: 0,
+      maxIdleTimeMS: 30000,
+      connectTimeoutMS: 10000,
+      socketTimeoutMS: 45000,
+      family: 4,
+      retryWrites: true,
+      w: "majority",
+      // Add these options for better serverless compatibility
+      keepAlive: true,
+      keepAliveInitialDelay: 300000,
     };
 
-    cached.promise = mongoose
-      .connect(MONGODB_URI, opts)
-      .then((mongoose) => {
-        console.log("✅ Connected to MongoDB successfully");
-        return mongoose;
-      })
-      .catch((error) => {
-        console.error("❌ MongoDB connection error:", error);
-        // Don't log connection string in production for security
-        if (process.env.NODE_ENV !== "production") {
-          console.log("Connection string:", MONGODB_URI);
-        }
-        throw error;
-      });
+    cached.promise = connectWithRetry(MONGODB_URI, opts).catch((error) => {
+      console.error("❌ All MongoDB connection attempts failed:", error);
+      throw error;
+    });
   }
 
   try {

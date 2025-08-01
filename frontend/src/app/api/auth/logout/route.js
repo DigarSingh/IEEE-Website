@@ -1,22 +1,23 @@
-import { NextResponse } from 'next/server';
+import { NextResponse } from "next/server";
 
-// Logout user
-export async function POST() {
-  // Create a response that will clear the token cookie
-  const response = NextResponse.json({
-    success: true,
-    message: 'Logged out successfully'
-  });
+// Force dynamic rendering
+export const dynamic = "force-dynamic";
 
-  // Clear the token cookie
-  response.cookies.set({
-    name: 'token',
-    value: '',
-    httpOnly: true,
-    expires: new Date(0), // Immediately expire the cookie
-    secure: process.env.NODE_ENV === 'production',
-    sameSite: 'strict',
-  });
+export async function POST(request) {
+  try {
+    // For JWT-based authentication, logout is handled client-side
+    // by removing the token from localStorage
+    // This endpoint can be used for additional server-side cleanup if needed
 
-  return response;
+    return NextResponse.json({
+      success: true,
+      message: "Logout successful",
+    });
+  } catch (error) {
+    console.error("Logout error:", error);
+    return NextResponse.json(
+      { success: false, message: "Internal server error" },
+      { status: 500 }
+    );
+  }
 }

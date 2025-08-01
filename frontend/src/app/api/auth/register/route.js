@@ -1,116 +1,107 @@
-import { NextResponse } from 'next/server';
-import dbConnect from '@/lib/mongodb';
-import User from '@/models/User';
-import { generateToken } from '@/middleware/authMiddleware';
+import { NextResponse } from "next/server";
+import bcrypt from "bcryptjs";
+import { generateToken } from "@/middleware/authMiddleware";
+import User from "@/models/User";
+import dbConnect from "@/lib/mongodb";
 
-// Register new user
+// Force dynamic rendering
+export const dynamic = "force-dynamic";
+
 export async function POST(request) {
   try {
-    console.log('Register endpoint called');
     await dbConnect();
 
-    const body = await request.json();
-    const { name, email, password, college, branch, year, mobile, studentId } = body;
-    
-    console.log('Registration data received:', { 
-      name, 
-      email, 
-      college, 
-      branch, 
-      year, 
-      mobile, 
-      studentId, 
-      passwordProvided: !!password 
-    });
-    
-    // Validate required fields
-    const requiredFields = ['name', 'email', 'password', 'branch', 'year', 'mobile', 'studentId'];
-    const missingFields = requiredFields.filter(field => !body[field]);
-    
-    if (missingFields.length > 0) {
-      console.log('Missing required fields:', missingFields);
-      return NextResponse.json({
-        success: false,
-        message: `Missing required fields: ${missingFields.join(', ')}`
-      }, { status: 400 });
-    }
-
-    // Check if user already exists
-    const userExists = await User.findOne({ email });
-    if (userExists) {
-      console.log('User already exists:', email);
-      return NextResponse.json({ 
-        success: false, 
-        message: 'User with this email already exists' 
-      }, { status: 400 });
-    }
-
-    // Check if student ID already exists
-    const studentIdExists = await User.findOne({ studentId });
-    if (studentIdExists) {
-      console.log('Student ID already exists:', studentId);
-      return NextResponse.json({
-        success: false,
-        message: 'User with this Student ID already exists'
-      }, { status: 400 });
-    }
-
-    // Create user
-    console.log('Creating new user...');
-    const user = await User.create({
+    const {
       name,
       email,
       password,
-      college: 'GEU',
       branch,
       year,
       mobile,
-      studentId
+      studentId,
+      role = "student",
+    } = await request.json();
+
+    // Validate required fields
+    if (
+      !name ||
+      !email ||
+      !password ||
+      !branch ||
+      !year ||
+      !mobile ||
+      !studentId
+    ) {
+      return NextResponse.json(
+        { success: false, message: "All fields are required" },
+        { status: 400 }
+      );
+    }
+
+    // Check if user already exists
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      return NextResponse.json(
+        { success: false, message: "User with this email already exists" },
+        { status: 400 }
+      );
+    }
+
+    // Check if student ID already exists
+    const existingStudentId = await User.findOne({ studentId });
+    if (existingStudentId) {
+      return NextResponse.json(
+        { success: false, message: "Student ID already registered" },
+        { status: 400 }
+      );
+    }
+
+    // Hash password
+    const saltRounds = 12;
+    const hashedPassword = await bcrypt.hash(password, saltRounds);
+
+    // Create new user
+    const newUser = new User({
+      name,
+      email,
+      password: hashedPassword,
+      branch,
+      year,
+      mobile,
+      studentId,
+      role,
+      isVerified: false, // Default to false, admin can verify later
     });
-    console.log('User created successfully:', user._id);
+
+    await newUser.save();
 
     // Generate token
-    const token = generateToken(user._id);
+    const token = generateToken(newUser._id, newUser.role);
 
-    // Send response
+    // Return user data (without password) and token
+    const userResponse = {
+      id: newUser._id,
+      name: newUser.name,
+      email: newUser.email,
+      branch: newUser.branch,
+      year: newUser.year,
+      mobile: newUser.mobile,
+      role: newUser.role,
+      isVerified: newUser.isVerified,
+      studentId: newUser.studentId,
+    };
+
     return NextResponse.json({
       success: true,
+      message: "Registration successful",
+      user: userResponse,
       token,
-      user: {
-        id: user._id,
-        name: user.name,
-        email: user.email,
-        college: user.college,
-        role: user.role,
-        isVerified: user.isVerified
-      },
-      message: 'Registration successful'
-    }, { status: 201 });
+    });
   } catch (error) {
-    console.error('Registration error:', error);
-    
-    // Handle validation errors
-    if (error.name === 'ValidationError') {
-      const messages = Object.values(error.errors).map(val => val.message);
-      return NextResponse.json({
-        success: false,
-        message: messages.join(', ')
-      }, { status: 400 });
-    }
-    
-    // Handle duplicate key error
-    if (error.code === 11000) {
-      const field = Object.keys(error.keyValue)[0];
-      return NextResponse.json({
-        success: false,
-        message: `${field} already exists. Please use a different value.`
-      }, { status: 400 });
-    }
-    
-    return NextResponse.json({
-      success: false,
-      message: 'Server error during registration',
-      error: error.message
-    }, { status: 500 });
+    console.error("Registration error:", error);
+    return NextResponse.json(
+      { success: false, message: "Internal server error" },
+      { status: 500 }
+    );
   }
 }

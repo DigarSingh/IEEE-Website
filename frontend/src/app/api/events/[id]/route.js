@@ -1,6 +1,9 @@
-import { NextResponse } from 'next/server';
-import dbConnect from '@/lib/mongodb';
-import Event from '@/models/Event';
+import { NextResponse } from "next/server";
+import dbConnect from "@/lib/mongodb";
+import Event from "@/models/Event";
+
+// Force dynamic rendering
+export const dynamic = "force-dynamic";
 
 // Get event by ID
 export async function GET(request, { params }) {
@@ -8,25 +11,31 @@ export async function GET(request, { params }) {
     await dbConnect();
 
     const event = await Event.findById(params.id)
-      .populate('createdBy', 'name email')
-      .populate('attendees', 'name email');
-    
+      .populate("createdBy", "name email")
+      .populate("attendees", "name email");
+
     if (!event) {
-      return NextResponse.json({
-        success: false,
-        message: 'Event not found'
-      }, { status: 404 });
+      return NextResponse.json(
+        {
+          success: false,
+          message: "Event not found",
+        },
+        { status: 404 }
+      );
     }
 
     return NextResponse.json({
       success: true,
-      data: event
+      data: event,
     });
   } catch (error) {
     console.error(`Error getting event ${params.id}:`, error);
-    return NextResponse.json({
-      success: false,
-      message: 'Server error fetching event'
-    }, { status: 500 });
+    return NextResponse.json(
+      {
+        success: false,
+        message: "Server error fetching event",
+      },
+      { status: 500 }
+    );
   }
 }

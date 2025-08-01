@@ -19,8 +19,8 @@ This is a responsive and dynamic website built for the IEEE Student Branch. The 
 
 - **Frontend**: Next.js
 - **Framework**: Bootstrap / Tailwind CSS
-- **Backend**: Node.js / Mongo DB
-- **Deployment**: GitHub Pages / Netlify / Vercel
+- **Backend**: Mongo DB
+- **Deployment**: GitHub Pages / Vercel
 
 ---
 
@@ -65,33 +65,30 @@ This project is configured for seamless deployment on Vercel.
 
 1. Connect your GitHub repository to Vercel
 2. Configure the build settings:
-   - Build Command: `npm run build:vercel` (this command should be detected automatically)
+   - Build Command: `npm run build` (this command should be detected automatically)
    - Output Directory: `frontend/.next` (this should be detected automatically)
-   - Install Command: `npm install && npm install --prefix frontend`
+   - Install Command: `npm install` (dependencies are installed at root level)
 3. Add the required environment variables directly in the Vercel dashboard
 4. Deploy!
 
 ### Build Process
 
-The build process uses a specialized workflow to handle authentication-required pages:
+The build process uses standard Next.js build with optimized configuration:
 
-- Creates mock data for static generation
-- Creates build-safe versions of authentication code
-- Temporarily replaces auth-required pages with placeholder components
-- Uses path aliases for better imports
-- Optimizes MongoDB connections during build
-- Restores original files after build is complete
+- Normal MongoDB connection during runtime
+- API routes are not statically generated
+- Authentication middleware handles route protection
+- Optimized for Vercel deployment
 
-#### Fixing Build Errors
+#### Build Command
 
-If you encounter build errors with paths like `/admin/dashboard`, `/student/events`, or `/dashboard`, it's likely due to authentication requirements during static generation. Use our enhanced build script:
+To build the project:
 
 ```bash
-cd frontend
-npm run build:vercel
+npm run build
 ```
 
-This script will skip authentication checks during build time while ensuring the final deployed site has proper authentication.
+This will build the project with standard Next.js configuration.
 
 #### Vercel-specific Setup
 
@@ -102,7 +99,7 @@ When deploying to Vercel, make sure to:
    - `MONGODB_URI`: Your MongoDB connection string (e.g., `mongodb+srv://username:password@cluster.mongodb.net/database?retryWrites=true&w=majority`)
    - `JWT_SECRET`: Your authentication secret key (e.g., `your-strong-secret-key-here`)
 
-> **Important**:  
+> **Important**:
 >
 > - Add environment variables directly in the Vercel project settings, not as referenced secrets with @ prefix
 > - If the build fails with "No such file or directory: frontend", make sure your repository structure includes the frontend folder at the root level
@@ -115,4 +112,4 @@ This project is licensed under the MIT License. See the LICENSE file for details
 
 Made with 💙 by Digar Singh  
 📧 Email: [digarsingh2004@gmail.com](mailto:digarsingh2004@gmail.com)  
-🌐 Visit: [geuieee.in](https://geuieee.in)
+🌐 Visit: [geuieee.com](https://geuieee.com)
