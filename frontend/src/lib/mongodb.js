@@ -2,7 +2,6 @@ import mongoose from "mongoose";
 
 const MONGODB_URI =
   process.env.MONGODB_URI ||
-<<<<<<< HEAD
   "mongodb+srv://digarsingh90:4190550P*mongodb@cluster0.sjhwbjk.mongodb.net/";
 
 // Helper function to determine if we're in build/static generation mode
@@ -28,9 +27,7 @@ const isBuildTime = () => {
     return true;
   }
 };
-=======
   "mongodb+srv://shivakoranga2004:wmH5pR0YIpTMYYh9@ieee.7fq9giv.mongodb.net/ieee?retryWrites=true&w=majority&appName=IEEE-Website";
->>>>>>> 7f4e11f29815578104edf3a60d59b44885b312c4
 
 /**
  * Global is used here to maintain a cached connection across hot reloads
