@@ -16,7 +16,7 @@ import "../models/Event.js";
 import "../models/Certificate.js";
 import "../models/Message.js";
 
-const MONGODB_URI = process.env.MONGODB_URI || "mongodb+srv://digarsingh90:4190550P*mongodb@cluster0.sjhwbjk.mongodb.net/";
+const MONGODB_URI = process.env.MONGODB_URI || "mongodb+srv://digarsingh90:nFH2FjprhO6VSf0R@cluster0.sjhwbjk.mongodb.net/test?retryWrites=true&w=majority&appName=Cluster0";
 
 async function main() {
   try {
