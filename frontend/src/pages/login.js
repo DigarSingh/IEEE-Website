@@ -13,7 +13,7 @@ import {
   FaCheckCircle,
 } from "react-icons/fa";
 import Layout from "@/components/Layout";
-import ParticleBackground from '@/components/ParticleBackground';
+import ParticleBackground from "@/components/ParticleBackground";
 import dynamic from "next/dynamic";
 
 export default function Login() {
@@ -106,21 +106,11 @@ export default function Login() {
         console.log("User role:", data.user.role);
         console.log("Full user data:", data.user);
 
-        // Check user role and redirect accordingly
-        if (data.user && data.user.role === "admin") {
-          console.log("Redirecting to admin dashboard");
-          window.location.href = "/admin/dashboard"; // Redirect to admin dashboard
-        } else if (data.user && data.user.role === "student") {
-          console.log("Redirecting to student dashboard");
-          window.location.href = "/student/dashboard"; // Redirect to student dashboard
+        // Redirect based on user role
+        if (data.user.role === "admin" || data.user.role === "superadmin") {
+          window.location.href = "/dashboard"; // Redirect to main dashboard
         } else {
-          console.log("Redirecting to general dashboard");
-          console.log(
-            "User role was:",
-            data.user.role,
-            "which is not admin or student"
-          );
-          window.location.href = "/dashboard"; // Redirect to role-based dashboard router
+          window.location.href = "/dashboard"; // Redirect to main dashboard
         }
       } catch (error) {
         console.error("Login error:", error);
@@ -139,11 +129,11 @@ export default function Login() {
 
   const fadeIn = {
     hidden: { opacity: 0, y: 20 },
-    visible: { 
-      opacity: 1, 
+    visible: {
+      opacity: 1,
       y: 0,
-      transition: { duration: 0.6, ease: "easeOut" }
-    }
+      transition: { duration: 0.6, ease: "easeOut" },
+    },
   };
 
   const staggerContainer = {
@@ -152,9 +142,9 @@ export default function Login() {
       opacity: 1,
       transition: {
         staggerChildren: 0.1,
-        delayChildren: 0.2
-      }
-    }
+        delayChildren: 0.2,
+      },
+    },
   };
 
   return (
@@ -162,7 +152,10 @@ export default function Login() {
       <div className="relative min-h-screen overflow-hidden bg-gradient-to-br from-blue-900 via-purple-900 to-indigo-900">
         <Head>
           <title>Login | IEEE GEU Student Branch</title>
-          <meta name="description" content="Sign in to your IEEE GEU Student Branch account" />
+          <meta
+            name="description"
+            content="Sign in to your IEEE GEU Student Branch account"
+          />
         </Head>
 
         {/* Background Elements */}
@@ -170,55 +163,58 @@ export default function Login() {
         <div className="absolute inset-0">
           {/* Gradient Overlays */}
           <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-blue-900/30"></div>
-          
+
           {/* Animated Background Patterns */}
           <div className="absolute inset-0 opacity-10">
-            <div className="absolute inset-0" style={{
-              backgroundImage: `radial-gradient(circle at 25px 25px, rgba(255,255,255,0.2) 2%, transparent 0%), 
+            <div
+              className="absolute inset-0"
+              style={{
+                backgroundImage: `radial-gradient(circle at 25px 25px, rgba(255,255,255,0.2) 2%, transparent 0%), 
                                radial-gradient(circle at 75px 75px, rgba(255,255,255,0.1) 2%, transparent 0%)`,
-              backgroundSize: '100px 100px'
-            }}></div>
+                backgroundSize: "100px 100px",
+              }}
+            ></div>
           </div>
 
           {/* Floating Elements */}
           {isMounted && (
             <>
-              <motion.div 
+              <motion.div
                 className="absolute w-32 h-32 rounded-full top-20 left-10 bg-blue-500/10 blur-xl"
-                animate={{ 
+                animate={{
                   y: [0, -20, 0],
-                  scale: [1, 1.1, 1]
+                  scale: [1, 1.1, 1],
                 }}
-                transition={{ 
+                transition={{
                   duration: 6,
                   repeat: Infinity,
-                  ease: "easeInOut"
+                  ease: "easeInOut",
                 }}
               />
-              <motion.div 
+              <motion.div
                 className="absolute w-48 h-48 rounded-full top-40 right-20 bg-purple-500/10 blur-2xl"
-                animate={{ 
+                animate={{
                   y: [0, 15, 0],
-                  scale: [1, 0.9, 1]
+                  scale: [1, 0.9, 1],
                 }}
-                transition={{ 
+                transition={{
                   duration: 8,
                   repeat: Infinity,
                   ease: "easeInOut",
-                  delay: 1
+                  delay: 1,
                 }}
               />
-              <motion.div 
+              <motion.div
                 className="absolute w-40 h-40 rounded-full bottom-40 left-20 bg-cyan-500/10 blur-xl"
-                animate={{ 
+                animate={{
                   y: [0, -15, 0],
-                  scale: [1, 1.2, 1]
+                  scale: [1, 1.2, 1],
                 }}
-                transition={{ 
+                transition={{
                   duration: 7,
                   repeat: Infinity,
                   ease: "easeInOut",
-                  delay: 2
+                  delay: 2,
                 }}
               />
             </>
@@ -237,40 +233,34 @@ export default function Login() {
             <motion.div
               variants={fadeIn}
               className="relative p-8 overflow-hidden border shadow-2xl bg-white/10 backdrop-blur-xl border-white/20 rounded-3xl"
-              whileHover={{ 
+              whileHover={{
                 boxShadow: "0 25px 50px rgba(0, 0, 0, 0.3)",
-                scale: 1.02
+                scale: 1.02,
               }}
               transition={{ duration: 0.3 }}
             >
               {/* Header Section */}
-              <motion.div 
-                variants={fadeIn}
-                className="mb-8 text-center"
-              >
+              <motion.div variants={fadeIn} className="mb-8 text-center">
                 <motion.div
                   className="inline-flex items-center justify-center w-20 h-20 mb-6 overflow-hidden shadow-lg bg-white rounded-2xl"
                   whileHover={{ rotate: 360 }}
                   transition={{ duration: 0.8 }}
                 >
-                  <img 
-                    src="/images/logo.png" 
-                    alt="IEEE Logo" 
+                  <img
+                    src="/images/logo.png"
+                    alt="IEEE Logo"
                     className="w-16 h-16 object-contain"
                   />
                 </motion.div>
 
-                <motion.h1 
+                <motion.h1
                   variants={fadeIn}
                   className="mb-2 text-3xl font-bold text-white"
                 >
                   Welcome Back
                 </motion.h1>
-                
-                <motion.p 
-                  variants={fadeIn}
-                  className="text-blue-100"
-                >
+
+                <motion.p variants={fadeIn} className="text-blue-100">
                   Sign in to access your IEEE dashboard
                 </motion.p>
               </motion.div>
@@ -298,7 +288,13 @@ export default function Login() {
                   </label>
                   <div className="relative group">
                     <div className="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none">
-                      <FaUser className={`text-lg transition-colors ${errors.email ? 'text-red-400' : 'text-blue-400 group-focus-within:text-purple-400'}`} />
+                      <FaUser
+                        className={`text-lg transition-colors ${
+                          errors.email
+                            ? "text-red-400"
+                            : "text-blue-400 group-focus-within:text-purple-400"
+                        }`}
+                      />
                     </div>
                     <motion.input
                       type="email"
@@ -306,9 +302,9 @@ export default function Login() {
                       value={formData.email}
                       onChange={handleChange}
                       className={`w-full pl-12 pr-4 py-4 bg-white/10 border rounded-xl text-white placeholder-blue-200/50 transition-all duration-300 focus:outline-none focus:ring-2 backdrop-blur-sm ${
-                        errors.email 
-                          ? 'border-red-500/50 focus:ring-red-500/50' 
-                          : 'border-white/20 focus:border-blue-400/50 focus:ring-blue-400/50'
+                        errors.email
+                          ? "border-red-500/50 focus:ring-red-500/50"
+                          : "border-white/20 focus:border-blue-400/50 focus:ring-blue-400/50"
                       }`}
                       placeholder="Enter your email"
                       whileFocus={{ scale: 1.02 }}
@@ -332,7 +328,13 @@ export default function Login() {
                   </label>
                   <div className="relative group">
                     <div className="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none">
-                      <FaLock className={`text-lg transition-colors ${errors.password ? 'text-red-400' : 'text-blue-400 group-focus-within:text-purple-400'}`} />
+                      <FaLock
+                        className={`text-lg transition-colors ${
+                          errors.password
+                            ? "text-red-400"
+                            : "text-blue-400 group-focus-within:text-purple-400"
+                        }`}
+                      />
                     </div>
                     <motion.input
                       type={showPassword ? "text" : "password"}
@@ -340,9 +342,9 @@ export default function Login() {
                       value={formData.password}
                       onChange={handleChange}
                       className={`w-full pl-12 pr-12 py-4 bg-white/10 border rounded-xl text-white placeholder-blue-200/50 transition-all duration-300 focus:outline-none focus:ring-2 backdrop-blur-sm ${
-                        errors.password 
-                          ? 'border-red-500/50 focus:ring-red-500/50' 
-                          : 'border-white/20 focus:border-blue-400/50 focus:ring-blue-400/50'
+                        errors.password
+                          ? "border-red-500/50 focus:ring-red-500/50"
+                          : "border-white/20 focus:border-blue-400/50 focus:ring-blue-400/50"
                       }`}
                       placeholder="Enter your password"
                       whileFocus={{ scale: 1.02 }}
@@ -367,7 +369,7 @@ export default function Login() {
                 </motion.div>
 
                 {/* Remember Me & Forgot Password */}
-                <motion.div 
+                <motion.div
                   variants={fadeIn}
                   className="flex items-center justify-between"
                 >
@@ -376,7 +378,9 @@ export default function Login() {
                       type="checkbox"
                       className="w-4 h-4 text-blue-500 rounded bg-white/10 border-white/20 focus:ring-blue-400/50"
                     />
-                    <span className="ml-2 text-sm text-blue-100">Remember me</span>
+                    <span className="ml-2 text-sm text-blue-100">
+                      Remember me
+                    </span>
                   </label>
                   <Link href="/forgot-password">
                     <span className="text-sm text-blue-300 transition-colors cursor-pointer hover:text-purple-300">
@@ -396,13 +400,28 @@ export default function Login() {
                 >
                   {/* Button Shimmer Effect */}
                   <div className="absolute inset-0 transition-transform duration-1000 -translate-x-full -skew-x-12 bg-gradient-to-r from-transparent via-white/20 to-transparent group-hover:translate-x-full"></div>
-                  
+
                   <span className="relative flex items-center justify-center">
                     {isSubmitting ? (
                       <div className="flex items-center">
-                        <svg className="w-5 h-5 mr-3 animate-spin" fill="none" viewBox="0 0 24 24">
-                          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        <svg
+                          className="w-5 h-5 mr-3 animate-spin"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                        >
+                          <circle
+                            className="opacity-25"
+                            cx="12"
+                            cy="12"
+                            r="10"
+                            stroke="currentColor"
+                            strokeWidth="4"
+                          ></circle>
+                          <path
+                            className="opacity-75"
+                            fill="currentColor"
+                            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                          ></path>
                         </svg>
                         Signing In...
                       </div>
@@ -417,12 +436,9 @@ export default function Login() {
               </form>
 
               {/* Sign Up Link */}
-              <motion.div 
-                variants={fadeIn}
-                className="mt-8 text-center"
-              >
+              <motion.div variants={fadeIn} className="mt-8 text-center">
                 <p className="text-blue-100">
-                  Don't have an account?{' '}
+                  Don't have an account?{" "}
                   <Link href="/signup">
                     <span className="font-semibold text-blue-300 transition-colors cursor-pointer hover:text-purple-300">
                       Create Account
@@ -432,7 +448,7 @@ export default function Login() {
               </motion.div>
 
               {/* Features */}
-              <motion.div 
+              <motion.div
                 variants={fadeIn}
                 className="pt-6 mt-8 border-t border-white/10"
               >

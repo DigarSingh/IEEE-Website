@@ -1,8 +1,24 @@
-import { useState, useEffect } from 'react';
-import Link from 'next/link';
-import { useRouter } from 'next/router';
-import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
-import { FaSignOutAlt, FaBars, FaTimes, FaUser, FaChevronDown, FaUserCircle, FaCog, FaUserShield, FaBell, FaSearch } from 'react-icons/fa';
+import { useState, useEffect } from "react";
+import Link from "next/link";
+import { useRouter } from "next/router";
+import {
+  motion,
+  AnimatePresence,
+  useScroll,
+  useTransform,
+} from "framer-motion";
+import {
+  FaSignOutAlt,
+  FaBars,
+  FaTimes,
+  FaUser,
+  FaChevronDown,
+  FaUserCircle,
+  FaCog,
+  FaUserShield,
+  FaBell,
+  FaSearch,
+} from "react-icons/fa";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -12,7 +28,7 @@ export default function Navbar() {
   const [userMenuOpen, setUserMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const router = useRouter();
-  
+
   // Get scroll progress for enhanced animations
   const { scrollY } = useScroll();
   const navbarOpacity = useTransform(scrollY, [0, 100], [1, 0.98]);
@@ -30,9 +46,9 @@ export default function Navbar() {
       }
     };
 
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener("scroll", handleScroll);
     return () => {
-      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener("scroll", handleScroll);
     };
   }, []);
 
@@ -40,15 +56,15 @@ export default function Navbar() {
   useEffect(() => {
     setMounted(true);
     // Check if user is logged in
-    const token = localStorage.getItem('token');
-    const userData = localStorage.getItem('user');
-    
+    const token = localStorage.getItem("token");
+    const userData = localStorage.getItem("user");
+
     if (token && userData) {
       setIsLoggedIn(true);
       try {
         setUser(JSON.parse(userData));
       } catch (e) {
-        console.error('Error parsing user data:', e);
+        console.error("Error parsing user data:", e);
       }
     }
   }, []);
@@ -57,30 +73,30 @@ export default function Navbar() {
   useEffect(() => {
     if (mounted) {
       const handleClickOutside = (event) => {
-        if (userMenuOpen && !event.target.closest('.user-menu-container')) {
+        if (userMenuOpen && !event.target.closest(".user-menu-container")) {
           setUserMenuOpen(false);
         }
       };
-  
-      document.addEventListener('mousedown', handleClickOutside);
+
+      document.addEventListener("mousedown", handleClickOutside);
       return () => {
-        document.removeEventListener('mousedown', handleClickOutside);
+        document.removeEventListener("mousedown", handleClickOutside);
       };
     }
   }, [userMenuOpen, mounted]);
 
   const handleLogout = () => {
     // Clear localStorage
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
-    
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+
     // Update state
     setIsLoggedIn(false);
     setUser(null);
     setUserMenuOpen(false);
-    
+
     // Redirect to home page
-    window.location.href = '/';
+    window.location.href = "/";
   };
 
   // Enhanced auth links component
@@ -88,7 +104,7 @@ export default function Navbar() {
     isLoggedIn ? (
       <div className="relative flex items-center space-x-4 user-menu-container">
         {/* Notification Bell */}
-        <motion.button 
+        <motion.button
           className="relative p-2 text-gray-600 transition-colors rounded-full hover:text-blue-600 hover:bg-blue-50"
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.95 }}
@@ -98,28 +114,33 @@ export default function Navbar() {
         </motion.button>
 
         {/* User Menu Trigger */}
-        <motion.div 
+        <motion.div
           className="flex items-center cursor-pointer group"
           onClick={() => setUserMenuOpen(!userMenuOpen)}
           whileHover={{ scale: 1.02 }}
         >
           <div className="flex items-center px-4 py-2 space-x-3 transition-all duration-300 bg-white border border-gray-200 rounded-full shadow-sm group-hover:shadow-lg group-hover:border-blue-300">
             <div className="flex items-center justify-center w-8 h-8 overflow-hidden rounded-full bg-gradient-to-br from-blue-500 to-purple-600">
-              {user?.profilePhoto && user.profilePhoto !== 'default-profile.jpg' ? (
-                <img 
-                  src={user.profilePhoto} 
+              {user?.profilePhoto &&
+              user.profilePhoto !== "default-profile.jpg" ? (
+                <img
+                  src={user.profilePhoto}
                   alt={user.name}
                   className="object-cover w-full h-full"
                 />
               ) : (
                 <span className="text-sm font-semibold text-white">
-                  {user?.name?.charAt(0) || 'U'}
+                  {user?.name?.charAt(0) || "U"}
                 </span>
               )}
             </div>
             <div className="hidden sm:block">
-              <p className="text-sm font-medium text-gray-800">{user?.name?.split(' ')[0] || 'User'}</p>
-              <p className="text-xs text-gray-500">{user?.role === 'admin' ? 'Administrator' : 'Member'}</p>
+              <p className="text-sm font-medium text-gray-800">
+                {user?.name?.split(" ")[0] || "User"}
+              </p>
+              <p className="text-xs text-gray-500">
+                {user?.role === "admin" ? "Administrator" : "Member"}
+              </p>
             </div>
             <motion.div
               animate={{ rotate: userMenuOpen ? 180 : 0 }}
@@ -129,11 +150,11 @@ export default function Navbar() {
             </motion.div>
           </div>
         </motion.div>
-        
+
         {/* Enhanced User Dropdown */}
         <AnimatePresence>
           {userMenuOpen && (
-            <motion.div 
+            <motion.div
               className="absolute right-0 z-10 mt-2 overflow-hidden bg-white border border-gray-200 shadow-2xl w-72 rounded-2xl top-full"
               initial={{ opacity: 0, y: -10, scale: 0.95 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
@@ -143,35 +164,40 @@ export default function Navbar() {
               <div className="p-6 border-b border-gray-100 bg-gradient-to-br from-blue-50 to-purple-50">
                 <div className="flex items-center space-x-4">
                   <div className="flex items-center justify-center w-16 h-16 overflow-hidden rounded-full shadow-lg bg-gradient-to-br from-blue-500 to-purple-600">
-                    {user?.profilePhoto && user.profilePhoto !== 'default-profile.jpg' ? (
-                      <img 
-                        src={user.profilePhoto} 
+                    {user?.profilePhoto &&
+                    user.profilePhoto !== "default-profile.jpg" ? (
+                      <img
+                        src={user.profilePhoto}
                         alt={user.name}
                         className="object-cover w-full h-full"
                       />
                     ) : (
                       <span className="text-xl font-bold text-white">
-                        {user?.name?.charAt(0) || 'U'}
+                        {user?.name?.charAt(0) || "U"}
                       </span>
                     )}
                   </div>
                   <div>
                     <p className="font-semibold text-gray-900">{user?.name}</p>
-                    <p className="text-sm text-gray-600 truncate">{user?.email}</p>
-                    <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium mt-1 ${
-                      user?.role === 'admin' 
-                        ? 'bg-purple-100 text-purple-800' 
-                        : 'bg-blue-100 text-blue-800'
-                    }`}>
-                      {user?.role === 'admin' ? 'Administrator' : 'Member'}
+                    <p className="text-sm text-gray-600 truncate">
+                      {user?.email}
+                    </p>
+                    <span
+                      className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium mt-1 ${
+                        user?.role === "admin"
+                          ? "bg-purple-100 text-purple-800"
+                          : "bg-blue-100 text-blue-800"
+                      }`}
+                    >
+                      {user?.role === "admin" ? "Administrator" : "Member"}
                     </span>
                   </div>
                 </div>
               </div>
-              
+
               <div className="py-2">
                 <Link href="/profile">
-                  <motion.div 
+                  <motion.div
                     className="flex items-center px-6 py-3 text-gray-700 transition-colors cursor-pointer hover:bg-blue-50"
                     whileHover={{ x: 4 }}
                   >
@@ -179,32 +205,28 @@ export default function Navbar() {
                     View Profile
                   </motion.div>
                 </Link>
-                
-                {user?.role === 'student' && (
-                  <Link href="/student/dashboard">
-                    <motion.div 
-                      className="flex items-center px-6 py-3 text-gray-700 transition-colors cursor-pointer hover:bg-blue-50"
+
+                {/* Dashboard Links */}
+                {user && (
+                  <div className="space-y-2">
+                    <Link
+                      href="/dashboard"
+                      className="block px-6 py-3 text-gray-700 transition-colors cursor-pointer hover:bg-blue-50"
                       whileHover={{ x: 4 }}
                     >
-                      <FaCog className="mr-3 text-green-500" />
-                      Student Dashboard
-                    </motion.div>
-                  </Link>
-                )}
-                
-                {user?.role === 'admin' && (
-                  <Link href="/admin">
-                    <motion.div 
-                      className="flex items-center px-6 py-3 text-gray-700 transition-colors cursor-pointer hover:bg-red-50"
+                      Dashboard
+                    </Link>
+                    <Link
+                      href="/profile"
+                      className="block px-6 py-3 text-gray-700 transition-colors cursor-pointer hover:bg-blue-50"
                       whileHover={{ x: 4 }}
                     >
-                      <FaUserShield className="mr-3 text-red-500" />
-                      Admin Panel
-                    </motion.div>
-                  </Link>
+                      Profile
+                    </Link>
+                  </div>
                 )}
               </div>
-              
+
               <div className="border-t border-gray-100">
                 <motion.button
                   onClick={handleLogout}
@@ -252,19 +274,20 @@ export default function Navbar() {
       <div className="pt-4 mt-4 border-t border-gray-700">
         <div className="flex items-center px-3 py-2 mb-2 text-base font-medium text-white rounded-lg bg-gradient-to-r from-gray-800 to-gray-900">
           <div className="flex items-center justify-center w-8 h-8 mr-2 overflow-hidden text-white rounded-full">
-            {user?.profilePhoto && user.profilePhoto !== 'default-profile.jpg' ? (
-              <img 
-                src={user.profilePhoto} 
+            {user?.profilePhoto &&
+            user.profilePhoto !== "default-profile.jpg" ? (
+              <img
+                src={user.profilePhoto}
                 alt={user.name}
                 className="object-cover w-full h-full"
               />
             ) : (
               <div className="flex items-center justify-center w-full h-full text-sm bg-gradient-to-br from-blue-500 to-violet-600">
-                {user?.name?.charAt(0) || 'U'}
+                {user?.name?.charAt(0) || "U"}
               </div>
             )}
           </div>
-          <span>{user?.name || 'User'}</span>
+          <span>{user?.name || "User"}</span>
         </div>
         <Link href="/profile">
           <span className="flex items-center px-3 py-2 text-base font-medium text-gray-300 transition-colors rounded-md hover:bg-gray-800 hover:text-white">
@@ -272,27 +295,15 @@ export default function Navbar() {
             Your Profile
           </span>
         </Link>
-        
-        {/* Student Portal link for mobile */}
-        {user?.role === 'student' && (
-          <Link href="/student/dashboard">
-            <span className="flex items-center px-3 py-2 text-base font-medium text-gray-300 transition-colors rounded-md hover:bg-gray-800 hover:text-white">
-              <FaCog className="mr-3 text-green-400" />
-              Student Portal
-            </span>
-          </Link>
-        )}
-        
-        {/* Admin Dashboard link for mobile */}
-        {user?.role === 'admin' && (
-          <Link href="/admin">
-            <span className="flex items-center px-3 py-2 text-base font-medium text-gray-300 transition-colors rounded-md hover:bg-gray-800 hover:text-white">
-              <FaUserShield className="mr-3 text-blue-400" />
-              Admin Dashboard
-            </span>
-          </Link>
-        )}
-        
+
+        {/* Dashboard link for mobile */}
+        <Link href="/dashboard">
+          <span className="flex items-center px-3 py-2 text-base font-medium text-gray-300 transition-colors rounded-md hover:bg-gray-800 hover:text-white">
+            <FaCog className="mr-3 text-blue-400" />
+            Dashboard
+          </span>
+        </Link>
+
         <button
           onClick={handleLogout}
           className="flex items-center w-full px-3 py-2 mt-3 text-base font-medium text-white transition-colors rounded-md bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800"
@@ -321,15 +332,15 @@ export default function Navbar() {
   );
 
   return (
-    <motion.nav 
+    <motion.nav
       className={`sticky top-0 z-50 transition-all duration-500 ${
-        scrolled 
-          ? 'bg-white/95 backdrop-blur-xl border-white/20 shadow-2xl' 
-          : 'bg-white shadow-lg border-b border-gray-100'
+        scrolled
+          ? "bg-white/95 backdrop-blur-xl border-white/20 shadow-2xl"
+          : "bg-white shadow-lg border-b border-gray-100"
       }`}
       style={{
         opacity: navbarOpacity,
-        backdropFilter: scrolled ? 'blur(20px) saturate(180%)' : 'none',
+        backdropFilter: scrolled ? "blur(20px) saturate(180%)" : "none",
       }}
       initial={{ y: -100 }}
       animate={{ y: 0 }}
@@ -338,7 +349,7 @@ export default function Navbar() {
       <div className="container px-6 py-4 mx-auto">
         <div className="flex items-center justify-between">
           {/* Enhanced Logo Section */}
-          <motion.div 
+          <motion.div
             className="flex-shrink-0"
             initial={{ opacity: 0, x: -30 }}
             animate={{ opacity: 1, x: 0 }}
@@ -346,26 +357,25 @@ export default function Navbar() {
             style={{ scale: logoScale }}
           >
             <Link href="/">
-              <motion.div 
+              <motion.div
                 className="relative flex items-center p-2 -m-2 cursor-pointer rounded-xl group"
-                whileHover={{ 
+                whileHover={{
                   scale: 1.05,
-                  background: "linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(147, 51, 234, 0.1))"
+                  background:
+                    "linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(147, 51, 234, 0.1))",
                 }}
                 whileTap={{ scale: 0.98 }}
               >
-                <motion.div
-                  className="absolute inset-0 transition-all duration-300 rounded-xl bg-gradient-to-r from-blue-500/0 to-purple-500/0 group-hover:from-blue-500/10 group-hover:to-purple-500/10"
-                />
-                <motion.img 
-                  src="/images/logo.png" 
-                  alt="IEEE Logo" 
+                <motion.div className="absolute inset-0 transition-all duration-300 rounded-xl bg-gradient-to-r from-blue-500/0 to-purple-500/0 group-hover:from-blue-500/10 group-hover:to-purple-500/10" />
+                <motion.img
+                  src="/images/logo.png"
+                  alt="IEEE Logo"
                   className="relative w-auto h-12 mr-3 rounded-lg shadow-lg"
                   whileHover={{ rotate: [0, -2, 2, 0] }}
                   transition={{ duration: 0.5 }}
                 />
                 <motion.div className="relative">
-                  <motion.h1 
+                  <motion.h1
                     className="text-xl font-bold text-transparent bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text"
                     initial={{ opacity: 0, x: -10 }}
                     animate={{ opacity: 1, x: 0 }}
@@ -373,7 +383,7 @@ export default function Navbar() {
                   >
                     IEEE Student Branch
                   </motion.h1>
-                  <motion.p 
+                  <motion.p
                     className="-mt-1 text-xs text-gray-500"
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
@@ -388,7 +398,7 @@ export default function Navbar() {
 
           {/* Enhanced Desktop Navigation */}
           <div className="items-center hidden lg:flex">
-            <motion.div 
+            <motion.div
               className="flex items-center mr-8 space-x-8"
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
@@ -397,9 +407,9 @@ export default function Navbar() {
               <Link href="/">
                 <motion.div
                   className={`relative px-4 py-2 text-sm font-medium transition-all duration-300 cursor-pointer group ${
-                    router.pathname === '/'
-                      ? 'text-blue-600'
-                      : 'text-gray-700 hover:text-blue-600'
+                    router.pathname === "/"
+                      ? "text-blue-600"
+                      : "text-gray-700 hover:text-blue-600"
                   }`}
                   whileHover={{ scale: 1.05, y: -2 }}
                   whileTap={{ scale: 0.95 }}
@@ -407,7 +417,7 @@ export default function Navbar() {
                   Home
                   <motion.div
                     className={`absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-blue-500 to-purple-600 origin-left ${
-                      router.pathname === '/' ? 'scale-x-100' : 'scale-x-0'
+                      router.pathname === "/" ? "scale-x-100" : "scale-x-0"
                     } group-hover:scale-x-100 transition-transform duration-300`}
                   />
                 </motion.div>
@@ -415,9 +425,9 @@ export default function Navbar() {
               <Link href="/about">
                 <motion.div
                   className={`relative px-4 py-2 text-sm font-medium transition-all duration-300 cursor-pointer group ${
-                    router.pathname === '/about'
-                      ? 'text-blue-600'
-                      : 'text-gray-700 hover:text-blue-600'
+                    router.pathname === "/about"
+                      ? "text-blue-600"
+                      : "text-gray-700 hover:text-blue-600"
                   }`}
                   whileHover={{ scale: 1.05, y: -2 }}
                   whileTap={{ scale: 0.95 }}
@@ -425,7 +435,7 @@ export default function Navbar() {
                   About
                   <motion.div
                     className={`absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-blue-500 to-purple-600 origin-left ${
-                      router.pathname === '/about' ? 'scale-x-100' : 'scale-x-0'
+                      router.pathname === "/about" ? "scale-x-100" : "scale-x-0"
                     } group-hover:scale-x-100 transition-transform duration-300`}
                   />
                 </motion.div>
@@ -433,9 +443,9 @@ export default function Navbar() {
               <Link href="/events">
                 <motion.div
                   className={`relative px-4 py-2 text-sm font-medium transition-all duration-300 cursor-pointer group ${
-                    router.pathname === '/events'
-                      ? 'text-blue-600'
-                      : 'text-gray-700 hover:text-blue-600'
+                    router.pathname === "/events"
+                      ? "text-blue-600"
+                      : "text-gray-700 hover:text-blue-600"
                   }`}
                   whileHover={{ scale: 1.05, y: -2 }}
                   whileTap={{ scale: 0.95 }}
@@ -443,7 +453,9 @@ export default function Navbar() {
                   Events
                   <motion.div
                     className={`absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-blue-500 to-purple-600 origin-left ${
-                      router.pathname === '/events' ? 'scale-x-100' : 'scale-x-0'
+                      router.pathname === "/events"
+                        ? "scale-x-100"
+                        : "scale-x-0"
                     } group-hover:scale-x-100 transition-transform duration-300`}
                   />
                 </motion.div>
@@ -451,9 +463,9 @@ export default function Navbar() {
               <Link href="/gallery">
                 <motion.div
                   className={`relative px-4 py-2 text-sm font-medium transition-all duration-300 cursor-pointer group ${
-                    router.pathname === '/gallery'
-                      ? 'text-blue-600'
-                      : 'text-gray-700 hover:text-blue-600'
+                    router.pathname === "/gallery"
+                      ? "text-blue-600"
+                      : "text-gray-700 hover:text-blue-600"
                   }`}
                   whileHover={{ scale: 1.05, y: -2 }}
                   whileTap={{ scale: 0.95 }}
@@ -461,7 +473,9 @@ export default function Navbar() {
                   Gallery
                   <motion.div
                     className={`absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-blue-500 to-purple-600 origin-left ${
-                      router.pathname === '/gallery' ? 'scale-x-100' : 'scale-x-0'
+                      router.pathname === "/gallery"
+                        ? "scale-x-100"
+                        : "scale-x-0"
                     } group-hover:scale-x-100 transition-transform duration-300`}
                   />
                 </motion.div>
@@ -469,9 +483,9 @@ export default function Navbar() {
               <Link href="/contact">
                 <motion.div
                   className={`relative px-4 py-2 text-sm font-medium transition-all duration-300 cursor-pointer group ${
-                    router.pathname === '/contact'
-                      ? 'text-blue-600'
-                      : 'text-gray-700 hover:text-blue-600'
+                    router.pathname === "/contact"
+                      ? "text-blue-600"
+                      : "text-gray-700 hover:text-blue-600"
                   }`}
                   whileHover={{ scale: 1.05, y: -2 }}
                   whileTap={{ scale: 0.95 }}
@@ -479,7 +493,9 @@ export default function Navbar() {
                   Contact
                   <motion.div
                     className={`absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-blue-500 to-purple-600 origin-left ${
-                      router.pathname === '/contact' ? 'scale-x-100' : 'scale-x-0'
+                      router.pathname === "/contact"
+                        ? "scale-x-100"
+                        : "scale-x-0"
                     } group-hover:scale-x-100 transition-transform duration-300`}
                   />
                 </motion.div>
@@ -487,7 +503,7 @@ export default function Navbar() {
             </motion.div>
 
             {/* Divider */}
-            <motion.div 
+            <motion.div
               className="w-px h-8 mr-6 bg-gray-300"
               initial={{ height: 0 }}
               animate={{ height: "2rem" }}
@@ -495,9 +511,9 @@ export default function Navbar() {
             />
 
             {/* GEU Logo */}
-            <motion.img 
-              src="/images/geu_logo.png" 
-              alt="GEU Logo" 
+            <motion.img
+              src="/images/geu_logo.png"
+              alt="GEU Logo"
               className="w-auto h-10 mr-6"
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -528,7 +544,11 @@ export default function Navbar() {
               animate={{ rotate: isOpen ? 180 : 0 }}
               transition={{ duration: 0.3 }}
             >
-              {isOpen ? <FaTimes className="w-6 h-6" /> : <FaBars className="w-6 h-6" />}
+              {isOpen ? (
+                <FaTimes className="w-6 h-6" />
+              ) : (
+                <FaBars className="w-6 h-6" />
+              )}
             </motion.div>
           </motion.button>
         </div>
@@ -540,31 +560,36 @@ export default function Navbar() {
           <motion.div
             className="border-t border-gray-200 lg:hidden bg-white/95 backdrop-blur-xl"
             initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
+            animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.3 }}
           >
-            <motion.div 
+            <motion.div
               className="container px-6 py-6 mx-auto"
               variants={{
                 hidden: { opacity: 0 },
                 show: {
                   opacity: 1,
-                  transition: { staggerChildren: 0.1, delayChildren: 0.1 }
-                }
+                  transition: { staggerChildren: 0.1, delayChildren: 0.1 },
+                },
               }}
               initial="hidden"
               animate="show"
             >
               {/* Mobile Navigation Links */}
               <div className="mb-6 space-y-4">
-                <motion.div variants={{ hidden: { opacity: 0, x: -20 }, show: { opacity: 1, x: 0 } }}>
+                <motion.div
+                  variants={{
+                    hidden: { opacity: 0, x: -20 },
+                    show: { opacity: 1, x: 0 },
+                  }}
+                >
                   <Link href="/">
-                    <motion.div 
+                    <motion.div
                       className={`block px-4 py-3 text-base font-medium rounded-xl transition-all cursor-pointer ${
-                        router.pathname === '/' 
-                          ? 'bg-blue-50 text-blue-600 border border-blue-200' 
-                          : 'text-gray-700 hover:bg-gray-50'
+                        router.pathname === "/"
+                          ? "bg-blue-50 text-blue-600 border border-blue-200"
+                          : "text-gray-700 hover:bg-gray-50"
                       }`}
                       whileHover={{ x: 4, backgroundColor: "#f3f4f6" }}
                       whileTap={{ scale: 0.98 }}
@@ -574,13 +599,18 @@ export default function Navbar() {
                     </motion.div>
                   </Link>
                 </motion.div>
-                <motion.div variants={{ hidden: { opacity: 0, x: -20 }, show: { opacity: 1, x: 0 } }}>
+                <motion.div
+                  variants={{
+                    hidden: { opacity: 0, x: -20 },
+                    show: { opacity: 1, x: 0 },
+                  }}
+                >
                   <Link href="/about">
-                    <motion.div 
+                    <motion.div
                       className={`block px-4 py-3 text-base font-medium rounded-xl transition-all cursor-pointer ${
-                        router.pathname === '/about' 
-                          ? 'bg-blue-50 text-blue-600 border border-blue-200' 
-                          : 'text-gray-700 hover:bg-gray-50'
+                        router.pathname === "/about"
+                          ? "bg-blue-50 text-blue-600 border border-blue-200"
+                          : "text-gray-700 hover:bg-gray-50"
                       }`}
                       whileHover={{ x: 4, backgroundColor: "#f3f4f6" }}
                       whileTap={{ scale: 0.98 }}
@@ -590,13 +620,18 @@ export default function Navbar() {
                     </motion.div>
                   </Link>
                 </motion.div>
-                <motion.div variants={{ hidden: { opacity: 0, x: -20 }, show: { opacity: 1, x: 0 } }}>
+                <motion.div
+                  variants={{
+                    hidden: { opacity: 0, x: -20 },
+                    show: { opacity: 1, x: 0 },
+                  }}
+                >
                   <Link href="/events">
-                    <motion.div 
+                    <motion.div
                       className={`block px-4 py-3 text-base font-medium rounded-xl transition-all cursor-pointer ${
-                        router.pathname === '/events' 
-                          ? 'bg-blue-50 text-blue-600 border border-blue-200' 
-                          : 'text-gray-700 hover:bg-gray-50'
+                        router.pathname === "/events"
+                          ? "bg-blue-50 text-blue-600 border border-blue-200"
+                          : "text-gray-700 hover:bg-gray-50"
                       }`}
                       whileHover={{ x: 4, backgroundColor: "#f3f4f6" }}
                       whileTap={{ scale: 0.98 }}
@@ -606,13 +641,18 @@ export default function Navbar() {
                     </motion.div>
                   </Link>
                 </motion.div>
-                <motion.div variants={{ hidden: { opacity: 0, x: -20 }, show: { opacity: 1, x: 0 } }}>
+                <motion.div
+                  variants={{
+                    hidden: { opacity: 0, x: -20 },
+                    show: { opacity: 1, x: 0 },
+                  }}
+                >
                   <Link href="/gallery">
-                    <motion.div 
+                    <motion.div
                       className={`block px-4 py-3 text-base font-medium rounded-xl transition-all cursor-pointer ${
-                        router.pathname === '/gallery' 
-                          ? 'bg-blue-50 text-blue-600 border border-blue-200' 
-                          : 'text-gray-700 hover:bg-gray-50'
+                        router.pathname === "/gallery"
+                          ? "bg-blue-50 text-blue-600 border border-blue-200"
+                          : "text-gray-700 hover:bg-gray-50"
                       }`}
                       whileHover={{ x: 4, backgroundColor: "#f3f4f6" }}
                       whileTap={{ scale: 0.98 }}
@@ -622,13 +662,18 @@ export default function Navbar() {
                     </motion.div>
                   </Link>
                 </motion.div>
-                <motion.div variants={{ hidden: { opacity: 0, x: -20 }, show: { opacity: 1, x: 0 } }}>
+                <motion.div
+                  variants={{
+                    hidden: { opacity: 0, x: -20 },
+                    show: { opacity: 1, x: 0 },
+                  }}
+                >
                   <Link href="/contact">
-                    <motion.div 
+                    <motion.div
                       className={`block px-4 py-3 text-base font-medium rounded-xl transition-all cursor-pointer ${
-                        router.pathname === '/contact' 
-                          ? 'bg-blue-50 text-blue-600 border border-blue-200' 
-                          : 'text-gray-700 hover:bg-gray-50'
+                        router.pathname === "/contact"
+                          ? "bg-blue-50 text-blue-600 border border-blue-200"
+                          : "text-gray-700 hover:bg-gray-50"
                       }`}
                       whileHover={{ x: 4, backgroundColor: "#f3f4f6" }}
                       whileTap={{ scale: 0.98 }}
@@ -642,7 +687,10 @@ export default function Navbar() {
 
               {/* Mobile Auth Section */}
               <motion.div
-                variants={{ hidden: { opacity: 0, y: 20 }, show: { opacity: 1, y: 0 } }}
+                variants={{
+                  hidden: { opacity: 0, y: 20 },
+                  show: { opacity: 1, y: 0 },
+                }}
                 className="pt-4 border-t border-gray-200"
               >
                 {mounted && !isLoggedIn ? (
@@ -670,24 +718,29 @@ export default function Navbar() {
                   <div className="space-y-3">
                     <div className="flex items-center p-4 bg-gradient-to-r from-blue-50 to-purple-50 rounded-xl">
                       <div className="flex items-center justify-center w-12 h-12 overflow-hidden rounded-full bg-gradient-to-br from-blue-500 to-purple-600">
-                        {user?.profilePhoto && user.profilePhoto !== 'default-profile.jpg' ? (
-                          <img 
-                            src={user.profilePhoto} 
+                        {user?.profilePhoto &&
+                        user.profilePhoto !== "default-profile.jpg" ? (
+                          <img
+                            src={user.profilePhoto}
                             alt={user.name}
                             className="object-cover w-full h-full"
                           />
                         ) : (
                           <span className="text-sm font-bold text-white">
-                            {user?.name?.charAt(0) || 'U'}
+                            {user?.name?.charAt(0) || "U"}
                           </span>
                         )}
                       </div>
                       <div className="ml-3">
-                        <p className="font-medium text-gray-900">{user?.name}</p>
-                        <p className="text-sm text-gray-600">{user?.role === 'admin' ? 'Administrator' : 'Member'}</p>
+                        <p className="font-medium text-gray-900">
+                          {user?.name}
+                        </p>
+                        <p className="text-sm text-gray-600">
+                          {user?.role === "admin" ? "Administrator" : "Member"}
+                        </p>
                       </div>
                     </div>
-                    
+
                     <Link href="/profile">
                       <motion.div
                         className="flex items-center px-4 py-3 text-gray-700 cursor-pointer rounded-xl hover:bg-gray-50"
@@ -698,8 +751,8 @@ export default function Navbar() {
                         View Profile
                       </motion.div>
                     </Link>
-                    
-                    {user?.role === 'student' && (
+
+                    {user?.role === "student" && (
                       <Link href="/student/dashboard">
                         <motion.div
                           className="flex items-center px-4 py-3 text-gray-700 cursor-pointer rounded-xl hover:bg-gray-50"
@@ -711,8 +764,8 @@ export default function Navbar() {
                         </motion.div>
                       </Link>
                     )}
-                    
-                    {user?.role === 'admin' && (
+
+                    {user?.role === "admin" && (
                       <Link href="/admin">
                         <motion.div
                           className="flex items-center px-4 py-3 text-gray-700 cursor-pointer rounded-xl hover:bg-gray-50"
@@ -724,7 +777,7 @@ export default function Navbar() {
                         </motion.div>
                       </Link>
                     )}
-                    
+
                     <motion.button
                       onClick={() => {
                         handleLogout();

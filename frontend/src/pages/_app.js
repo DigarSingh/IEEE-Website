@@ -1,44 +1,51 @@
-import { useEffect } from 'react';
-import { useRouter } from 'next/router';
-import { AuthProvider } from '@/contexts/AuthContext';
-import '../styles/globals.css';
+import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
+import { AuthProvider } from "../contexts/AuthContext";
+import { ThemeProvider } from "../contexts/ThemeContext";
+import Layout from "../components/Layout";
+import "../styles/globals.css";
 
 function MyApp({ Component, pageProps }) {
   const router = useRouter();
-  
-  // This will run whenever the route changes
+  const [isLoading, setIsLoading] = useState(true);
+
   useEffect(() => {
-    // Check auth status when component mounts and route changes
-    const checkAuth = () => {
-      if (typeof window === 'undefined') return;
-      
-      const token = localStorage.getItem('token');
-      
-      // Check for protected routes that need authentication
-      const protectedRoutes = ['/dashboard', '/profile', '/member-area'];
-      const isProtectedRoute = protectedRoutes.some(route => 
-        router.pathname.startsWith(route)
-      );
-      
-      // Admin routes require additional checks (handled by withAdminAuth)
-      const isAdminRoute = router.pathname.startsWith('/admin');
-      
-      // If on a protected route and not logged in, redirect to login
-      if (isProtectedRoute && !token && !isAdminRoute) {
-        router.push('/login');
-      }
-    };
-    
-    // Only run on client-side
-    if (typeof window !== 'undefined') {
-      checkAuth();
+    // Check if user is authenticated
+    const token = localStorage.getItem("token");
+    const user = JSON.parse(localStorage.getItem("user") || "null");
+
+    // If no token and trying to access protected routes, redirect to login
+    if (
+      !token &&
+      (router.pathname === "/dashboard" || router.pathname === "/profile")
+    ) {
+      router.push("/login");
     }
+
+    // If user is authenticated and on login/signup page, redirect to dashboard
+    if (
+      token &&
+      user &&
+      (router.pathname === "/login" || router.pathname === "/signup")
+    ) {
+      router.push("/dashboard");
+    }
+
+    setIsLoading(false);
   }, [router.pathname]);
-  
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
   return (
-    <AuthProvider>
-      <Component {...pageProps} />
-    </AuthProvider>
+    <ThemeProvider>
+      <AuthProvider>
+        <Layout>
+          <Component {...pageProps} />
+        </Layout>
+      </AuthProvider>
+    </ThemeProvider>
   );
 }
 

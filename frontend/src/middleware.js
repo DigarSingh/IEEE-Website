@@ -2,24 +2,6 @@ import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { verify } from "jsonwebtoken";
 
-// Define protected routes
-const adminRoutes = [
-  "/admin",
-  "/admin/dashboard",
-  "/admin/members",
-  "/admin/events",
-  "/admin/certificates",
-  "/admin/messages",
-];
-
-const studentRoutes = [
-  "/student",
-  "/student/dashboard",
-  "/student/events",
-  "/student/certificates",
-  "/student/profile",
-];
-
 // Middleware for route protection
 export function middleware(request) {
   const { pathname } = request.nextUrl;
@@ -28,13 +10,14 @@ export function middleware(request) {
   console.log("Middleware called for path:", pathname);
   return NextResponse.next();
 
-  // Check for protected routes
-  const isAdminRoute = adminRoutes.some((route) => pathname.startsWith(route));
-  const isStudentRoute = studentRoutes.some((route) =>
+  // Check for protected routes - only dashboard and profile remain
+  const protectedRoutes = ["/dashboard", "/profile"];
+
+  const isProtectedRoute = protectedRoutes.some((route) =>
     pathname.startsWith(route)
   );
 
-  if (!isAdminRoute && !isStudentRoute) {
+  if (!isProtectedRoute) {
     return NextResponse.next();
   }
 
@@ -54,24 +37,7 @@ export function middleware(request) {
 
     console.log("Token decoded:", decoded);
     console.log("User role:", decoded.role);
-    console.log("Is admin route:", isAdminRoute);
-    console.log("Is student route:", isStudentRoute);
-
-    // For admin routes, verify admin role
-    if (
-      isAdminRoute &&
-      decoded.role !== "admin" &&
-      decoded.role !== "superadmin"
-    ) {
-      console.log("Access denied: User is not admin for admin route");
-      return NextResponse.redirect(new URL("/login", request.url));
-    }
-
-    // For student routes, verify student role
-    if (isStudentRoute && decoded.role !== "student") {
-      console.log("Access denied: User is not student for student route");
-      return NextResponse.redirect(new URL("/login", request.url));
-    }
+    console.log("Is protected route:", isProtectedRoute);
 
     // If we get here, the user is authenticated correctly
     console.log("Access granted for user with role:", decoded.role);
@@ -84,5 +50,5 @@ export function middleware(request) {
 }
 
 export const config = {
-  matcher: ["/admin/:path*", "/student/:path*", "/dashboard", "/profile"],
+  matcher: ["/dashboard", "/profile"],
 };
