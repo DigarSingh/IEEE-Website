@@ -1,8 +1,6 @@
-import React from 'react';
-import Navbar from './Navbar';
-import Footer from './Footer';
-import { motion } from 'framer-motion';
-import FadeIn from './animations/FadeIn';
+import React from "react";
+import { motion } from "framer-motion";
+import FadeIn from "./animations/FadeIn";
 
 // Variants for page transitions
 const pageVariants = {
@@ -16,32 +14,28 @@ const pageVariants = {
       ease: "easeInOut",
       when: "beforeChildren",
       staggerChildren: 0.2,
-    }
+    },
   },
   out: {
     opacity: 0,
     transition: {
       duration: 0.5,
       ease: "easeInOut",
-    }
-  }
+    },
+  },
 };
 
 export default function AnimatedLayout({ children }) {
   return (
-    <>
-      <Navbar />
-      <motion.main
-        initial="initial"
-        animate="in"
-        exit="out"
-        variants={pageVariants}
-        className="min-h-screen"
-      >
-        {/* Page content wrapped with animation */}
-        {children}
-      </motion.main>
-      <Footer />
-    </>
+    <motion.main
+      initial="initial"
+      animate="in"
+      exit="out"
+      variants={pageVariants}
+      className="min-h-screen"
+    >
+      {/* Page content wrapped with animation */}
+      {children}
+    </motion.main>
   );
 }
