@@ -38,17 +38,10 @@ const vercelConfig = {
       dest: "/frontend/$1",
     },
   ],
-<<<<<<< HEAD
   "env": {
     "MONGODB_URI": "mongodb+srv://digarsingh90:4190550P*mongodb@cluster0.sjhwbjk.mongodb.net/",
     "JWT_SECRET": "@jwt-secret",
     "NODE_ENV": "production"
-=======
-  env: {
-    MONGODB_URI: "@mongodb-uri",
-    JWT_SECRET: "@jwt-secret",
-    NODE_ENV: "production",
->>>>>>> 7f4e11f29815578104edf3a60d59b44885b312c4
   },
   buildCommand: "npm run build",
   outputDirectory: "frontend/.next",

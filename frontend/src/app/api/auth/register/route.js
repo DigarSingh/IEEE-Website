@@ -70,7 +70,7 @@ export async function POST(request) {
       mobile,
       studentId,
       role,
-      isVerified: false, // Default to false, admin can verify later
+      isVerified: false,
     });
 
     await newUser.save();
@@ -78,7 +78,6 @@ export async function POST(request) {
     // Generate token
     const token = generateToken(newUser._id, newUser.role);
 
-    // Return user data (without password) and token
     const userResponse = {
       id: newUser._id,
       name: newUser.name,
