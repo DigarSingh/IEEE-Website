@@ -23,17 +23,10 @@ const isBuildTime = () => {
       process.env.NODE_ENV === "production" && typeof window === "undefined"
     );
   } catch (e) {
-    // If any error occurs during detection, assume build time to be safe
     return true;
   }
 };
-  "mongodb+srv://shivakoranga2004:wmH5pR0YIpTMYYh9@ieee.7fq9giv.mongodb.net/ieee?retryWrites=true&w=majority&appName=IEEE-Website";
 
-/**
- * Global is used here to maintain a cached connection across hot reloads
- * in development. This prevents connections growing exponentially
- * during API Route usage.
- */
 let cached = global.mongoose;
 
 if (!cached) {
