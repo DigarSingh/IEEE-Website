@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const User = require("../models/User.js");
 
-const MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost:27017/IEEE";
+const MONGODB_URI = process.env.MONGODB_URI || "mongodb+srv://digarsingh90:4190550P*mongodb@cluster0.sjhwbjk.mongodb.net/";
 
 async function createTestUser() {
   try {

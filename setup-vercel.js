@@ -39,7 +39,7 @@ const vercelConfig = {
     }
   ],
   "env": {
-    "MONGODB_URI": "@mongodb-uri",
+    "MONGODB_URI": "mongodb+srv://digarsingh90:4190550P*mongodb@cluster0.sjhwbjk.mongodb.net/",
     "JWT_SECRET": "@jwt-secret",
     "NODE_ENV": "production"
   },
