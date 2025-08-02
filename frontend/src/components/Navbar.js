@@ -480,6 +480,26 @@ export default function Navbar() {
                   />
                 </motion.div>
               </Link>
+              <Link href="/membership">
+                <motion.div
+                  className={`relative px-4 py-2 text-sm font-medium transition-all duration-300 cursor-pointer group ${
+                    router.pathname === "/membership"
+                      ? "text-blue-600"
+                      : "text-gray-700 hover:text-blue-600"
+                  }`}
+                  whileHover={{ scale: 1.05, y: -2 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  Membership
+                  <motion.div
+                    className={`absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-blue-500 to-purple-600 origin-left ${
+                      router.pathname === "/membership"
+                        ? "scale-x-100"
+                        : "scale-x-0"
+                    } group-hover:scale-x-100 transition-transform duration-300`}
+                  />
+                </motion.div>
+              </Link>
               <Link href="/contact">
                 <motion.div
                   className={`relative px-4 py-2 text-sm font-medium transition-all duration-300 cursor-pointer group ${
@@ -659,6 +679,27 @@ export default function Navbar() {
                       onClick={() => setIsOpen(false)}
                     >
                       Gallery
+                    </motion.div>
+                  </Link>
+                </motion.div>
+                <motion.div
+                  variants={{
+                    hidden: { opacity: 0, x: -20 },
+                    show: { opacity: 1, x: 0 },
+                  }}
+                >
+                  <Link href="/membership">
+                    <motion.div
+                      className={`block px-4 py-3 text-base font-medium rounded-xl transition-all cursor-pointer ${
+                        router.pathname === "/membership"
+                          ? "bg-blue-50 text-blue-600 border border-blue-200"
+                          : "text-gray-700 hover:bg-gray-50"
+                      }`}
+                      whileHover={{ x: 4, backgroundColor: "#f3f4f6" }}
+                      whileTap={{ scale: 0.98 }}
+                      onClick={() => setIsOpen(false)}
+                    >
+                      Membership
                     </motion.div>
                   </Link>
                 </motion.div>

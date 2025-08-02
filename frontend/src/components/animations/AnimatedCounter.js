@@ -1,61 +1,69 @@
-import React, { useState, useEffect } from 'react';
-import { useInView } from 'react-intersection-observer';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 
 const AnimatedCounter = ({ 
-  value = 0, 
+  end = 0, 
   prefix = '', 
   suffix = '', 
-  duration = 2,
+  duration = 2000,
   delay = 0,
   className = "" 
 }) => {
   const [count, setCount] = useState(0);
-  const [ref, inView] = useInView({
-    triggerOnce: true,
-    threshold: 0.1,
-  });
-  
+  const [hasStarted, setHasStarted] = useState(false);
+  const countRef = useRef(null);
+
   useEffect(() => {
-    let start = 0;
-    let animationFrameId;
-    const totalFrames = Math.max(1, Math.floor(60 * duration));
-    const incrementPerFrame = value / totalFrames;
-    
-    // If in view and haven't counted yet
-    if (inView && count !== value) {
-      // Wait for the delay
-      const timer = setTimeout(() => {
-        const animate = () => {
-          start += incrementPerFrame;
-          if (start < value) {
-            setCount(Math.floor(start));
-            animationFrameId = requestAnimationFrame(animate);
-          } else {
-            setCount(value);
-          }
-        };
-        
-        animate();
-      }, delay * 1000);
-      
-      return () => {
-        clearTimeout(timer);
-        cancelAnimationFrame(animationFrameId);
-      };
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !hasStarted) {
+          setHasStarted(true);
+          startCounting();
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    if (countRef.current) {
+      observer.observe(countRef.current);
     }
-  }, [inView, value, duration, count, delay]);
-  
+
+    return () => {
+      if (countRef.current) {
+        observer.unobserve(countRef.current);
+      }
+    };
+  }, [hasStarted, end]);
+
+  const startCounting = () => {
+    let start = 0;
+    const increment = end / (duration / 16); // 60fps approximation
+    
+    const timer = setTimeout(() => {
+      const counter = setInterval(() => {
+        start += increment;
+        if (start >= end) {
+          setCount(end);
+          clearInterval(counter);
+        } else {
+          setCount(Math.floor(start));
+        }
+      }, 16);
+    }, delay);
+
+    return () => clearTimeout(timer);
+  };
+
   return (
-    <motion.div 
-      ref={ref}
-      initial={{ opacity: 0, y: 20 }}
-      animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-      transition={{ duration: 0.5, delay }}
+    <motion.span
+      ref={countRef}
       className={className}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.5 }}
     >
-      <span className="font-bold">{prefix}{count.toLocaleString()}{suffix}</span>
-    </motion.div>
+      {prefix}{count.toLocaleString()}{suffix}
+    </motion.span>
   );
 };
 
