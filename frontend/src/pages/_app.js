@@ -18,7 +18,7 @@ function MyApp({ Component, pageProps }) {
       router.push("/login");
     }
 
-    // If user is authenticated and on login/signup page, redirect to dashboard
+    // If user is authenticated and on login/signup page, redirect to home page
     if (
       token &&
       user &&

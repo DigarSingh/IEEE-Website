@@ -93,11 +93,17 @@ export default function Login() {
         });
         if (response.ok) {
           // Store both token and user data if available
+          if (data.token) {
+            localStorage.setItem("token", data.token);
+            console.log("Token stored in localStorage");
+          }
+          if (data.user) {
+            localStorage.setItem("user", JSON.stringify(data.user));
+            console.log("User data stored in localStorage");
+          }
 
-          alert(
-            "🎉 Registration successful! Welcome to IEEE GEU Student Branch!"
-          );
-          console.log("Registration successful, redirecting to home page");
+          alert("🎉 Login successful! Welcome to IEEE GEU Student Branch!");
+          console.log("Login successful, redirecting to home page");
 
           // Use router.replace for better UX (doesn't add to history stack)
           setTimeout(async () => {
