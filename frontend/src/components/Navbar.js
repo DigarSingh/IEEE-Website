@@ -794,7 +794,7 @@ export default function Navbar() {
                     </Link>
 
                     {user?.role === "student" && (
-                      <Link href="/student/dashboard">
+                      <Link href="/">
                         <motion.div
                           className="flex items-center px-4 py-3 text-gray-700 cursor-pointer rounded-xl hover:bg-gray-50"
                           whileTap={{ scale: 0.98 }}

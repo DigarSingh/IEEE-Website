@@ -17,6 +17,7 @@ import ParticleBackground from "@/components/ParticleBackground";
 import dynamic from "next/dynamic";
 
 import { useRouter } from "next/router";
+import { useAuth } from "@/contexts/AuthContext";
 
 export default function Login() {
   const [formData, setFormData] = useState({
@@ -24,6 +25,7 @@ export default function Login() {
     password: "",
   });
   const router = useRouter();
+  const { login } = useAuth();
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
@@ -74,61 +76,19 @@ export default function Login() {
       try {
         console.log("Attempting login with:", { email: formData.email });
 
-        // Use the local Next.js API route
-        const response = await fetch("/api/auth/login", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(formData),
-        });
+        const result = await login(formData.email, formData.password);
 
-        console.log(`Login response status: ${response.status}`);
-        const data = await response.json();
-        console.log("Login response data:", {
-          success: data.success,
-          hasToken: !!data.token,
-          hasUser: !!data.user,
-          message: data.message,
-        });
-        if (response.ok) {
-          // Store both token and user data if available
-          if (data.token) {
-            localStorage.setItem("token", data.token);
-            console.log("Token stored in localStorage");
-          }
-          if (data.user) {
-            localStorage.setItem("user", JSON.stringify(data.user));
-            console.log("User data stored in localStorage");
-          }
-
+        if (result.success) {
           alert("🎉 Login successful! Welcome to IEEE GEU Student Branch!");
           console.log("Login successful, redirecting to home page");
 
-          // Use router.replace for better UX (doesn't add to history stack)
-          setTimeout(async () => {
-            await router.replace("/");
-            console.log("login redirect completed");
-          }, 1000);
+          // Redirect to home page
+          router.push("/");
+        } else {
+          setErrors({
+            form: result.error || "Invalid email or password. Please try again.",
+          });
         }
-
-        if (!response.ok) {
-          console.error("Login failed:", data);
-          throw new Error(data.message || "Authentication failed");
-        }
-
-        if (!data.token || !data.user) {
-          throw new Error(
-            "Invalid response from server: missing token or user data"
-          );
-        }
-
-        // Store token in localStorage
-        localStorage.setItem("token", data.token);
-        localStorage.setItem("user", JSON.stringify(data.user));
-        console.log("User data stored in localStorage");
-        console.log("User role:", data.user.role);
-        console.log("Full user data:", data.user);
       } catch (error) {
         console.error("Login error:", error);
         setErrors({

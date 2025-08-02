@@ -8,16 +8,6 @@ import { useIntersectionObserver } from '@/hooks/useEnhancedScroll';
 
 export default function About() {
   const heroRef = useRef(null);
-  
-  // Temporarily disable parallax effects to fix the error
-  // const { scrollY } = useScroll();
-  // const { isVisible, observeElement } = useIntersectionObserver();
-  
-  // Parallax effects - temporarily disabled
-  // const y = useTransform(scrollY, [0, 500], [0, 150]);
-  // const opacity = useTransform(scrollY, [0, 300], [1, 0]);
-
-  // Enhanced animation variants
   const fadeIn = {
     hidden: { opacity: 0, y: 20 },
     visible: { 
