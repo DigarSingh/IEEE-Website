@@ -297,7 +297,7 @@ export default function Navbar() {
         </Link>
 
         {/* Dashboard link for mobile */}
-        <Link href="/dashboard">
+        <Link href="/">
           <span className="flex items-center px-3 py-2 text-base font-medium text-gray-300 transition-colors rounded-md hover:bg-gray-800 hover:text-white">
             <FaCog className="mr-3 text-blue-400" />
             Dashboard

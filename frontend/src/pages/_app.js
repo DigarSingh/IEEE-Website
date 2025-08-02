@@ -14,10 +14,7 @@ function MyApp({ Component, pageProps }) {
     const user = JSON.parse(localStorage.getItem("user") || "null");
 
     // If no token and trying to access protected routes, redirect to login
-    if (
-      !token &&
-      (router.pathname === "/dashboard" || router.pathname === "/profile")
-    ) {
+    if (!token && (router.pathname === "/" || router.pathname === "/profile")) {
       router.push("/login");
     }
 
@@ -27,7 +24,7 @@ function MyApp({ Component, pageProps }) {
       user &&
       (router.pathname === "/login" || router.pathname === "/signup")
     ) {
-      router.push("/dashboard");
+      router.push("/");
     }
 
     setIsLoading(false);
