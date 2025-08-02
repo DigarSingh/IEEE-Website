@@ -159,7 +159,8 @@ export default function Signup() {
         return;
       }
 
-     
+      // If CAPTCHA is valid, proceed with registration
+      console.log("CAPTCHA verified, proceeding with registration");
       const response = await fetch("/api/auth/register", {
         method: "POST",
         headers: {
@@ -171,23 +172,33 @@ export default function Signup() {
         }),
       });
 
+      console.log(`Registration response status: ${response.status}`);
       const data = await response.json();
+      console.log("Registration response data:", {
+        success: data.success,
+        hasToken: !!data.token,
+        hasUser: !!data.user,
+        message: data.message,
+      });
 
       if (response.ok) {
         // Store both token and user data if available
         if (data.token) {
           localStorage.setItem("token", data.token);
+          console.log("Token stored in localStorage");
         }
         if (data.user) {
           localStorage.setItem("user", JSON.stringify(data.user));
+          console.log("User data stored in localStorage");
         }
         
         alert("🎉 Registration successful! Welcome to IEEE GEU Student Branch!");
         console.log("Registration successful, redirecting to home page");
         
-        // Small delay to ensure localStorage is updated and alert is shown
-        setTimeout(() => {
-          router.push("/");
+        // Use router.replace for better UX (doesn't add to history stack)
+        setTimeout(async () => {
+          await router.replace("/");
+          console.log("Signup redirect completed");
         }, 1000);
       } else {
         setErrors({ form: data.message || "Registration failed" });

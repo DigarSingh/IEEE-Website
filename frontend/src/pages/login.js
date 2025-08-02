@@ -89,6 +89,7 @@ export default function Login() {
           success: data.success,
           hasToken: !!data.token,
           hasUser: !!data.user,
+          message: data.message,
         });
 
         if (!response.ok) {
@@ -112,10 +113,9 @@ export default function Login() {
         // Success message and redirect to home page
         console.log("Login successful, redirecting to home page");
         
-        // Small delay to ensure localStorage is updated
-        setTimeout(() => {
-          router.push("/");
-        }, 100);
+        // Use router.replace for better UX (doesn't add to history stack)
+        await router.replace("/");
+        console.log("Redirect completed");
       } catch (error) {
         console.error("Login error:", error);
         setErrors({
