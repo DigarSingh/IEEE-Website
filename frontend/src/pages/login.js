@@ -82,10 +82,6 @@ export default function Login() {
           },
           body: JSON.stringify(formData),
         });
-        if (response.ok) {
-          console.log("Login request sent successfully");
-          router.push("/");
-        }
 
         console.log(`Login response status: ${response.status}`);
         const data = await response.json();
@@ -113,7 +109,13 @@ export default function Login() {
         console.log("User role:", data.user.role);
         console.log("Full user data:", data.user);
 
-        // Redirect based on user role
+        // Success message and redirect to home page
+        console.log("Login successful, redirecting to home page");
+        
+        // Small delay to ensure localStorage is updated
+        setTimeout(() => {
+          router.push("/");
+        }, 100);
       } catch (error) {
         console.error("Login error:", error);
         setErrors({

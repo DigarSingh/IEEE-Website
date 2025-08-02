@@ -174,10 +174,21 @@ export default function Signup() {
       const data = await response.json();
 
       if (response.ok) {
-        alert("🎉 Registration successful! Welcome to IEEE GEU Student Branch!");
-        localStorage.setItem("user", JSON.stringify(data.user));
+        // Store both token and user data if available
+        if (data.token) {
+          localStorage.setItem("token", data.token);
+        }
+        if (data.user) {
+          localStorage.setItem("user", JSON.stringify(data.user));
+        }
         
-        router.push("/");
+        alert("🎉 Registration successful! Welcome to IEEE GEU Student Branch!");
+        console.log("Registration successful, redirecting to home page");
+        
+        // Small delay to ensure localStorage is updated and alert is shown
+        setTimeout(() => {
+          router.push("/");
+        }, 1000);
       } else {
         setErrors({ form: data.message || "Registration failed" });
        
