@@ -16,11 +16,14 @@ import Layout from "@/components/Layout";
 import ParticleBackground from "@/components/ParticleBackground";
 import dynamic from "next/dynamic";
 
+import { useRouter } from "next/router";
+
 export default function Login() {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
+  const router = useRouter();
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
@@ -79,6 +82,10 @@ export default function Login() {
           },
           body: JSON.stringify(formData),
         });
+        if (response.ok) {
+          console.log("Login request sent successfully");
+          router.push("/");
+        }
 
         console.log(`Login response status: ${response.status}`);
         const data = await response.json();
@@ -107,11 +114,6 @@ export default function Login() {
         console.log("Full user data:", data.user);
 
         // Redirect based on user role
-        if (data.user.role === "admin" || data.user.role === "superadmin") {
-          window.location.href = "/dashboard"; // Redirect to main dashboard
-        } else {
-          window.location.href = "/dashboard"; // Redirect to main dashboard
-        }
       } catch (error) {
         console.error("Login error:", error);
         setErrors({
