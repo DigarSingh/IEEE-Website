@@ -1,8 +1,9 @@
 import Head from "next/head";
 import Link from "next/link";
-import { useState, useEffect } from "react";
-import { useRouter } from "next/router"; // <-- Add this import
+import { useState, useEffect, useRef } from "react";
+import { useRouter } from "next/router";
 import { motion } from "framer-motion";
+import ReCAPTCHA from "react-google-recaptcha";
 import {
   FaUser,
   FaLock,
@@ -15,6 +16,7 @@ import {
   FaUserPlus,
   FaGraduationCap,
   FaCalendarAlt,
+  FaShieldAlt,
 } from "react-icons/fa";
 import ParticleBackground from "@/components/ParticleBackground";
 import Layout from "@/components/Layout";
@@ -29,17 +31,19 @@ export default function Signup() {
     studentId: "",
     password: "",
     confirmPassword: "",
-    // Default college
+    
   });
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [captchaToken, setCaptchaToken] = useState("");
 
   // State for client-side rendering
   const [isMounted, setIsMounted] = useState(false);
 
-  const router = useRouter(); // <-- Add this line
+  const router = useRouter(); 
+  const recaptchaRef = useRef(null);
 
   // Handle client-side mounting
   useEffect(() => {
@@ -53,11 +57,21 @@ export default function Signup() {
       [name]: value,
     }));
 
-    // Clear error when user starts typing
+  
     if (errors[name]) {
       setErrors((prev) => ({
         ...prev,
         [name]: "",
+      }));
+    }
+  };
+
+  const handleCaptchaChange = (token) => {
+    setCaptchaToken(token);
+    if (errors.captcha) {
+      setErrors((prev) => ({
+        ...prev,
+        captcha: "",
       }));
     }
   };
@@ -105,6 +119,11 @@ export default function Signup() {
       newErrors.confirmPassword = "Passwords do not match";
     }
 
+    // CAPTCHA validation
+    if (!captchaToken) {
+      newErrors.captcha = "Please complete the CAPTCHA verification";
+    }
+
     return newErrors;
   };
 
@@ -121,26 +140,56 @@ export default function Signup() {
     setErrors({});
 
     try {
+    
+      const captchaResponse = await fetch("/api/verify-captcha", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ captchaToken }),
+      });
+
+      const captchaData = await captchaResponse.json();
+
+      if (!captchaData.success) {
+        setErrors({ captcha: captchaData.message || "CAPTCHA verification failed. Please try again." });
+        recaptchaRef.current?.reset();
+        setCaptchaToken("");
+        setIsSubmitting(false);
+        return;
+      }
+
+     
       const response = await fetch("/api/auth/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+          ...formData,
+          captchaToken,
+        }),
       });
 
       const data = await response.json();
 
       if (response.ok) {
-        alert("Registration successful!");
+        alert("🎉 Registration successful! Welcome to IEEE GEU Student Branch!");
         localStorage.setItem("user", JSON.stringify(data.user));
-        // Redirect to dashboard after successful registration
+        
         router.push("/");
       } else {
         setErrors({ form: data.message || "Registration failed" });
+       
+        recaptchaRef.current?.reset();
+        setCaptchaToken("");
       }
     } catch (error) {
-      setErrors({ form: "Network error. Please try again." });
+      console.error("Registration error:", error);
+      setErrors({ form: "Network error. Please check your connection and try again." });
+      // Reset CAPTCHA on network error
+      recaptchaRef.current?.reset();
+      setCaptchaToken("");
     } finally {
       setIsSubmitting(false);
     }
@@ -154,7 +203,6 @@ export default function Signup() {
     setShowConfirmPassword(!showConfirmPassword);
   };
 
-  // Don't render until mounted to prevent hydration mismatch
   if (!isMounted) {
     return null;
   }
@@ -419,18 +467,39 @@ export default function Signup() {
                         <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                           <FaGraduationCap className="text-blue-400" />
                         </div>
-                        <motion.input
-                          type="text"
+                        <motion.select
                           id="branch"
                           name="branch"
                           value={formData.branch}
                           onChange={handleChange}
                           className={`block w-full pl-10 pr-3 py-3 border ${
                             errors.branch ? "border-red-500" : "border-gray-700"
-                          } bg-gray-900/60 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-400 focus:border-blue-400 transition-all duration-200 text-white`}
-                          placeholder="e.g. Computer Science"
+                          } bg-gray-900/60 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-400 focus:border-blue-400 transition-all duration-200 text-white appearance-none cursor-pointer`}
                           whileFocus={{ scale: 1.01 }}
-                        />
+                        >
+                          <option value="" className="bg-gray-900">Select your department</option>
+                          <option value="Computer Science Engineering" className="bg-gray-900">Computer Science Engineering</option>
+                          <option value="Computer Application" className="bg-gray-900">Computer Application</option>
+                          <option value="Information Technology" className="bg-gray-900">Information Technology</option>
+                          <option value="Electronics & Communication Engineering" className="bg-gray-900">Electronics & Communication Engineering</option>
+                          <option value="Electrical Engineering" className="bg-gray-900">Electrical Engineering</option>
+                          <option value="Mechanical Engineering" className="bg-gray-900">Mechanical Engineering</option>
+                          <option value="Civil Engineering" className="bg-gray-900">Civil Engineering</option>
+                          <option value="Chemical Engineering" className="bg-gray-900">Chemical Engineering</option>
+                          <option value="Biotechnology" className="bg-gray-900">Biotechnology</option>
+                          <option value="Aerospace Engineering" className="bg-gray-900">Aerospace Engineering</option>
+                          <option value="Petroleum Engineering" className="bg-gray-900">Petroleum Engineering</option>
+                          <option value="Applied Mathematics" className="bg-gray-900">Applied Mathematics</option>
+                          <option value="Applied Physics" className="bg-gray-900">Applied Physics</option>
+                          <option value="Applied Chemistry" className="bg-gray-900">Applied Chemistry</option>
+                          <option value="Other" className="bg-gray-900">Other</option>
+                        </motion.select>
+                        {/* Custom dropdown arrow */}
+                        <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                          <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                          </svg>
+                        </div>
                       </div>
                       {errors.branch && (
                         <p className="mt-1 text-sm text-red-400">
@@ -451,18 +520,28 @@ export default function Signup() {
                         <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                           <FaCalendarAlt className="text-blue-400" />
                         </div>
-                        <motion.input
-                          type="text"
+                        <motion.select
                           id="year"
                           name="year"
                           value={formData.year}
                           onChange={handleChange}
                           className={`block w-full pl-10 pr-3 py-3 border ${
                             errors.year ? "border-red-500" : "border-gray-700"
-                          } bg-gray-900/60 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-400 focus:border-blue-400 transition-all duration-200 text-white`}
-                          placeholder="e.g. 2nd Year"
+                          } bg-gray-900/60 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-400 focus:border-blue-400 transition-all duration-200 text-white appearance-none cursor-pointer`}
                           whileFocus={{ scale: 1.01 }}
-                        />
+                        >
+                          <option value="" className="bg-gray-900">Select your year</option>
+                          <option value="1st Year" className="bg-gray-900">1st Year</option>
+                          <option value="2nd Year" className="bg-gray-900">2nd Year</option>
+                          <option value="3rd Year" className="bg-gray-900">3rd Year</option>
+                          <option value="4th Year" className="bg-gray-900">4th Year</option>
+                        </motion.select>
+                        {/* Custom dropdown arrow */}
+                        <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                          <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                          </svg>
+                        </div>
                       </div>
                       {errors.year && (
                         <p className="mt-1 text-sm text-red-400">
@@ -608,6 +687,53 @@ export default function Signup() {
                         privacy policy.
                       </p>
                     </div>
+                  </motion.div>
+
+                  {/* Google reCAPTCHA */}
+                  <motion.div
+                    className="flex flex-col items-center justify-center space-y-4"
+                    initial={{ y: 20, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    transition={{ duration: 0.5, delay: 1.0 }}
+                  >
+                    <div className="flex items-center space-x-2 text-sm text-gray-300">
+                      <FaShieldAlt className="text-green-400" />
+                      <span>Security Verification</span>
+                    </div>
+                    
+                    <div className="recaptcha-container">
+                      {process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY ? (
+                        <ReCAPTCHA
+                          ref={recaptchaRef}
+                          sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}
+                          onChange={handleCaptchaChange}
+                          theme="dark"
+                          size="normal"
+                        />
+                      ) : (
+                        <div className="p-4 border rounded-lg bg-yellow-900/30 border-yellow-500/30">
+                          <p className="text-sm text-center text-yellow-400">
+                            ⚠️ reCAPTCHA not configured. Please add NEXT_PUBLIC_RECAPTCHA_SITE_KEY to .env.local
+                          </p>
+                        </div>
+                      )}
+                    </div>
+                    
+                    {errors.captcha && (
+                      <motion.div 
+                        className="p-3 border rounded-lg bg-red-900/30 border-red-500/30"
+                        initial={{ opacity: 0, scale: 0.95 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ duration: 0.3 }}
+                      >
+                        <div className="flex items-center space-x-2">
+                          <FaShieldAlt className="text-red-400" />
+                          <p className="text-sm text-red-400">
+                            {errors.captcha}
+                          </p>
+                        </div>
+                      </motion.div>
+                    )}
                   </motion.div>
 
                   <motion.button
