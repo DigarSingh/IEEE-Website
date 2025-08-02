@@ -82,7 +82,10 @@ export default function Login() {
           },
           body: JSON.stringify(formData),
         });
-
+        if (response.ok) {
+          alert("Login successful! Redirecting to home page.");
+          router.push("/");
+        }
         console.log(`Login response status: ${response.status}`);
         const data = await response.json();
         console.log("Login response data:", {
@@ -112,7 +115,7 @@ export default function Login() {
 
         // Success message and redirect to home page
         console.log("Login successful, redirecting to home page");
-        
+
         // Use router.replace for better UX (doesn't add to history stack)
         await router.replace("/");
         console.log("Redirect completed");
