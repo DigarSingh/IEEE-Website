@@ -92,8 +92,18 @@ export default function Login() {
           message: data.message,
         });
         if (response.ok) {
-          alert("Login successful! Redirecting to home page.");
-          router.push("/");
+          // Store both token and user data if available
+
+          alert(
+            "🎉 Registration successful! Welcome to IEEE GEU Student Branch!"
+          );
+          console.log("Registration successful, redirecting to home page");
+
+          // Use router.replace for better UX (doesn't add to history stack)
+          setTimeout(async () => {
+            await router.replace("/");
+            console.log("login redirect completed");
+          }, 1000);
         }
 
         if (!response.ok) {
