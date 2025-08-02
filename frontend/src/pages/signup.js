@@ -132,6 +132,8 @@ export default function Signup() {
       const data = await response.json();
 
       if (response.ok) {
+        alert("Registration successful!");
+        localStorage.setItem("user", JSON.stringify(data.user));
         // Redirect to dashboard after successful registration
         router.push("/");
       } else {
