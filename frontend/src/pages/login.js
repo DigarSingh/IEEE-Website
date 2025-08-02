@@ -113,12 +113,6 @@ export default function Login() {
         console.log("User role:", data.user.role);
         console.log("Full user data:", data.user);
 
-        // Success message and redirect to home page
-        console.log("Login successful, redirecting to home page");
-
-        // Use router.replace for better UX (doesn't add to history stack)
-        await router.replace("/");
-        console.log("Redirect completed");
       } catch (error) {
         console.error("Login error:", error);
         setErrors({
