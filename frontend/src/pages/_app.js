@@ -14,7 +14,7 @@ function MyApp({ Component, pageProps }) {
     const user = JSON.parse(localStorage.getItem("user") || "null");
 
     // If no token and trying to access protected routes, redirect to login
-    if (!token && (router.pathname === "/" || router.pathname === "/profile")) {
+    if (!token && router.pathname === "/profile") {
       router.push("/login");
     }
 

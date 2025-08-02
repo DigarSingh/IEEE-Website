@@ -450,37 +450,49 @@ export default function Membership() {
             </AnimatePresence>
           </section>
 
-                     {/* Enhanced Navigation Tabs */}
-           <div className="sticky top-0 z-40 border-b shadow-lg bg-white/95 backdrop-blur-xl">
-             <div className="container px-6 mx-auto">
-               <div className="grid grid-cols-2 gap-2 md:grid-cols-4">
-                 {[
-                   { id: "benefits", label: "Benefits", icon: FaStar },
-                   { id: "membership", label: "Membership Types", icon: FaUsers },
-                   { id: "requirements", label: "Requirements", icon: FaCheckCircle },
-                   { id: "process", label: "Join Process", icon: FaArrowRight }
-                 ].map((tab) => (
-                   <motion.button
-                     key={tab.id}
-                     onClick={() => setActiveTab(tab.id)}
-                     className={`flex flex-col items-center justify-center px-4 py-6 text-sm font-medium transition-all duration-300 rounded-xl border-2 ${
-                       activeTab === tab.id
-                         ? "border-blue-600 text-blue-600 bg-blue-50/80 shadow-lg"
-                         : "border-gray-200 text-gray-600 hover:text-blue-600 hover:bg-gray-50/80 hover:border-blue-300"
-                     }`}
-                     whileHover={{ scale: 1.02, y: -2 }}
-                     whileTap={{ scale: 0.98 }}
-                   >
-                     <tab.icon className="mb-2 text-xl" />
-                     <span className="text-center">{tab.label}</span>
-                   </motion.button>
-                 ))}
-               </div>
-             </div>
-           </div>
+                                           {/* Enhanced Navigation Tabs */}
+            <div className="sticky top-0 z-40 border-b shadow-lg bg-white/95 backdrop-blur-xl">
+              <div className="container px-6 mx-auto">
+                <div className="grid grid-cols-2 gap-1 md:grid-cols-4">
+                  {[
+                    { id: "benefits", label: "Benefits", icon: FaStar },
+                    { id: "membership", label: "Membership Types", icon: FaUsers },
+                    { id: "requirements", label: "Requirements", icon: FaCheckCircle },
+                    { id: "process", label: "Join Process", icon: FaArrowRight }
+                  ].map((tab) => (
+                    <motion.button
+                      key={tab.id}
+                      onClick={() => {
+                        setActiveTab(tab.id);
+                        // Auto scroll to content section
+                        setTimeout(() => {
+                          const contentSection = document.getElementById('content-sections');
+                          if (contentSection) {
+                            contentSection.scrollIntoView({ 
+                              behavior: 'smooth', 
+                              block: 'start' 
+                            });
+                          }
+                        }, 100);
+                      }}
+                      className={`flex flex-col items-center justify-center px-3 py-4 text-xs font-medium transition-all duration-300 rounded-lg border-2 ${
+                        activeTab === tab.id
+                          ? "border-blue-600 text-blue-600 bg-blue-50/80 shadow-md"
+                          : "border-gray-200 text-gray-600 hover:text-blue-600 hover:bg-gray-50/80 hover:border-blue-300"
+                      }`}
+                      whileHover={{ scale: 1.05, y: -1 }}
+                      whileTap={{ scale: 0.95 }}
+                    >
+                      <tab.icon className="mb-1 text-lg" />
+                      <span className="text-xs text-center">{tab.label}</span>
+                    </motion.button>
+                  ))}
+                </div>
+              </div>
+            </div>
 
-          {/* Content Sections */}
-          <div className="container px-6 py-20 mx-auto">
+                     {/* Content Sections */}
+           <div id="content-sections" className="container px-6 py-12 mx-auto">
                          {/* Enhanced Benefits Section */}
              {activeTab === "benefits" && (
                <motion.div
@@ -488,70 +500,70 @@ export default function Membership() {
                  animate={{ opacity: 1, y: 0 }}
                  transition={{ duration: 0.6 }}
                >
-                 <div className="mb-20 text-center">
-                   <motion.div
-                     className="inline-flex items-center px-6 py-3 mb-8 text-sm font-medium text-blue-600 border border-blue-200 rounded-full shadow-sm bg-gradient-to-r from-blue-50 to-blue-100"
-                     initial={{ scale: 0 }}
-                     animate={{ scale: 1 }}
-                     transition={{ delay: 0.2 }}
-                   >
-                     <FaStar className="mr-3 text-lg" />
-                     Why Choose IEEE?
-                   </motion.div>
-                   <h2 className="mb-8 text-6xl font-bold text-gray-900 md:text-7xl">
-                     Why Join IEEE?
-                   </h2>
-                   <p className="max-w-4xl mx-auto text-2xl leading-relaxed text-gray-600">
-                     Discover the incredible benefits and opportunities that await you as an IEEE member
-                   </p>
-                 </div>
+                                   <div className="mb-12 text-center">
+                    <motion.div
+                      className="inline-flex items-center px-4 py-2 mb-6 text-xs font-medium text-blue-600 border border-blue-200 rounded-full shadow-sm bg-gradient-to-r from-blue-50 to-blue-100"
+                      initial={{ scale: 0 }}
+                      animate={{ scale: 1 }}
+                      transition={{ delay: 0.2 }}
+                    >
+                      <FaStar className="mr-2 text-sm" />
+                      Why Choose IEEE?
+                    </motion.div>
+                    <h2 className="mb-6 text-4xl font-bold text-gray-900 md:text-5xl">
+                      Why Join IEEE?
+                    </h2>
+                    <p className="max-w-3xl mx-auto text-lg leading-relaxed text-gray-600">
+                      Discover the incredible benefits and opportunities that await you as an IEEE member
+                    </p>
+                  </div>
 
-                 <div className="grid grid-cols-1 gap-10 md:grid-cols-2 lg:grid-cols-4">
-                   {benefits.map((benefit, index) => (
-                     <motion.div
-                       key={index}
-                       className="relative p-10 transition-all duration-700 bg-white border-2 border-gray-100 shadow-xl group rounded-3xl hover:shadow-3xl hover:-translate-y-4 hover:border-blue-200"
-                       initial={{ opacity: 0, y: 50, scale: 0.9 }}
-                       animate={{ opacity: 1, y: 0, scale: 1 }}
-                       transition={{ duration: 0.8, delay: index * 0.1 }}
-                       onHoverStart={() => setHoveredBenefit(index)}
-                       onHoverEnd={() => setHoveredBenefit(null)}
-                     >
-                       {/* Enhanced Background Gradient */}
-                       <div className={`absolute inset-0 rounded-3xl bg-gradient-to-br ${benefit.gradient} opacity-0 group-hover:opacity-10 transition-all duration-700`} />
-                       
-                       {/* Floating Elements */}
-                       <div className="absolute w-3 h-3 transition-all duration-500 bg-blue-400 rounded-full opacity-0 top-4 right-4 group-hover:opacity-60 group-hover:animate-pulse" />
-                       <div className="absolute w-2 h-2 transition-all duration-500 bg-purple-400 rounded-full opacity-0 bottom-4 left-4 group-hover:opacity-60 group-hover:animate-pulse" />
-                       
-                       <div className="relative z-10">
-                         <motion.div 
-                           className={`inline-flex items-center justify-center w-24 h-24 mb-8 rounded-3xl bg-gradient-to-r ${benefit.color} text-white text-4xl shadow-2xl group-hover:scale-110 group-hover:shadow-3xl transition-all duration-500`}
-                           animate={{ 
-                             rotate: hoveredBenefit === index ? [0, -10, 10, 0] : 0,
-                             y: hoveredBenefit === index ? [-5, 5, -5] : 0
-                           }}
-                           transition={{ duration: 0.8 }}
-                         >
-                           <benefit.icon />
-                         </motion.div>
-                         <h3 className="mb-6 text-2xl font-bold text-gray-900 transition-all duration-300 group-hover:text-blue-600 group-hover:scale-105">
-                           {benefit.title}
-                         </h3>
-                         <p className="text-lg leading-relaxed text-gray-600 transition-all duration-300 group-hover:text-gray-700">
-                           {benefit.description}
-                         </p>
-                         
-                         {/* Enhanced Hover Effect */}
-                         <motion.div 
-                           className="absolute bottom-0 left-0 w-full h-1 transition-transform duration-500 transform scale-x-0 bg-gradient-to-r from-blue-500 to-purple-500 rounded-b-3xl group-hover:scale-x-100"
-                           initial={{ scaleX: 0 }}
-                           whileHover={{ scaleX: 1 }}
-                         />
-                       </div>
-                     </motion.div>
-                   ))}
-                 </div>
+                                   <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
+                    {benefits.map((benefit, index) => (
+                      <motion.div
+                        key={index}
+                        className="relative p-6 transition-all duration-700 bg-white border-2 border-gray-100 shadow-lg group rounded-2xl hover:shadow-xl hover:-translate-y-2 hover:border-blue-200"
+                        initial={{ opacity: 0, y: 50, scale: 0.9 }}
+                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                        transition={{ duration: 0.8, delay: index * 0.1 }}
+                        onHoverStart={() => setHoveredBenefit(index)}
+                        onHoverEnd={() => setHoveredBenefit(null)}
+                      >
+                        {/* Enhanced Background Gradient */}
+                        <div className={`absolute inset-0 rounded-2xl bg-gradient-to-br ${benefit.gradient} opacity-0 group-hover:opacity-10 transition-all duration-700`} />
+                        
+                        {/* Floating Elements */}
+                        <div className="absolute w-2 h-2 transition-all duration-500 bg-blue-400 rounded-full opacity-0 top-2 right-2 group-hover:opacity-60 group-hover:animate-pulse" />
+                        <div className="absolute w-1.5 h-1.5 transition-all duration-500 bg-purple-400 rounded-full opacity-0 bottom-2 left-2 group-hover:opacity-60 group-hover:animate-pulse" />
+                        
+                        <div className="relative z-10">
+                          <motion.div 
+                            className={`inline-flex items-center justify-center w-16 h-16 mb-4 rounded-2xl bg-gradient-to-r ${benefit.color} text-white text-2xl shadow-lg group-hover:scale-110 group-hover:shadow-xl transition-all duration-500`}
+                            animate={{ 
+                              rotate: hoveredBenefit === index ? [0, -10, 10, 0] : 0,
+                              y: hoveredBenefit === index ? [-5, 5, -5] : 0
+                            }}
+                            transition={{ duration: 0.8 }}
+                          >
+                            <benefit.icon />
+                          </motion.div>
+                          <h3 className="mb-3 text-lg font-bold text-gray-900 transition-all duration-300 group-hover:text-blue-600 group-hover:scale-105">
+                            {benefit.title}
+                          </h3>
+                          <p className="text-sm leading-relaxed text-gray-600 transition-all duration-300 group-hover:text-gray-700">
+                            {benefit.description}
+                          </p>
+                          
+                          {/* Enhanced Hover Effect */}
+                          <motion.div 
+                            className="absolute bottom-0 left-0 w-full h-1 transition-transform duration-500 transform scale-x-0 bg-gradient-to-r from-blue-500 to-purple-500 rounded-b-2xl group-hover:scale-x-100"
+                            initial={{ scaleX: 0 }}
+                            whileHover={{ scaleX: 1 }}
+                          />
+                        </div>
+                      </motion.div>
+                    ))}
+                  </div>
                </motion.div>
              )}
 
@@ -562,100 +574,100 @@ export default function Membership() {
                  animate={{ opacity: 1, y: 0 }}
                  transition={{ duration: 0.6 }}
                >
-                 <div className="mb-20 text-center">
-                   <motion.div
-                     className="inline-flex items-center px-6 py-3 mb-8 text-sm font-medium text-purple-600 border border-purple-200 rounded-full shadow-sm bg-gradient-to-r from-purple-50 to-purple-100"
-                     initial={{ scale: 0 }}
-                     animate={{ scale: 1 }}
-                     transition={{ delay: 0.2 }}
-                   >
-                     <FaUsers className="mr-3 text-lg" />
-                     Choose Your Path
-                   </motion.div>
-                   <h2 className="mb-8 text-6xl font-bold text-gray-900 md:text-7xl">
-                     Choose Your Membership
-                   </h2>
-                   <p className="max-w-4xl mx-auto text-2xl leading-relaxed text-gray-600">
-                     Select the membership type that best suits your needs and career goals
-                   </p>
-                 </div>
+                                   <div className="mb-12 text-center">
+                    <motion.div
+                      className="inline-flex items-center px-4 py-2 mb-6 text-xs font-medium text-purple-600 border border-purple-200 rounded-full shadow-sm bg-gradient-to-r from-purple-50 to-purple-100"
+                      initial={{ scale: 0 }}
+                      animate={{ scale: 1 }}
+                      transition={{ delay: 0.2 }}
+                    >
+                      <FaUsers className="mr-2 text-sm" />
+                      Choose Your Path
+                    </motion.div>
+                    <h2 className="mb-6 text-4xl font-bold text-gray-900 md:text-5xl">
+                      Choose Your Membership
+                    </h2>
+                    <p className="max-w-3xl mx-auto text-lg leading-relaxed text-gray-600">
+                      Select the membership type that best suits your needs and career goals
+                    </p>
+                  </div>
 
-                 <div className="grid grid-cols-1 gap-16 mx-auto max-w-8xl lg:grid-cols-2">
+                  <div className="grid max-w-6xl grid-cols-1 gap-8 mx-auto lg:grid-cols-2">
                    {membershipTypes.map((type, index) => (
-                     <motion.div
-                       key={index}
-                       className={`relative p-12 rounded-3xl shadow-3xl border-2 transition-all duration-700 hover:shadow-4xl ${
-                         type.popular
-                           ? "border-purple-300 bg-gradient-to-br from-purple-50 via-white to-purple-50 scale-105 shadow-purple-500/20"
-                           : "border-blue-300 bg-gradient-to-br from-blue-50 via-white to-blue-50 shadow-blue-500/20"
-                       }`}
-                       initial={{ opacity: 0, y: 50, scale: 0.9 }}
-                       animate={{ opacity: 1, y: 0, scale: 1 }}
-                       transition={{ duration: 0.8, delay: index * 0.2 }}
-                       whileHover={{ y: -15, scale: type.popular ? 1.08 : 1.03 }}
-                     >
-                       {/* Enhanced Popular Badge */}
-                       {type.popular && (
-                         <motion.div 
-                           className="absolute transform -translate-x-1/2 -top-8 left-1/2"
-                           initial={{ scale: 0, y: 20 }}
-                           animate={{ scale: 1, y: 0 }}
-                           transition={{ delay: 0.6 }}
-                         >
-                           <span className="px-10 py-4 text-lg font-bold text-white border-2 border-white rounded-full shadow-2xl bg-gradient-to-r from-purple-600 via-pink-600 to-purple-600">
-                             ⭐ {type.badge}
-                           </span>
-                         </motion.div>
-                       )}
+                                           <motion.div
+                        key={index}
+                        className={`relative p-8 rounded-2xl shadow-xl border-2 transition-all duration-700 hover:shadow-2xl ${
+                          type.popular
+                            ? "border-purple-300 bg-gradient-to-br from-purple-50 via-white to-purple-50 scale-105 shadow-purple-500/20"
+                            : "border-blue-300 bg-gradient-to-br from-blue-50 via-white to-blue-50 shadow-blue-500/20"
+                        }`}
+                        initial={{ opacity: 0, y: 50, scale: 0.9 }}
+                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                        transition={{ duration: 0.8, delay: index * 0.2 }}
+                        whileHover={{ y: -8, scale: type.popular ? 1.05 : 1.02 }}
+                      >
+                        {/* Enhanced Popular Badge */}
+                        {type.popular && (
+                          <motion.div 
+                            className="absolute transform -translate-x-1/2 -top-6 left-1/2"
+                            initial={{ scale: 0, y: 20 }}
+                            animate={{ scale: 1, y: 0 }}
+                            transition={{ delay: 0.6 }}
+                          >
+                            <span className="px-6 py-2 text-sm font-bold text-white border-2 border-white rounded-full shadow-lg bg-gradient-to-r from-purple-600 via-pink-600 to-purple-600">
+                              ⭐ {type.badge}
+                            </span>
+                          </motion.div>
+                        )}
 
-                       {/* Floating Elements */}
-                       <div className="absolute w-4 h-4 rounded-full top-6 right-6 bg-gradient-to-r from-blue-400 to-purple-400 opacity-20 animate-pulse" />
-                       <div className="absolute w-3 h-3 rounded-full bottom-6 left-6 bg-gradient-to-r from-purple-400 to-pink-400 opacity-20 animate-pulse" />
+                        {/* Floating Elements */}
+                        <div className="absolute w-3 h-3 rounded-full top-4 right-4 bg-gradient-to-r from-blue-400 to-purple-400 opacity-20 animate-pulse" />
+                        <div className="absolute w-2 h-2 rounded-full bottom-4 left-4 bg-gradient-to-r from-purple-400 to-pink-400 opacity-20 animate-pulse" />
 
-                       <div className="mb-12 text-center">
-                         <h3 className="mb-6 text-4xl font-bold text-gray-900">
-                           {type.type}
-                         </h3>
-                         <div className="mb-8">
-                           <span className="font-bold text-transparent text-7xl bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text">
-                             {type.price}
-                           </span>
-                           <span className="ml-4 text-2xl text-gray-600">
-                             {type.duration}
-                           </span>
-                         </div>
-                       </div>
+                        <div className="mb-8 text-center">
+                          <h3 className="mb-4 text-2xl font-bold text-gray-900">
+                            {type.type}
+                          </h3>
+                          <div className="mb-6">
+                            <span className="text-5xl font-bold text-transparent bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text">
+                              {type.price}
+                            </span>
+                            <span className="ml-3 text-lg text-gray-600">
+                              {type.duration}
+                            </span>
+                          </div>
+                        </div>
 
-                       <ul className="mb-12 space-y-6">
-                         {type.features.map((feature, featureIndex) => (
-                           <motion.li 
-                             key={featureIndex} 
-                             className="flex items-start p-4 border bg-white/50 rounded-2xl backdrop-blur-sm border-white/20"
-                             initial={{ opacity: 0, x: -30 }}
-                             animate={{ opacity: 1, x: 0 }}
-                             transition={{ delay: 0.7 + featureIndex * 0.1 }}
-                             whileHover={{ x: 10, backgroundColor: "rgba(255,255,255,0.8)" }}
-                           >
-                             <div className="flex items-center justify-center flex-shrink-0 w-8 h-8 mt-1 mr-6 rounded-full shadow-lg bg-gradient-to-r from-green-400 to-green-600">
-                               <FaCheckCircle className="text-sm font-bold text-white" />
-                             </div>
-                             <span className="text-lg font-medium leading-relaxed text-gray-700">{feature}</span>
-                           </motion.li>
-                         ))}
-                       </ul>
+                        <ul className="mb-8 space-y-4">
+                          {type.features.map((feature, featureIndex) => (
+                            <motion.li 
+                              key={featureIndex} 
+                              className="flex items-start p-3 border bg-white/50 rounded-xl backdrop-blur-sm border-white/20"
+                              initial={{ opacity: 0, x: -30 }}
+                              animate={{ opacity: 1, x: 0 }}
+                              transition={{ delay: 0.7 + featureIndex * 0.1 }}
+                              whileHover={{ x: 10, backgroundColor: "rgba(255,255,255,0.8)" }}
+                            >
+                              <div className="flex items-center justify-center flex-shrink-0 w-6 h-6 mt-1 mr-4 rounded-full shadow-md bg-gradient-to-r from-green-400 to-green-600">
+                                <FaCheckCircle className="text-xs font-bold text-white" />
+                              </div>
+                              <span className="text-sm font-medium leading-relaxed text-gray-700">{feature}</span>
+                            </motion.li>
+                          ))}
+                        </ul>
 
-                       <motion.button
-                         onClick={handleJoinNow}
-                         className={`w-full py-6 px-10 rounded-3xl font-bold text-white text-xl bg-gradient-to-r ${type.gradient} hover:shadow-2xl transition-all duration-500 transform hover:scale-105 shadow-xl`}
-                         whileHover={{ scale: 1.02, y: -5 }}
-                         whileTap={{ scale: 0.98 }}
-                       >
-                         <span className="flex items-center justify-center">
-                           Join Now
-                           <FaArrowRight className="ml-3 text-lg" />
-                         </span>
-                       </motion.button>
-                     </motion.div>
+                        <motion.button
+                          onClick={handleJoinNow}
+                          className={`w-full py-4 px-8 rounded-2xl font-bold text-white text-lg bg-gradient-to-r ${type.gradient} hover:shadow-xl transition-all duration-500 transform hover:scale-105 shadow-lg`}
+                          whileHover={{ scale: 1.02, y: -3 }}
+                          whileTap={{ scale: 0.98 }}
+                        >
+                          <span className="flex items-center justify-center">
+                            Join Now
+                            <FaArrowRight className="ml-2 text-base" />
+                          </span>
+                        </motion.button>
+                      </motion.div>
                    ))}
                  </div>
                </motion.div>
@@ -668,109 +680,109 @@ export default function Membership() {
                  animate={{ opacity: 1, y: 0 }}
                  transition={{ duration: 0.6 }}
                >
-                 <div className="mb-20 text-center">
-                   <motion.div
-                     className="inline-flex items-center px-6 py-3 mb-8 text-sm font-medium text-green-600 border border-green-200 rounded-full shadow-sm bg-gradient-to-r from-green-50 to-green-100"
-                     initial={{ scale: 0 }}
-                     animate={{ scale: 1 }}
-                     transition={{ delay: 0.2 }}
-                   >
-                     <FaCheckCircle className="mr-3 text-lg" />
-                     Eligibility & Benefits
-                   </motion.div>
-                   <h2 className="mb-8 text-6xl font-bold text-gray-900 md:text-7xl">
-                     Membership Requirements
-                   </h2>
-                   <p className="max-w-4xl mx-auto text-2xl leading-relaxed text-gray-600">
-                     Ensure you meet all the requirements before applying for IEEE membership
-                   </p>
-                 </div>
+                                   <div className="mb-12 text-center">
+                    <motion.div
+                      className="inline-flex items-center px-4 py-2 mb-6 text-xs font-medium text-green-600 border border-green-200 rounded-full shadow-sm bg-gradient-to-r from-green-50 to-green-100"
+                      initial={{ scale: 0 }}
+                      animate={{ scale: 1 }}
+                      transition={{ delay: 0.2 }}
+                    >
+                      <FaCheckCircle className="mr-2 text-sm" />
+                      Eligibility & Benefits
+                    </motion.div>
+                    <h2 className="mb-6 text-4xl font-bold text-gray-900 md:text-5xl">
+                      Membership Requirements
+                    </h2>
+                    <p className="max-w-3xl mx-auto text-lg leading-relaxed text-gray-600">
+                      Ensure you meet all the requirements before applying for IEEE membership
+                    </p>
+                  </div>
 
-                 <div className="mx-auto max-w-7xl">
-                   <div className="grid grid-cols-1 gap-16 lg:grid-cols-2">
-                     <motion.div
-                       className="relative p-12 overflow-hidden bg-white border-2 border-gray-100 shadow-3xl rounded-3xl"
-                       initial={{ opacity: 0, x: -50, scale: 0.9 }}
-                       animate={{ opacity: 1, x: 0, scale: 1 }}
-                       transition={{ duration: 0.8, delay: 0.2 }}
-                       whileHover={{ y: -10, scale: 1.02 }}
-                     >
-                       {/* Background Pattern */}
-                       <div className="absolute inset-0 opacity-50 bg-gradient-to-br from-green-50 to-blue-50" />
-                       <div className="absolute top-0 right-0 w-32 h-32 transform translate-x-16 -translate-y-16 rounded-full bg-gradient-to-br from-green-400 to-blue-400 opacity-10" />
-                       
-                       <div className="relative z-10">
-                         <h3 className="flex items-center mb-10 text-4xl font-bold text-gray-900">
-                           <div className="flex items-center justify-center w-16 h-16 mr-6 text-2xl text-white shadow-xl bg-gradient-to-r from-green-500 to-green-600 rounded-2xl">
-                             <FaCheckCircle />
-                           </div>
-                           Eligibility Criteria
-                         </h3>
-                         <ul className="space-y-8">
-                           {requirements.map((requirement, index) => (
-                             <motion.li
-                               key={index}
-                               className="flex items-start p-6 border shadow-lg bg-white/70 backdrop-blur-sm rounded-2xl border-white/50"
-                               initial={{ opacity: 0, x: -30 }}
-                               animate={{ opacity: 1, x: 0 }}
-                               transition={{ duration: 0.6, delay: 0.4 + index * 0.1 }}
-                               whileHover={{ x: 10, backgroundColor: "rgba(255,255,255,0.9)" }}
-                             >
-                               <div className="flex items-center justify-center flex-shrink-0 w-10 h-10 mt-1 mr-6 rounded-full shadow-lg bg-gradient-to-r from-green-400 to-green-600">
-                                 <FaCheckCircle className="font-bold text-white" />
-                               </div>
-                               <span className="text-xl font-medium leading-relaxed text-gray-700">{requirement}</span>
-                             </motion.li>
-                           ))}
-                         </ul>
-                       </div>
-                     </motion.div>
+                  <div className="max-w-5xl mx-auto">
+                    <div className="grid grid-cols-1 gap-8 lg:grid-cols-2">
+                                           <motion.div
+                        className="relative p-8 overflow-hidden bg-white border-2 border-gray-100 shadow-xl rounded-2xl"
+                        initial={{ opacity: 0, x: -50, scale: 0.9 }}
+                        animate={{ opacity: 1, x: 0, scale: 1 }}
+                        transition={{ duration: 0.8, delay: 0.2 }}
+                        whileHover={{ y: -5, scale: 1.02 }}
+                      >
+                        {/* Background Pattern */}
+                        <div className="absolute inset-0 opacity-50 bg-gradient-to-br from-green-50 to-blue-50" />
+                        <div className="absolute top-0 right-0 w-24 h-24 transform translate-x-12 -translate-y-12 rounded-full bg-gradient-to-br from-green-400 to-blue-400 opacity-10" />
+                        
+                        <div className="relative z-10">
+                          <h3 className="flex items-center mb-6 text-2xl font-bold text-gray-900">
+                            <div className="flex items-center justify-center w-12 h-12 mr-4 text-lg text-white shadow-lg bg-gradient-to-r from-green-500 to-green-600 rounded-xl">
+                              <FaCheckCircle />
+                            </div>
+                            Eligibility Criteria
+                          </h3>
+                          <ul className="space-y-4">
+                            {requirements.map((requirement, index) => (
+                              <motion.li
+                                key={index}
+                                className="flex items-start p-4 border shadow-md bg-white/70 backdrop-blur-sm rounded-xl border-white/50"
+                                initial={{ opacity: 0, x: -30 }}
+                                animate={{ opacity: 1, x: 0 }}
+                                transition={{ duration: 0.6, delay: 0.4 + index * 0.1 }}
+                                whileHover={{ x: 10, backgroundColor: "rgba(255,255,255,0.9)" }}
+                              >
+                                <div className="flex items-center justify-center flex-shrink-0 w-8 h-8 mt-1 mr-4 rounded-full shadow-md bg-gradient-to-r from-green-400 to-green-600">
+                                  <FaCheckCircle className="text-sm font-bold text-white" />
+                                </div>
+                                <span className="text-sm font-medium leading-relaxed text-gray-700">{requirement}</span>
+                              </motion.li>
+                            ))}
+                          </ul>
+                        </div>
+                      </motion.div>
 
-                     <motion.div
-                       className="relative p-12 overflow-hidden border-2 border-blue-200 shadow-3xl bg-gradient-to-br from-blue-50 via-purple-50 to-indigo-50 rounded-3xl"
-                       initial={{ opacity: 0, x: 50, scale: 0.9 }}
-                       animate={{ opacity: 1, x: 0, scale: 1 }}
-                       transition={{ duration: 0.8, delay: 0.4 }}
-                       whileHover={{ y: -10, scale: 1.02 }}
-                     >
-                       {/* Background Pattern */}
-                       <div className="absolute top-0 left-0 w-40 h-40 transform -translate-x-20 -translate-y-20 rounded-full bg-gradient-to-br from-blue-400 to-purple-400 opacity-10" />
-                       <div className="absolute bottom-0 right-0 w-32 h-32 transform translate-x-16 translate-y-16 rounded-full bg-gradient-to-br from-purple-400 to-pink-400 opacity-10" />
-                       
-                       <div className="relative z-10">
-                         <h3 className="flex items-center mb-10 text-4xl font-bold text-gray-900">
-                           <div className="flex items-center justify-center w-16 h-16 mr-6 text-2xl text-white shadow-xl bg-gradient-to-r from-blue-500 to-purple-600 rounded-2xl">
-                             <FaHandshake />
-                           </div>
-                           What You'll Get
-                         </h3>
-                         <div className="space-y-8">
-                           {[
-                             { icon: FaCertificate, title: "Membership Card", desc: "Official IEEE membership identification with unique member ID" },
-                             { icon: FaNetworkWired, title: "Network Access", desc: "Connect with professionals worldwide through IEEE communities" },
-                             { icon: FaBookOpen, title: "Learning Resources", desc: "Access to technical papers, courses, and IEEE Xplore library" },
-                             { icon: FaRocket, title: "Career Growth", desc: "Professional development opportunities and mentorship programs" }
-                           ].map((item, index) => (
-                             <motion.div 
-                               key={index}
-                               className="flex items-center p-8 border shadow-xl bg-white/70 backdrop-blur-sm rounded-2xl border-white/50"
-                               initial={{ opacity: 0, y: 30 }}
-                               animate={{ opacity: 1, y: 0 }}
-                               transition={{ delay: 0.6 + index * 0.1 }}
-                               whileHover={{ y: -5, backgroundColor: "rgba(255,255,255,0.9)" }}
-                             >
-                               <div className="flex items-center justify-center mr-6 text-2xl text-white shadow-lg w-14 h-14 bg-gradient-to-r from-blue-500 to-purple-600 rounded-xl">
-                                 <item.icon />
-                               </div>
-                               <div>
-                                 <h4 className="mb-2 text-xl font-bold text-gray-900">{item.title}</h4>
-                                 <p className="text-lg text-gray-600">{item.desc}</p>
-                               </div>
-                             </motion.div>
-                           ))}
-                         </div>
-                       </div>
-                     </motion.div>
+                                           <motion.div
+                        className="relative p-8 overflow-hidden border-2 border-blue-200 shadow-xl bg-gradient-to-br from-blue-50 via-purple-50 to-indigo-50 rounded-2xl"
+                        initial={{ opacity: 0, x: 50, scale: 0.9 }}
+                        animate={{ opacity: 1, x: 0, scale: 1 }}
+                        transition={{ duration: 0.8, delay: 0.4 }}
+                        whileHover={{ y: -5, scale: 1.02 }}
+                      >
+                        {/* Background Pattern */}
+                        <div className="absolute top-0 left-0 w-32 h-32 transform -translate-x-16 -translate-y-16 rounded-full bg-gradient-to-br from-blue-400 to-purple-400 opacity-10" />
+                        <div className="absolute bottom-0 right-0 w-24 h-24 transform translate-x-12 translate-y-12 rounded-full bg-gradient-to-br from-purple-400 to-pink-400 opacity-10" />
+                        
+                        <div className="relative z-10">
+                          <h3 className="flex items-center mb-6 text-2xl font-bold text-gray-900">
+                            <div className="flex items-center justify-center w-12 h-12 mr-4 text-lg text-white shadow-lg bg-gradient-to-r from-blue-500 to-purple-600 rounded-xl">
+                              <FaHandshake />
+                            </div>
+                            What You'll Get
+                          </h3>
+                          <div className="space-y-4">
+                            {[
+                              { icon: FaCertificate, title: "Membership Card", desc: "Official IEEE membership identification with unique member ID" },
+                              { icon: FaNetworkWired, title: "Network Access", desc: "Connect with professionals worldwide through IEEE communities" },
+                              { icon: FaBookOpen, title: "Learning Resources", desc: "Access to technical papers, courses, and IEEE Xplore library" },
+                              { icon: FaRocket, title: "Career Growth", desc: "Professional development opportunities and mentorship programs" }
+                            ].map((item, index) => (
+                              <motion.div 
+                                key={index}
+                                className="flex items-center p-4 border shadow-md bg-white/70 backdrop-blur-sm rounded-xl border-white/50"
+                                initial={{ opacity: 0, y: 30 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ delay: 0.6 + index * 0.1 }}
+                                whileHover={{ y: -3, backgroundColor: "rgba(255,255,255,0.9)" }}
+                              >
+                                <div className="flex items-center justify-center w-10 h-10 mr-4 text-lg text-white rounded-lg shadow-md bg-gradient-to-r from-blue-500 to-purple-600">
+                                  <item.icon />
+                                </div>
+                                <div>
+                                  <h4 className="mb-1 text-base font-bold text-gray-900">{item.title}</h4>
+                                  <p className="text-sm text-gray-600">{item.desc}</p>
+                                </div>
+                              </motion.div>
+                            ))}
+                          </div>
+                        </div>
+                      </motion.div>
                    </div>
                  </div>
                </motion.div>
@@ -783,83 +795,83 @@ export default function Membership() {
                  animate={{ opacity: 1, y: 0 }}
                  transition={{ duration: 0.6 }}
                >
-                 <div className="mb-20 text-center">
-                   <motion.div
-                     className="inline-flex items-center px-6 py-3 mb-8 text-sm font-medium text-orange-600 border border-orange-200 rounded-full shadow-sm bg-gradient-to-r from-orange-50 to-orange-100"
-                     initial={{ scale: 0 }}
-                     animate={{ scale: 1 }}
-                     transition={{ delay: 0.2 }}
-                   >
-                     <FaArrowRight className="mr-3 text-lg" />
-                     Simple Steps
-                   </motion.div>
-                   <h2 className="mb-8 text-6xl font-bold text-gray-900 md:text-7xl">
-                     How to Join
-                   </h2>
-                   <p className="max-w-4xl mx-auto text-2xl leading-relaxed text-gray-600">
-                     Follow these simple steps to become an IEEE member
-                   </p>
-                 </div>
+                                   <div className="mb-12 text-center">
+                    <motion.div
+                      className="inline-flex items-center px-4 py-2 mb-6 text-xs font-medium text-orange-600 border border-orange-200 rounded-full shadow-sm bg-gradient-to-r from-orange-50 to-orange-100"
+                      initial={{ scale: 0 }}
+                      animate={{ scale: 1 }}
+                      transition={{ delay: 0.2 }}
+                    >
+                      <FaArrowRight className="mr-2 text-sm" />
+                      Simple Steps
+                    </motion.div>
+                    <h2 className="mb-6 text-4xl font-bold text-gray-900 md:text-5xl">
+                      How to Join
+                    </h2>
+                    <p className="max-w-3xl mx-auto text-lg leading-relaxed text-gray-600">
+                      Follow these simple steps to become an IEEE member
+                    </p>
+                  </div>
 
-                 <div className="mx-auto max-w-8xl">
-                   <div className="grid grid-cols-1 gap-12 md:grid-cols-2 lg:grid-cols-4">
+                  <div className="max-w-6xl mx-auto">
+                    <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
                      {process.map((step, index) => (
-                       <motion.div
-                         key={index}
-                         className="relative text-center group"
-                         initial={{ opacity: 0, y: 50, scale: 0.9 }}
-                         animate={{ opacity: 1, y: 0, scale: 1 }}
-                         transition={{ duration: 0.8, delay: index * 0.2 }}
-                         whileHover={{ y: -10, scale: 1.05 }}
-                       >
-                         {/* Enhanced Connector Line */}
-                         {index < process.length - 1 && (
-                           <div className="absolute z-0 hidden w-full h-2 rounded-full shadow-lg lg:block top-16 left-full bg-gradient-to-r from-blue-500 via-purple-500 to-indigo-500">
-                             <motion.div
-                               className="h-full rounded-full bg-gradient-to-r from-blue-500 to-purple-500"
-                               initial={{ width: 0 }}
-                               animate={{ width: "100%" }}
-                               transition={{ delay: 1 + index * 0.3, duration: 1 }}
-                             />
-                           </div>
-                         )}
+                                               <motion.div
+                          key={index}
+                          className="relative text-center group"
+                          initial={{ opacity: 0, y: 50, scale: 0.9 }}
+                          animate={{ opacity: 1, y: 0, scale: 1 }}
+                          transition={{ duration: 0.8, delay: index * 0.2 }}
+                          whileHover={{ y: -5, scale: 1.03 }}
+                        >
+                          {/* Enhanced Connector Line */}
+                          {index < process.length - 1 && (
+                            <div className="absolute z-0 hidden w-full h-1 rounded-full shadow-md lg:block top-12 left-full bg-gradient-to-r from-blue-500 via-purple-500 to-indigo-500">
+                              <motion.div
+                                className="h-full rounded-full bg-gradient-to-r from-blue-500 to-purple-500"
+                                initial={{ width: 0 }}
+                                animate={{ width: "100%" }}
+                                transition={{ delay: 1 + index * 0.3, duration: 1 }}
+                              />
+                            </div>
+                          )}
 
-                         <div className="relative z-10">
-                           {/* Step Number Badge */}
-                           <motion.div 
-                             className="absolute z-20 transform -translate-x-1/2 -top-4 left-1/2"
-                             initial={{ scale: 0 }}
-                             animate={{ scale: 1 }}
-                             transition={{ delay: 0.5 + index * 0.2 }}
-                           >
-                             <span className="inline-flex items-center justify-center w-12 h-12 text-lg font-bold text-white border-4 border-white rounded-full shadow-2xl bg-gradient-to-r from-gray-800 to-gray-900">
-                               {step.step}
-                             </span>
-                           </motion.div>
+                          <div className="relative z-10">
+                            {/* Step Number Badge */}
+                            <motion.div 
+                              className="absolute z-20 transform -translate-x-1/2 -top-3 left-1/2"
+                              initial={{ scale: 0 }}
+                              animate={{ scale: 1 }}
+                              transition={{ delay: 0.5 + index * 0.2 }}
+                            >
+                              <span className="inline-flex items-center justify-center w-8 h-8 text-sm font-bold text-white border-2 border-white rounded-full shadow-lg bg-gradient-to-r from-gray-800 to-gray-900">
+                                {step.step}
+                              </span>
+                            </motion.div>
 
-                           {/* Main Step Card */}
-                           <motion.div 
-                             className={`flex items-center justify-center w-32 h-32 mx-auto mb-8 text-3xl font-bold text-white rounded-full shadow-3xl bg-gradient-to-r ${step.color} group-hover:shadow-4xl transition-all duration-500`}
-                             whileHover={{ scale: 1.15, rotate: 10 }}
-                             transition={{ type: "spring", stiffness: 300 }}
-                           >
-                             <step.icon />
-                           </motion.div>
+                            {/* Main Step Card */}
+                            <motion.div 
+                              className={`flex items-center justify-center w-20 h-20 mx-auto mb-6 text-xl font-bold text-white rounded-full shadow-lg bg-gradient-to-r ${step.color} group-hover:shadow-xl transition-all duration-500`}
+                              whileHover={{ scale: 1.1, rotate: 5 }}
+                              transition={{ type: "spring", stiffness: 300 }}
+                            >
+                              <step.icon />
+                            </motion.div>
 
-                           {/* Floating Elements */}
-                           <div className="absolute w-4 h-4 transition-all duration-500 rounded-full opacity-0 top-8 right-8 bg-gradient-to-r from-blue-400 to-purple-400 group-hover:opacity-60 animate-pulse" />
-                           <div className="absolute w-3 h-3 transition-all duration-500 rounded-full opacity-0 bottom-8 left-8 bg-gradient-to-r from-purple-400 to-pink-400 group-hover:opacity-60 animate-pulse" />
+                            {/* Floating Elements */}
+                            <div className="absolute w-3 h-3 transition-all duration-500 rounded-full opacity-0 top-4 right-4 bg-gradient-to-r from-blue-400 to-purple-400 group-hover:opacity-60 animate-pulse" />
+                            <div className="absolute w-2 h-2 transition-all duration-500 rounded-full opacity-0 bottom-4 left-4 bg-gradient-to-r from-purple-400 to-pink-400 group-hover:opacity-60 animate-pulse" />
 
-                           <div className="p-8 border-2 shadow-2xl bg-white/80 backdrop-blur-sm rounded-3xl border-white/50">
-                             <h3 className="mb-4 text-2xl font-bold text-gray-900 transition-colors group-hover:text-blue-600">
-                               {step.title}
-                             </h3>
-                             <p className="text-lg leading-relaxed text-gray-600">
-                               {step.description}
-                             </p>
-                           </div>
-                         </div>
-                       </motion.div>
+                            <div className="p-6 border-2 shadow-lg bg-white/80 backdrop-blur-sm rounded-2xl border-white/50">
+                              <h3 className="mb-3 text-lg font-bold text-gray-900 transition-colors group-hover:text-blue-600">
+                                {step.title}
+                              </h3>
+                              <p className="text-sm leading-relaxed text-gray-600">
+                                {step.description}
+                              </p>
+                            </div>
+                          </div>
+                        </motion.div>
                      ))}
                    </div>
 
