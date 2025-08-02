@@ -82,10 +82,7 @@ export default function Login() {
           },
           body: JSON.stringify(formData),
         });
-        if (response.ok) {
-          alert("Login successful! Redirecting to home page.");
-          router.push("/");
-        }
+
         console.log(`Login response status: ${response.status}`);
         const data = await response.json();
         console.log("Login response data:", {
@@ -94,6 +91,10 @@ export default function Login() {
           hasUser: !!data.user,
           message: data.message,
         });
+        if (response.ok) {
+          alert("Login successful! Redirecting to home page.");
+          router.push("/");
+        }
 
         if (!response.ok) {
           console.error("Login failed:", data);
@@ -112,7 +113,6 @@ export default function Login() {
         console.log("User data stored in localStorage");
         console.log("User role:", data.user.role);
         console.log("Full user data:", data.user);
-
       } catch (error) {
         console.error("Login error:", error);
         setErrors({
