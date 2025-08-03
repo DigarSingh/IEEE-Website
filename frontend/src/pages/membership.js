@@ -106,7 +106,9 @@ export default function Membership() {
   const membershipTypes = [
     {
       type: "Basic Membership",
+      originalPrice: "₹500",
       price: "₹249",
+      discount: "50%",
       duration: "per year",
       features: [
         "Access to all IEEE resources",
@@ -124,7 +126,9 @@ export default function Membership() {
     },
     {
       type: "Core Membership",
-      price: "₹1500",
+      originalPrice: "₹1500",
+      price: "₹800",
+      discount: "Limited Time",
       duration: "per year",
       features: [
         "All Basic memberships benefits",
@@ -628,13 +632,30 @@ export default function Membership() {
                           <h3 className="mb-4 text-2xl font-bold text-gray-900">
                             {type.type}
                           </h3>
-                          <div className="mb-6">
-                            <span className="text-5xl font-bold text-transparent bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text">
-                              {type.price}
-                            </span>
-                            <span className="ml-3 text-lg text-gray-600">
-                              {type.duration}
-                            </span>
+                          <div className="flex flex-col items-center justify-center mb-6">
+                            {/* Discount badge */}
+                            <div className="mb-3">
+                              <span className="inline-flex items-center px-3 py-1 text-sm font-medium text-white rounded-full shadow-sm bg-gradient-to-r from-green-500 to-emerald-500">
+                                <span className="mr-1">💰</span> {type.discount} OFF
+                              </span>
+                            </div>
+                            
+                            {/* Original price (strike-through) */}
+                            <div className="mb-1">
+                              <span className="text-xl text-gray-500 line-through">
+                                {type.originalPrice}
+                              </span>
+                            </div>
+                            
+                            {/* Discounted price */}
+                            <div className="flex items-center justify-center">
+                              <span className="text-5xl font-bold text-transparent bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text">
+                                {type.price}
+                              </span>
+                              <span className="ml-3 text-lg text-gray-600">
+                                {type.duration}
+                              </span>
+                            </div>
                           </div>
                         </div>
 
@@ -954,7 +975,7 @@ export default function Membership() {
                 {[
                   {
                     question: "What is the cost of IEEE membership?",
-                    answer: "Student membership costs ₹500 per year, while professional membership is ₹1500 per year. This includes access to all IEEE resources and benefits."
+                    answer: "Student membership costs ₹249 per year, while professional membership is ₹1500 per year. This includes access to all IEEE resources and benefits."
                   },
                   {
                     question: "Can I join if I'm not an engineering student?",
