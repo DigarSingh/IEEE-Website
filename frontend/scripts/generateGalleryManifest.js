@@ -1,7 +1,8 @@
 const fs = require('fs');
 const path = require('path');
 
-const galleryDir = path.join(__dirname, '../public/images/gallery');
+// Update to point to the optimized gallery images
+const galleryDir = path.join(__dirname, '../public/images/gallery-optimized');
 const output = {};
 
 // Event metadata - you can customize these details
