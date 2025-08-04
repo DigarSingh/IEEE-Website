@@ -13,13 +13,14 @@ const nextConfig = {
   
   // Configure image domains for security
   images: {
-    domains: ['localhost'],
+    domains: ['localhost', 'www.geuieee.com', 'geuieee.com'],
     remotePatterns: [
       {
         protocol: 'https',
         hostname: '**',
       },
     ],
+    unoptimized: true,
   },
   
   // Configure server for larger payloads and file uploads

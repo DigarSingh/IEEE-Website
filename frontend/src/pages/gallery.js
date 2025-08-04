@@ -1,5 +1,6 @@
 import Head from "next/head";
 import Link from "next/link";
+import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   FaImage,
@@ -437,11 +438,12 @@ export default function Gallery() {
                           {!imgLoadedMap[image.id] && (
                             <div className="absolute inset-0 z-10 bg-gray-200 animate-pulse" />
                           )}
-                          <img
+                          <Image
                             src={image.src}
                             alt={image.title || "Gallery image"}
+                            width={400}
+                            height={256}
                             className="object-cover w-full h-64 transition-transform duration-500 group-hover:scale-110"
-                            loading="lazy"
                             style={{
                               display: imageLoadErrors.has(image.id)
                                 ? "none"
@@ -557,9 +559,11 @@ export default function Gallery() {
               >
                 {/* Image */}
                 <div className="relative">
-                  <img
+                  <Image
                     src={selectedImage.src}
                     alt={selectedImage.title || "Gallery image"}
+                    width={800}
+                    height={600}
                     className="w-full max-h-[70vh] object-contain"
                     onError={(e) => handleImageError(e, selectedImage.id)}
                   />
