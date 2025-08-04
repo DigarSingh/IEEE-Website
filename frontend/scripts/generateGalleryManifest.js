@@ -52,7 +52,7 @@ try {
         .filter(file => /\.(jpe?g|png|webp|heic)$/i.test(file))
         .map(file => ({
           filename: file,
-          src: `/images/gallery/${folder}/${file}`,
+          src: `/images/gallery-optimized/${folder}/${file}`,
           event: folder,
           ...eventMetadata[folder]
         }));
