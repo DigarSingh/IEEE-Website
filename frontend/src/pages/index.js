@@ -179,6 +179,35 @@ export default function Home() {
           <meta name="description" content="IEEE Club - Fostering innovation and technology leadership among students" />
         </Head>
 
+        {/* Announcement Bar */}
+        <div className="relative overflow-hidden bg-gradient-to-r from-purple-600 via-pink-600 to-purple-600">
+          <div className="announcement-scroll">
+            <div className="flex items-center justify-center py-3 text-sm font-medium text-white md:text-base whitespace-nowrap">
+              <span className="mr-4">🎉</span>
+              <span className="mr-2">IEEE Membership Drive is now OPEN!</span>
+              <span className="mr-4">Apply now and join our community of innovators.</span>
+              <Link href="/membership" className="inline-flex items-center px-3 py-1 text-xs font-semibold text-purple-600 transition-colors duration-200 bg-white rounded-full hover:bg-gray-100">
+                Click Here to Fill Form
+                <FaArrowRight className="ml-1 text-xs" />
+              </Link>
+              <span className="ml-4">🎉</span>
+              <span className="ml-2">IEEE Membership Drive is now OPEN!</span>
+              <span className="ml-4">Apply now and join our community of innovators.</span>
+              <Link href="/membership" className="inline-flex items-center px-3 py-1 text-xs font-semibold text-purple-600 transition-colors duration-200 bg-white rounded-full hover:bg-gray-100">
+                Click Here to Fill Form
+                <FaArrowRight className="ml-1 text-xs" />
+              </Link>
+              <span className="ml-4">🎉</span>
+              <span className="ml-2">IEEE Membership Drive is now OPEN!</span>
+              <span className="ml-4">Apply now and join our community of innovators.</span>
+              <Link href="/membership" className="inline-flex items-center px-3 py-1 text-xs font-semibold text-purple-600 transition-colors duration-200 bg-white rounded-full hover:bg-gray-100">
+                Click Here to Fill Form
+                <FaArrowRight className="ml-1 text-xs" />
+              </Link>
+            </div>
+          </div>
+        </div>
+
         {/* Enhanced Hero Section */}
         <section ref={heroRef} className="relative flex items-center min-h-screen overflow-hidden">
           {/* Multi-layer Background */}

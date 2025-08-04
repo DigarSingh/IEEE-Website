@@ -2,110 +2,92 @@ import Head from 'next/head';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FaImage, FaCalendar, FaEye, FaTimes, FaChevronLeft, FaChevronRight, FaDownload, FaShare, FaHeart } from 'react-icons/fa';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import Layout from '@/components/Layout';
+
+// Import the generated gallery manifest
+import galleryManifest from '../gallery-manifest.json';
 
 export default function Gallery() {
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [selectedImage, setSelectedImage] = useState(null);
   const [favorites, setFavorites] = useState([]);
+  const [visibleImages, setVisibleImages] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [hasMore, setHasMore] = useState(true);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [imageLoadErrors, setImageLoadErrors] = useState(new Set());
 
-  // Gallery categories
-  const categories = [
-    { id: 'all', name: 'All Photos', count: 24 },
-    { id: 'events', name: 'Events', count: 12 },
-    { id: 'workshops', name: 'Workshops', count: 8 },
-    { id: 'competitions', name: 'Competitions', count: 4 }
-  ];
+  // Add a state to track which images are loaded
+  const [imgLoadedMap, setImgLoadedMap] = useState({});
 
-  // Gallery images data
-  const galleryImages = [
-    {
-      id: 1,
-      src: '/images/events/hackathon.jpg',
-      title: 'IEEE Hackathon 2024',
-      category: 'events',
-      date: '2024-03-15',
-      description: 'Annual IEEE Hackathon bringing together innovative minds to solve real-world problems.',
-      photographer: 'IEEE Team',
-      views: 1250
-    },
-    {
-      id: 2,
-      src: '/images/events/ai-workshop.jpg',
-      title: 'AI & Machine Learning Workshop',
-      category: 'workshops',
-      date: '2024-02-20',
-      description: 'Hands-on workshop on artificial intelligence and machine learning fundamentals.',
-      photographer: 'IEEE Team',
-      views: 890
-    },
-    {
-      id: 3,
-      src: '/images/events/cyber.jpg',
-      title: 'Cybersecurity Conference',
-      category: 'events',
-      date: '2024-01-10',
-      description: 'Industry experts sharing insights on the latest cybersecurity trends and threats.',
-      photographer: 'IEEE Team',
-      views: 1100
-    },
-    {
-      id: 4,
-      src: '/images/events/drone.jpg',
-      title: 'Drone Technology Showcase',
-      category: 'events',
-      date: '2024-04-05',
-      description: 'Demonstration of cutting-edge drone technology and applications.',
-      photographer: 'IEEE Team',
-      views: 750
-    },
-    {
-      id: 5,
-      src: '/images/events/webdev.jpg',
-      title: 'Web Development Bootcamp',
-      category: 'workshops',
-      date: '2024-02-28',
-      description: 'Intensive workshop covering modern web development technologies and frameworks.',
-      photographer: 'IEEE Team',
-      views: 980
-    },
-    {
-      id: 6,
-      src: '/images/events/aws.jpg',
-      title: 'AWS Cloud Computing Workshop',
-      category: 'workshops',
-      date: '2024-03-08',
-      description: 'Comprehensive training on Amazon Web Services cloud computing platform.',
-      photographer: 'IEEE Team',
-      views: 1050
-    },
-    {
-      id: 7,
-      src: '/images/events/devops.jpg',
-      title: 'DevOps & CI/CD Workshop',
-      category: 'workshops',
-      date: '2024-03-22',
-      description: 'Learn about DevOps practices and continuous integration/deployment workflows.',
-      photographer: 'IEEE Team',
-      views: 820
-    },
-    {
-      id: 8,
-      src: '/images/events/project.jpg',
-      title: 'Student Project Exhibition',
-      category: 'competitions',
-      date: '2024-04-12',
-      description: 'Showcase of innovative student projects and research work.',
-      photographer: 'IEEE Team',
-      views: 1300
-    }
-  ];
+  const ITEMS_PER_PAGE = 20; // Load 20 images at a time for smooth performance
+
+  // Convert manifest to flat array of all images
+  const allImages = Object.keys(galleryManifest).flatMap(folder => 
+    galleryManifest[folder].images.map((image, index) => ({
+      id: `${folder}-${index}`,
+      src: image.src,
+      title: `${galleryManifest[folder].metadata.name} - ${image.filename.replace(/\.[^/.]+$/, '')}`,
+      category: image.category,
+      date: image.date,
+      description: image.description,
+      photographer: image.photographer,
+      views: Math.floor(Math.random() * 1000) + 100, // Random views for demo
+      eventFolder: folder,
+      eventName: image.name,
+      filename: image.filename
+    }))
+  );
+
+  // Generate categories dynamically from manifest
+  const categories = (() => {
+    const categoryCounts = {};
+    allImages.forEach(img => {
+      categoryCounts[img.category] = (categoryCounts[img.category] || 0) + 1;
+    });
+
+    return [
+      { id: 'all', name: 'All Photos', count: allImages.length },
+      ...Object.entries(categoryCounts).map(([id, count]) => ({
+        id,
+        name: id.charAt(0).toUpperCase() + id.slice(1),
+        count
+      }))
+    ];
+  })();
 
   // Filter images based on category
   const filteredImages = selectedCategory === 'all' 
-    ? galleryImages 
-    : galleryImages.filter(img => img.category === selectedCategory);
+    ? allImages 
+    : allImages.filter(img => img.category === selectedCategory);
+
+  // Load more images function
+  const loadMoreImages = useCallback(() => {
+    const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+    const endIndex = startIndex + ITEMS_PER_PAGE;
+    const newImages = filteredImages.slice(startIndex, endIndex);
+    
+    setVisibleImages(prev => [...prev, ...newImages]);
+    setHasMore(endIndex < filteredImages.length);
+    setCurrentPage(prev => prev + 1);
+  }, [currentPage, filteredImages]);
+
+  // Initialize gallery
+  useEffect(() => {
+    setLoading(true);
+    setCurrentPage(1);
+    setVisibleImages([]);
+    setHasMore(true);
+    setImageLoadErrors(new Set());
+    setImgLoadedMap({}); // Reset loaded map
+    
+    // Load initial batch
+    const initialImages = filteredImages.slice(0, ITEMS_PER_PAGE);
+    setVisibleImages(initialImages);
+    setHasMore(filteredImages.length > ITEMS_PER_PAGE);
+    setLoading(false);
+  }, [selectedCategory]);
 
   // Handle image selection for modal
   const openImageModal = (image) => {
@@ -153,6 +135,37 @@ export default function Gallery() {
     return () => window.removeEventListener('keydown', handleKeyPress);
   }, [selectedImage]);
 
+  // Function to handle image load errors
+  const handleImageError = (e, imageId) => {
+    setImageLoadErrors(prev => new Set([...prev, imageId]));
+    e.target.style.display = 'none';
+  };
+
+  // Intersection Observer for lazy loading
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting && hasMore) {
+            loadMoreImages();
+          }
+        });
+      },
+      { threshold: 0.1 }
+    );
+
+    const loadMoreTrigger = document.getElementById('load-more-trigger');
+    if (loadMoreTrigger) {
+      observer.observe(loadMoreTrigger);
+    }
+
+    return () => {
+      if (loadMoreTrigger) {
+        observer.unobserve(loadMoreTrigger);
+      }
+    };
+  }, [hasMore, loadMoreImages]);
+
   return (
     <Layout>
       <div className="bg-white">
@@ -174,9 +187,6 @@ export default function Gallery() {
             <div className="absolute w-40 h-40 rounded-full bottom-40 left-20 bg-pink-500/10 blur-xl animate-pulse delay-2000"></div>
             <div className="absolute delay-500 rounded-full bottom-20 right-10 w-36 h-36 bg-cyan-500/10 blur-xl animate-pulse"></div>
           </motion.div>
-          
-          {/* Circuit Pattern Overlay */}
-          {/* <div className="absolute inset-0 bg-[url('/images/hero/circuit-pattern.png')] opacity-5"></div> */}
           
           <div className="container relative z-10 px-6 mx-auto">
             <motion.div 
@@ -279,11 +289,11 @@ export default function Gallery() {
                 }}
               >
                 <div className="text-center">
-                  <div className="text-3xl font-bold text-purple-400">24+</div>
+                  <div className="text-3xl font-bold text-purple-400">{allImages.length}+</div>
                   <div className="text-sm text-gray-400">Photos</div>
                 </div>
                 <div className="text-center">
-                  <div className="text-3xl font-bold text-pink-400">50+</div>
+                  <div className="text-3xl font-bold text-pink-400">{Object.keys(galleryManifest).length}+</div>
                   <div className="text-sm text-gray-400">Events</div>
                 </div>
                 <div className="text-center">
@@ -357,86 +367,117 @@ export default function Gallery() {
         {/* Gallery Grid Section */}
         <section id="gallery-grid" className="py-20 bg-white">
           <div className="container px-6 mx-auto">
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={selectedCategory}
-                className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.5 }}
-              >
-                {filteredImages.map((image, index) => (
-                  <motion.div
-                    key={image.id}
-                    className="relative overflow-hidden shadow-lg cursor-pointer group rounded-2xl"
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5, delay: index * 0.1 }}
-                    whileHover={{ scale: 1.02 }}
-                    onClick={() => openImageModal(image)}
-                  >
-                    {/* Image */}
-                    <div className="relative overflow-hidden">
-                      <img
-                        src={image.src}
-                        alt={image.title}
-                        className="object-cover w-full h-64 transition-transform duration-500 group-hover:scale-110"
-                      />
-                      
-                      {/* Overlay */}
-                      <div className="absolute inset-0 transition-opacity duration-300 opacity-0 bg-gradient-to-t from-black/80 via-transparent to-transparent group-hover:opacity-100">
-                        <div className="absolute bottom-4 left-4 right-4">
-                          <h3 className="mb-2 text-lg font-bold text-white line-clamp-2">{image.title}</h3>
-                          <div className="flex items-center justify-between text-sm text-white/80">
-                            <span>{new Date(image.date).toLocaleDateString()}</span>
-                            <div className="flex items-center">
-                              <FaEye className="mr-1" />
-                              {image.views}
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-
-                      {/* Favorite Button */}
-                      <button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          toggleFavorite(image.id);
-                        }}
-                        className={`absolute top-4 right-4 p-2 rounded-full transition-all duration-300 ${
-                          favorites.includes(image.id)
-                            ? 'bg-red-500 text-white'
-                            : 'bg-white/20 backdrop-blur-sm text-white hover:bg-white/30'
-                        }`}
-                      >
-                        <FaHeart />
-                      </button>
-
-                      {/* Category Badge */}
-                      <div className="absolute top-4 left-4">
-                        <span className="px-3 py-1 text-xs font-medium text-white bg-purple-500 rounded-full">
-                          {categories.find(cat => cat.id === image.category)?.name}
-                        </span>
-                      </div>
-                    </div>
-                  </motion.div>
-                ))}
-              </motion.div>
-            </AnimatePresence>
-
-            {/* No Results Message */}
-            {filteredImages.length === 0 && (
+            {loading ? (
               <motion.div
                 className="py-20 text-center"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.5 }}
               >
-                <FaImage className="mx-auto mb-4 text-6xl text-gray-300" />
-                <h3 className="mb-2 text-2xl font-bold text-gray-900">No Photos Found</h3>
-                <p className="text-gray-600">Try selecting a different category or check back later for new uploads.</p>
+                <div className="inline-block w-8 h-8 border-4 border-purple-500 rounded-full border-t-transparent animate-spin"></div>
+                <p className="mt-4 text-gray-600">Loading gallery...</p>
               </motion.div>
+            ) : (
+              <>
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={selectedCategory}
+                    className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.5 }}
+                  >
+                    {visibleImages.map((image, index) => (
+                      <motion.div
+                        key={image.id}
+                        className="relative overflow-hidden shadow-lg cursor-pointer group rounded-2xl"
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.5, delay: index * 0.05 }}
+                        whileHover={{ scale: 1.02 }}
+                        onClick={() => openImageModal(image)}
+                      >
+                        {/* Image */}
+                        <div className="relative overflow-hidden">
+                          {!imgLoadedMap[image.id] && (
+                            <div className="absolute inset-0 z-10 bg-gray-200 animate-pulse" />
+                          )}
+                          <img
+                            src={image.src}
+                            alt={image.title}
+                            className="object-cover w-full h-64 transition-transform duration-500 group-hover:scale-110"
+                            loading="lazy"
+                            style={{
+                              display: imageLoadErrors.has(image.id) ? 'none' : 'block',
+                            }}
+                            onLoad={() => setImgLoadedMap(prev => ({ ...prev, [image.id]: true }))}
+                            onError={(e) => handleImageError(e, image.id)}
+                          />
+                          
+                          {/* Overlay */}
+                          <div className="absolute inset-0 transition-opacity duration-300 opacity-0 bg-gradient-to-t from-black/80 via-transparent to-transparent group-hover:opacity-100">
+                            <div className="absolute bottom-4 left-4 right-4">
+                              <h3 className="mb-2 text-lg font-bold text-white line-clamp-2">{image.title}</h3>
+                              <div className="flex items-center justify-between text-sm text-white/80">
+                                <span>{new Date(image.date).toLocaleDateString()}</span>
+                                <div className="flex items-center">
+                                  <FaEye className="mr-1" />
+                                  {image.views}
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+
+                          {/* Favorite Button */}
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              toggleFavorite(image.id);
+                            }}
+                            className={`absolute top-4 right-4 p-2 rounded-full transition-all duration-300 ${
+                              favorites.includes(image.id)
+                                ? 'bg-red-500 text-white'
+                                : 'bg-white/20 backdrop-blur-sm text-white hover:bg-white/30'
+                            }`}
+                          >
+                            <FaHeart />
+                          </button>
+
+                          {/* Category Badge */}
+                          <div className="absolute top-4 left-4">
+                            <span className="px-3 py-1 text-xs font-medium text-white bg-purple-500 rounded-full">
+                              {categories.find(cat => cat.id === image.category)?.name}
+                            </span>
+                          </div>
+                        </div>
+                      </motion.div>
+                    ))}
+                  </motion.div>
+                </AnimatePresence>
+
+                {/* Load More Trigger */}
+                {hasMore && (
+                  <div id="load-more-trigger" className="py-8 text-center">
+                    <div className="inline-block w-6 h-6 border-2 border-purple-500 rounded-full border-t-transparent animate-spin"></div>
+                    <p className="mt-2 text-sm text-gray-600">Loading more photos...</p>
+                  </div>
+                )}
+
+                {/* No Results Message */}
+                {!loading && visibleImages.length === 0 && (
+                  <motion.div
+                    className="py-20 text-center"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.5 }}
+                  >
+                    <FaImage className="mx-auto mb-4 text-6xl text-gray-300" />
+                    <h3 className="mb-2 text-2xl font-bold text-gray-900">No Photos Found</h3>
+                    <p className="text-gray-600">Try selecting a different category or check back later for new uploads.</p>
+                  </motion.div>
+                )}
+              </>
             )}
           </div>
         </section>
@@ -464,6 +505,7 @@ export default function Gallery() {
                     src={selectedImage.src}
                     alt={selectedImage.title}
                     className="w-full max-h-[70vh] object-contain"
+                    onError={(e) => handleImageError(e, selectedImage.id)}
                   />
                   
                   {/* Navigation Buttons */}
@@ -500,6 +542,7 @@ export default function Gallery() {
                         <span>📅 {new Date(selectedImage.date).toLocaleDateString()}</span>
                         <span>📷 {selectedImage.photographer}</span>
                         <span>👁️ {selectedImage.views} views</span>
+                        <span>📁 {selectedImage.eventName}</span>
                       </div>
                     </div>
                     

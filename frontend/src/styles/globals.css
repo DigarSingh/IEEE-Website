@@ -101,7 +101,25 @@ body {
 
 .dashboard-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+/* Announcement bar scrolling animation */
+@keyframes scroll-left {
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+.announcement-scroll {
+  animation: scroll-left 30s linear infinite;
+}
+
+.announcement-scroll:hover {
+  animation-play-state: paused;
 }
 
 /* Text shadow effects for better contrast against animations */
