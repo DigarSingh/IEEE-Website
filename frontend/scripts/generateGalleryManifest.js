@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 
-// Update to point to the optimized gallery images
+// Use the optimized images folder
 const galleryDir = path.join(__dirname, '../public/images/gallery-optimized');
 const output = {};
 
