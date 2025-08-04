@@ -137,6 +137,27 @@ export default function Gallery() {
 
   // Function to handle image load errors
   const handleImageError = (e, imageId) => {
+    console.error(`Failed to load image: ${e.target.src}`);
+    
+    // Try with alternative path if it's a gallery image
+    const originalSrc = e.target.src;
+    
+    // If image already has gallery-optimized in the path but still failed, mark as error
+    if (originalSrc.includes('/images/gallery-optimized/')) {
+      console.error(`Optimized image still failed to load: ${originalSrc}`);
+      setImageLoadErrors(prev => new Set([...prev, imageId]));
+      return;
+    }
+    
+    // Try to load from the optimized folder instead
+    if (originalSrc.includes('/images/gallery/')) {
+      const newSrc = originalSrc.replace('/images/gallery/', '/images/gallery-optimized/');
+      console.log(`Attempting with alternative path: ${newSrc}`);
+      e.target.src = newSrc;
+      return;
+    }
+    
+    // If it still fails or isn't a gallery image, hide it
     setImageLoadErrors(prev => new Set([...prev, imageId]));
     e.target.style.display = 'none';
   };
@@ -404,8 +425,8 @@ export default function Gallery() {
                             <div className="absolute inset-0 z-10 bg-gray-200 animate-pulse" />
                           )}
                           <img
-                            src={image.src}
-                            alt={image.title}
+                            src={image.src.replace('/images/gallery/', '/images/gallery-optimized/')}
+                            alt={image.title || 'Gallery image'}
                             className="object-cover w-full h-64 transition-transform duration-500 group-hover:scale-110"
                             loading="lazy"
                             style={{
@@ -502,8 +523,8 @@ export default function Gallery() {
                 {/* Image */}
                 <div className="relative">
                   <img
-                    src={selectedImage.src}
-                    alt={selectedImage.title}
+                    src={selectedImage.src.replace('/images/gallery/', '/images/gallery-optimized/')}
+                    alt={selectedImage.title || 'Gallery image'}
                     className="w-full max-h-[70vh] object-contain"
                     onError={(e) => handleImageError(e, selectedImage.id)}
                   />
