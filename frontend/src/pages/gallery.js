@@ -1,15 +1,25 @@
-import Head from 'next/head';
-import Link from 'next/link';
-import { motion, AnimatePresence } from 'framer-motion';
-import { FaImage, FaCalendar, FaEye, FaTimes, FaChevronLeft, FaChevronRight, FaDownload, FaShare, FaHeart } from 'react-icons/fa';
-import { useState, useEffect, useCallback } from 'react';
-import Layout from '@/components/Layout';
+import Head from "next/head";
+import Link from "next/link";
+import { motion, AnimatePresence } from "framer-motion";
+import {
+  FaImage,
+  FaCalendar,
+  FaEye,
+  FaTimes,
+  FaChevronLeft,
+  FaChevronRight,
+  FaDownload,
+  FaShare,
+  FaHeart,
+} from "react-icons/fa";
+import { useState, useEffect, useCallback } from "react";
+import Layout from "@/components/Layout";
 
 // Import the generated gallery manifest
-import galleryManifest from '../gallery-manifest.json';
+import galleryManifest from "../gallery-manifest.json";
 
 export default function Gallery() {
-  const [selectedCategory, setSelectedCategory] = useState('all');
+  const [selectedCategory, setSelectedCategory] = useState("all");
   const [selectedImage, setSelectedImage] = useState(null);
   const [favorites, setFavorites] = useState([]);
   const [visibleImages, setVisibleImages] = useState([]);
@@ -24,11 +34,13 @@ export default function Gallery() {
   const ITEMS_PER_PAGE = 20; // Load 20 images at a time for smooth performance
 
   // Convert manifest to flat array of all images
-  const allImages = Object.keys(galleryManifest).flatMap(folder => 
+  const allImages = Object.keys(galleryManifest).flatMap((folder) =>
     galleryManifest[folder].images.map((image, index) => ({
       id: `${folder}-${index}`,
       src: image.src,
-      title: `${galleryManifest[folder].metadata.name} - ${image.filename.replace(/\.[^/.]+$/, '')}`,
+      title: `${
+        galleryManifest[folder].metadata.name
+      } - ${image.filename.replace(/\.[^/.]+$/, "")}`,
       category: image.category,
       date: image.date,
       description: image.description,
@@ -36,41 +48,42 @@ export default function Gallery() {
       views: Math.floor(Math.random() * 1000) + 100, // Random views for demo
       eventFolder: folder,
       eventName: image.name,
-      filename: image.filename
+      filename: image.filename,
     }))
   );
 
   // Generate categories dynamically from manifest
   const categories = (() => {
     const categoryCounts = {};
-    allImages.forEach(img => {
+    allImages.forEach((img) => {
       categoryCounts[img.category] = (categoryCounts[img.category] || 0) + 1;
     });
 
     return [
-      { id: 'all', name: 'All Photos', count: allImages.length },
+      { id: "all", name: "All Photos", count: allImages.length },
       ...Object.entries(categoryCounts).map(([id, count]) => ({
         id,
         name: id.charAt(0).toUpperCase() + id.slice(1),
-        count
-      }))
+        count,
+      })),
     ];
   })();
 
   // Filter images based on category
-  const filteredImages = selectedCategory === 'all' 
-    ? allImages 
-    : allImages.filter(img => img.category === selectedCategory);
+  const filteredImages =
+    selectedCategory === "all"
+      ? allImages
+      : allImages.filter((img) => img.category === selectedCategory);
 
   // Load more images function
   const loadMoreImages = useCallback(() => {
     const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
     const endIndex = startIndex + ITEMS_PER_PAGE;
     const newImages = filteredImages.slice(startIndex, endIndex);
-    
-    setVisibleImages(prev => [...prev, ...newImages]);
+
+    setVisibleImages((prev) => [...prev, ...newImages]);
     setHasMore(endIndex < filteredImages.length);
-    setCurrentPage(prev => prev + 1);
+    setCurrentPage((prev) => prev + 1);
   }, [currentPage, filteredImages]);
 
   // Initialize gallery
@@ -81,7 +94,7 @@ export default function Gallery() {
     setHasMore(true);
     setImageLoadErrors(new Set());
     setImgLoadedMap({}); // Reset loaded map
-    
+
     // Load initial batch
     const initialImages = filteredImages.slice(0, ITEMS_PER_PAGE);
     setVisibleImages(initialImages);
@@ -100,23 +113,27 @@ export default function Gallery() {
 
   // Navigate through images in modal
   const navigateImage = (direction) => {
-    const currentIndex = filteredImages.findIndex(img => img.id === selectedImage.id);
+    const currentIndex = filteredImages.findIndex(
+      (img) => img.id === selectedImage.id
+    );
     let newIndex;
-    
-    if (direction === 'prev') {
-      newIndex = currentIndex > 0 ? currentIndex - 1 : filteredImages.length - 1;
+
+    if (direction === "prev") {
+      newIndex =
+        currentIndex > 0 ? currentIndex - 1 : filteredImages.length - 1;
     } else {
-      newIndex = currentIndex < filteredImages.length - 1 ? currentIndex + 1 : 0;
+      newIndex =
+        currentIndex < filteredImages.length - 1 ? currentIndex + 1 : 0;
     }
-    
+
     setSelectedImage(filteredImages[newIndex]);
   };
 
   // Handle favorites
   const toggleFavorite = (imageId) => {
-    setFavorites(prev => 
-      prev.includes(imageId) 
-        ? prev.filter(id => id !== imageId)
+    setFavorites((prev) =>
+      prev.includes(imageId)
+        ? prev.filter((id) => id !== imageId)
         : [...prev, imageId]
     );
   };
@@ -125,48 +142,30 @@ export default function Gallery() {
   useEffect(() => {
     const handleKeyPress = (e) => {
       if (selectedImage) {
-        if (e.key === 'ArrowLeft') navigateImage('prev');
-        if (e.key === 'ArrowRight') navigateImage('next');
-        if (e.key === 'Escape') closeImageModal();
+        if (e.key === "ArrowLeft") navigateImage("prev");
+        if (e.key === "ArrowRight") navigateImage("next");
+        if (e.key === "Escape") closeImageModal();
       }
     };
 
-    window.addEventListener('keydown', handleKeyPress);
-    return () => window.removeEventListener('keydown', handleKeyPress);
+    window.addEventListener("keydown", handleKeyPress);
+    return () => window.removeEventListener("keydown", handleKeyPress);
   }, [selectedImage]);
 
   // Function to handle image load errors
   const handleImageError = (e, imageId) => {
     console.error(`Failed to load image: ${e.target.src}`);
-    
-    // Try with alternative path if it's a gallery image
-    const originalSrc = e.target.src;
-    
-    // If image already has gallery-optimized in the path but still failed, mark as error
-    if (originalSrc.includes('/images/gallery-optimized/')) {
-      console.error(`Optimized image still failed to load: ${originalSrc}`);
-      setImageLoadErrors(prev => new Set([...prev, imageId]));
-      return;
-    }
-    
-    // Try to load from the optimized folder instead
-    if (originalSrc.includes('/images/gallery/')) {
-      const newSrc = originalSrc.replace('/images/gallery/', '/images/gallery-optimized/');
-      console.log(`Attempting with alternative path: ${newSrc}`);
-      e.target.src = newSrc;
-      return;
-    }
-    
-    // If it still fails or isn't a gallery image, hide it
-    setImageLoadErrors(prev => new Set([...prev, imageId]));
-    e.target.style.display = 'none';
+
+    // Mark image as failed and hide it
+    setImageLoadErrors((prev) => new Set([...prev, imageId]));
+    e.target.style.display = "none";
   };
 
   // Intersection Observer for lazy loading
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
-        entries.forEach(entry => {
+        entries.forEach((entry) => {
           if (entry.isIntersecting && hasMore) {
             loadMoreImages();
           }
@@ -175,7 +174,7 @@ export default function Gallery() {
       { threshold: 0.1 }
     );
 
-    const loadMoreTrigger = document.getElementById('load-more-trigger');
+    const loadMoreTrigger = document.getElementById("load-more-trigger");
     if (loadMoreTrigger) {
       observer.observe(loadMoreTrigger);
     }
@@ -192,7 +191,10 @@ export default function Gallery() {
       <div className="bg-white">
         <Head>
           <title>Gallery - IEEE Club</title>
-          <meta name="description" content="Explore our gallery of events, workshops, and memorable moments from IEEE Club activities." />
+          <meta
+            name="description"
+            content="Explore our gallery of events, workshops, and memorable moments from IEEE Club activities."
+          />
         </Head>
 
         {/* Enhanced Hero Section */}
@@ -200,7 +202,7 @@ export default function Gallery() {
           {/* Multi-layer Background */}
           <div className="absolute inset-0 bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900"></div>
           <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-purple-900/30"></div>
-          
+
           {/* Animated Background Elements */}
           <motion.div className="absolute inset-0">
             <div className="absolute w-32 h-32 rounded-full top-20 left-10 bg-purple-500/10 blur-xl animate-pulse"></div>
@@ -208,9 +210,9 @@ export default function Gallery() {
             <div className="absolute w-40 h-40 rounded-full bottom-40 left-20 bg-pink-500/10 blur-xl animate-pulse delay-2000"></div>
             <div className="absolute delay-500 rounded-full bottom-20 right-10 w-36 h-36 bg-cyan-500/10 blur-xl animate-pulse"></div>
           </motion.div>
-          
+
           <div className="container relative z-10 px-6 mx-auto">
-            <motion.div 
+            <motion.div
               className="max-w-5xl mx-auto text-center text-white"
               initial="hidden"
               animate="visible"
@@ -220,9 +222,9 @@ export default function Gallery() {
                   opacity: 1,
                   transition: {
                     staggerChildren: 0.2,
-                    delayChildren: 0.1
-                  }
-                }
+                    delayChildren: 0.1,
+                  },
+                },
               }}
             >
               {/* Badge */}
@@ -230,19 +232,19 @@ export default function Gallery() {
                 className="inline-flex items-center px-4 py-2 mb-6 border rounded-full bg-white/10 backdrop-blur-sm border-white/20"
                 variants={{
                   hidden: { opacity: 0, y: 20 },
-                  visible: { opacity: 1, y: 0 }
+                  visible: { opacity: 1, y: 0 },
                 }}
               >
                 <FaImage className="mr-2 text-purple-400" />
                 <span className="text-sm font-medium">Visual Memories</span>
               </motion.div>
-              
+
               {/* Main Title */}
-              <motion.h1 
+              <motion.h1
                 className="mb-6 text-5xl font-bold leading-tight md:text-6xl lg:text-7xl"
                 variants={{
                   hidden: { opacity: 0, y: 20 },
-                  visible: { opacity: 1, y: 0 }
+                  visible: { opacity: 1, y: 0 },
                 }}
               >
                 <span className="text-white">IEEE</span>
@@ -255,24 +257,25 @@ export default function Gallery() {
                   Collection
                 </span>
               </motion.h1>
-              
+
               {/* Subtitle */}
-              <motion.p 
+              <motion.p
                 className="max-w-3xl mx-auto mb-10 text-xl leading-relaxed text-gray-300 md:text-2xl"
                 variants={{
                   hidden: { opacity: 0, y: 20 },
-                  visible: { opacity: 1, y: 0 }
+                  visible: { opacity: 1, y: 0 },
                 }}
               >
-                Discover moments of innovation, learning, and community through our curated collection of events, workshops, and achievements.
+                Discover moments of innovation, learning, and community through
+                our curated collection of events, workshops, and achievements.
               </motion.p>
-              
+
               {/* CTA Buttons */}
-              <motion.div 
+              <motion.div
                 className="flex flex-col justify-center gap-4 sm:flex-row"
                 variants={{
                   hidden: { opacity: 0, y: 20 },
-                  visible: { opacity: 1, y: 0 }
+                  visible: { opacity: 1, y: 0 },
                 }}
               >
                 <a href="#gallery-grid">
@@ -283,11 +286,12 @@ export default function Gallery() {
                   >
                     <div className="absolute inset-0 transition-opacity duration-300 opacity-0 bg-gradient-to-r from-pink-600 to-purple-500 group-hover:opacity-100"></div>
                     <span className="relative z-10 flex items-center">
-                      Explore Gallery <FaEye className="ml-2 transition-transform group-hover:translate-x-1" />
+                      Explore Gallery{" "}
+                      <FaEye className="ml-2 transition-transform group-hover:translate-x-1" />
                     </span>
                   </motion.div>
                 </a>
-                
+
                 <Link href="/events">
                   <motion.div
                     className="px-8 py-4 font-semibold text-white transition-all duration-300 border rounded-full cursor-pointer bg-white/10 backdrop-blur-sm border-white/20 hover:bg-white/20"
@@ -302,19 +306,23 @@ export default function Gallery() {
               </motion.div>
 
               {/* Gallery Stats */}
-              <motion.div 
+              <motion.div
                 className="grid max-w-2xl grid-cols-3 gap-6 pt-8 mx-auto mt-8 border-t border-white/20"
                 variants={{
                   hidden: { opacity: 0, y: 20 },
-                  visible: { opacity: 1, y: 0 }
+                  visible: { opacity: 1, y: 0 },
                 }}
               >
                 <div className="text-center">
-                  <div className="text-3xl font-bold text-purple-400">{allImages.length}+</div>
+                  <div className="text-3xl font-bold text-purple-400">
+                    {allImages.length}+
+                  </div>
                   <div className="text-sm text-gray-400">Photos</div>
                 </div>
                 <div className="text-center">
-                  <div className="text-3xl font-bold text-pink-400">{Object.keys(galleryManifest).length}+</div>
+                  <div className="text-3xl font-bold text-pink-400">
+                    {Object.keys(galleryManifest).length}+
+                  </div>
                   <div className="text-sm text-gray-400">Events</div>
                 </div>
                 <div className="text-center">
@@ -326,7 +334,7 @@ export default function Gallery() {
           </div>
 
           {/* Enhanced Scroll Indicator */}
-          <motion.div 
+          <motion.div
             className="absolute flex flex-col items-center transform -translate-x-1/2 bottom-8 left-1/2 text-white/70"
             animate={{ y: [0, 10, 0] }}
             transition={{ repeat: Infinity, duration: 2 }}
@@ -352,11 +360,16 @@ export default function Gallery() {
               transition={{ duration: 0.8 }}
               className="max-w-4xl mx-auto mb-12 text-center"
             >
-              <h2 className="mb-4 text-3xl font-bold text-gray-900">Browse Categories</h2>
-              <p className="text-lg text-gray-600">Filter photos by event type to find exactly what you're looking for</p>
+              <h2 className="mb-4 text-3xl font-bold text-gray-900">
+                Browse Categories
+              </h2>
+              <p className="text-lg text-gray-600">
+                Filter photos by event type to find exactly what you're looking
+                for
+              </p>
             </motion.div>
 
-            <motion.div 
+            <motion.div
               className="flex flex-wrap justify-center gap-4 mb-8"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -369,8 +382,8 @@ export default function Gallery() {
                   onClick={() => setSelectedCategory(category.id)}
                   className={`px-6 py-3 rounded-full font-medium transition-all duration-300 ${
                     selectedCategory === category.id
-                      ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg'
-                      : 'bg-white text-gray-700 border border-gray-200 hover:border-purple-300 hover:text-purple-600'
+                      ? "bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg"
+                      : "bg-white text-gray-700 border border-gray-200 hover:border-purple-300 hover:text-purple-600"
                   }`}
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
@@ -425,23 +438,34 @@ export default function Gallery() {
                             <div className="absolute inset-0 z-10 bg-gray-200 animate-pulse" />
                           )}
                           <img
-                            src={image.src.replace('/images/gallery/', '/images/gallery-optimized/')}
-                            alt={image.title || 'Gallery image'}
+                            src={image.src}
+                            alt={image.title || "Gallery image"}
                             className="object-cover w-full h-64 transition-transform duration-500 group-hover:scale-110"
                             loading="lazy"
                             style={{
-                              display: imageLoadErrors.has(image.id) ? 'none' : 'block',
+                              display: imageLoadErrors.has(image.id)
+                                ? "none"
+                                : "block",
                             }}
-                            onLoad={() => setImgLoadedMap(prev => ({ ...prev, [image.id]: true }))}
+                            onLoad={() =>
+                              setImgLoadedMap((prev) => ({
+                                ...prev,
+                                [image.id]: true,
+                              }))
+                            }
                             onError={(e) => handleImageError(e, image.id)}
                           />
-                          
+
                           {/* Overlay */}
                           <div className="absolute inset-0 transition-opacity duration-300 opacity-0 bg-gradient-to-t from-black/80 via-transparent to-transparent group-hover:opacity-100">
                             <div className="absolute bottom-4 left-4 right-4">
-                              <h3 className="mb-2 text-lg font-bold text-white line-clamp-2">{image.title}</h3>
+                              <h3 className="mb-2 text-lg font-bold text-white line-clamp-2">
+                                {image.title}
+                              </h3>
                               <div className="flex items-center justify-between text-sm text-white/80">
-                                <span>{new Date(image.date).toLocaleDateString()}</span>
+                                <span>
+                                  {new Date(image.date).toLocaleDateString()}
+                                </span>
                                 <div className="flex items-center">
                                   <FaEye className="mr-1" />
                                   {image.views}
@@ -458,8 +482,8 @@ export default function Gallery() {
                             }}
                             className={`absolute top-4 right-4 p-2 rounded-full transition-all duration-300 ${
                               favorites.includes(image.id)
-                                ? 'bg-red-500 text-white'
-                                : 'bg-white/20 backdrop-blur-sm text-white hover:bg-white/30'
+                                ? "bg-red-500 text-white"
+                                : "bg-white/20 backdrop-blur-sm text-white hover:bg-white/30"
                             }`}
                           >
                             <FaHeart />
@@ -468,7 +492,11 @@ export default function Gallery() {
                           {/* Category Badge */}
                           <div className="absolute top-4 left-4">
                             <span className="px-3 py-1 text-xs font-medium text-white bg-purple-500 rounded-full">
-                              {categories.find(cat => cat.id === image.category)?.name}
+                              {
+                                categories.find(
+                                  (cat) => cat.id === image.category
+                                )?.name
+                              }
                             </span>
                           </div>
                         </div>
@@ -481,7 +509,9 @@ export default function Gallery() {
                 {hasMore && (
                   <div id="load-more-trigger" className="py-8 text-center">
                     <div className="inline-block w-6 h-6 border-2 border-purple-500 rounded-full border-t-transparent animate-spin"></div>
-                    <p className="mt-2 text-sm text-gray-600">Loading more photos...</p>
+                    <p className="mt-2 text-sm text-gray-600">
+                      Loading more photos...
+                    </p>
                   </div>
                 )}
 
@@ -494,8 +524,13 @@ export default function Gallery() {
                     transition={{ duration: 0.5 }}
                   >
                     <FaImage className="mx-auto mb-4 text-6xl text-gray-300" />
-                    <h3 className="mb-2 text-2xl font-bold text-gray-900">No Photos Found</h3>
-                    <p className="text-gray-600">Try selecting a different category or check back later for new uploads.</p>
+                    <h3 className="mb-2 text-2xl font-bold text-gray-900">
+                      No Photos Found
+                    </h3>
+                    <p className="text-gray-600">
+                      Try selecting a different category or check back later for
+                      new uploads.
+                    </p>
                   </motion.div>
                 )}
               </>
@@ -523,22 +558,22 @@ export default function Gallery() {
                 {/* Image */}
                 <div className="relative">
                   <img
-                    src={selectedImage.src.replace('/images/gallery/', '/images/gallery-optimized/')}
-                    alt={selectedImage.title || 'Gallery image'}
+                    src={selectedImage.src}
+                    alt={selectedImage.title || "Gallery image"}
                     className="w-full max-h-[70vh] object-contain"
                     onError={(e) => handleImageError(e, selectedImage.id)}
                   />
-                  
+
                   {/* Navigation Buttons */}
                   <button
-                    onClick={() => navigateImage('prev')}
+                    onClick={() => navigateImage("prev")}
                     className="absolute p-3 text-white transition-colors transform -translate-y-1/2 rounded-full left-4 top-1/2 bg-black/50 hover:bg-black/70"
                   >
                     <FaChevronLeft />
                   </button>
-                  
+
                   <button
-                    onClick={() => navigateImage('next')}
+                    onClick={() => navigateImage("next")}
                     className="absolute p-3 text-white transition-colors transform -translate-y-1/2 rounded-full right-4 top-1/2 bg-black/50 hover:bg-black/70"
                   >
                     <FaChevronRight />
@@ -557,24 +592,30 @@ export default function Gallery() {
                 <div className="p-6">
                   <div className="flex items-start justify-between mb-4">
                     <div>
-                      <h2 className="mb-2 text-2xl font-bold text-gray-900">{selectedImage.title}</h2>
-                      <p className="mb-3 text-gray-600">{selectedImage.description}</p>
+                      <h2 className="mb-2 text-2xl font-bold text-gray-900">
+                        {selectedImage.title}
+                      </h2>
+                      <p className="mb-3 text-gray-600">
+                        {selectedImage.description}
+                      </p>
                       <div className="flex items-center space-x-4 text-sm text-gray-500">
-                        <span>📅 {new Date(selectedImage.date).toLocaleDateString()}</span>
+                        <span>
+                          📅 {new Date(selectedImage.date).toLocaleDateString()}
+                        </span>
                         <span>📷 {selectedImage.photographer}</span>
                         <span>👁️ {selectedImage.views} views</span>
                         <span>📁 {selectedImage.eventName}</span>
                       </div>
                     </div>
-                    
+
                     {/* Action Buttons */}
                     <div className="flex space-x-2">
                       <button
                         onClick={() => toggleFavorite(selectedImage.id)}
                         className={`p-2 rounded-full transition-colors ${
                           favorites.includes(selectedImage.id)
-                            ? 'bg-red-500 text-white'
-                            : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                            ? "bg-red-500 text-white"
+                            : "bg-gray-100 text-gray-600 hover:bg-gray-200"
                         }`}
                       >
                         <FaHeart />
