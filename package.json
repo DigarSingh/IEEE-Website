@@ -7,9 +7,9 @@
   ],
   "scripts": {
     "dev": "npm run dev --workspace=frontend",
+    "start": "npm run start --workspace=frontend",
     "build": "npm run build:vercel",
-    "build:vercel": "cd frontend && npm run build:vercel",
-    "start": "npm run start --workspace=frontend"
+    "build:vercel": "cd frontend && npm run build"
   },
   "dependencies": {
     "concurrently": "^8.2.2",
