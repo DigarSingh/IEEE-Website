@@ -7,36 +7,39 @@ const nextConfig = {
     styledComponents: true,
   },
   // Optimize for Vercel deployment
-  output: 'standalone',
+  output: "standalone",
   // Optimize Framer Motion for Next.js
-  transpilePackages: ['framer-motion'],
-  
+  transpilePackages: ["framer-motion"],
+
   // Configure image domains for security
   images: {
-    domains: ['localhost', 'www.geuieee.com', 'geuieee.com'],
+    domains: ["localhost", "www.geuieee.com", "geuieee.com"],
     remotePatterns: [
       {
-        protocol: 'https',
-        hostname: '**',
+        protocol: "https",
+        hostname: "**",
       },
     ],
-    unoptimized: true,
+    // Remove unoptimized: true to enable proper image optimization
+    formats: ["image/webp", "image/avif"],
+    deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
+    imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
   },
-  
+
   // Configure server for larger payloads and file uploads
   experimental: {
-    serverComponentsExternalPackages: ['mongoose'],
+    serverComponentsExternalPackages: ["mongoose"],
     serverActions: {
-      bodySizeLimit: '50mb',
+      bodySizeLimit: "50mb",
     },
   },
 
   // Allow file uploads in API routes and fix path aliases
   webpack(config) {
-    config.externals = [...config.externals, 'formidable'];
+    config.externals = [...config.externals, "formidable"];
     config.resolve.alias = {
       ...config.resolve.alias,
-      '@': require('path').resolve(__dirname, 'src/')
+      "@": require("path").resolve(__dirname, "src/"),
     };
     return config;
   },
@@ -45,12 +48,12 @@ const nextConfig = {
   async rewrites() {
     return [
       {
-        source: '/api/:path*',
-        destination: '/api/:path*',
+        source: "/api/:path*",
+        destination: "/api/:path*",
       },
     ];
   },
-  
+
   // Optimize for deployment - skip linting and type checking during build
   eslint: {
     ignoreDuringBuilds: true,
@@ -58,25 +61,25 @@ const nextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
-  
+
   // Disable static generation for auth-protected pages
-  generateBuildId: async () => 'ieee-website-build',
+  generateBuildId: async () => "ieee-website-build",
 
   // Skip auth-protected pages during static build
-  pageExtensions: ['jsx', 'js', 'ts', 'tsx', 'md', 'mdx'],
-  
+  pageExtensions: ["jsx", "js", "ts", "tsx", "md", "mdx"],
+
   // Configure to handle routes properly
   trailingSlash: false,
-  
+
   // Optimize for authenticated pages
   poweredByHeader: false,
-  
+
   // Optimize runtime environment
   swcMinify: true,
-  
+
   // Prevent static generation from failing on auth-required pages
   staticPageGenerationTimeout: 120,
-  
+
   // Configure to handle API routes properly
   onDemandEntries: {
     // period (in ms) where the server will keep pages in the buffer
@@ -89,13 +92,11 @@ const nextConfig = {
   async headers() {
     return [
       {
-        source: '/api/:path*',
-        headers: [
-          { key: 'Cache-Control', value: 'no-store, must-revalidate' },
-        ],
+        source: "/api/:path*",
+        headers: [{ key: "Cache-Control", value: "no-store, must-revalidate" }],
       },
     ];
   },
-}
+};
 
-module.exports = nextConfig
+module.exports = nextConfig;

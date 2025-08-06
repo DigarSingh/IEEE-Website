@@ -32,6 +32,10 @@ export default function Gallery() {
   // Add a state to track which images are loaded
   const [imgLoadedMap, setImgLoadedMap] = useState({});
 
+  // Development mode check for debugging
+  const isDevelopment = process.env.NODE_ENV === "development";
+  const [showDebug, setShowDebug] = useState(false);
+
   const ITEMS_PER_PAGE = 20; // Load 20 images at a time for smooth performance
 
   // Convert manifest to flat array of all images
@@ -157,9 +161,95 @@ export default function Gallery() {
   const handleImageError = (e, imageId) => {
     console.error(`Failed to load image: ${e.target.src}`);
 
+    // Try alternative extensions if the image fails to load
+    const currentSrc = e.target.src;
+    const alternativeExtensions = [
+      ".JPG",
+      ".jpg",
+      ".jpeg",
+      ".JPEG",
+      ".png",
+      ".PNG",
+    ];
+
+    // Find the current extension and try alternatives
+    const currentExt = currentSrc.match(/\.(jpg|jpeg|png|JPG|JPEG|PNG)$/i)?.[0];
+    if (currentExt) {
+      const basePath = currentSrc.replace(currentExt, "");
+      const currentIndex = alternativeExtensions.indexOf(currentExt);
+
+      // Try next extension
+      if (currentIndex < alternativeExtensions.length - 1) {
+        const nextExt = alternativeExtensions[currentIndex + 1];
+        const newSrc = basePath + nextExt;
+        console.log(`Retrying with alternative extension: ${newSrc}`);
+        e.target.src = newSrc;
+        return;
+      }
+    }
+
     // Mark image as failed and hide it
     setImageLoadErrors((prev) => new Set([...prev, imageId]));
     e.target.style.display = "none";
+  };
+
+  // Enhanced image loading with retry mechanism
+  const ImageWithFallback = ({ image, ...props }) => {
+    const [retryCount, setRetryCount] = useState(0);
+    const [currentSrc, setCurrentSrc] = useState(image.src);
+
+    // Log image path in development mode
+    useEffect(() => {
+      if (isDevelopment) {
+        console.log(`🖼️ Loading image: ${image.src}`);
+      }
+    }, [image.src, isDevelopment]);
+
+    const handleError = (e) => {
+      if (retryCount < 2) {
+        // Try alternative extensions
+        const alternativeExtensions = [
+          ".JPG",
+          ".jpg",
+          ".jpeg",
+          ".JPEG",
+          ".png",
+          ".PNG",
+        ];
+        const basePath = image.src.replace(
+          /\.(jpg|jpeg|png|JPG|JPEG|PNG)$/i,
+          ""
+        );
+        const nextExt =
+          alternativeExtensions[retryCount % alternativeExtensions.length];
+        const newSrc = basePath + nextExt;
+
+        console.log(`Retry ${retryCount + 1}: ${newSrc}`);
+        setCurrentSrc(newSrc);
+        setRetryCount((prev) => prev + 1);
+      } else {
+        // Final fallback - hide the image
+        handleImageError(e, image.id);
+      }
+    };
+
+    return (
+      <Image
+        {...props}
+        src={currentSrc}
+        alt={image.title || "Gallery image"}
+        onError={handleError}
+        onLoad={() => {
+          if (isDevelopment) {
+            console.log(`✅ Image loaded successfully: ${currentSrc}`);
+          }
+          setImgLoadedMap((prev) => ({
+            ...prev,
+            [image.id]: true,
+          }));
+        }}
+      />
+    );
   };
 
   // Intersection Observer for lazy loading
@@ -354,6 +444,38 @@ export default function Gallery() {
         {/* Category Filter Section */}
         <section className="py-16 bg-gray-50">
           <div className="container px-6 mx-auto">
+            {/* Debug Panel - Only in Development */}
+            {isDevelopment && (
+              <motion.div
+                className="mb-6 p-4 bg-yellow-50 border border-yellow-200 rounded-lg"
+                initial={{ opacity: 0, y: -20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3 }}
+              >
+                <div className="flex items-center justify-between mb-2">
+                  <h3 className="text-sm font-semibold text-yellow-800">
+                    🐛 Development Debug Panel
+                  </h3>
+                  <button
+                    onClick={() => setShowDebug(!showDebug)}
+                    className="text-xs text-yellow-600 hover:text-yellow-800"
+                  >
+                    {showDebug ? "Hide" : "Show"} Details
+                  </button>
+                </div>
+                {showDebug && (
+                  <div className="text-xs text-yellow-700 space-y-1">
+                    <p>📊 Total Images: {allImages.length}</p>
+                    <p>🖼️ Loaded Images: {Object.keys(imgLoadedMap).length}</p>
+                    <p>❌ Failed Images: {imageLoadErrors.size}</p>
+                    <p>📁 Current Category: {selectedCategory}</p>
+                    <p>👁️ Visible Images: {visibleImages.length}</p>
+                    <p>🔍 Filtered Images: {filteredImages.length}</p>
+                  </div>
+                )}
+              </motion.div>
+            )}
+
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -414,6 +536,25 @@ export default function Gallery() {
               </motion.div>
             ) : (
               <>
+                {/* Gallery Stats */}
+                <motion.div
+                  className="mb-8 text-center"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5 }}
+                >
+                  <p className="text-gray-600">
+                    Showing {visibleImages.length} of {filteredImages.length}{" "}
+                    photos
+                    {selectedCategory !== "all" && ` in ${selectedCategory}`}
+                  </p>
+                  {imageLoadErrors.size > 0 && (
+                    <p className="mt-2 text-sm text-orange-600">
+                      ⚠️ {imageLoadErrors.size} image(s) failed to load
+                    </p>
+                  )}
+                </motion.div>
+
                 <AnimatePresence mode="wait">
                   <motion.div
                     key={selectedCategory}
@@ -438,9 +579,8 @@ export default function Gallery() {
                           {!imgLoadedMap[image.id] && (
                             <div className="absolute inset-0 z-10 bg-gray-200 animate-pulse" />
                           )}
-                          <Image
-                            src={image.src}
-                            alt={image.title || "Gallery image"}
+                          <ImageWithFallback
+                            image={image}
                             width={400}
                             height={256}
                             className="object-cover w-full h-64 transition-transform duration-500 group-hover:scale-110"
@@ -449,13 +589,6 @@ export default function Gallery() {
                                 ? "none"
                                 : "block",
                             }}
-                            onLoad={() =>
-                              setImgLoadedMap((prev) => ({
-                                ...prev,
-                                [image.id]: true,
-                              }))
-                            }
-                            onError={(e) => handleImageError(e, image.id)}
                           />
 
                           {/* Overlay */}
@@ -559,13 +692,11 @@ export default function Gallery() {
               >
                 {/* Image */}
                 <div className="relative">
-                  <Image
-                    src={selectedImage.src}
-                    alt={selectedImage.title || "Gallery image"}
+                  <ImageWithFallback
+                    image={selectedImage}
                     width={800}
                     height={600}
                     className="w-full max-h-[70vh] object-contain"
-                    onError={(e) => handleImageError(e, selectedImage.id)}
                   />
 
                   {/* Navigation Buttons */}
