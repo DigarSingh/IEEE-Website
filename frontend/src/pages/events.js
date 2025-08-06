@@ -189,8 +189,55 @@ export default function Events() {
     <Layout>
       <div className="overflow-hidden">
         <Head>
-          <title>Events | IEEE Club - Innovation & Learning</title>
-          <meta name="description" content="Discover cutting-edge workshops, conferences, hackathons, and networking opportunities with IEEE Club. Join us in shaping the future of technology." />
+          <title>IEEE Events GEU - Technical Workshops, Hackathons & Conferences | Graphic Era University IEEE</title>
+          <meta name="description" content="Discover IEEE events at GEU - technical workshops, hackathons, conferences, and networking opportunities. Join cutting-edge technology events hosted by IEEE Club at Graphic Era University." />
+          <meta name="keywords" content="IEEE Events GEU, IEEE Workshops GEU, IEEE Hackathons, IEEE Conferences GEU, Technical Events GEU, IEEE Club Events, Graphic Era University IEEE Events, IEEE Competitions GEU, Technology Workshops GEU" />
+          <meta name="author" content="IEEE Club - Graphic Era University" />
+          
+          {/* Open Graph Meta Tags */}
+          <meta property="og:title" content="IEEE Events GEU - Technical Workshops, Hackathons & Conferences" />
+          <meta property="og:description" content="Discover IEEE events at GEU - technical workshops, hackathons, conferences, and networking opportunities. Join cutting-edge technology events hosted by IEEE Club at Graphic Era University." />
+          <meta property="og:image" content="https://your-domain.com/images/hero/IEEE_hero.jpg" />
+          <meta property="og:url" content="https://your-domain.com/events" />
+          
+          {/* Twitter Meta Tags */}
+          <meta name="twitter:title" content="IEEE Events GEU - Technical Workshops, Hackathons & Conferences" />
+          <meta name="twitter:description" content="Discover IEEE events at GEU - technical workshops, hackathons, conferences, and networking opportunities." />
+          <meta name="twitter:image" content="https://your-domain.com/images/hero/IEEE_hero.jpg" />
+          
+          {/* Canonical URL */}
+          <link rel="canonical" href="https://your-domain.com/events" />
+          
+          {/* Structured Data for Events */}
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{
+              __html: JSON.stringify({
+                "@context": "https://schema.org",
+                "@type": "ItemList",
+                "name": "IEEE Events at GEU",
+                "description": "Technical workshops, hackathons, conferences, and networking events hosted by IEEE Club at Graphic Era University",
+                "url": "https://your-domain.com/events",
+                "itemListElement": allEvents.map((event, index) => ({
+                  "@type": "Event",
+                  "position": index + 1,
+                  "name": event.title,
+                  "description": event.description,
+                  "startDate": event.date,
+                  "location": {
+                    "@type": "Place",
+                    "name": event.location
+                  },
+                  "organizer": {
+                    "@type": "Organization",
+                    "name": "IEEE Club - GEU"
+                  },
+                  "image": `https://your-domain.com${event.image}`,
+                  "url": `https://your-domain.com/events/${event.id}`
+                }))
+              })
+            }}
+          />
         </Head>
 
         {/* Enhanced Hero Section */}

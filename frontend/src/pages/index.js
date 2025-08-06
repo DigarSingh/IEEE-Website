@@ -175,8 +175,63 @@ export default function Home() {
     <Layout>
       <div className="overflow-hidden">
         <Head>
-          <title>IEEE | Empowering Technology Leaders</title>
-          <meta name="description" content="IEEE Club - Fostering innovation and technology leadership among students" />
+          <title>IEEE Club GEU - Official IEEE Student Branch at Graphic Era University | Technology Leadership & Innovation</title>
+          <meta name="description" content="Official IEEE Student Branch at Graphic Era University (GEU). Join 100+ active members for technical workshops, industry connections, research projects, and leadership development. Discover innovation opportunities at GEU IEEE Club." />
+          <meta name="keywords" content="IEEE GEU, IEEE Club GEU, Graphic Era University IEEE, IEEE Student Branch, Technology Workshops, Innovation Projects, GEU IEEE, IEEE Membership, Technical Events, Leadership Development, Industry Connect, Research Projects, IEEE Dehradun, Uttarakhand IEEE" />
+          <meta name="author" content="IEEE Club - Graphic Era University" />
+          
+          {/* Open Graph Meta Tags */}
+          <meta property="og:title" content="IEEE Club GEU - Official IEEE Student Branch at Graphic Era University" />
+          <meta property="og:description" content="Join 100+ active members at IEEE Club GEU for technical workshops, industry connections, research projects, and leadership development. Official IEEE Student Branch at Graphic Era University." />
+          <meta property="og:image" content="https://your-domain.com/images/hero/IEEE_hero.jpg" />
+          <meta property="og:url" content="https://your-domain.com" />
+          
+          {/* Twitter Meta Tags */}
+          <meta name="twitter:title" content="IEEE Club GEU - Official IEEE Student Branch at Graphic Era University" />
+          <meta name="twitter:description" content="Join 100+ active members at IEEE Club GEU for technical workshops, industry connections, research projects, and leadership development." />
+          <meta name="twitter:image" content="https://your-domain.com/images/hero/IEEE_hero.jpg" />
+          
+          {/* Canonical URL */}
+          <link rel="canonical" href="https://your-domain.com" />
+          
+          {/* Additional SEO Meta Tags */}
+          <meta name="geo.region" content="IN-UT" />
+          <meta name="geo.placename" content="Dehradun" />
+          <meta name="geo.position" content="30.3165;78.0322" />
+          <meta name="ICBM" content="30.3165, 78.0322" />
+          
+          {/* Structured Data for WebPage */}
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{
+              __html: JSON.stringify({
+                "@context": "https://schema.org",
+                "@type": "WebPage",
+                "name": "IEEE Club GEU - Official IEEE Student Branch",
+                "description": "Official IEEE Student Branch at Graphic Era University, fostering innovation and technology leadership among students through workshops, events, and industry connections.",
+                "url": "https://your-domain.com",
+                "mainEntity": {
+                  "@type": "Organization",
+                  "name": "IEEE Club - GEU",
+                  "alternateName": "IEEE Student Branch - Graphic Era University",
+                  "description": "Official IEEE Student Branch at Graphic Era University, fostering innovation and technology leadership among students.",
+                  "url": "https://your-domain.com",
+                  "logo": "https://your-domain.com/images/logo.png",
+                  "address": {
+                    "@type": "PostalAddress",
+                    "addressLocality": "Dehradun",
+                    "addressRegion": "Uttarakhand",
+                    "addressCountry": "IN"
+                  },
+                  "sameAs": [
+                    "https://www.linkedin.com/company/ieee-geu",
+                    "https://twitter.com/ieee_geu",
+                    "https://www.instagram.com/ieee_geu"
+                  ]
+                }
+              })
+            }}
+          />
         </Head>
 
         {/* Announcement Bar */}

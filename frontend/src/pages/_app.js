@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { AuthProvider } from "../contexts/AuthContext";
 import { ThemeProvider } from "../contexts/ThemeContext";
+import GoogleAnalytics from "../components/GoogleAnalytics";
 import "../styles/globals.css";
 
 function MyApp({ Component, pageProps }) {
@@ -37,6 +38,7 @@ function MyApp({ Component, pageProps }) {
   return (
     <ThemeProvider>
       <AuthProvider>
+        <GoogleAnalytics />
         <Component {...pageProps} />
       </AuthProvider>
     </ThemeProvider>

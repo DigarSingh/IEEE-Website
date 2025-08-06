@@ -8,6 +8,36 @@ import { useIntersectionObserver } from '@/hooks/useEnhancedScroll';
 
 export default function About() {
   const heroRef = useRef(null);
+  
+  // SEO structured data for About page
+  const aboutStructuredData = {
+    "@context": "https://schema.org",
+    "@type": "AboutPage",
+    "name": "About IEEE Club GEU - Graphic Era University",
+    "description": "Learn about IEEE Club GEU, the official IEEE Student Branch at Graphic Era University. Discover our mission, team, achievements, and commitment to fostering innovation and technology leadership.",
+    "url": "https://your-domain.com/about",
+    "mainEntity": {
+      "@type": "Organization",
+      "name": "IEEE Club - GEU",
+      "alternateName": "IEEE Student Branch - Graphic Era University",
+      "description": "Official IEEE Student Branch at Graphic Era University, fostering innovation and technology leadership among students.",
+      "url": "https://your-domain.com",
+      "logo": "https://your-domain.com/images/logo.png",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Dehradun",
+        "addressRegion": "Uttarakhand",
+        "addressCountry": "IN"
+      },
+      "foundingDate": "2020",
+      "numberOfEmployees": "100+",
+      "sameAs": [
+        "https://www.linkedin.com/company/ieee-geu",
+        "https://twitter.com/ieee_geu",
+        "https://www.instagram.com/ieee_geu"
+      ]
+    }
+  };
   const fadeIn = {
     hidden: { opacity: 0, y: 20 },
     visible: { 
@@ -220,8 +250,32 @@ export default function About() {
     <Layout>
       <div className="overflow-hidden">
         <Head>
-          <title>About Us | IEEE Club - Empowering Innovation</title>
-          <meta name="description" content="Learn about IEEE Student Branch at GEU - our mission, vision, team, and journey in fostering technological innovation and leadership." />
+          <title>About IEEE Club GEU - Official IEEE Student Branch at Graphic Era University | Mission, Team & Vision</title>
+          <meta name="description" content="Learn about IEEE Club GEU, the official IEEE Student Branch at Graphic Era University. Discover our mission, team, achievements, and commitment to fostering innovation and technology leadership among students." />
+          <meta name="keywords" content="About IEEE GEU, IEEE Club GEU About, Graphic Era University IEEE, IEEE Student Branch About, GEU IEEE Mission, IEEE Team GEU, IEEE Leadership GEU, IEEE Innovation GEU" />
+          <meta name="author" content="IEEE Club - Graphic Era University" />
+          
+          {/* Open Graph Meta Tags */}
+          <meta property="og:title" content="About IEEE Club GEU - Official IEEE Student Branch at Graphic Era University" />
+          <meta property="og:description" content="Learn about IEEE Club GEU, the official IEEE Student Branch at Graphic Era University. Discover our mission, team, achievements, and commitment to fostering innovation and technology leadership." />
+          <meta property="og:image" content="https://your-domain.com/images/hero/IEEE_hero.jpg" />
+          <meta property="og:url" content="https://your-domain.com/about" />
+          
+          {/* Twitter Meta Tags */}
+          <meta name="twitter:title" content="About IEEE Club GEU - Official IEEE Student Branch at Graphic Era University" />
+          <meta name="twitter:description" content="Learn about IEEE Club GEU, the official IEEE Student Branch at Graphic Era University. Discover our mission, team, and achievements." />
+          <meta name="twitter:image" content="https://your-domain.com/images/hero/IEEE_hero.jpg" />
+          
+          {/* Canonical URL */}
+          <link rel="canonical" href="https://your-domain.com/about" />
+          
+          {/* Structured Data */}
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{
+              __html: JSON.stringify(aboutStructuredData)
+            }}
+          />
         </Head>
 
         {/* Enhanced Hero Section */}
