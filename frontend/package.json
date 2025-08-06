@@ -4,11 +4,12 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build && npm run copy-assets",
+    "build": "next build && npm run enhance-seo && npm run copy-assets",
     "start": "next start",
     "lint": "next lint",
     "create-test-user": "node src/lib/create-test-user.js",
-    "copy-assets": "cp -r public/images .next/static/images || echo 'Images copied successfully'"
+    "copy-assets": "cp -r public/images .next/static/images || echo 'Images copied successfully'",
+    "enhance-seo": "node scripts/enhance-seo.js"
   },
   "dependencies": {
     "@react-three/drei": "^9.88.0",

@@ -2,7 +2,17 @@ User-agent: *
 Allow: /
 
 # Sitemap location
-Sitemap: https://your-domain.com/sitemap.xml
+Sitemap: https://geuieee.com/sitemap.xml
+
+# Disallow admin and API routes
+Disallow: /api/
+Disallow: /admin/
+Disallow: /_next/
+Disallow: /uploads/ *
+Allow: /
+
+# Sitemap location
+Sitemap: https:/www.geuieee.com/sitemap.xml
 
 # Disallow admin and API routes
 Disallow: /api/

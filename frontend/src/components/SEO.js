@@ -9,9 +9,41 @@ const SEO = ({
   type = 'website',
   structuredData = null 
 }) => {
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://your-domain.com';
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://geuieee.com';
   const fullUrl = url ? `${baseUrl}${url}` : baseUrl;
   const fullImage = image ? `${baseUrl}${image}` : `${baseUrl}/images/hero/IEEE_hero.jpg`;
+  
+  // Default structured data for GEU IEEE organization if none is provided
+  const defaultStructuredData = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "GEU IEEE Student Branch",
+    "alternateName": "IEEE Club - Graphic Era University",
+    "url": baseUrl,
+    "logo": `${baseUrl}/images/logo.png`,
+    "sameAs": [
+      "https://www.facebook.com/ieeegeu",
+      "https://www.instagram.com/ieee_geu",
+      "https://www.linkedin.com/company/ieee-geu",
+      "https://twitter.com/ieee_geu"
+    ],
+    "location": {
+      "@type": "Place",
+      "name": "Graphic Era University",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Dehradun",
+        "addressRegion": "Uttarakhand",
+        "postalCode": "248002",
+        "addressCountry": "IN"
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": "30.3165",
+        "longitude": "78.0322"
+      }
+    }
+  };
 
   return (
     <Head>
@@ -30,7 +62,7 @@ const SEO = ({
       <meta property="og:description" content={description} />
       <meta property="og:image" content={fullImage} />
       <meta property="og:url" content={fullUrl} />
-      <meta property="og:site_name" content="IEEE Club - GEU" />
+      <meta property="og:site_name" content="GEU IEEE - Graphic Era University IEEE Student Branch" />
       <meta property="og:locale" content="en_US" />
       
       {/* Twitter */}
@@ -46,15 +78,19 @@ const SEO = ({
       <meta name="geo.position" content="30.3165;78.0322" />
       <meta name="ICBM" content="30.3165, 78.0322" />
       
+      {/* GEU IEEE specific tags */}
+      <meta name="google-site-verification" content="your-verification-code" />
+      <meta name="robots" content="index, follow" />
+      <meta name="rating" content="General" />
+      <meta name="revisit-after" content="7 days" />
+
       {/* Structured Data */}
-      {structuredData && (
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify(structuredData)
-          }}
-        />
-      )}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(structuredData || defaultStructuredData)
+        }}
+      />
     </Head>
   );
 };

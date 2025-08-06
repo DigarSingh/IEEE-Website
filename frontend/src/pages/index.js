@@ -175,29 +175,68 @@ export default function Home() {
     <Layout>
       <div className="overflow-hidden">
         <Head>
-          <title>IEEE Club GEU - Official IEEE Student Branch at Graphic Era University | Technology Leadership & Innovation</title>
-          <meta name="description" content="Official IEEE Student Branch at Graphic Era University (GEU). Join 100+ active members for technical workshops, industry connections, research projects, and leadership development. Discover innovation opportunities at GEU IEEE Club." />
-          <meta name="keywords" content="IEEE GEU, IEEE Club GEU, Graphic Era University IEEE, IEEE Student Branch, Technology Workshops, Innovation Projects, GEU IEEE, IEEE Membership, Technical Events, Leadership Development, Industry Connect, Research Projects, IEEE Dehradun, Uttarakhand IEEE" />
+          <title>GEU IEEE | Official IEEE Student Branch at Graphic Era University Dehradun</title>
+          <meta name="description" content="GEU IEEE is the official IEEE Student Branch at Graphic Era University, Dehradun. Join 100+ active members for workshops, industry connections, research projects, and leadership development." />
+          <meta name="keywords" content="GEU IEEE, IEEE GEU, Graphic Era IEEE, IEEE Student Branch GEU, IEEE Graphic Era University, GEU IEEE Club, IEEE GEU Dehradun, IEEE Uttarakhand, GEU IEEE Student Chapter, GEU IEEE Events, IEEE Membership GEU, Technical Events GEU, Research Projects IEEE GEU" />
           <meta name="author" content="IEEE Club - Graphic Era University" />
           
           {/* Open Graph Meta Tags */}
-          <meta property="og:title" content="IEEE Club GEU - Official IEEE Student Branch at Graphic Era University" />
-          <meta property="og:description" content="Join 100+ active members at IEEE Club GEU for technical workshops, industry connections, research projects, and leadership development. Official IEEE Student Branch at Graphic Era University." />
-          <meta property="og:image" content="https://your-domain.com/images/hero/IEEE_hero.jpg" />
-          <meta property="og:url" content="https://your-domain.com" />
+          <meta property="og:title" content="GEU IEEE | Official IEEE Student Branch at Graphic Era University" />
+          <meta property="og:description" content="GEU IEEE is the official IEEE Student Branch at Graphic Era University. Join 100+ active members for technical workshops, industry connections, research projects, and leadership development." />
+          <meta property="og:image" content="https://geuieee.com/images/hero/IEEE_hero.jpg" />
+          <meta property="og:url" content="https://geuieee.com" />
           
           {/* Twitter Meta Tags */}
-          <meta name="twitter:title" content="IEEE Club GEU - Official IEEE Student Branch at Graphic Era University" />
-          <meta name="twitter:description" content="Join 100+ active members at IEEE Club GEU for technical workshops, industry connections, research projects, and leadership development." />
-          <meta name="twitter:image" content="https://your-domain.com/images/hero/IEEE_hero.jpg" />
+          <meta name="twitter:title" content="GEU IEEE | Official IEEE Student Branch at Graphic Era University" />
+          <meta name="twitter:description" content="GEU IEEE is the official IEEE Student Branch at Graphic Era University. Join 100+ active members for technical workshops, industry connections, research projects, and leadership development." />
+          <meta name="twitter:image" content="https://geuieee.com/images/hero/IEEE_hero.jpg" />
           
           {/* Canonical URL */}
-          <link rel="canonical" href="https://your-domain.com" />
+          <link rel="canonical" href="https://geuieee.com" />
           
           {/* Additional SEO Meta Tags */}
           <meta name="geo.region" content="IN-UT" />
           <meta name="geo.placename" content="Dehradun" />
           <meta name="geo.position" content="30.3165;78.0322" />
+          
+          {/* Structured Data for Organization and Educational Organization */}
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{
+              __html: JSON.stringify({
+                "@context": "https://schema.org",
+                "@type": ["Organization", "EducationalOrganization"],
+                "name": "GEU IEEE Student Branch",
+                "alternateName": ["IEEE Club GEU", "IEEE Graphic Era University", "GEU IEEE"],
+                "url": "https://geuieee.com",
+                "logo": "https://geuieee.com/images/logo.png",
+                "description": "Official IEEE Student Branch at Graphic Era University, Dehradun. Join 100+ active members for technical workshops, industry connections, research projects, and leadership development.",
+                "address": {
+                  "@type": "PostalAddress",
+                  "addressLocality": "Dehradun",
+                  "addressRegion": "Uttarakhand",
+                  "addressCountry": "India",
+                  "postalCode": "248002"
+                },
+                "geo": {
+                  "@type": "GeoCoordinates",
+                  "latitude": "30.3165",
+                  "longitude": "78.0322"
+                },
+                "sameAs": [
+                  "https://www.facebook.com/ieeegeu",
+                  "https://www.instagram.com/ieee_geu",
+                  "https://www.linkedin.com/company/ieee-geu",
+                  "https://twitter.com/ieee_geu"
+                ],
+                "parentOrganization": {
+                  "@type": "Organization",
+                  "name": "Graphic Era University",
+                  "url": "https://www.geu.ac.in"
+                }
+              })
+            }}
+          />
           <meta name="ICBM" content="30.3165, 78.0322" />
           
           {/* Structured Data for WebPage */}

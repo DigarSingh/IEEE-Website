@@ -1,5 +1,36 @@
 /** @type {import('next').NextConfig} */
 
+// SEO Configuration
+const headers = async () => {
+  return [
+    {
+      source: '/:path*',
+      headers: [
+        {
+          key: 'X-Content-Type-Options',
+          value: 'nosniff',
+        },
+        {
+          key: 'X-Frame-Options',
+          value: 'DENY',
+        },
+        {
+          key: 'X-XSS-Protection',
+          value: '1; mode=block',
+        },
+        {
+          key: 'Referrer-Policy',
+          value: 'strict-origin-when-cross-origin',
+        },
+        {
+          key: 'Permissions-Policy',
+          value: 'camera=(), microphone=(), geolocation=(), interest-cohort=()',
+        }
+      ],
+    },
+  ];
+};
+
 const nextConfig = {
   reactStrictMode: true,
   // Prevent hydration issues with framer-motion
@@ -10,6 +41,35 @@ const nextConfig = {
   output: "standalone",
   // Optimize Framer Motion for Next.js
   transpilePackages: ["framer-motion"],
+  // Add security headers
+  headers,
+  // Add SEO-friendly redirects
+  async redirects() {
+    return [
+      // Redirect variant domain names to canonical
+      {
+        source: '/ieee',
+        destination: '/',
+        permanent: true,
+      },
+      {
+        source: '/ieee-club',
+        destination: '/',
+        permanent: true,
+      },
+      {
+        source: '/geu-ieee',
+        destination: '/',
+        permanent: true,
+      },
+      // Redirect old URLs if any
+      {
+        source: '/join',
+        destination: '/membership',
+        permanent: true,
+      },
+    ];
+  },
 
   // Configure image domains for security
   images: {

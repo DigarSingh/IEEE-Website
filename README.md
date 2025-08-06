@@ -18,6 +18,14 @@ This is a responsive and dynamic website built for the IEEE Student Branch. The 
 ## 🛠 Tech Stack
 
 - **Frontend**: Next.js
+
+---
+
+## 🔍 SEO & Search Console
+
+The website includes several SEO optimizations:
+
+- **Google Search Console Verification**: The file `google7c588ef8e5a5c1b6.html` in the `frontend/public` directory is used for Google Search Console verification. **Important: Do not remove this file even after verification succeeds**, as it's required to maintain verification status.
 - **Framework**: Bootstrap / Tailwind CSS
 - **Backend**: Mongo DB
 - **Deployment**: GitHub Pages / Vercel
