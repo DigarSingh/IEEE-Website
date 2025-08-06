@@ -71,7 +71,7 @@ const generateBrowserconfig = () => {
   console.log('✅ Generated browserconfig.xml');
 };
 
-// Generate static sitemap.xml for bots that don't execute JS
+// Generate sitemap-static.xml as a backup for bots that don't execute JS
 const generateStaticSitemap = () => {
   const pages = [
     '',
@@ -126,11 +126,12 @@ const generateStaticSitemap = () => {
   </url>`}).join('')}
 </urlset>`;
 
+  // Write to sitemap-static.xml to avoid conflict with the dynamic sitemap.xml.js
   fs.writeFileSync(
-    path.join(process.cwd(), 'public', 'sitemap.xml'),
+    path.join(process.cwd(), 'public', 'sitemap-static.xml'),
     sitemap
   );
-  console.log('✅ Generated static sitemap.xml');
+  console.log('✅ Generated sitemap-static.xml');
 };
 
 // Create .well-known directory for verification files

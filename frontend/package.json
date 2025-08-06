@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "create-test-user": "node src/lib/create-test-user.js",
-    "copy-assets": "cp -r public/images .next/static/images || echo 'Images copied successfully'",
+    "copy-assets": "powershell -Command \"Copy-Item -Path public/images -Destination .next/static/images -Recurse -Force -ErrorAction SilentlyContinue || echo 'Images copied successfully'\"",
     "enhance-seo": "node scripts/enhance-seo.js"
   },
   "dependencies": {

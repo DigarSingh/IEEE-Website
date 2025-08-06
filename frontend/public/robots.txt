@@ -1,8 +1,9 @@
 User-agent: *
 Allow: /
 
-# Sitemap location
+# Sitemap locations
 Sitemap: https://geuieee.com/sitemap.xml
+Sitemap: https://geuieee.com/sitemap-static.xml
 
 # Disallow admin and API routes
 Disallow: /api/
