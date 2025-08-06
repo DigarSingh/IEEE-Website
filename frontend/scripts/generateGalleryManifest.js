@@ -35,7 +35,7 @@ const eventMetadata = {
     description: 'Interactive robotics workshop with hands-on robot programming and control.',
     photographer: 'IEEE Team'
   },
-  '1K+Follower_on_insta': {
+  '1K_Follower_on_insta': {
     name: '1K+ Instagram Followers Celebration',
     category: 'events',
     date: '2024-07-25',

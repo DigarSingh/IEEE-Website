@@ -4,10 +4,11 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "next build && npm run copy-assets",
     "start": "next start",
     "lint": "next lint",
-    "create-test-user": "node src/lib/create-test-user.js"
+    "create-test-user": "node src/lib/create-test-user.js",
+    "copy-assets": "cp -r public/images .next/static/images || echo 'Images copied successfully'"
   },
   "dependencies": {
     "@react-three/drei": "^9.88.0",
