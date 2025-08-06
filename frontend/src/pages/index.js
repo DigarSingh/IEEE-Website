@@ -248,14 +248,14 @@ export default function Home() {
                 "@type": "WebPage",
                 "name": "IEEE Club GEU - Official IEEE Student Branch",
                 "description": "Official IEEE Student Branch at Graphic Era University, fostering innovation and technology leadership among students through workshops, events, and industry connections.",
-                "url": "https://your-domain.com",
+                "url": "https://geuieee.com",
                 "mainEntity": {
                   "@type": "Organization",
                   "name": "IEEE Club - GEU",
                   "alternateName": "IEEE Student Branch - Graphic Era University",
                   "description": "Official IEEE Student Branch at Graphic Era University, fostering innovation and technology leadership among students.",
-                  "url": "https://your-domain.com",
-                  "logo": "https://your-domain.com/images/logo.png",
+                  "url": "https://geuieee.com",
+                  "logo": "https://geuieee.com/images/logo.png",
                   "address": {
                     "@type": "PostalAddress",
                     "addressLocality": "Dehradun",
