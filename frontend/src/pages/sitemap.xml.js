@@ -1,5 +1,3 @@
-import { getServerSideProps } from 'next';
-
 const Sitemap = () => {
   return null;
 };
