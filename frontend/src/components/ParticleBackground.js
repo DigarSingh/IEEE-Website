@@ -1,11 +1,42 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useMemo } from "react";
 import { loadSlim } from "tsparticles-slim";
 import Particles from "react-tsparticles";
+import usePerformanceMode from "@/hooks/usePerformanceMode";
 
 const ParticleBackground = () => {
   const particlesInit = useCallback(async (engine) => {
     await loadSlim(engine);
   }, []);
+
+  const { lowPerf, reducedMotion, isMobile } = usePerformanceMode();
+
+  // Derive throttled settings
+  const settings = useMemo(() => {
+    const base = {
+      linksDistance: 160,
+      speed: 1.2,
+      number: 80,
+      linkOpacity: 0.3,
+      connectDistance: 150,
+      connectRadius: 100,
+    };
+    if (lowPerf) {
+      return {
+        linksDistance: 120,
+        speed: 0.6,
+        number: 35,
+        linkOpacity: 0.2,
+        connectDistance: 100,
+        connectRadius: 60,
+      };
+    }
+    return base;
+  }, [lowPerf]);
+
+  if (reducedMotion) {
+    // Respect OS-level reduced motion
+    return null;
+  }
 
   return (
     <Particles
@@ -22,9 +53,9 @@ const ParticleBackground = () => {
           },
           links: {
             color: "#ffffff",
-            distance: 160, // Increased link distance slightly for better connections
+            distance: settings.linksDistance, // tuned per device
             enable: true,
-            opacity: 0.3,
+            opacity: settings.linkOpacity,
             width: 1
           },
           move: {
@@ -34,7 +65,7 @@ const ParticleBackground = () => {
               default: "out", // Changed from "bounce" to "out" for smoother transitions
             },
             random: true,
-            speed: 1.2, // Slightly increased speed for more dynamic movement
+            speed: settings.speed,
             straight: true,
             trail: {
               enable: false,
@@ -45,9 +76,9 @@ const ParticleBackground = () => {
           number: {
             density: {
               enable: true,
-              area: 700, // Reduced area to increase particle density
+              area: 700, // keep area constant
             },
-            value: 80, // Increased number of particles to fill empty spaces
+            value: settings.number,
           },
           opacity: {
             value: 1,
@@ -63,10 +94,7 @@ const ParticleBackground = () => {
         interactivity: {
           detectsOn: "window",
           events: {
-            onHover: {
-              enable: true,
-              mode: "connect"
-            },
+            onHover: lowPerf ? { enable: false } : { enable: true, mode: "connect" },
             onClick: {
               enable: false,
               mode: "push"
@@ -75,11 +103,11 @@ const ParticleBackground = () => {
           },
           modes: {
             connect: {
-              distance: 150, // Increased connection distance
+              distance: settings.connectDistance, // tuned per device
               links: {
-                opacity: 0.5 // Slightly more visible connections
+                opacity: lowPerf ? 0.3 : 0.5 // tuned per device
               },
-              radius: 100 // Larger radius for mouse connection effect
+              radius: settings.connectRadius // tuned per device
             },
             push: {
               quantity: 4
@@ -100,7 +128,8 @@ const ParticleBackground = () => {
         height: "100%",
         top: 0,
         left: 0,
-        zIndex: 0
+  zIndex: 0,
+  pointerEvents: "none"
       }}
     />
   );

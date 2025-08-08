@@ -373,6 +373,12 @@ export default function Navbar() {
                   className="relative w-auto h-12 mr-3 rounded-lg shadow-lg"
                   whileHover={{ rotate: [0, -2, 2, 0] }}
                   transition={{ duration: 0.5 }}
+                  onError={(e) => {
+                    const el = e.currentTarget;
+                    if (el.dataset.fallbackTried === "1") return;
+                    el.dataset.fallbackTried = "1";
+                    el.src = "/images/hero/IEEE_hero.jpg";
+                  }}
                 />
                 <motion.div className="relative">
                   <motion.h1
@@ -538,6 +544,12 @@ export default function Navbar() {
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.9, duration: 0.5 }}
+              onError={(e) => {
+                const el = e.currentTarget;
+                if (el.dataset.fallbackTried === "1") return;
+                el.dataset.fallbackTried = "1";
+                el.src = "/images/logo.png";
+              }}
             />
 
             {/* Auth Links */}

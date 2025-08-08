@@ -3,7 +3,8 @@ import { motion, useScroll, useTransform } from 'framer-motion';
 import { FaUsers, FaLightbulb, FaHistory, FaGlobe, FaAward, FaBullseye, FaLinkedin, FaGithub, FaTwitter, FaRocket, FaHeart, FaCode, FaStar } from 'react-icons/fa';
 import { useState, useRef } from 'react';
 import Layout from '@/components/Layout';
-import ParticleBackground from '@/components/ParticleBackground';
+import dynamic from 'next/dynamic';
+const ParticleBackground = dynamic(() => import('@/components/ParticleBackground'), { ssr: false, loading: () => null });
 import { useIntersectionObserver } from '@/hooks/useEnhancedScroll';
 
 export default function About() {
@@ -15,14 +16,14 @@ export default function About() {
     "@type": "AboutPage",
     "name": "About IEEE Club GEU - Graphic Era University",
     "description": "Learn about IEEE Club GEU, the official IEEE Student Branch at Graphic Era University. Discover our mission, team, achievements, and commitment to fostering innovation and technology leadership.",
-    "url": "https://your-domain.com/about",
+    "url": "https://www.geuieee.com/about",
     "mainEntity": {
       "@type": "Organization",
       "name": "IEEE Club - GEU",
       "alternateName": "IEEE Student Branch - Graphic Era University",
       "description": "Official IEEE Student Branch at Graphic Era University, fostering innovation and technology leadership among students.",
-      "url": "https://your-domain.com",
-      "logo": "https://your-domain.com/images/logo.png",
+      "url": "https://www.geuieee.com",
+      "logo": "https://www.geuieee.com/images/logo.png",
       "address": {
         "@type": "PostalAddress",
         "addressLocality": "Dehradun",
@@ -258,16 +259,16 @@ export default function About() {
           {/* Open Graph Meta Tags */}
           <meta property="og:title" content="About IEEE Club GEU - Official IEEE Student Branch at Graphic Era University" />
           <meta property="og:description" content="Learn about IEEE Club GEU, the official IEEE Student Branch at Graphic Era University. Discover our mission, team, achievements, and commitment to fostering innovation and technology leadership." />
-          <meta property="og:image" content="https://your-domain.com/images/hero/IEEE_hero.jpg" />
-          <meta property="og:url" content="https://your-domain.com/about" />
+          <meta property="og:image" content="https://www.geuieee.com/images/hero/IEEE_hero.jpg" />
+          <meta property="og:url" content="https://www.geuieee.com/about" />
           
           {/* Twitter Meta Tags */}
           <meta name="twitter:title" content="About IEEE Club GEU - Official IEEE Student Branch at Graphic Era University" />
           <meta name="twitter:description" content="Learn about IEEE Club GEU, the official IEEE Student Branch at Graphic Era University. Discover our mission, team, and achievements." />
-          <meta name="twitter:image" content="https://your-domain.com/images/hero/IEEE_hero.jpg" />
+          <meta name="twitter:image" content="https://www.geuieee.com/images/hero/IEEE_hero.jpg" />
           
           {/* Canonical URL */}
-          <link rel="canonical" href="https://your-domain.com/about" />
+          <link rel="canonical" href="https://www.geuieee.com/about" />
           
           {/* Structured Data */}
           <script
@@ -434,6 +435,14 @@ export default function About() {
                       src="/images/hero/IEEE_hero.jpg"
                       alt="IEEE Team" 
                       className="w-2/4 h-auto max-w-md mx-auto shadow-xl rounded-2xl"
+                      loading="eager"
+                      decoding="async"
+                      onError={(e) => {
+                        const el = e.currentTarget;
+                        if (el.dataset.fallbackTried === "1") return;
+                        el.dataset.fallbackTried = "1";
+                        el.src = "/images/hero/hero.jpeg";
+                      }}
                     />
                     
                     {/* Achievement Badge */}

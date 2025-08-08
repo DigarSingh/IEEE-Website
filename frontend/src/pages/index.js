@@ -4,7 +4,8 @@ import { motion, useScroll, useTransform } from 'framer-motion';
 import { FaCalendar, FaLightbulb, FaUsers, FaGraduationCap, FaArrowRight, FaStar, FaQuoteLeft, FaChevronRight, FaPlay } from 'react-icons/fa';
 import { useState, useEffect, useRef } from 'react';
 import Layout from '@/components/Layout';
-import ParticleBackground from '@/components/ParticleBackground';
+import dynamic from 'next/dynamic';
+const ParticleBackground = dynamic(() => import('@/components/ParticleBackground'), { ssr: false, loading: () => null });
 import { useIntersectionObserver } from '@/hooks/useEnhancedScroll';
 
 export default function Home() {
