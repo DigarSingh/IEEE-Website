@@ -42,7 +42,7 @@ export default function Gallery() {
   const allImages = Object.keys(galleryManifest).flatMap((folder) =>
     galleryManifest[folder].images.map((image, index) => ({
       id: `${folder}-${index}`,
-      src: image.src,
+  src: image.src.replace(/\.JPG$/,'\.JPG').replace(/\.JPEG$/,'\.JPEG'),
       title: `${
         galleryManifest[folder].metadata.name
       } - ${image.filename.replace(/\.[^/.]+$/, "")}`,
@@ -234,10 +234,15 @@ export default function Gallery() {
     };
 
     return (
-      <Image
-        {...props}
+      <img
         src={currentSrc}
         alt={image.title || "Gallery image"}
+        width={props.width}
+        height={props.height}
+        className={props.className}
+        style={props.style}
+        loading="lazy"
+        decoding="async"
         onError={handleError}
         onLoad={() => {
           if (isDevelopment) {
@@ -447,7 +452,7 @@ export default function Gallery() {
             {/* Debug Panel - Only in Development */}
             {isDevelopment && (
               <motion.div
-                className="mb-6 p-4 bg-yellow-50 border border-yellow-200 rounded-lg"
+                className="p-4 mb-6 border border-yellow-200 rounded-lg bg-yellow-50"
                 initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.3 }}
@@ -464,7 +469,7 @@ export default function Gallery() {
                   </button>
                 </div>
                 {showDebug && (
-                  <div className="text-xs text-yellow-700 space-y-1">
+                  <div className="space-y-1 text-xs text-yellow-700">
                     <p>📊 Total Images: {allImages.length}</p>
                     <p>🖼️ Loaded Images: {Object.keys(imgLoadedMap).length}</p>
                     <p>❌ Failed Images: {imageLoadErrors.size}</p>
@@ -583,6 +588,7 @@ export default function Gallery() {
                             image={image}
                             width={400}
                             height={256}
+                            unoptimized
                             className="object-cover w-full h-64 transition-transform duration-500 group-hover:scale-110"
                             style={{
                               display: imageLoadErrors.has(image.id)
@@ -696,6 +702,7 @@ export default function Gallery() {
                     image={selectedImage}
                     width={800}
                     height={600}
+                    unoptimized
                     className="w-full max-h-[70vh] object-contain"
                   />
 

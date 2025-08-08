@@ -183,13 +183,13 @@ export default function Home() {
           {/* Open Graph Meta Tags */}
           <meta property="og:title" content="GEU IEEE | Official IEEE Student Branch at Graphic Era University" />
           <meta property="og:description" content="GEU IEEE is the official IEEE Student Branch at Graphic Era University. Join 100+ active members for technical workshops, industry connections, research projects, and leadership development." />
-          <meta property="og:image" content="https://geuieee.com/images/hero/IEEE_hero.jpg" />
+          <meta property="og:image" content="https://www.geuieee.com/images/hero/IEEE_hero.jpg" />
           <meta property="og:url" content="https://geuieee.com" />
           
           {/* Twitter Meta Tags */}
           <meta name="twitter:title" content="GEU IEEE | Official IEEE Student Branch at Graphic Era University" />
           <meta name="twitter:description" content="GEU IEEE is the official IEEE Student Branch at Graphic Era University. Join 100+ active members for technical workshops, industry connections, research projects, and leadership development." />
-          <meta name="twitter:image" content="https://geuieee.com/images/hero/IEEE_hero.jpg" />
+          <meta name="twitter:image" content="https://www.geuieee.com/images/hero/IEEE_hero.jpg" />
           
           {/* Canonical URL */}
           <link rel="canonical" href="https://geuieee.com" />
@@ -441,10 +441,20 @@ export default function Home() {
                   />
                   
                   <div className="relative p-8 border shadow-2xl bg-white/10 backdrop-blur-lg rounded-3xl border-white/20">
-                    <img 
+                    <img
                       src="/images/hero/IEEE_hero.jpg"
-                      alt="IEEE Innovation" 
-                      className="w-2/4 h-auto max-w-md mx-auto shadow-xl rounded-2xl"
+                      alt="IEEE Innovation"
+                      className="relative z-10 w-2/4 h-auto max-w-md mx-auto shadow-xl rounded-2xl"
+                      loading="eager"
+                      fetchpriority="high"
+                      decoding="async"
+                      onError={(e) => {
+                        const el = e.currentTarget;
+                        // First fallback to an alternate hero image, then to the site logo
+                        if (el.src.endsWith('/images/hero/IEEE_hero.jpg')) {
+                          el.src = '/images/hero/hero.jpeg';
+                        }
+                      }}
                     />
                     
                     {/* Floating Stats */}

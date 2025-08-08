@@ -4,11 +4,11 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build && npm run enhance-seo && npm run copy-assets",
+  "build": "next build && npm run enhance-seo",
     "start": "next start",
     "lint": "next lint",
     "create-test-user": "node src/lib/create-test-user.js",
-    "copy-assets": "powershell -Command \"try { Copy-Item -Path public/images -Destination .next/static/images -Recurse -Force } catch { Write-Host 'Images copied successfully' }\"",
+  "copy-assets": "echo 'No copy needed; Next.js serves public/ directly'",
     "enhance-seo": "node scripts/enhance-seo.js"
   },
   "dependencies": {

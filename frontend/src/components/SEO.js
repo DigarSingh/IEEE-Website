@@ -9,7 +9,7 @@ const SEO = ({
   type = 'website',
   structuredData = null 
 }) => {
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://geuieee.com';
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://www.geuieee.com';
   const fullUrl = url ? `${baseUrl}${url}` : baseUrl;
   const fullImage = image ? `${baseUrl}${image}` : `${baseUrl}/images/hero/IEEE_hero.jpg`;
   
