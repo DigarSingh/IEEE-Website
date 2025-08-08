@@ -453,19 +453,13 @@ export default function Home() {
                       decoding="async"
                       onError={(e) => {
                         const el = e.currentTarget;
-                        // Fallback chain: IEEE_hero.jpg -> hero.jpeg -> /images/logo.png
-                        const step = Number(el.dataset.fallbackStep || '0');
-                        if (step === 0) {
-                          el.dataset.fallbackStep = '1';
-                          el.src = '/images/hero/hero.jpeg';
-                          return;
+                        // Retry once with a cache buster, keep the same image only
+                        if (el.dataset.retry !== '1') {
+                          el.dataset.retry = '1';
+                          const url = new URL(el.src, window.location.origin);
+                          url.searchParams.set('v', String(Date.now()));
+                          el.src = url.pathname + url.search;
                         }
-                        if (step === 1) {
-                          el.dataset.fallbackStep = '2';
-                          el.src = '/images/logo.png';
-                          return;
-                        }
-                        // Final step: give up
                       }}
                     />
                     
