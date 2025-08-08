@@ -273,6 +273,8 @@ export default function Home() {
             }}
           />
         </Head>
+  {/* Preload the primary hero image to improve reliability */}
+  <link rel="preload" as="image" href="/images/hero/IEEE_hero.jpg" />
 
         {/* Announcement Bar */}
         <div className="relative overflow-hidden bg-gradient-to-r from-purple-600 via-pink-600 to-purple-600">
@@ -451,10 +453,19 @@ export default function Home() {
                       decoding="async"
                       onError={(e) => {
                         const el = e.currentTarget;
-                        // First fallback to an alternate hero image, then to the site logo
-                        if (el.src.endsWith('/images/hero/IEEE_hero.jpg')) {
+                        // Fallback chain: IEEE_hero.jpg -> hero.jpeg -> /images/logo.png
+                        const step = Number(el.dataset.fallbackStep || '0');
+                        if (step === 0) {
+                          el.dataset.fallbackStep = '1';
                           el.src = '/images/hero/hero.jpeg';
+                          return;
                         }
+                        if (step === 1) {
+                          el.dataset.fallbackStep = '2';
+                          el.src = '/images/logo.png';
+                          return;
+                        }
+                        // Final step: give up
                       }}
                     />
                     

@@ -278,6 +278,8 @@ export default function About() {
             }}
           />
         </Head>
+  {/* Preload the primary hero image to improve reliability */}
+  <link rel="preload" as="image" href="/images/hero/IEEE_hero.jpg" />
 
         {/* Enhanced Hero Section */}
         <section ref={heroRef} className="relative flex items-center min-h-screen overflow-hidden">
@@ -439,9 +441,17 @@ export default function About() {
                       decoding="async"
                       onError={(e) => {
                         const el = e.currentTarget;
-                        if (el.dataset.fallbackTried === "1") return;
-                        el.dataset.fallbackTried = "1";
-                        el.src = "/images/hero/hero.jpeg";
+                        const step = Number(el.dataset.fallbackStep || '0');
+                        if (step === 0) {
+                          el.dataset.fallbackStep = '1';
+                          el.src = '/images/hero/hero.jpeg';
+                          return;
+                        }
+                        if (step === 1) {
+                          el.dataset.fallbackStep = '2';
+                          el.src = '/images/logo.png';
+                          return;
+                        }
                       }}
                     />
                     

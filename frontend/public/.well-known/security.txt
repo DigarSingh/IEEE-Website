@@ -1,4 +1,4 @@
 Contact: mailto:security@geuieee.com
-Expires: 2026-02-04T15:07:03.746Z
+Expires: 2026-02-04T15:18:25.501Z
 Preferred-Languages: en
 Canonical: https://geuieee.com/.well-known/security.txt
