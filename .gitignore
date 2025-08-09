@@ -53,8 +53,3 @@ test-email.js
 # Backup files
 *.backup
 *.bak
-
-# Original high-res gallery images
-/frontend/public/images/gallery/*
-# But keep the optimized ones
-!/frontend/public/images/gallery-optimized/
