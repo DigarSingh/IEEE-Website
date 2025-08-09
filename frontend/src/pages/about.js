@@ -376,11 +376,13 @@ export default function About() {
                   />
                   
                   <div className="relative p-8 border shadow-2xl bg-white/10 backdrop-blur-lg rounded-3xl border-white/20">
-                    <img 
-                      src="/images/hero/IEEE_hero.jpg"
-                      alt="IEEE Team" 
-                      className="w-2/4 h-auto max-w-md mx-auto shadow-xl rounded-2xl"
-                    />
+                    <div className="overflow-hidden shadow-xl rounded-2xl">
+                      <img 
+                        src="/images/hero/Team_IEEE.jpg"
+                        alt="IEEE Team" 
+                        className="w-full h-auto max-w-3xl mx-auto transition-all duration-700 ease-in-out hover:scale-115"
+                      />
+                    </div>
                     
                     {/* Achievement Badge */}
                     <motion.div
@@ -671,12 +673,12 @@ export default function About() {
                   onMouseEnter={() => setActiveTeamMember(index)}
                   onMouseLeave={() => setActiveTeamMember(null)}
                 >
-                  <div className="relative overflow-hidden h-80">
+                  <div className="relative overflow-hidden h-[28rem]">
                     <div className="absolute inset-0 z-10 transition-opacity duration-300 opacity-0 bg-gradient-to-t from-black to-transparent group-hover:opacity-60"></div>
                     <img 
                       src={member.image} 
                       alt={member.name}
-                      className="object-cover object-center w-full h-full transition-transform duration-700 group-hover:scale-105"
+                      className="object-cover object-center w-full h-full transition-transform duration-500 ease-out group-hover:scale-115"
                     />
                     
                     {/* Social links overlay */}
