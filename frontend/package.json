@@ -3,13 +3,14 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-  "build": "next build && npm run enhance-seo",
+  "dev": "npm run generate-gallery && next dev",
+  "build": "npm run generate-gallery && next build && npm run enhance-seo",
     "start": "next start",
     "lint": "next lint",
     "create-test-user": "node src/lib/create-test-user.js",
   "copy-assets": "echo 'No copy needed; Next.js serves public/ directly'",
-    "enhance-seo": "node scripts/enhance-seo.js"
+  "enhance-seo": "node scripts/enhance-seo.js",
+  "generate-gallery": "node scripts/generate-gallery-manifest.js"
   },
   "dependencies": {
     "@react-three/drei": "^9.88.0",

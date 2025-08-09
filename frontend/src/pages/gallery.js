@@ -437,6 +437,23 @@ export async function getServerSideProps() {
     console.error('Failed to read gallery images:', e);
   }
 
+  // Fallback: if no images found via FS (common on serverless), read prebuilt manifest from public
+  try {
+    if (!images || images.length === 0) {
+      const manifestPath = path.join(process.cwd(), 'public', 'gallery-manifest.json');
+      const mfStat = await fs.promises.stat(manifestPath).catch(() => null);
+      if (mfStat && mfStat.isFile()) {
+        const raw = await fs.promises.readFile(manifestPath, 'utf8');
+        const parsed = JSON.parse(raw);
+        if (parsed && Array.isArray(parsed.images)) {
+          images = parsed.images;
+        }
+      }
+    }
+  } catch (err) {
+    console.warn('Gallery manifest fallback failed:', err?.message || err);
+  }
+
   return {
     props: {
       images,
