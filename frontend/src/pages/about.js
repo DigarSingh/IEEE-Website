@@ -3,42 +3,11 @@ import { motion, useScroll, useTransform } from 'framer-motion';
 import { FaUsers, FaLightbulb, FaHistory, FaGlobe, FaAward, FaBullseye, FaLinkedin, FaGithub, FaTwitter, FaRocket, FaHeart, FaCode, FaStar } from 'react-icons/fa';
 import { useState, useRef } from 'react';
 import Layout from '@/components/Layout';
-import dynamic from 'next/dynamic';
-const ParticleBackground = dynamic(() => import('@/components/ParticleBackground'), { ssr: false, loading: () => null });
+import ParticleBackground from '@/components/ParticleBackground';
 import { useIntersectionObserver } from '@/hooks/useEnhancedScroll';
 
 export default function About() {
   const heroRef = useRef(null);
-  
-  // SEO structured data for About page
-  const aboutStructuredData = {
-    "@context": "https://schema.org",
-    "@type": "AboutPage",
-    "name": "About IEEE Club GEU - Graphic Era University",
-    "description": "Learn about IEEE Club GEU, the official IEEE Student Branch at Graphic Era University. Discover our mission, team, achievements, and commitment to fostering innovation and technology leadership.",
-    "url": "https://www.geuieee.com/about",
-    "mainEntity": {
-      "@type": "Organization",
-      "name": "IEEE Club - GEU",
-      "alternateName": "IEEE Student Branch - Graphic Era University",
-      "description": "Official IEEE Student Branch at Graphic Era University, fostering innovation and technology leadership among students.",
-      "url": "https://www.geuieee.com",
-      "logo": "https://www.geuieee.com/images/logo.png",
-      "address": {
-        "@type": "PostalAddress",
-        "addressLocality": "Dehradun",
-        "addressRegion": "Uttarakhand",
-        "addressCountry": "IN"
-      },
-      "foundingDate": "2020",
-      "numberOfEmployees": "100+",
-      "sameAs": [
-        "https://www.linkedin.com/company/ieee-geu",
-        "https://twitter.com/ieee_geu",
-        "https://www.instagram.com/ieee_geu"
-      ]
-    }
-  };
   const fadeIn = {
     hidden: { opacity: 0, y: 20 },
     visible: { 
@@ -251,35 +220,9 @@ export default function About() {
     <Layout>
       <div className="overflow-hidden">
         <Head>
-          <title>About IEEE Club GEU - Official IEEE Student Branch at Graphic Era University | Mission, Team & Vision</title>
-          <meta name="description" content="Learn about IEEE Club GEU, the official IEEE Student Branch at Graphic Era University. Discover our mission, team, achievements, and commitment to fostering innovation and technology leadership among students." />
-          <meta name="keywords" content="About IEEE GEU, IEEE Club GEU About, Graphic Era University IEEE, IEEE Student Branch About, GEU IEEE Mission, IEEE Team GEU, IEEE Leadership GEU, IEEE Innovation GEU" />
-          <meta name="author" content="IEEE Club - Graphic Era University" />
-          
-          {/* Open Graph Meta Tags */}
-          <meta property="og:title" content="About IEEE Club GEU - Official IEEE Student Branch at Graphic Era University" />
-          <meta property="og:description" content="Learn about IEEE Club GEU, the official IEEE Student Branch at Graphic Era University. Discover our mission, team, achievements, and commitment to fostering innovation and technology leadership." />
-          <meta property="og:image" content="https://www.geuieee.com/images/hero/IEEE_hero.jpg" />
-          <meta property="og:url" content="https://www.geuieee.com/about" />
-          
-          {/* Twitter Meta Tags */}
-          <meta name="twitter:title" content="About IEEE Club GEU - Official IEEE Student Branch at Graphic Era University" />
-          <meta name="twitter:description" content="Learn about IEEE Club GEU, the official IEEE Student Branch at Graphic Era University. Discover our mission, team, and achievements." />
-          <meta name="twitter:image" content="https://www.geuieee.com/images/hero/IEEE_hero.jpg" />
-          
-          {/* Canonical URL */}
-          <link rel="canonical" href="https://www.geuieee.com/about" />
-          
-          {/* Structured Data */}
-          <script
-            type="application/ld+json"
-            dangerouslySetInnerHTML={{
-              __html: JSON.stringify(aboutStructuredData)
-            }}
-          />
+          <title>About Us | IEEE Club - Empowering Innovation</title>
+          <meta name="description" content="Learn about IEEE Student Branch at GEU - our mission, vision, team, and journey in fostering technological innovation and leadership." />
         </Head>
-  {/* Preload the primary hero image to improve reliability */}
-  <link rel="preload" as="image" href="/images/hero/IEEE_hero.jpg" />
 
         {/* Enhanced Hero Section */}
         <section ref={heroRef} className="relative flex items-center min-h-screen overflow-hidden">
@@ -433,22 +376,13 @@ export default function About() {
                   />
                   
                   <div className="relative p-8 border shadow-2xl bg-white/10 backdrop-blur-lg rounded-3xl border-white/20">
-                    <img 
-                      src="/images/hero/IEEE_hero.jpg"
-                      alt="IEEE Team" 
-                      className="w-2/4 h-auto max-w-md mx-auto shadow-xl rounded-2xl"
-                      loading="eager"
-                      decoding="async"
-                      onError={(e) => {
-                        const el = e.currentTarget;
-                        if (el.dataset.retry !== '1') {
-                          el.dataset.retry = '1';
-                          const url = new URL(el.src, window.location.origin);
-                          url.searchParams.set('v', String(Date.now()));
-                          el.src = url.pathname + url.search;
-                        }
-                      }}
-                    />
+                    <div className="overflow-hidden shadow-xl rounded-2xl">
+                      <img 
+                        src="/images/hero/Team_IEEE.jpg"
+                        alt="IEEE Team" 
+                        className="w-full h-auto max-w-3xl mx-auto transition-all duration-700 ease-in-out hover:scale-115"
+                      />
+                    </div>
                     
                     {/* Achievement Badge */}
                     <motion.div
@@ -739,12 +673,12 @@ export default function About() {
                   onMouseEnter={() => setActiveTeamMember(index)}
                   onMouseLeave={() => setActiveTeamMember(null)}
                 >
-                  <div className="relative overflow-hidden h-80">
+                  <div className="relative overflow-hidden h-[28rem]">
                     <div className="absolute inset-0 z-10 transition-opacity duration-300 opacity-0 bg-gradient-to-t from-black to-transparent group-hover:opacity-60"></div>
                     <img 
                       src={member.image} 
                       alt={member.name}
-                      className="object-cover object-center w-full h-full transition-transform duration-700 group-hover:scale-105"
+                      className="object-cover object-center w-full h-full transition-transform duration-500 ease-out group-hover:scale-115"
                     />
                     
                     {/* Social links overlay */}
