@@ -449,6 +449,16 @@ export async function getServerSideProps() {
           images = parsed.images;
         }
       }
+      // Secondary fallback: import the src gallery manifest bundled at build time
+      if (!images || images.length === 0) {
+        try {
+          const mf = await import('@/gallery-manifest.json');
+          const arr = (mf && (mf.default?.images || mf.images)) || [];
+          if (Array.isArray(arr) && arr.length) {
+            images = arr;
+          }
+        } catch {}
+      }
     }
   } catch (err) {
     console.warn('Gallery manifest fallback failed:', err?.message || err);
