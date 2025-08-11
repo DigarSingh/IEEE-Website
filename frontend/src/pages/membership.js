@@ -113,9 +113,10 @@ export default function Membership() {
       features: [
         "Access to all IEEE resources",
         "Participation in events and workshops",
+        "Access to members-only WhatsApp/Discord community",
+        "Priority updates on upcoming events",
+        "Guidance from senior members & mentors",
         "Networking opportunities",
-        "IEEE email address",
-        "Digital library access",
         "Competition participation",
         "Certificate of membership"
       ],
@@ -132,6 +133,7 @@ export default function Membership() {
       duration: "per year",
       features: [
         "All Basic memberships benefits",
+        "IEEE email address",
         "Advanced technical resources",
         "Professional development programs",
         "Industry networking events",
@@ -277,7 +279,7 @@ export default function Membership() {
                     <FaUsers className="mr-2" />
                     Join Our Community
                   </motion.div>
-                  
+
                   <motion.h1
                     initial={{ opacity: 0, y: 30 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -453,6 +455,26 @@ export default function Membership() {
               )}
             </AnimatePresence>
           </section>
+          {/* Scroll Indicator */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 1, duration: 0.5 }}
+            className="absolute bottom-0 transform -translate-x-1/2 translate-y-16 left-1/2"
+          >
+            <motion.div
+              animate={{ y: [0, 10, 0] }}
+              transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+              className="flex justify-center w-6 h-10 border-2 rounded-full cursor-pointer border-white/30"
+              onClick={() => document.getElementById('content-sections')?.scrollIntoView({ behavior: 'smooth' })}
+            >
+              <motion.div
+                animate={{ y: [0, 16, 0] }}
+                transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                className="w-1 h-3 mt-2 rounded-full bg-white/50"
+              />
+            </motion.div>
+          </motion.div>
 
                                            {/* Enhanced Navigation Tabs */}
             <div className="sticky top-0 z-40 border-b shadow-lg bg-white/95 backdrop-blur-xl">

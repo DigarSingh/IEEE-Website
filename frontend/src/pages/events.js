@@ -372,9 +372,9 @@ export default function Events() {
             </motion.div>
           </div>
 
-          {/* Enhanced Scroll Indicator */}
+          {/*Scroll Indicator */}
           <motion.div 
-            className="absolute flex flex-col items-center transform -translate-x-1/2 bottom-8 left-1/2 text-white/70"
+            className="absolute flex flex-col items-center transform -translate-x-1/2 bottom-1 left-1/2 text-white/70"
             animate={{ y: [0, 10, 0] }}
             transition={{ repeat: Infinity, duration: 2 }}
           >
@@ -389,7 +389,7 @@ export default function Events() {
           </motion.div>
         </section>
 
-      <section className="py-16 bg-gradient-to-b from-gray-50 to-white">
+      <section className="py-14 bg-gradient-to-b from-gray-50 to-white">
         <div className="container px-6 mx-auto">
           {/* Event Filters - Enhanced UI */}
           <div className="mb-12">

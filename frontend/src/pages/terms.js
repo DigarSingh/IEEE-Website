@@ -80,7 +80,7 @@ export default function TermsOfService() {
               className="inline-flex items-center px-4 py-2 text-sm font-medium text-blue-200 rounded-full bg-blue-800/30 backdrop-blur-sm"
             >
               <FaCheckCircle className="mr-2" />
-              Last updated: {new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
+              Last updated: {'10 May 2025'}
             </motion.div>
           </motion.div>
         </div>

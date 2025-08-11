@@ -15,6 +15,13 @@
 			"command": "cd frontend; npm run dev",
 			"isBackground": true,
 			"group": "none"
+		},
+		{
+			"label": "Start Frontend Dev Server (pwsh)",
+			"type": "shell",
+			"command": "cd frontend; npm run dev",
+			"isBackground": true,
+			"group": "none"
 		}
 	]
 }

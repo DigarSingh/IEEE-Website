@@ -85,11 +85,13 @@ export default function Gallery({ images }) {
   };
   return (
     <Layout>
+  {/* Page-scoped fixed background to prevent white space during scroll animations */}
+  <div aria-hidden="true" className="fixed inset-0 -z-10 bg-slate-900" />
       <Head>
-        <title>Gallery | IEEE</title>
+        <title>IEEE Gallery Collection | IEEE</title>
         <meta
           name="description"
-          content="Explore moments from our IEEE events, workshops, and activities."
+          content="Explore the IEEE Gallery Collection: moments from our events, workshops, and activities."
         />
       </Head>
 
@@ -123,10 +125,9 @@ export default function Gallery({ images }) {
               className="mb-4 text-5xl font-bold leading-tight md:text-6xl lg:text-7xl"
               variants={itemVariants}
             >
-              <span className="text-white">IEEE </span>
-              <span className="text-transparent bg-gradient-to-r from-yellow-400 via-yellow-500 to-amber-600 bg-clip-text">
-                Gallery
-              </span>
+              <span className="block text-white">IEEE</span>
+              <span className="block text-transparent bg-gradient-to-r from-blue-400 via-purple-400 to-cyan-400 bg-clip-text">Gallery</span>
+              <span className="block text-transparent bg-gradient-to-r from-yellow-400 via-yellow-500 to-amber-600 bg-clip-text">Collection</span>
             </motion.h1>
             <motion.p 
               className="max-w-2xl mx-auto mb-8 text-xl leading-relaxed text-blue-100 md:text-2xl"
@@ -158,24 +159,45 @@ export default function Gallery({ images }) {
                 ))}
               </motion.div>
             )}
+
+            {/* Stats Grid (like other pages) */}
+            <motion.div 
+              className="grid max-w-2xl grid-cols-3 gap-6 pt-12 mx-auto md:pt-16"
+              variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }}
+            >
+              <div className="text-center">
+                <div className="text-3xl font-bold text-blue-400">50+</div>
+                <div className="text-sm text-white/70">Annual Events</div>
+              </div>
+              <div className="text-center">
+                <div className="text-3xl font-bold text-purple-400">10K+</div>
+                <div className="text-sm text-white/70">Participants</div>
+              </div>
+              <div className="text-center">
+                <div className="text-3xl font-bold text-yellow-400">10K+</div>
+                <div className="text-sm text-white/70">Views</div>
+              </div>
+            </motion.div>
+
+            {/* Scroll Indicator moved below stats */}
+            <motion.div 
+              className="flex flex-col items-center mt-10 md:mt-14 text-white/70"
+              animate={{ y: [0, 10, 0] }}
+              transition={{ repeat: Infinity, duration: 2 }}
+            >
+              <span className="mb-2 text-sm font-medium">View Gallery</span>
+              <div className="flex justify-center w-6 h-10 border-2 rounded-full border-white/30">
+                <motion.div
+                  className="w-1 h-3 mt-2 bg-white rounded-full"
+                  animate={{ y: [0, 12, 0] }}
+                  transition={{ repeat: Infinity, duration: 1.5 }}
+                />
+              </div>
+            </motion.div>
           </motion.div>
         </div>
         
-        {/* Enhanced Scroll Indicator */}
-        <motion.div 
-          className="absolute flex flex-col items-center transform -translate-x-1/2 bottom-8 left-1/2 text-white/70"
-          animate={{ y: [0, 10, 0] }}
-          transition={{ repeat: Infinity, duration: 2 }}
-        >
-          <span className="mb-2 text-sm font-medium">View Gallery</span>
-          <div className="flex justify-center w-6 h-10 border-2 rounded-full border-white/30">
-            <motion.div
-              className="w-1 h-3 mt-2 bg-white rounded-full"
-              animate={{ y: [0, 12, 0] }}
-              transition={{ repeat: Infinity, duration: 1.5 }}
-            />
-          </div>
-        </motion.div>
+  {/* Scroll indicator moved into flow below stats above */}
       </section>
 
       {/* Enhanced Gallery Grid */}
