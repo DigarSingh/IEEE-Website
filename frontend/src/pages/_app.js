@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { AuthProvider } from "../contexts/AuthContext";
 import { ThemeProvider } from "../contexts/ThemeContext";
+import { QuizProvider } from "../contexts/QuizContext";
+import { AdminProvider } from "../contexts/AdminContext";
 import GoogleAnalytics from "../components/GoogleAnalytics";
 import "../styles/globals.css";
 
@@ -38,8 +40,12 @@ function MyApp({ Component, pageProps }) {
   return (
     <ThemeProvider>
       <AuthProvider>
-        <GoogleAnalytics />
-        <Component {...pageProps} />
+        <QuizProvider>
+          <AdminProvider>
+            <GoogleAnalytics />
+            <Component {...pageProps} />
+          </AdminProvider>
+        </QuizProvider>
       </AuthProvider>
     </ThemeProvider>
   );

@@ -3,14 +3,14 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-  "dev": "npm run generate-gallery && next dev",
-  "build": "npm run generate-gallery && next build && npm run enhance-seo",
+    "dev": "npm run generate-gallery && next dev",
+    "build": "npm run generate-gallery && next build && npm run enhance-seo",
     "start": "next start",
     "lint": "next lint",
     "create-test-user": "node src/lib/create-test-user.js",
-  "copy-assets": "echo 'No copy needed; Next.js serves public/ directly'",
-  "enhance-seo": "node scripts/enhance-seo.js",
-  "generate-gallery": "node scripts/generate-gallery-manifest.js"
+    "copy-assets": "echo 'No copy needed; Next.js serves public/ directly'",
+    "enhance-seo": "node scripts/enhance-seo.js",
+    "generate-gallery": "node scripts/generate-gallery-manifest.js"
   },
   "dependencies": {
     "@react-three/drei": "^9.88.0",
@@ -21,6 +21,7 @@
     "bcryptjs": "^2.4.3",
     "cookies-next": "^4.1.1",
     "exceljs": "^4.4.0",
+    "firebase": "^12.3.0",
     "formidable": "^3.5.1",
     "formik": "^2.4.5",
     "framer-motion": "^10.16.5",

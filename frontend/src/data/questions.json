@@ -1,0 +1,207 @@
+[
+  {
+    "id": 1,
+    "question": "What does IEEE stand for?",
+    "options": [
+      "Institute of Electrical and Electronics Engineers",
+      "International Electrical and Electronics Engineers",
+      "Institute of Electronic and Electrical Engineers",
+      "International Electronic and Electrical Engineers"
+    ],
+    "correct": 0
+  },
+  {
+    "id": 2,
+    "question": "Which programming language is primarily used for web development?",
+    "options": ["Python", "JavaScript", "C++", "Java"],
+    "correct": 1
+  },
+  {
+    "id": 3,
+    "question": "What is the full form of HTML?",
+    "options": [
+      "Hyper Text Markup Language",
+      "High Tech Modern Language",
+      "Home Tool Markup Language",
+      "Hyperlink and Text Markup Language"
+    ],
+    "correct": 0
+  },
+  {
+    "id": 4,
+    "question": "Which company developed React.js?",
+    "options": ["Google", "Microsoft", "Facebook", "Apple"],
+    "correct": 2
+  },
+  {
+    "id": 5,
+    "question": "What is the primary purpose of CSS?",
+    "options": [
+      "To add functionality to web pages",
+      "To style and layout web pages",
+      "To manage databases",
+      "To handle server requests"
+    ],
+    "correct": 1
+  },
+  {
+    "id": 6,
+    "question": "Which protocol is used for secure web communication?",
+    "options": ["HTTP", "HTTPS", "FTP", "SMTP"],
+    "correct": 1
+  },
+  {
+    "id": 7,
+    "question": "What does API stand for?",
+    "options": [
+      "Application Programming Interface",
+      "Advanced Programming Interface",
+      "Application Process Interface",
+      "Advanced Process Interface"
+    ],
+    "correct": 0
+  },
+  {
+    "id": 8,
+    "question": "Which database is known as a NoSQL database?",
+    "options": ["MySQL", "PostgreSQL", "MongoDB", "SQLite"],
+    "correct": 2
+  },
+  {
+    "id": 9,
+    "question": "What is the latest version of JavaScript?",
+    "options": ["ES5", "ES6", "ES2020", "ES2023"],
+    "correct": 3
+  },
+  {
+    "id": 10,
+    "question": "Which framework is used for building mobile applications with JavaScript?",
+    "options": ["React Native", "Angular", "Vue.js", "Svelte"],
+    "correct": 0
+  },
+  {
+    "id": 11,
+    "question": "What is the purpose of Git?",
+    "options": [
+      "Web hosting",
+      "Version control",
+      "Database management",
+      "Code compilation"
+    ],
+    "correct": 1
+  },
+  {
+    "id": 12,
+    "question": "Which language is primarily used for iOS app development?",
+    "options": ["Java", "Kotlin", "Swift", "Objective-C"],
+    "correct": 2
+  },
+  {
+    "id": 13,
+    "question": "What does CPU stand for?",
+    "options": [
+      "Central Processing Unit",
+      "Computer Processing Unit",
+      "Central Performance Unit",
+      "Computer Performance Unit"
+    ],
+    "correct": 0
+  },
+  {
+    "id": 14,
+    "question": "Which cloud platform is owned by Amazon?",
+    "options": ["Azure", "Google Cloud", "AWS", "IBM Cloud"],
+    "correct": 2
+  },
+  {
+    "id": 15,
+    "question": "What is the main purpose of Docker?",
+    "options": [
+      "Code editing",
+      "Containerization",
+      "Database management",
+      "Web development"
+    ],
+    "correct": 1
+  },
+  {
+    "id": 16,
+    "question": "Which programming paradigm does Python support?",
+    "options": [
+      "Only Object-Oriented",
+      "Only Functional",
+      "Only Procedural",
+      "Multi-paradigm"
+    ],
+    "correct": 3
+  },
+  {
+    "id": 17,
+    "question": "What is the default port for HTTP?",
+    "options": ["80", "443", "8080", "3000"],
+    "correct": 0
+  },
+  {
+    "id": 18,
+    "question": "Which data structure follows LIFO principle?",
+    "options": ["Queue", "Stack", "Array", "Linked List"],
+    "correct": 1
+  },
+  {
+    "id": 19,
+    "question": "What does REST stand for in web services?",
+    "options": [
+      "Representational State Transfer",
+      "Remote State Transfer",
+      "Representational System Transfer",
+      "Remote System Transfer"
+    ],
+    "correct": 0
+  },
+  {
+    "id": 20,
+    "question": "Which company developed the C programming language?",
+    "options": ["Microsoft", "Bell Labs", "Google", "IBM"],
+    "correct": 1
+  },
+  {
+    "id": 21,
+    "question": "What is the time complexity of binary search?",
+    "options": ["O(n)", "O(log n)", "O(n²)", "O(1)"],
+    "correct": 1
+  },
+  {
+    "id": 22,
+    "question": "Which protocol is used for email transmission?",
+    "options": ["HTTP", "FTP", "SMTP", "DNS"],
+    "correct": 2
+  },
+  {
+    "id": 23,
+    "question": "What is the primary function of an operating system?",
+    "options": [
+      "Run applications",
+      "Manage hardware resources",
+      "Provide user interface",
+      "All of the above"
+    ],
+    "correct": 3
+  },
+  {
+    "id": 24,
+    "question": "Which sorting algorithm has the best average-case time complexity?",
+    "options": ["Bubble Sort", "Selection Sort", "Quick Sort", "Insertion Sort"],
+    "correct": 2
+  },
+  {
+    "id": 25,
+    "question": "What does SQL stand for?",
+    "options": [
+      "Structured Query Language",
+      "Standard Query Language",
+      "System Query Language",
+      "Sequential Query Language"
+    ],
+    "correct": 0
+  }
+]

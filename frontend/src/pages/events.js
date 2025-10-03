@@ -28,6 +28,22 @@ export default function Events() {
   // Enhanced events data
   const allEvents = [
     {
+      id: 13,
+      title: "Kindle Jr 4.0",
+      date: "October 15, 2025",
+      time: "10:00 AM - 2:00 PM",
+      location: "CSIT Labs",
+      category: "competition",
+      image: "/images/events/kindle.jpg",
+      description: "The ultimate coding quiz competition is back! Test your programming knowledge, algorithms, and problem-solving skills in this exciting multi-round quiz challenge.",
+      featured: true,
+      attendees: 150,
+      difficulty: "All Levels",
+      tags: ["Coding", "Quiz", "Programming"],
+      upcoming: true,
+      registrationLink: ""
+    },
+    {
       id: 1,
       title: "Machine Learning Workshop",
       date: "May 23, 2025",
@@ -170,6 +186,9 @@ export default function Events() {
 
   // Featured events
   const featuredEvents = allEvents.filter(event => event.featured);
+  
+  // Upcoming events
+  const upcomingEvents = allEvents.filter(event => event.upcoming);
 
   const fadeIn = {
     hidden: { opacity: 0, y: 20 },
@@ -415,6 +434,95 @@ export default function Events() {
             </motion.div>
           </div>
           
+          {/* Upcoming Events Section */}
+          {upcomingEvents.length > 0 && filter === 'all' && searchQuery === '' && (
+            <div className="mb-20">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5 }}
+                className="mb-10"
+              >
+                <h2 className="mb-2 text-3xl font-bold text-gray-900">🚀 Upcoming Events</h2>
+                <div className="w-20 h-1.5 bg-gradient-to-r from-green-500 to-blue-500 rounded-full"></div>
+                <p className="mt-4 text-gray-600">Don't miss out on these exciting upcoming events!</p>
+              </motion.div>
+              
+              <motion.div
+                className="grid gap-8 md:grid-cols-2 lg:grid-cols-3"
+                variants={staggerContainer}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true }}
+              >
+                {upcomingEvents.map((event, index) => (
+                  <motion.div
+                    key={event.id}
+                    variants={fadeIn}
+                    className="relative group"
+                  >
+                    <div className="absolute inset-0 transition-opacity bg-gradient-to-br from-green-400/20 to-blue-600/20 rounded-2xl blur-xl opacity-60 group-hover:opacity-80"></div>
+                    <div className="relative overflow-hidden transition-all duration-500 bg-white border-2 border-green-100 shadow-lg rounded-2xl hover:shadow-2xl group-hover:-translate-y-2">
+                      {/* Event Badge */}
+                      <div className="absolute z-10 top-4 right-4">
+                        <span className="px-3 py-1 text-xs font-semibold text-white rounded-full bg-gradient-to-r from-green-500 to-blue-600 animate-pulse">
+                          ✨ UPCOMING
+                        </span>
+                      </div>
+                      
+                      <div className="relative h-48 overflow-hidden">
+                        <img 
+                          src={event.image} 
+                          alt={event.title}
+                          className="object-cover w-full h-full transition-transform duration-700 group-hover:scale-110"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+                      </div>
+                      
+                      <div className="p-6">
+                        <h3 className="mb-3 text-xl font-bold text-gray-900 transition-colors group-hover:text-blue-600">
+                          {event.title}
+                        </h3>
+                        
+                        <div className="mb-4 space-y-2">
+                          <div className="flex items-center text-gray-600">
+                            <FaCalendar className="mr-2 text-green-500" />
+                            <span className="text-sm">{event.date}</span>
+                          </div>
+                          <div className="flex items-center text-gray-600">
+                            <FaClock className="mr-2 text-blue-500" />
+                            <span className="text-sm">{event.time}</span>
+                          </div>
+                          <div className="flex items-center text-gray-600">
+                            <FaMapMarkerAlt className="mr-2 text-red-500" />
+                            <span className="text-sm">{event.location}</span>
+                          </div>
+                        </div>
+                        
+                        <p className="mb-4 text-sm text-gray-600 line-clamp-3">
+                          {event.description}
+                        </p>
+                        
+                        {event.registrationLink && (
+                          <div className="flex gap-2">
+                            <a 
+                              href={event.registrationLink}
+                              className="flex items-center justify-center flex-1 px-4 py-3 font-semibold text-center text-white transition-all duration-300 rounded-lg bg-gradient-to-r from-green-500 to-blue-600 hover:shadow-lg group-hover:shadow-2xl"
+                            >
+                              <span>Join Quiz</span>
+                              <FaArrowRight className="ml-2 transition-transform group-hover:translate-x-1" />
+                            </a>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </motion.div>
+                ))}
+              </motion.div>
+            </div>
+          )}
+
           {/* Featured Events Section */}
           {featuredEvents.length > 0 && filter === 'all' && searchQuery === '' && (
             <div className="mb-20">
