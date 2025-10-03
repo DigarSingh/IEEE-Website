@@ -59,10 +59,34 @@ export function QuizProvider({ children }) {
   useEffect(() => {
     const checkAdminQuizState = async () => {
       try {
+        console.log('Checking admin quiz state...');
         const quizStateDoc = await getDoc(doc(db, 'admin', 'quizState'));
         if (quizStateDoc.exists()) {
           const data = quizStateDoc.data();
-          dispatch({ type: 'SET_QUIZ_ACTIVE', payload: data.isQuizActive || false });
+          console.log('Firebase data received:', data);
+          
+          // Check for new round-based structure
+          let isQuizActive = false;
+          
+          if (data.isActive) {
+            // New structure: check if any round is active
+            isQuizActive = data.isActive;
+            console.log('Quiz active via isActive flag:', isQuizActive);
+          } else if (data.round1?.isActive || data.round2?.isActive) {
+            // Alternative: check individual rounds
+            isQuizActive = true;
+            console.log('Quiz active via round flags');
+          } else if (data.isQuizActive !== undefined) {
+            // Fallback to old structure
+            isQuizActive = data.isQuizActive;
+            console.log('Quiz active via legacy isQuizActive flag:', isQuizActive);
+          }
+          
+          console.log('Final quiz active state:', isQuizActive);
+          dispatch({ type: 'SET_QUIZ_ACTIVE', payload: isQuizActive });
+        } else {
+          console.log('No quiz state document found in Firebase');
+          dispatch({ type: 'SET_QUIZ_ACTIVE', payload: false });
         }
       } catch (error) {
         console.error('Error checking admin quiz state:', error);
@@ -71,8 +95,8 @@ export function QuizProvider({ children }) {
 
     checkAdminQuizState();
     
-    // Check every 30 seconds
-    const interval = setInterval(checkAdminQuizState, 30000);
+    // Check every 10 seconds for more responsive updates
+    const interval = setInterval(checkAdminQuizState, 10000);
     return () => clearInterval(interval);
   }, []);
 

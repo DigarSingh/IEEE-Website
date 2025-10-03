@@ -24,18 +24,39 @@ export default function AdminQuizDashboard() {
   // Quiz State
   const [quizState, setQuizState] = useState({
     isActive: false,
-    startTime: null,
-    endTime: null,
-    duration: 30 * 60, // 30 minutes
-    globalTimer: 0
+    currentRound: 1, // Track current round
+    round1: {
+      isActive: false,
+      startTime: null,
+      endTime: null,
+      duration: 30 * 60,
+      globalTimer: 0
+    },
+    round2: {
+      isActive: false,
+      startTime: null,
+      endTime: null,
+      duration: 45 * 60,
+      globalTimer: 0
+    }
   });
   
   // Quiz Settings
   const [settings, setSettings] = useState({
-    duration: 30,
-    questionsCount: 20,
-    password: 'ieee@321'
+    round1: {
+      duration: 30,
+      questionsCount: 20,
+      password: 'ieee@321'
+    },
+    round2: {
+      duration: 45,
+      questionsCount: 20,
+      password: 'ieee@321'
+    }
   });
+  
+  // Current round selector
+  const [selectedRound, setSelectedRound] = useState(1);
   
   // Statistics
   const [stats, setStats] = useState({
@@ -56,19 +77,24 @@ export default function AdminQuizDashboard() {
   // Timer effect for countdown
   useEffect(() => {
     let interval;
-    if (quizState.isActive && quizState.globalTimer > 0) {
+    const currentRoundData = quizState[`round${quizState.currentRound}`];
+    
+    if (currentRoundData.isActive && currentRoundData.globalTimer > 0) {
       interval = setInterval(() => {
         setQuizState(prev => ({
           ...prev,
-          globalTimer: Math.max(0, prev.globalTimer - 1)
+          [`round${prev.currentRound}`]: {
+            ...prev[`round${prev.currentRound}`],
+            globalTimer: Math.max(0, prev[`round${prev.currentRound}`].globalTimer - 1)
+          }
         }));
       }, 1000);
-    } else if (quizState.isActive && quizState.globalTimer === 0) {
+    } else if (currentRoundData.isActive && currentRoundData.globalTimer === 0) {
       // Auto-stop quiz when timer reaches 0
       handleStopQuiz();
     }
     return () => clearInterval(interval);
-  }, [quizState.isActive, quizState.globalTimer]);
+  }, [quizState.round1.isActive, quizState.round1.globalTimer, quizState.round2.isActive, quizState.round2.globalTimer, quizState.currentRound]);
 
   // Load quiz state and setup real-time listeners
   useEffect(() => {
@@ -92,30 +118,81 @@ export default function AdminQuizDashboard() {
       if (quizDoc.exists()) {
         const data = quizDoc.data();
         
-        // Calculate remaining time if quiz is active
-        let globalTimer = 0;
-        if (data.isActive && data.startTime && data.duration) {
-          const now = new Date();
-          const startTime = new Date(data.startTime);
-          const elapsed = Math.floor((now - startTime) / 1000);
-          globalTimer = Math.max(0, data.duration - elapsed);
-        }
-        
-        setQuizState({
+        // Handle new round-based structure
+        const newQuizState = {
           isActive: data.isActive || false,
-          startTime: data.startTime || null,
-          endTime: data.endTime || null,
-          duration: data.duration || 30 * 60,
-          globalTimer
-        });
-        
-        if (data.settings) {
-          setSettings({
-            duration: Math.floor(data.settings.duration / 60) || 30,
-            questionsCount: data.settings.questionsCount || 20,
-            password: data.settings.password || 'ieee@321'
-          });
+          currentRound: data.currentRound || 1,
+          round1: {
+            isActive: false,
+            startTime: null,
+            endTime: null,
+            duration: 30 * 60,
+            globalTimer: 0
+          },
+          round2: {
+            isActive: false,
+            startTime: null,
+            endTime: null,
+            duration: 45 * 60,
+            globalTimer: 0
+          }
+        };
+
+        // Update round data if exists
+        if (data.round1) {
+          newQuizState.round1 = { ...newQuizState.round1, ...data.round1 };
+          if (data.round1.isActive && data.round1.startTime && data.round1.duration) {
+            const now = new Date();
+            const startTime = new Date(data.round1.startTime);
+            const elapsed = Math.floor((now - startTime) / 1000);
+            newQuizState.round1.globalTimer = Math.max(0, data.round1.duration - elapsed);
+          }
         }
+
+        if (data.round2) {
+          newQuizState.round2 = { ...newQuizState.round2, ...data.round2 };
+          if (data.round2.isActive && data.round2.startTime && data.round2.duration) {
+            const now = new Date();
+            const startTime = new Date(data.round2.startTime);
+            const elapsed = Math.floor((now - startTime) / 1000);
+            newQuizState.round2.globalTimer = Math.max(0, data.round2.duration - elapsed);
+          }
+        }
+
+        setQuizState(newQuizState);
+        
+        // Update settings
+        const newSettings = {
+          round1: {
+            duration: 30,
+            questionsCount: 20,
+            password: 'ieee@321'
+          },
+          round2: {
+            duration: 45,
+            questionsCount: 20,
+            password: 'ieee@321'
+          }
+        };
+
+        if (data.settings) {
+          if (data.settings.round1) {
+            newSettings.round1 = {
+              duration: Math.floor((data.settings.round1.duration || 30 * 60) / 60),
+              questionsCount: data.settings.round1.questionsCount || 20,
+              password: data.settings.round1.password || 'ieee@321'
+            };
+          }
+          if (data.settings.round2) {
+            newSettings.round2 = {
+              duration: Math.floor((data.settings.round2.duration || 45 * 60) / 60),
+              questionsCount: data.settings.round2.questionsCount || 20,
+              password: data.settings.round2.password || 'ieee@321'
+            };
+          }
+        }
+
+        setSettings(newSettings);
       }
     } catch (error) {
       console.error('Error loading quiz state:', error);
@@ -189,23 +266,55 @@ export default function AdminQuizDashboard() {
     router.push('/');
   };
 
+  const testFirebaseConnection = async () => {
+    try {
+      console.log('Testing Firebase connection...');
+      const testData = {
+        isActive: true,
+        testTime: new Date().toISOString(),
+        round1: { isActive: false },
+        round2: { isActive: false }
+      };
+      
+      await setDoc(doc(db, 'admin', 'quizState'), testData);
+      console.log('Firebase test write successful');
+      alert('Firebase connection test successful! Check console for details.');
+      
+      // Read it back
+      const readDoc = await getDoc(doc(db, 'admin', 'quizState'));
+      if (readDoc.exists()) {
+        console.log('Firebase test read successful:', readDoc.data());
+      }
+    } catch (error) {
+      console.error('Firebase connection test failed:', error);
+      alert('Firebase connection test failed! Check console for error details.');
+    }
+  };
+
   const handleStartQuiz = async () => {
     try {
       setLoading(true);
       
       const startTime = new Date();
-      const duration = settings.duration * 60; // Convert to seconds
+      const roundSettings = settings[`round${selectedRound}`];
+      const duration = roundSettings.duration * 60; // Convert to seconds
       const endTime = new Date(startTime.getTime() + duration * 1000);
       
       const quizData = {
-        isActive: true,
-        startTime: startTime.toISOString(),
-        endTime: endTime.toISOString(),
-        duration,
-        settings: {
+        isActive: true, // Global flag for compatibility
+        currentRound: selectedRound,
+        [`round${selectedRound}`]: {
+          isActive: true,
+          startTime: startTime.toISOString(),
+          endTime: endTime.toISOString(),
           duration,
-          questionsCount: settings.questionsCount,
-          password: settings.password
+        },
+        settings: {
+          [`round${selectedRound}`]: {
+            duration,
+            questionsCount: roundSettings.questionsCount,
+            password: roundSettings.password
+          }
         }
       };
       
@@ -213,19 +322,25 @@ export default function AdminQuizDashboard() {
       
       // Log admin action
       await addDoc(collection(db, 'adminLogs'), {
-        action: 'START_QUIZ',
+        action: `START_QUIZ_ROUND_${selectedRound}`,
         timestamp: serverTimestamp(),
-        duration: settings.duration,
-        questionsCount: settings.questionsCount
+        round: selectedRound,
+        duration: roundSettings.duration,
+        questionsCount: roundSettings.questionsCount
       });
       
-      setQuizState({
+      setQuizState(prev => ({
+        ...prev,
         isActive: true,
-        startTime: startTime.toISOString(),
-        endTime: endTime.toISOString(),
-        duration,
-        globalTimer: duration
-      });
+        currentRound: selectedRound,
+        [`round${selectedRound}`]: {
+          isActive: true,
+          startTime: startTime.toISOString(),
+          endTime: endTime.toISOString(),
+          duration,
+          globalTimer: duration
+        }
+      }));
       
     } catch (error) {
       console.error('Error starting quiz:', error);
@@ -239,29 +354,35 @@ export default function AdminQuizDashboard() {
     try {
       setLoading(true);
       
+      const currentRoundData = quizState[`round${quizState.currentRound}`];
       const quizData = {
-        isActive: false,
-        endTime: new Date().toISOString(),
-        duration: quizState.duration,
-        settings: {
-          duration: quizState.duration,
-          questionsCount: settings.questionsCount,
-          password: settings.password
-        }
+        isActive: false, // Global flag for compatibility
+        currentRound: quizState.currentRound,
+        [`round${quizState.currentRound}`]: {
+          ...currentRoundData,
+          isActive: false,
+          endTime: new Date().toISOString()
+        },
+        settings: settings
       };
       
       await updateDoc(doc(db, 'admin', 'quizState'), quizData);
       
       // Log admin action
       await addDoc(collection(db, 'adminLogs'), {
-        action: 'STOP_QUIZ',
-        timestamp: serverTimestamp()
+        action: `STOP_QUIZ_ROUND_${quizState.currentRound}`,
+        timestamp: serverTimestamp(),
+        round: quizState.currentRound
       });
       
       setQuizState(prev => ({
         ...prev,
         isActive: false,
-        globalTimer: 0
+        [`round${prev.currentRound}`]: {
+          ...prev[`round${prev.currentRound}`],
+          isActive: false,
+          globalTimer: 0
+        }
       }));
       
     } catch (error) {
@@ -410,6 +531,12 @@ export default function AdminQuizDashboard() {
               </div>
               <div className="flex space-x-4">
                 <button
+                  onClick={testFirebaseConnection}
+                  className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors"
+                >
+                  Test Firebase Connection
+                </button>
+                <button
                   onClick={() => setShowSettings(true)}
                   className="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-lg transition-colors flex items-center space-x-2"
                 >
@@ -426,6 +553,43 @@ export default function AdminQuizDashboard() {
             </div>
           </div>
 
+          {/* Round Selector */}
+          <div className="mb-6">
+            <div className="bg-white rounded-2xl shadow-lg p-6">
+              <h2 className="text-xl font-bold text-gray-900 mb-4">Round Management</h2>
+              <div className="flex items-center space-x-4">
+                <span className="text-sm font-medium text-gray-700">Select Round:</span>
+                <div className="flex space-x-2">
+                  <button
+                    onClick={() => setSelectedRound(1)}
+                    className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+                      selectedRound === 1
+                        ? 'bg-blue-500 text-white'
+                        : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                    }`}
+                  >
+                    Round 1 (MCQ)
+                  </button>
+                  <button
+                    onClick={() => setSelectedRound(2)}
+                    className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+                      selectedRound === 2
+                        ? 'bg-purple-500 text-white'
+                        : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                    }`}
+                  >
+                    Round 2 (Advanced)
+                  </button>
+                </div>
+                <div className="ml-auto">
+                  <span className="text-sm text-gray-500">
+                    Managing: <span className="font-semibold">Round {selectedRound}</span>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+
           {/* Quiz Control Panel */}
           <div className="grid gap-6 lg:grid-cols-4 mb-8">
             {/* Quiz Status */}
@@ -435,28 +599,28 @@ export default function AdminQuizDashboard() {
               <div className="grid gap-6 md:grid-cols-2">
                 {/* Quiz Status Card */}
                 <div className={`p-6 rounded-xl border-2 ${
-                  quizState.isActive 
+                  quizState[`round${selectedRound}`]?.isActive 
                     ? 'bg-green-50 border-green-200' 
                     : 'bg-gray-50 border-gray-200'
                 }`}>
                   <div className="flex items-center justify-between mb-4">
-                    <h3 className="font-semibold text-gray-900">Quiz Status</h3>
+                    <h3 className="font-semibold text-gray-900">Round {selectedRound} Status</h3>
                     <div className="text-2xl">
-                      {quizState.isActive ? '✅' : '❌'}
+                      {quizState[`round${selectedRound}`]?.isActive ? '✅' : '❌'}
                     </div>
                   </div>
                   
                   <div className="text-2xl font-bold mb-2">
-                    {quizState.isActive ? (
+                    {quizState[`round${selectedRound}`]?.isActive ? (
                       <span className="text-green-600">ACTIVE</span>
                     ) : (
                       <span className="text-gray-600">INACTIVE</span>
                     )}
                   </div>
                   
-                  {quizState.isActive && quizState.startTime && (
+                  {quizState[`round${selectedRound}`]?.isActive && quizState[`round${selectedRound}`]?.startTime && (
                     <div className="text-sm text-gray-600">
-                      Started: {new Date(quizState.startTime).toLocaleTimeString()}
+                      Started: {new Date(quizState[`round${selectedRound}`].startTime).toLocaleTimeString()}
                     </div>
                   )}
                 </div>
@@ -464,14 +628,14 @@ export default function AdminQuizDashboard() {
                 {/* Global Timer */}
                 <div className="p-6 rounded-xl bg-blue-50 border-2 border-blue-200">
                   <div className="flex items-center justify-between mb-4">
-                    <h3 className="font-semibold text-gray-900">Global Timer</h3>
+                    <h3 className="font-semibold text-gray-900">Round {selectedRound} Timer</h3>
                     <div className="text-blue-500 text-xl">⏰</div>
                   </div>
                   
                   <div className={`text-3xl font-bold mb-2 ${
-                    quizState.globalTimer <= 300 ? 'text-red-600' : 'text-blue-600'
+                    (quizState[`round${selectedRound}`]?.globalTimer || 0) <= 300 ? 'text-red-600' : 'text-blue-600'
                   }`}>
-                    {formatTime(quizState.globalTimer)}
+                    {formatTime(quizState[`round${selectedRound}`]?.globalTimer || 0)}
                   </div>
                   
                   <div className="text-sm text-gray-600">
@@ -484,14 +648,14 @@ export default function AdminQuizDashboard() {
 
               {/* Control Buttons */}
               <div className="flex space-x-4 mt-6">
-                {!quizState.isActive ? (
+                {!quizState[`round${selectedRound}`]?.isActive ? (
                   <button
                     onClick={handleStartQuiz}
                     disabled={loading}
                     className="bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors flex items-center space-x-2 disabled:opacity-50"
                   >
                     <span>▶️</span>
-                    <span>{loading ? 'Starting...' : 'Start Quiz'}</span>
+                    <span>{loading ? 'Starting...' : `Start Round ${selectedRound}`}</span>
                   </button>
                 ) : (
                   <button
@@ -500,7 +664,7 @@ export default function AdminQuizDashboard() {
                     className="bg-red-600 hover:bg-red-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors flex items-center space-x-2 disabled:opacity-50"
                   >
                     <span>⏹️</span>
-                    <span>{loading ? 'Stopping...' : 'Stop Quiz'}</span>
+                    <span>{loading ? 'Stopping...' : `Stop Round ${selectedRound}`}</span>
                   </button>
                 )}
                 
@@ -663,6 +827,33 @@ export default function AdminQuizDashboard() {
                     <p className="text-sm">Participant submissions will appear here in real-time</p>
                   </div>
                 )}
+              </div>
+            </div>
+          </div>
+
+          {/* Debug Information */}
+          <div className="bg-white rounded-2xl shadow-lg p-6">
+            <h2 className="text-xl font-bold text-gray-900 mb-6 flex items-center">
+              <span className="mr-2 text-red-500">🐛</span>
+              Debug Information
+            </h2>
+            <div className="space-y-4">
+              <div className="grid grid-cols-2 gap-4">
+                <div className="bg-gray-50 p-4 rounded-lg">
+                  <h3 className="font-semibold text-gray-700 mb-2">Current States</h3>
+                  <div className="space-y-1 text-sm">
+                    <div>Current Round: <span className="font-mono">{quizState.currentRound}</span></div>
+                    <div>Global Active: <span className={`font-mono ${quizState.isActive ? 'text-green-600' : 'text-red-600'}`}>{quizState.isActive ? 'true' : 'false'}</span></div>
+                    <div>Round 1: <span className={`font-mono ${quizState.round1?.isActive ? 'text-green-600' : 'text-red-600'}`}>{quizState.round1?.isActive ? 'true' : 'false'}</span></div>
+                    <div>Round 2: <span className={`font-mono ${quizState.round2?.isActive ? 'text-green-600' : 'text-red-600'}`}>{quizState.round2?.isActive ? 'true' : 'false'}</span></div>
+                  </div>
+                </div>
+                <div className="bg-gray-50 p-4 rounded-lg">
+                  <h3 className="font-semibold text-gray-700 mb-2">Firebase Raw Data</h3>
+                  <pre className="text-xs text-gray-600 bg-white p-2 rounded border overflow-x-auto max-h-32">
+                    {JSON.stringify(quizState, null, 2)}
+                  </pre>
+                </div>
               </div>
             </div>
           </div>

@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import Head from 'next/head';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { FaUser, FaIdCard, FaLock, FaArrowRight, FaExclamationTriangle, FaEye, FaEyeSlash } from 'react-icons/fa';
+import { FaUser, FaIdCard, FaLock, FaArrowRight, FaExclamationTriangle, FaEye, FaEyeSlash, FaTrophy, FaCode } from 'react-icons/fa';
 import { useQuiz } from '../contexts/QuizContext';
 
 export default function QuizLogin() {
@@ -17,6 +17,7 @@ export default function QuizLogin() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const [selectedRound, setSelectedRound] = useState(1);
 
   // Redirect if already logged in
   useEffect(() => {
@@ -61,18 +62,23 @@ export default function QuizLogin() {
         throw new Error('Invalid credentials. Please check your details and password.');
       }
 
-      // Store user data
+      // Store user data with selected round
       const userData = {
         name: name.trim(),
         rollNo: rollNo.trim(),
+        selectedRound: selectedRound,
         loginTime: new Date().toISOString()
       };
 
       localStorage.setItem('quizUser', JSON.stringify(userData));
       dispatch({ type: 'SET_USER', payload: userData });
 
-      // Redirect to instructions
-      router.push('/instructions');
+      // Redirect based on selected round
+      if (selectedRound === 2) {
+        router.push('/round2-quiz');
+      } else {
+        router.push('/instructions');
+      }
     } catch (err) {
       setError(err.message);
     } finally {
@@ -108,9 +114,54 @@ export default function QuizLogin() {
             <Link href="/" className="inline-block mb-4">
               <img src="/images/logo.png" alt="IEEE GEU" className="w-auto h-16 mx-auto" />
             </Link>
-            <h1 className="mb-2 text-3xl font-bold text-white">Quiz Portal</h1>
-            <p className="text-blue-200">IEEE GEU Student Branch</p>
+            <h1 className="mb-2 text-3xl font-bold text-white">Kindle Jr 4.0</h1>
+            <p className="text-blue-200">IEEE GEU Student Branch Quiz Portal</p>
           </div>
+
+          {/* Round Selection */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+            className="mb-6"
+          >
+            <h2 className="mb-4 text-lg font-semibold text-white text-center">Select Quiz Round</h2>
+            <div className="grid grid-cols-2 gap-4">
+              <motion.button
+                type="button"
+                onClick={() => setSelectedRound(1)}
+                className={`p-4 rounded-lg border-2 transition-all ${
+                  selectedRound === 1
+                    ? 'border-blue-400 bg-blue-500/20 text-white'
+                    : 'border-white/20 bg-white/5 text-gray-300 hover:border-white/40'
+                }`}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+              >
+                <FaTrophy className="mx-auto mb-2 text-2xl" />
+                <div className="font-semibold">Round 1</div>
+                <div className="text-sm opacity-80">MCQ Based</div>
+                <div className="text-xs mt-1">20 Questions • 30 mins</div>
+              </motion.button>
+
+              <motion.button
+                type="button"
+                onClick={() => setSelectedRound(2)}
+                className={`p-4 rounded-lg border-2 transition-all ${
+                  selectedRound === 2
+                    ? 'border-purple-400 bg-purple-500/20 text-white'
+                    : 'border-white/20 bg-white/5 text-gray-300 hover:border-white/40'
+                }`}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+              >
+                <FaCode className="mx-auto mb-2 text-2xl" />
+                <div className="font-semibold">Round 2</div>
+                <div className="text-sm opacity-80">MCQ + Code + One Word</div>
+                <div className="text-xs mt-1">20 Questions • 45 mins</div>
+              </motion.button>
+            </div>
+          </motion.div>
 
           {/* Login Form */}
           <motion.div
@@ -225,9 +276,28 @@ export default function QuizLogin() {
             </form>
 
             <div className="pt-6 mt-6 border-t border-white/20">
-              <p className="text-sm text-center text-gray-300">
-                Need help? Contact the exam coordinators
-              </p>
+              <div className="flex flex-col items-center space-y-3">
+                <p className="text-sm text-center text-gray-300">
+                  Need help? Contact the exam coordinators
+                </p>
+                
+                <div className="flex items-center space-x-2">
+                  <div className="flex-1 h-px bg-white/20"></div>
+                  <span className="text-xs text-gray-400">or</span>
+                  <div className="flex-1 h-px bg-white/20"></div>
+                </div>
+                
+                <Link href="/admin-quiz">
+                  <motion.button
+                    className="flex items-center justify-center px-4 py-2 space-x-2 text-sm font-medium text-blue-300 transition-all duration-300 border border-blue-300/30 rounded-lg bg-blue-500/10 hover:bg-blue-500/20 hover:border-blue-300/50"
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                  >
+                    <FaLock className="w-3 h-3" />
+                    <span>Login as Admin</span>
+                  </motion.button>
+                </Link>
+              </div>
             </div>
           </motion.div>
 

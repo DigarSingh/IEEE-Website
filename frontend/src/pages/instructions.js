@@ -48,6 +48,12 @@ export default function Instructions() {
   };
 
   const startQuiz = () => {
+    // Check if quiz is active
+    if (!state.isQuizActive) {
+      alert('Quiz is not currently active. Please wait for the admin to start the quiz session.');
+      return;
+    }
+
     // Randomly select 20 questions
     const shuffledQuestions = shuffleArray(questionsData);
     const selectedQuestions = shuffledQuestions.slice(0, 20);
@@ -102,6 +108,27 @@ export default function Instructions() {
                 <span className="text-gray-300">•</span>
                 <span>Roll No: {user.rollNo}</span>
               </div>
+            </div>
+            
+            {/* Quiz Status Indicator */}
+            <div className={`mt-4 p-3 rounded-lg border ${
+              state.isQuizActive 
+                ? 'bg-green-500/20 border-green-400/30 text-green-200' 
+                : 'bg-red-500/20 border-red-400/30 text-red-200'
+            }`}>
+              <div className="flex items-center justify-center space-x-2">
+                <div className={`w-3 h-3 rounded-full ${
+                  state.isQuizActive ? 'bg-green-400' : 'bg-red-400'
+                }`}></div>
+                <span className="font-medium">
+                  Quiz Status: {state.isQuizActive ? 'ACTIVE' : 'INACTIVE'}
+                </span>
+              </div>
+              {!state.isQuizActive && (
+                <p className="text-center text-sm mt-2 opacity-80">
+                  Please wait for the admin to start the quiz session
+                </p>
+              )}
             </div>
           </motion.div>
 
@@ -220,14 +247,21 @@ export default function Instructions() {
 
               {/* Start Button */}
               <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
+                whileHover={{ scale: state.isQuizActive && acknowledged ? 1.05 : 1 }}
+                whileTap={{ scale: state.isQuizActive && acknowledged ? 0.95 : 1 }}
                 onClick={startQuiz}
-                disabled={!acknowledged}
+                disabled={!acknowledged || !state.isQuizActive}
                 className="w-full bg-gradient-to-r from-green-500 to-blue-600 hover:from-green-600 hover:to-blue-700 text-white font-bold py-4 px-6 rounded-xl transition-all duration-300 flex items-center justify-center space-x-3 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
               >
                 <FaRocket />
-                <span>Start Quiz Now</span>
+                <span>
+                  {!state.isQuizActive 
+                    ? 'Quiz Not Available' 
+                    : !acknowledged 
+                      ? 'Accept Terms to Continue'
+                      : 'Start Quiz Now'
+                  }
+                </span>
               </motion.button>
             </motion.div>
           </div>

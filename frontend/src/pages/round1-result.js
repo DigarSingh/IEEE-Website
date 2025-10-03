@@ -110,8 +110,8 @@ export default function Result() {
 
   if (loading || !results) {
     return (
-      <div className="min-h-screen bg-gray-900 flex items-center justify-center">
-        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-500"></div>
+      <div className="flex items-center justify-center min-h-screen bg-gray-900">
+        <div className="w-32 h-32 border-b-2 border-blue-500 rounded-full animate-spin"></div>
       </div>
     );
   }
@@ -125,26 +125,26 @@ export default function Result() {
         <meta name="description" content="Your quiz results and score" />
       </Head>
 
-      <div className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 py-8 px-4">
+      <div className="min-h-screen px-4 py-8 bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900">
         <div className="max-w-4xl mx-auto">
           {/* Header */}
           <motion.div
             initial={{ opacity: 0, y: -30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            className="text-center mb-8"
+            className="mb-8 text-center"
           >
-            <div className="flex justify-between items-center mb-4">
+            <div className="flex items-center justify-between mb-4">
               <div className="flex-1"></div>
-              <div className="flex-1 flex flex-col items-center">
-                <FaTrophy className="text-yellow-400 text-6xl mx-auto mb-4" />
-                <h1 className="text-4xl font-bold text-white mb-2">Quiz Completed!</h1>
+              <div className="flex flex-col items-center flex-1">
+                <FaTrophy className="mx-auto mb-4 text-6xl text-yellow-400" />
+                <h1 className="mb-2 text-4xl font-bold text-white">Quiz Completed!</h1>
                 <p className="text-blue-200">Here are your results</p>
               </div>
-              <div className="flex-1 flex justify-end">
+              <div className="flex justify-end flex-1">
                 <button
                   onClick={handleLogout}
-                  className="bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors flex items-center space-x-2"
+                  className="flex items-center px-4 py-2 space-x-2 font-semibold text-white transition-colors bg-red-600 rounded-lg hover:bg-red-700"
                 >
                   <FaSignOutAlt />
                   <span>Logout</span>
@@ -158,7 +158,7 @@ export default function Result() {
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.8 }}
-            className="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-8 mb-8"
+            className="p-8 mb-8 border bg-white/10 backdrop-blur-md border-white/20 rounded-2xl"
           >
             <div className="grid gap-6 md:grid-cols-3">
               {/* Score */}
@@ -166,39 +166,39 @@ export default function Result() {
                 <div className={`w-24 h-24 ${gradeInfo.bg}/20 border-2 border-current rounded-full flex items-center justify-center mx-auto mb-4 ${gradeInfo.color}`}>
                   <span className="text-2xl font-bold">{gradeInfo.grade}</span>
                 </div>
-                <h3 className="text-white text-lg font-semibold mb-2">Your Grade</h3>
+                <h3 className="mb-2 text-lg font-semibold text-white">Your Grade</h3>
                 <p className="text-gray-300">{percentage}% Score</p>
               </div>
 
               {/* Correct Answers */}
               <div className="text-center">
-                <div className="w-24 h-24 bg-green-500/20 border-2 border-green-500 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <FaCheckCircle className="text-green-400 text-3xl" />
+                <div className="flex items-center justify-center w-24 h-24 mx-auto mb-4 border-2 border-green-500 rounded-full bg-green-500/20">
+                  <FaCheckCircle className="text-3xl text-green-400" />
                 </div>
-                <h3 className="text-white text-lg font-semibold mb-2">Correct Answers</h3>
+                <h3 className="mb-2 text-lg font-semibold text-white">Correct Answers</h3>
                 <p className="text-gray-300">{score} out of {results.questions.length}</p>
               </div>
 
               {/* Time Taken */}
               <div className="text-center">
-                <div className="w-24 h-24 bg-blue-500/20 border-2 border-blue-500 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <FaClock className="text-blue-400 text-3xl" />
+                <div className="flex items-center justify-center w-24 h-24 mx-auto mb-4 border-2 border-blue-500 rounded-full bg-blue-500/20">
+                  <FaClock className="text-3xl text-blue-400" />
                 </div>
-                <h3 className="text-white text-lg font-semibold mb-2">Time Taken</h3>
+                <h3 className="mb-2 text-lg font-semibold text-white">Time Taken</h3>
                 <p className="text-gray-300">{formatTime(results.timeSpent)}</p>
               </div>
             </div>
 
             {/* User Info */}
-            <div className="mt-8 pt-6 border-t border-white/20">
-              <div className="flex justify-between items-center">
+            <div className="pt-6 mt-8 border-t border-white/20">
+              <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-white font-semibold">{results.user.name}</p>
-                  <p className="text-gray-300 text-sm">Roll No: {results.user.rollNo}</p>
+                  <p className="font-semibold text-white">{results.user.name}</p>
+                  <p className="text-sm text-gray-300">Roll No: {results.user.rollNo}</p>
                 </div>
                 <div className="text-right">
-                  <p className="text-gray-300 text-sm">Completed on</p>
-                  <p className="text-white text-sm">{new Date(results.completedAt).toLocaleString()}</p>
+                  <p className="text-sm text-gray-300">Completed on</p>
+                  <p className="text-sm text-white">{new Date(results.completedAt).toLocaleString()}</p>
                 </div>
               </div>
             </div>
@@ -209,10 +209,10 @@ export default function Result() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-8 mb-8"
+            className="p-8 mb-8 border bg-white/10 backdrop-blur-md border-white/20 rounded-2xl"
           >
-            <h2 className="text-2xl font-bold text-white mb-6">Answer Review</h2>
-            <div className="space-y-4 max-h-96 overflow-y-auto">
+            <h2 className="mb-6 text-2xl font-bold text-white">Answer Review</h2>
+            <div className="space-y-4 overflow-y-auto max-h-96">
               {results.questions.map((question, index) => {
                 const userAnswer = results.answers[question.id];
                 const isCorrect = userAnswer === question.correct;
@@ -227,10 +227,10 @@ export default function Result() {
                       : 'bg-red-500/20 border-red-500'
                   }`}>
                     <div className="flex items-start justify-between mb-2">
-                      <h3 className="text-white font-medium">Q{index + 1}: {question.question}</h3>
+                      <h3 className="font-medium text-white">Q{index + 1}: {question.question}</h3>
                       <div className="flex items-center space-x-2">
                         {!wasAnswered ? (
-                          <span className="text-gray-400 text-sm">Not Answered</span>
+                          <span className="text-sm text-gray-400">Not Answered</span>
                         ) : isCorrect ? (
                           <FaCheckCircle className="text-green-400" />
                         ) : (
@@ -241,8 +241,8 @@ export default function Result() {
                     
                     <div className="grid gap-2 md:grid-cols-2">
                       <div>
-                        <p className="text-green-300 text-sm font-medium">Correct Answer:</p>
-                        <p className="text-green-200 text-sm">{question.options[question.correct]}</p>
+                        <p className="text-sm font-medium text-green-300">Correct Answer:</p>
+                        <p className="text-sm text-green-200">{question.options[question.correct]}</p>
                       </div>
                       {wasAnswered && (
                         <div>
@@ -266,17 +266,17 @@ export default function Result() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.4 }}
-            className="flex flex-col sm:flex-row gap-4 justify-center"
+            className="flex flex-col justify-center gap-4 sm:flex-row"
           >
             <Link href="/">
-              <span className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors flex items-center justify-center space-x-2 cursor-pointer">
+              <span className="flex items-center justify-center px-6 py-3 space-x-2 font-semibold text-white transition-colors bg-blue-600 rounded-lg cursor-pointer hover:bg-blue-700">
                 <FaHome />
                 <span>Back to Home</span>
               </span>
             </Link>
             
             <Link href="/leaderboard">
-              <span className="bg-purple-600 hover:bg-purple-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors flex items-center justify-center space-x-2 cursor-pointer">
+              <span className="flex items-center justify-center px-6 py-3 space-x-2 font-semibold text-white transition-colors bg-purple-600 rounded-lg cursor-pointer hover:bg-purple-700">
                 <FaChartBar />
                 <span>View Leaderboard</span>
               </span>
@@ -284,7 +284,7 @@ export default function Result() {
             
             <button
               onClick={shareResults}
-              className="bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors flex items-center justify-center space-x-2"
+              className="flex items-center justify-center px-6 py-3 space-x-2 font-semibold text-white transition-colors bg-green-600 rounded-lg hover:bg-green-700"
             >
               <FaShare />
               <span>Share Results</span>
@@ -298,7 +298,7 @@ export default function Result() {
               animate={{ opacity: 1 }}
               className="mt-6 text-center"
             >
-              <p className="text-green-400 text-sm">✓ Results saved successfully</p>
+              <p className="text-sm text-green-400">✓ Results saved successfully</p>
             </motion.div>
           )}
         </div>

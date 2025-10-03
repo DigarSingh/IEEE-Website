@@ -41,7 +41,7 @@ export default function Events() {
       difficulty: "All Levels",
       tags: ["Coding", "Quiz", "Programming"],
       upcoming: true,
-      registrationLink: ""
+      registrationLink: "/quizlogin"
     },
     {
       id: 1,
