@@ -14,8 +14,6 @@ import {
   FaShare,
   FaSignOutAlt
 } from 'react-icons/fa';
-import { db } from '../lib/firebase';
-import { collection, addDoc } from 'firebase/firestore';
 
 export default function Result() {
   const router = useRouter();
@@ -48,30 +46,9 @@ export default function Result() {
     setPercentage(Math.round((correctAnswers / parsedResults.questions.length) * 100));
     setLoading(false);
 
-    // Save to Firebase
-    saveResultsToFirebase(parsedResults, correctAnswers);
+    // Results are already saved in MongoDB during quiz completion
+    setSaved(true);
   }, [router]);
-
-  const saveResultsToFirebase = async (results, correctAnswers) => {
-    try {
-      const resultData = {
-        userName: results.user.name,
-        rollNo: results.user.rollNo,
-        score: correctAnswers,
-        totalQuestions: results.questions.length,
-        percentage: Math.round((correctAnswers / results.questions.length) * 100),
-        timeSpent: results.timeSpent,
-        warnings: results.warnings,
-        completedAt: results.completedAt,
-        timestamp: new Date()
-      };
-
-      await addDoc(collection(db, 'quizResults'), resultData);
-      setSaved(true);
-    } catch (error) {
-      console.error('Error saving results:', error);
-    }
-  };
 
   const formatTime = (seconds) => {
     const mins = Math.floor(seconds / 60);

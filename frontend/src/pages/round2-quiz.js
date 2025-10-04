@@ -197,8 +197,7 @@ export default function Round2Quiz() {
       localStorage.setItem('round2Result', JSON.stringify(result));
       localStorage.setItem('round2Completed', 'true');
 
-      // You can also save to Firebase here
-      // await saveResultToFirebase(result);
+      // Results are handled by MongoDB
 
       setQuizCompleted(true);
       router.push('/round2-result');

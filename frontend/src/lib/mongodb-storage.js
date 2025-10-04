@@ -190,3 +190,119 @@ export const getQuizResults = async () => {
     return { success: false, error: error.message };
   }
 };
+
+/**
+ * Store student quiz result in MongoDB
+ */
+export const storeStudentResult = async (resultData) => {
+  try {
+    console.log('🔄 Storing quiz result in MongoDB...');
+    console.log('📝 Result data to store:', resultData);
+    
+    const response = await fetch('/api/quiz/results', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(resultData),
+    });
+    
+    const result = await response.json();
+    
+    if (!result.success) {
+      throw new Error(result.error);
+    }
+    
+    console.log('✅ Quiz result stored successfully:', result.id);
+    return { success: true, id: result.id, data: result.data };
+  } catch (error) {
+    console.error('❌ Error storing quiz result:', error);
+    return { success: false, error: error.message };
+  }
+};
+
+/**
+ * Update student progress in MongoDB
+ */
+export const updateStudentProgress = async (studentId, progressData) => {
+  try {
+    console.log('🔄 Updating student progress in MongoDB...');
+    console.log('📝 Progress data:', progressData);
+    
+    const response = await fetch(`/api/students/${studentId}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(progressData),
+    });
+    
+    const result = await response.json();
+    
+    if (!result.success) {
+      throw new Error(result.error);
+    }
+    
+    console.log('✅ Student progress updated successfully');
+    return { success: true, data: result.data };
+  } catch (error) {
+    console.error('❌ Error updating student progress:', error);
+    return { success: false, error: error.message };
+  }
+};
+
+/**
+ * Initialize MongoDB database with quiz structure
+ */
+export const initializeMongoDatabase = async () => {
+  try {
+    console.log('🔄 Initializing MongoDB database...');
+    
+    const response = await fetch('/api/database/init', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    
+    const result = await response.json();
+    
+    if (!result.success) {
+      throw new Error(result.error);
+    }
+    
+    console.log('✅ MongoDB database initialized successfully');
+    return { success: true, message: result.message };
+  } catch (error) {
+    console.error('❌ Error initializing MongoDB database:', error);
+    return { success: false, error: error.message };
+  }
+};
+
+/**
+ * Reset MongoDB quiz data
+ */
+export const resetMongoData = async () => {
+  try {
+    console.log('🔄 Resetting MongoDB quiz data...');
+    
+    const response = await fetch('/api/database/reset', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    
+    const result = await response.json();
+    
+    if (!result.success) {
+      throw new Error(result.error);
+    }
+    
+    console.log('✅ MongoDB quiz data reset successfully');
+    return { success: true, message: result.message };
+  } catch (error) {
+    console.error('❌ Error resetting MongoDB quiz data:', error);
+    return { success: false, error: error.message };
+  }
+};

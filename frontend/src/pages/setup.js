@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import Head from 'next/head';
-import { initializeQuizDatabase, resetQuizData } from '../utils/firebaseInit';
+import { initializeMongoDatabase, resetMongoData } from '../lib/mongodb-storage';
 
 export default function DatabaseSetup() {
   const [loading, setLoading] = useState(false);
@@ -8,14 +8,14 @@ export default function DatabaseSetup() {
 
   const handleInitialize = async () => {
     setLoading(true);
-    const result = await initializeQuizDatabase();
+    const result = await initializeMongoDatabase();
     setResult(result);
     setLoading(false);
   };
 
   const handleReset = async () => {
     setLoading(true);
-    const result = await resetQuizData();
+    const result = await resetMongoData();
     setResult(result);
     setLoading(false);
   };
@@ -34,7 +34,7 @@ export default function DatabaseSetup() {
                 🔧 Database Setup
               </h1>
               <p className="text-gray-600">
-                Initialize the Firebase database for the IEEE Quiz system
+                Initialize the MongoDB database for the IEEE Quiz system
               </p>
             </div>
 
@@ -107,7 +107,7 @@ export default function DatabaseSetup() {
               <div className="bg-gray-50 border border-gray-200 rounded-lg p-6">
                 <h3 className="font-semibold text-gray-900 mb-3">📋 Setup Checklist</h3>
                 <ul className="space-y-2 text-sm text-gray-700">
-                  <li>✅ Firebase configuration in lib/firebase.js</li>
+                  <li>✅ MongoDB configuration in lib/mongodb.js</li>
                   <li>✅ Quiz questions in data/quizQuestions.js</li>
                   <li>✅ Admin dashboard at /admin-quiz</li>
                   <li>✅ Quiz interface at /quiz</li>

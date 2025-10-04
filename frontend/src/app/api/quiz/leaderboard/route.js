@@ -1,13 +1,5 @@
 import { NextResponse } from "next/server";
-import { db } from "@/lib/firebase";
-import { 
-  collection, 
-  getDocs, 
-  query, 
-  orderBy, 
-  limit, 
-  where 
-} from "firebase/firestore";
+import { getQuizResults } from "@/lib/mongodb-storage";
 
 // Force dynamic rendering
 export const dynamic = "force-dynamic";
@@ -19,52 +11,63 @@ export async function GET(request) {
     const limitCount = parseInt(searchParams.get('limit')) || 20;
     const type = searchParams.get('type') || 'overall'; // overall, round, recent
     
-    let leaderboardQuery;
+    // Build filters for MongoDB query
+    const filters = {};
     
+    if (type === 'round' && round) {
+      filters.round = parseInt(round);
+    }
+    
+    // Get results from MongoDB
+    const result = await getQuizResults(filters);
+    
+    if (!result.success) {
+      return NextResponse.json(
+        { success: false, message: "Failed to fetch leaderboard data" },
+        { status: 500 }
+      );
+    }
+    
+    let leaderboardData = result.data || [];
+    
+    // Sort and limit based on type
     switch (type) {
       case 'round':
-        if (!round) {
-          return NextResponse.json(
-            { success: false, message: "Round parameter required for round leaderboard" },
-            { status: 400 }
-          );
-        }
-        leaderboardQuery = query(
-          collection(db, 'quizResults'),
-          where('round', '==', parseInt(round)),
-          where('completed', '==', true),
-          orderBy('score', 'desc'),
-          orderBy('completedAt', 'asc'),
-          limit(limitCount)
-        );
+        leaderboardData = leaderboardData
+          .filter(item => item.round === parseInt(round))
+          .sort((a, b) => {
+            if (b.score === a.score) {
+              return new Date(a.completedAt) - new Date(b.completedAt);
+            }
+            return b.score - a.score;
+          })
+          .slice(0, limitCount);
         break;
         
       case 'recent':
-        leaderboardQuery = query(
-          collection(db, 'quizResults'),
-          where('completed', '==', true),
-          orderBy('completedAt', 'desc'),
-          limit(limitCount)
-        );
+        leaderboardData = leaderboardData
+          .sort((a, b) => new Date(b.completedAt) - new Date(a.completedAt))
+          .slice(0, limitCount);
         break;
         
       case 'overall':
       default:
-        leaderboardQuery = query(
-          collection(db, 'quizResults'),
-          where('completed', '==', true),
-          orderBy('score', 'desc'),
-          orderBy('completedAt', 'asc'),
-          limit(limitCount)
-        );
+        leaderboardData = leaderboardData
+          .sort((a, b) => {
+            if (b.score === a.score) {
+              return new Date(a.completedAt) - new Date(b.completedAt);
+            }
+            return b.score - a.score;
+          })
+          .slice(0, limitCount);
         break;
     }
     
-    const leaderboardSnapshot = await getDocs(leaderboardQuery);
-    const leaderboard = leaderboardSnapshot.docs.map((doc, index) => ({
-      id: doc.id,
+    // Add rank to leaderboard data
+    const leaderboard = leaderboardData.map((entry, index) => ({
+      id: entry._id || entry.id,
       rank: index + 1,
-      ...doc.data()
+      ...entry
     }));
     
     // Calculate statistics
@@ -73,7 +76,7 @@ export async function GET(request) {
       ? Math.round(leaderboard.reduce((sum, entry) => sum + (entry.score || 0), 0) / totalParticipants)
       : 0;
     const topScore = totalParticipants > 0 ? leaderboard[0]?.score || 0 : 0;
-    const completedQuizzes = leaderboard.filter(entry => entry.completed).length;
+    const completedQuizzes = leaderboard.filter(entry => entry.isCompleted !== false).length;
     
     return NextResponse.json({
       success: true,

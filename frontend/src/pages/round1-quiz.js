@@ -12,7 +12,7 @@ import {
   FaCheckCircle
 } from 'react-icons/fa';
 import { useQuiz } from '../contexts/QuizContext';
-import { storeQuizResult, updateStudentData } from '../lib/firebase-storage';
+import { storeStudentResult, updateStudentProgress } from '../lib/mongodb-storage';
 
 export default function Quiz() {
   const router = useRouter();
@@ -164,7 +164,7 @@ export default function Quiz() {
       const timeSpent = 30 * 60 - state.timeRemaining;
       const completedAt = new Date().toISOString();
       
-      // Prepare result data for Firebase
+      // Prepare result data for MongoDB
       const resultData = {
         name: state.user.name,
         rollNo: state.user.rollNo,
@@ -183,17 +183,17 @@ export default function Quiz() {
         warnings: state.fullscreenWarnings
       };
       
-      // Store in Firebase
-      const firebaseResult = await storeQuizResult(resultData);
-      if (firebaseResult.success) {
-        console.log('✅ Quiz result stored in Firebase:', firebaseResult.id);
+      // Store in MongoDB
+      const mongoResult = await storeStudentResult(resultData);
+      if (mongoResult.success) {
+        console.log('✅ Quiz result stored in MongoDB:', mongoResult.id);
       } else {
-        console.error('❌ Failed to store quiz result:', firebaseResult.error);
+        console.error('❌ Failed to store quiz result:', mongoResult.error);
       }
       
-      // Update student data in Firebase
+      // Update student data in MongoDB
       if (state.user.studentId) {
-        await updateStudentData(state.user.studentId, {
+        await updateStudentProgress(state.user.studentId, {
           quizCompleted: true,
           score: score,
           percentage: percentage,
@@ -214,7 +214,7 @@ export default function Quiz() {
         score: score,
         percentage: percentage,
         grade: grade,
-        firebaseId: firebaseResult.id
+        mongoId: mongoResult.id
       };
       
       localStorage.setItem('quizResults', JSON.stringify(results));
@@ -222,7 +222,7 @@ export default function Quiz() {
       
     } catch (error) {
       console.error('Error submitting quiz:', error);
-      // Still redirect to result page even if Firebase fails
+      // Still redirect to result page even if MongoDB fails
       router.push('/result');
     }
   };

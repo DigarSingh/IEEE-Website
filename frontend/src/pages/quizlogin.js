@@ -77,24 +77,24 @@ export default function QuizLogin() {
         loginTime: new Date().toISOString()
       };
 
-      // Store in Firebase
-      console.log('🔄 Attempting to store student data in Firebase...');
-      const firebaseResult = await storeStudentData(userData);
-      console.log('📊 Firebase result:', firebaseResult);
+      // Store in MongoDB
+      console.log('🔄 Attempting to store student data in MongoDB...');
+      const mongoResult = await storeStudentData(userData);
+      console.log('📊 MongoDB result:', mongoResult);
       
-      if (!firebaseResult.success) {
-        console.error('❌ Firebase storage failed:', firebaseResult.error);
-        throw new Error(`Failed to store student data: ${firebaseResult.error}`);
+      if (!mongoResult.success) {
+        console.error('❌ MongoDB storage failed:', mongoResult.error);
+        throw new Error(`Failed to store student data: ${mongoResult.error}`);
       }
 
-      // Add Firebase student ID to user data
-      userData.studentId = firebaseResult.id;
+      // Add MongoDB student ID to user data
+      userData.studentId = mongoResult.id;
 
       // Store in localStorage and context
       localStorage.setItem('quizUser', JSON.stringify(userData));
       dispatch({ type: 'SET_USER', payload: userData });
 
-      console.log('✅ Student data stored in Firebase:', firebaseResult.id);
+      console.log('✅ Student data stored in MongoDB:', mongoResult.id);
 
       // Redirect based on selected round
       if (selectedRound === 2) {
