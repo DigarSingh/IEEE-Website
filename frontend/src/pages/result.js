@@ -1,18 +1,18 @@
-import { useState, useEffect } from 'react';
-import { useRouter } from 'next/router';
-import Head from 'next/head';
-import Link from 'next/link';
-import { motion } from 'framer-motion';
-import { 
-  FaTrophy, 
-  FaClock, 
-  FaCheckCircle, 
-  FaTimes, 
-  FaHome, 
+import { useState, useEffect } from "react";
+import { useRouter } from "next/router";
+import Head from "next/head";
+import Link from "next/link";
+import { motion } from "framer-motion";
+import {
+  FaTrophy,
+  FaClock,
+  FaCheckCircle,
+  FaTimes,
+  FaHome,
   FaRedo,
   FaShare,
-  FaSignOutAlt
-} from 'react-icons/fa';
+  FaSignOutAlt,
+} from "react-icons/fa";
 
 export default function Result() {
   const router = useRouter();
@@ -23,26 +23,23 @@ export default function Result() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const savedResults = localStorage.getItem('quizResults');
+    const savedResults = localStorage.getItem("quizResults");
     if (!savedResults) {
-      router.push('/quizlogin');
+      router.push("/quizlogin");
       return;
     }
 
     const parsedResults = JSON.parse(savedResults);
     setResults(parsedResults);
-    
-    // Calculate scored
-    let correctAnswers = 0;
-    parsedResults.questions.forEach(question => {
-      const userAnswer = parsedResults.answers[question.id];
-      if (userAnswer === question.correct) {
-        correctAnswers++;
-      }
-    });
-    
-    setScore(correctAnswers);
-    setPercentage(Math.round((correctAnswers / parsedResults.questions.length) * 100));
+
+    console.log("📊 Result Page - Loading saved results");
+    console.log("� Saved score:", parsedResults.score);
+    console.log("💾 Saved percentage:", parsedResults.percentage);
+
+    // Use the ALREADY CALCULATED score from quiz submission
+    // Don't recalculate - this can cause discrepancies!
+    setScore(parsedResults.score || 0);
+    setPercentage(parsedResults.percentage || 0);
     setLoading(false);
 
     // Results are already saved in MongoDB during quiz completion
@@ -56,32 +53,37 @@ export default function Result() {
   };
 
   const getGrade = (percentage) => {
-    if (percentage >= 90) return { grade: 'A+', color: 'text-green-500', bg: 'bg-green-500' };
-    if (percentage >= 80) return { grade: 'A', color: 'text-green-400', bg: 'bg-green-400' };
-    if (percentage >= 70) return { grade: 'B+', color: 'text-blue-500', bg: 'bg-blue-500' };
-    if (percentage >= 60) return { grade: 'B', color: 'text-blue-400', bg: 'bg-blue-400' };
-    if (percentage >= 50) return { grade: 'C', color: 'text-yellow-500', bg: 'bg-yellow-500' };
-    return { grade: 'F', color: 'text-red-500', bg: 'bg-red-500' };
+    if (percentage >= 90)
+      return { grade: "A+", color: "text-green-500", bg: "bg-green-500" };
+    if (percentage >= 80)
+      return { grade: "A", color: "text-green-400", bg: "bg-green-400" };
+    if (percentage >= 70)
+      return { grade: "B+", color: "text-blue-500", bg: "bg-blue-500" };
+    if (percentage >= 60)
+      return { grade: "B", color: "text-blue-400", bg: "bg-blue-400" };
+    if (percentage >= 50)
+      return { grade: "C", color: "text-yellow-500", bg: "bg-yellow-500" };
+    return { grade: "F", color: "text-red-500", bg: "bg-red-500" };
   };
 
   const shareResults = () => {
     const text = `I scored ${score}/${results?.questions.length} (${percentage}%) in the IEEE GEU Quiz! 🎉`;
     if (navigator.share) {
-      navigator.share({ title: 'Quiz Results', text });
+      navigator.share({ title: "Quiz Results", text });
     } else {
       navigator.clipboard.writeText(text);
-      alert('Results copied to clipboard!');
+      alert("Results copied to clipboard!");
     }
   };
 
   const handleLogout = () => {
     // Clear quiz data
-    localStorage.removeItem('quizUser');
-    localStorage.removeItem('quizResults');
-    localStorage.removeItem('quizState');
-    
+    localStorage.removeItem("quizUser");
+    localStorage.removeItem("quizResults");
+    localStorage.removeItem("quizState");
+
     // Redirect to login
-    router.push('/quizlogin');
+    router.push("/quizlogin");
   };
 
   if (loading || !results) {
@@ -114,7 +116,9 @@ export default function Result() {
               <div className="flex-1"></div>
               <div className="flex flex-col items-center flex-1">
                 <FaTrophy className="mx-auto mb-4 text-6xl text-yellow-400" />
-                <h1 className="mb-2 text-4xl font-bold text-white">Quiz Completed!</h1>
+                <h1 className="mb-2 text-4xl font-bold text-white">
+                  Quiz Completed!
+                </h1>
                 <p className="text-blue-200">Here are your results</p>
               </div>
               <div className="flex justify-end flex-1">
@@ -139,10 +143,14 @@ export default function Result() {
             <div className="grid gap-6 md:grid-cols-3">
               {/* Score */}
               <div className="text-center">
-                <div className={`w-24 h-24 ${gradeInfo.bg}/20 border-2 border-current rounded-full flex items-center justify-center mx-auto mb-4 ${gradeInfo.color}`}>
+                <div
+                  className={`w-24 h-24 ${gradeInfo.bg}/20 border-2 border-current rounded-full flex items-center justify-center mx-auto mb-4 ${gradeInfo.color}`}
+                >
                   <span className="text-2xl font-bold">{gradeInfo.grade}</span>
                 </div>
-                <h3 className="mb-2 text-lg font-semibold text-white">Your Grade</h3>
+                <h3 className="mb-2 text-lg font-semibold text-white">
+                  Your Grade
+                </h3>
                 <p className="text-gray-300">{percentage}% Score</p>
               </div>
 
@@ -151,8 +159,12 @@ export default function Result() {
                 <div className="flex items-center justify-center w-24 h-24 mx-auto mb-4 border-2 border-green-500 rounded-full bg-green-500/20">
                   <FaCheckCircle className="text-3xl text-green-400" />
                 </div>
-                <h3 className="mb-2 text-lg font-semibold text-white">Correct Answers</h3>
-                <p className="text-gray-300">{score} out of {results.questions.length}</p>
+                <h3 className="mb-2 text-lg font-semibold text-white">
+                  Correct Answers
+                </h3>
+                <p className="text-gray-300">
+                  {score} out of {results.questions.length}
+                </p>
               </div>
 
               {/* Time Taken */}
@@ -160,7 +172,9 @@ export default function Result() {
                 <div className="flex items-center justify-center w-24 h-24 mx-auto mb-4 border-2 border-blue-500 rounded-full bg-blue-500/20">
                   <FaClock className="text-3xl text-blue-400" />
                 </div>
-                <h3 className="mb-2 text-lg font-semibold text-white">Time Taken</h3>
+                <h3 className="mb-2 text-lg font-semibold text-white">
+                  Time Taken
+                </h3>
                 <p className="text-gray-300">{formatTime(results.timeSpent)}</p>
               </div>
             </div>
@@ -169,12 +183,18 @@ export default function Result() {
             <div className="pt-6 mt-8 border-t border-white/20">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="font-semibold text-white">{results.user.name}</p>
-                  <p className="text-sm text-gray-300">Roll No: {results.user.rollNo}</p>
+                  <p className="font-semibold text-white">
+                    {results.user.name}
+                  </p>
+                  <p className="text-sm text-gray-300">
+                    Roll No: {results.user.rollNo}
+                  </p>
                 </div>
                 <div className="text-right">
                   <p className="text-sm text-gray-300">Completed on</p>
-                  <p className="text-sm text-white">{new Date(results.completedAt).toLocaleString()}</p>
+                  <p className="text-sm text-white">
+                    {new Date(results.completedAt).toLocaleString()}
+                  </p>
                 </div>
               </div>
             </div>
@@ -187,26 +207,35 @@ export default function Result() {
             transition={{ duration: 0.8, delay: 0.2 }}
             className="p-8 mb-8 border bg-white/10 backdrop-blur-md border-white/20 rounded-2xl"
           >
-            <h2 className="mb-6 text-2xl font-bold text-white">Answer Review</h2>
+            <h2 className="mb-6 text-2xl font-bold text-white">
+              Answer Review
+            </h2>
             <div className="space-y-4 overflow-y-auto max-h-96">
               {results.questions.map((question, index) => {
                 const userAnswer = results.answers[question.id];
                 const isCorrect = userAnswer === question.correct;
                 const wasAnswered = userAnswer !== undefined;
-                
+
                 return (
-                  <div key={question.id} className={`p-4 rounded-lg border-l-4 ${
-                    !wasAnswered 
-                      ? 'bg-gray-500/20 border-gray-500'
-                      : isCorrect 
-                      ? 'bg-green-500/20 border-green-500' 
-                      : 'bg-red-500/20 border-red-500'
-                  }`}>
+                  <div
+                    key={question.id}
+                    className={`p-4 rounded-lg border-l-4 ${
+                      !wasAnswered
+                        ? "bg-gray-500/20 border-gray-500"
+                        : isCorrect
+                        ? "bg-green-500/20 border-green-500"
+                        : "bg-red-500/20 border-red-500"
+                    }`}
+                  >
                     <div className="flex items-start justify-between mb-2">
-                      <h3 className="font-medium text-white">Q{index + 1}: {question.question}</h3>
+                      <h3 className="font-medium text-white">
+                        Q{index + 1}: {question.question}
+                      </h3>
                       <div className="flex items-center space-x-2">
                         {!wasAnswered ? (
-                          <span className="text-sm text-gray-400">Not Answered</span>
+                          <span className="text-sm text-gray-400">
+                            Not Answered
+                          </span>
                         ) : isCorrect ? (
                           <FaCheckCircle className="text-green-400" />
                         ) : (
@@ -214,20 +243,32 @@ export default function Result() {
                         )}
                       </div>
                     </div>
-                    
+
                     <div className="grid gap-2 md:grid-cols-2">
                       <div>
-                        <p className="text-sm font-medium text-green-300">Correct Answer:</p>
-                        <p className="text-sm text-green-200">{question.options[question.correct]}</p>
+                        <p className="text-sm font-medium text-green-300">
+                          Correct Answer:
+                        </p>
+                        <p className="text-sm text-green-200">
+                          {question.options[question.correct]}
+                        </p>
                       </div>
                       {wasAnswered && (
                         <div>
-                          <p className={`text-sm font-medium ${
-                            isCorrect ? 'text-green-300' : 'text-red-300'
-                          }`}>Your Answer:</p>
-                          <p className={`text-sm ${
-                            isCorrect ? 'text-green-200' : 'text-red-200'
-                          }`}>{question.options[userAnswer]}</p>
+                          <p
+                            className={`text-sm font-medium ${
+                              isCorrect ? "text-green-300" : "text-red-300"
+                            }`}
+                          >
+                            Your Answer:
+                          </p>
+                          <p
+                            className={`text-sm ${
+                              isCorrect ? "text-green-200" : "text-red-200"
+                            }`}
+                          >
+                            {question.options[userAnswer]}
+                          </p>
                         </div>
                       )}
                     </div>
@@ -250,7 +291,7 @@ export default function Result() {
                 <span>Back to Home</span>
               </span>
             </Link>
-            
+
             <button
               onClick={shareResults}
               className="flex items-center justify-center px-6 py-3 space-x-2 font-semibold text-white transition-colors bg-green-600 rounded-lg hover:bg-green-700"
@@ -267,7 +308,9 @@ export default function Result() {
               animate={{ opacity: 1 }}
               className="mt-6 text-center"
             >
-              <p className="text-sm text-green-400">✓ Results saved successfully</p>
+              <p className="text-sm text-green-400">
+                ✓ Results saved successfully
+              </p>
             </motion.div>
           )}
         </div>

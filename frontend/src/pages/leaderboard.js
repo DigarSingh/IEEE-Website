@@ -33,14 +33,51 @@ export default function Leaderboard() {
       const data = await response.json();
       
       if (data.success) {
-        setLeaderboard(data.data.leaderboard);
-        setStats(data.data.statistics);
+        // Map the data to ensure all fields are present
+        const mappedLeaderboard = data.data.leaderboard.map((item, index) => ({
+          id: item._id || item.id || index,
+          rank: index + 1,
+          name: item.userName || item.name || "N/A",
+          rollNo: item.rollNo || "N/A",
+          score: item.score || 0,
+          totalQuestions: item.totalQuestions || 20,
+          percentage: Math.round(item.percentage || 0),
+          grade: item.grade || calculateGrade(item.percentage || 0),
+          timeTaken: formatTimeTaken(item.timeSpent),
+          round: item.selectedRound || item.round || 1,
+          completed: item.quizCompleted !== false,
+          warnings: item.warnings || 0,
+        }));
+        
+        setLeaderboard(mappedLeaderboard);
+        setStats({
+          totalParticipants: data.data.statistics.totalParticipants || 0,
+          averageScore: Math.round(data.data.statistics.averageScore || 0),
+          topScore: Math.round(data.data.statistics.topScore || 0),
+          completedQuizzes: data.data.statistics.completedQuizzes || 0,
+        });
       }
     } catch (error) {
       console.error('Error fetching leaderboard:', error);
     } finally {
       setLoading(false);
     }
+  };
+
+  const calculateGrade = (percentage) => {
+    if (percentage >= 90) return "A+";
+    if (percentage >= 80) return "A";
+    if (percentage >= 70) return "B+";
+    if (percentage >= 60) return "B";
+    if (percentage >= 50) return "C";
+    return "F";
+  };
+
+  const formatTimeTaken = (seconds) => {
+    if (!seconds) return "N/A";
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${mins}:${String(secs).padStart(2, "0")}`;
   };
 
   const getRankIcon = (index) => {

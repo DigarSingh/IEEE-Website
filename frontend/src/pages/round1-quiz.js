@@ -1,41 +1,44 @@
-import { useState, useEffect } from 'react';
-import { useRouter } from 'next/router';
-import Head from 'next/head';
-import { motion, AnimatePresence } from 'framer-motion';
-import { 
-  FaClock, 
-  FaArrowLeft, 
-  FaArrowRight, 
-  FaFlag, 
+import { useState, useEffect } from "react";
+import { useRouter } from "next/router";
+import Head from "next/head";
+import { motion, AnimatePresence } from "framer-motion";
+import {
+  FaClock,
+  FaArrowLeft,
+  FaArrowRight,
+  FaFlag,
   FaExclamationTriangle,
   FaExpand,
-  FaCheckCircle
-} from 'react-icons/fa';
-import { useQuiz } from '../contexts/QuizContext';
-import { storeStudentResult, updateStudentProgress } from '../lib/mongodb-storage';
+  FaCheckCircle,
+} from "react-icons/fa";
+import { useQuiz } from "../contexts/QuizContext";
+import {
+  storeStudentResult,
+  updateStudentProgress,
+} from "../lib/mongodb-storage";
 
 export default function Quiz() {
   const router = useRouter();
   const { state, dispatch } = useQuiz();
   const [showWarning, setShowWarning] = useState(false);
-  const [warningMessage, setWarningMessage] = useState('');
+  const [warningMessage, setWarningMessage] = useState("");
   const [showSubmitModal, setShowSubmitModal] = useState(false);
 
   // Check authentication and quiz state
   useEffect(() => {
-    const savedUser = localStorage.getItem('quizUser');
+    const savedUser = localStorage.getItem("quizUser");
     if (!savedUser) {
-      router.push('/quizlogin'); 
+      router.push("/quizlogin");
       return;
     }
 
     if (!state.quizStarted || state.questions.length === 0) {
-      router.push('/instructions');
+      router.push("/instructions");
       return;
     }
 
     if (state.quizCompleted) {
-      router.push('/result');
+      router.push("/result");
       return;
     }
   }, [router, state]);
@@ -44,31 +47,41 @@ export default function Quiz() {
   useEffect(() => {
     const handleFullscreenChange = () => {
       const isFullscreen = document.fullscreenElement !== null;
-      dispatch({ type: 'SET_FULLSCREEN_STATUS', payload: isFullscreen });
+      dispatch({ type: "SET_FULLSCREEN_STATUS", payload: isFullscreen });
 
       if (!isFullscreen && state.quizStarted && !state.quizCompleted) {
-        dispatch({ type: 'INCREMENT_FULLSCREEN_WARNING' });
-        
+        dispatch({ type: "INCREMENT_FULLSCREEN_WARNING" });
+
         if (state.fullscreenWarnings >= 1) {
           handleSubmitQuiz();
-          setWarningMessage('Quiz submitted automatically due to multiple fullscreen violations.');
+          setWarningMessage(
+            "Quiz submitted automatically due to multiple fullscreen violations."
+          );
         } else {
-          setWarningMessage('Warning: You exited fullscreen mode. Please return to fullscreen or your quiz will be submitted.');
+          setWarningMessage(
+            "Warning: You exited fullscreen mode. Please return to fullscreen or your quiz will be submitted."
+          );
           setShowWarning(true);
           setTimeout(() => setShowWarning(false), 5000);
         }
       }
     };
 
-    document.addEventListener('fullscreenchange', handleFullscreenChange);
-    return () => document.removeEventListener('fullscreenchange', handleFullscreenChange);
-  }, [state.fullscreenWarnings, state.quizStarted, state.quizCompleted, dispatch]);
+    document.addEventListener("fullscreenchange", handleFullscreenChange);
+    return () =>
+      document.removeEventListener("fullscreenchange", handleFullscreenChange);
+  }, [
+    state.fullscreenWarnings,
+    state.quizStarted,
+    state.quizCompleted,
+    dispatch,
+  ]);
 
   // Request fullscreen on component mount
   useEffect(() => {
     if (state.quizStarted && !document.fullscreenElement) {
-      document.documentElement.requestFullscreen().catch(err => {
-        console.log('Fullscreen request failed:', err);
+      document.documentElement.requestFullscreen().catch((err) => {
+        console.log("Fullscreen request failed:", err);
       });
     }
   }, [state.quizStarted]);
@@ -77,22 +90,22 @@ export default function Quiz() {
   useEffect(() => {
     const handleBeforeUnload = (e) => {
       e.preventDefault();
-      e.returnValue = '';
-      return '';
+      e.returnValue = "";
+      return "";
     };
 
     const handlePopState = (e) => {
       e.preventDefault();
-      window.history.pushState(null, '', window.location.href);
+      window.history.pushState(null, "", window.location.href);
     };
 
-    window.addEventListener('beforeunload', handleBeforeUnload);
-    window.addEventListener('popstate', handlePopState);
-    window.history.pushState(null, '', window.location.href);
+    window.addEventListener("beforeunload", handleBeforeUnload);
+    window.addEventListener("popstate", handlePopState);
+    window.history.pushState(null, "", window.location.href);
 
     return () => {
-      window.removeEventListener('beforeunload', handleBeforeUnload);
-      window.removeEventListener('popstate', handlePopState);
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+      window.removeEventListener("popstate", handlePopState);
     };
   }, []);
 
@@ -100,14 +113,17 @@ export default function Quiz() {
   useEffect(() => {
     const handleVisibilityChange = () => {
       if (document.hidden && state.quizStarted && !state.quizCompleted) {
-        setWarningMessage('Warning: Tab switching detected. Please stay on the quiz page.');
+        setWarningMessage(
+          "Warning: Tab switching detected. Please stay on the quiz page."
+        );
         setShowWarning(true);
         setTimeout(() => setShowWarning(false), 3000);
       }
     };
 
-    document.addEventListener('visibilitychange', handleVisibilityChange);
-    return () => document.removeEventListener('visibilitychange', handleVisibilityChange);
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+    return () =>
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
   }, [state.quizStarted, state.quizCompleted]);
 
   // Auto-submit when time expires
@@ -120,51 +136,111 @@ export default function Quiz() {
   const formatTime = (seconds) => {
     const mins = Math.floor(seconds / 60);
     const secs = seconds % 60;
-    return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+    return `${mins.toString().padStart(2, "0")}:${secs
+      .toString()
+      .padStart(2, "0")}`;
   };
 
   const handleAnswerSelect = (answerIndex) => {
     const currentQuestionId = state.questions[state.currentQuestion]?.id;
+    console.log("📝 Answer selected:", {
+      questionId: currentQuestionId,
+      answerIndex: answerIndex,
+      answerType: typeof answerIndex,
+      question: state.questions[state.currentQuestion]?.question,
+    });
+
     if (currentQuestionId) {
       dispatch({
-        type: 'SET_ANSWER',
+        type: "SET_ANSWER",
         questionId: currentQuestionId,
-        answer: answerIndex
+        answer: answerIndex,
       });
     }
   };
 
   const navigateQuestion = (direction) => {
-    const newIndex = direction === 'next' 
-      ? Math.min(state.currentQuestion + 1, state.questions.length - 1)
-      : Math.max(state.currentQuestion - 1, 0);
-    
-    dispatch({ type: 'SET_CURRENT_QUESTION', payload: newIndex });
+    const newIndex =
+      direction === "next"
+        ? Math.min(state.currentQuestion + 1, state.questions.length - 1)
+        : Math.max(state.currentQuestion - 1, 0);
+
+    dispatch({ type: "SET_CURRENT_QUESTION", payload: newIndex });
   };
 
   const jumpToQuestion = (index) => {
-    dispatch({ type: 'SET_CURRENT_QUESTION', payload: index });
+    dispatch({ type: "SET_CURRENT_QUESTION", payload: index });
   };
 
   const handleSubmitQuiz = async () => {
     try {
-      dispatch({ type: 'COMPLETE_QUIZ' });
-      
-      // Calculate score
+      dispatch({ type: "COMPLETE_QUIZ" });
+
+      // Calculate score with detailed logging
       let score = 0;
+      console.log("🔍 Starting score calculation...");
+      console.log("📝 Total questions:", state.questions.length);
+      console.log("📝 User answers object:", state.answers);
+      console.log("📝 User answers keys:", Object.keys(state.answers));
+
       state.questions.forEach((question, index) => {
         const userAnswer = state.answers[question.id];
-        if (userAnswer === question.correctAnswer) {
+        // FIX: questions.json uses 'correct' field, not 'correctAnswer'
+        const correctAnswer =
+          question.correct !== undefined
+            ? question.correct
+            : question.correctAnswer;
+
+        // Only count as correct if user actually answered AND answer is correct
+        const isCorrect =
+          userAnswer !== undefined && userAnswer === correctAnswer;
+
+        console.log(`\n=== Question ${index + 1} (ID: ${question.id}) ===`);
+        console.log("Question text:", question.question);
+        console.log(
+          "User answer:",
+          userAnswer,
+          "(type:",
+          typeof userAnswer,
+          ")"
+        );
+        console.log(
+          "Correct answer:",
+          correctAnswer,
+          "(type:",
+          typeof correctAnswer,
+          ")"
+        );
+        console.log("User answered?", userAnswer !== undefined);
+        console.log("Options:", question.options);
+        console.log("User selected:", question.options[userAnswer]);
+        console.log("Correct option:", question.options[correctAnswer]);
+        console.log("Comparison (===):", userAnswer === correctAnswer);
+        console.log("Comparison (==):", userAnswer == correctAnswer);
+        console.log("Is correct?", isCorrect);
+
+        if (isCorrect) {
           score++;
+          console.log("✅ CORRECT!");
+        } else {
+          if (userAnswer === undefined) {
+            console.log("⚠️ NOT ANSWERED!");
+          } else {
+            console.log("❌ WRONG!");
+          }
         }
       });
-      
+
+      console.log("\n✅ Final Score:", score, "out of", state.questions.length);
+
       const percentage = Math.round((score / state.questions.length) * 100);
       const grade = getGrade(percentage);
-      const timeSpent = 30 * 60 - state.timeRemaining;
+      const timeSpentInSeconds = 30 * 60 - state.timeRemaining; // Time in seconds
       const completedAt = new Date().toISOString();
-      
-      // Prepare result data for MongoDB
+
+      console.log("📊 Calculated:", { score, percentage, grade });
+
+      // Prepare result data for MongoDB - send timeSpent in SECONDS
       const resultData = {
         name: state.user.name,
         rollNo: state.user.rollNo,
@@ -174,67 +250,60 @@ export default function Quiz() {
         totalQuestions: state.questions.length,
         percentage: percentage,
         grade: grade,
-        timeTaken: formatTime(timeSpent),
-        timeSpent: timeSpent,
+        timeTaken: timeSpentInSeconds, // Send as seconds (API expects this)
+        timeSpent: timeSpentInSeconds, // Send as seconds
         loginTime: state.user.loginTime,
         quizStartedAt: state.quizStartedAt,
         completedAt: completedAt,
-        answers: state.answers,
-        warnings: state.fullscreenWarnings
+        answers: state.answers, // This stores all answers
+        warnings: state.fullscreenWarnings,
       };
-      
-      // Store in MongoDB
+
+      console.log("📤 Submitting quiz results:", resultData);
+
+      // Store in MongoDB (this updates the Student record)
       const mongoResult = await storeStudentResult(resultData);
       if (mongoResult.success) {
-        console.log('✅ Quiz result stored in MongoDB:', mongoResult.id);
+        console.log("✅ Quiz result stored in MongoDB:", mongoResult.id);
+        console.log("✅ Student record updated with quiz completion data");
       } else {
-        console.error('❌ Failed to store quiz result:', mongoResult.error);
+        console.error("❌ Failed to store quiz result:", mongoResult.error);
       }
-      
-      // Update student data in MongoDB
-      if (state.user.studentId) {
-        await updateStudentProgress(state.user.studentId, {
-          quizCompleted: true,
-          score: score,
-          percentage: percentage,
-          grade: grade,
-          timeSpent: timeSpent,
-          completedAt: completedAt
-        });
-      }
-      
+
       // Save to localStorage as backup
       const results = {
         user: state.user,
         answers: state.answers,
         questions: state.questions,
-        timeSpent: timeSpent,
+        timeSpent: timeSpentInSeconds,
+        timeSpentFormatted: formatTime(timeSpentInSeconds),
         completedAt: completedAt,
         warnings: state.fullscreenWarnings,
         score: score,
         percentage: percentage,
         grade: grade,
-        mongoId: mongoResult.id
+        mongoId: mongoResult.id,
       };
-      
-      localStorage.setItem('quizResults', JSON.stringify(results));
-      router.push('/result');
-      
+
+      localStorage.setItem("quizResults", JSON.stringify(results));
+
+      console.log("✅ Quiz submission complete, redirecting to results...");
+      router.push("/result");
     } catch (error) {
-      console.error('Error submitting quiz:', error);
+      console.error("❌ Error submitting quiz:", error);
       // Still redirect to result page even if MongoDB fails
-      router.push('/result');
+      router.push("/result");
     }
   };
-  
+
   const getGrade = (percentage) => {
-    if (percentage >= 90) return 'A+';
-    if (percentage >= 80) return 'A';
-    if (percentage >= 70) return 'B+';
-    if (percentage >= 60) return 'B';
-    if (percentage >= 50) return 'C';
-    if (percentage >= 40) return 'D';
-    return 'F';
+    if (percentage >= 90) return "A+";
+    if (percentage >= 80) return "A";
+    if (percentage >= 70) return "B+";
+    if (percentage >= 60) return "B";
+    if (percentage >= 50) return "C";
+    if (percentage >= 40) return "D";
+    return "F";
   };
 
   const getAnsweredCount = () => {
@@ -256,7 +325,10 @@ export default function Quiz() {
     <>
       <Head>
         <title>Quiz in Progress | IEEE GEU Student Branch</title>
-        <meta name="description" content="IEEE GEU Quiz Competition in progress" />
+        <meta
+          name="description"
+          content="IEEE GEU Quiz Competition in progress"
+        />
       </Head>
 
       <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900">
@@ -276,7 +348,9 @@ export default function Quiz() {
                 className="w-full max-w-md p-6 text-center bg-red-600 border border-red-500 rounded-xl"
               >
                 <FaExclamationTriangle className="mx-auto mb-4 text-4xl text-white" />
-                <h3 className="mb-2 text-xl font-bold text-white">Security Warning</h3>
+                <h3 className="mb-2 text-xl font-bold text-white">
+                  Security Warning
+                </h3>
                 <p className="mb-4 text-red-100">{warningMessage}</p>
                 <button
                   onClick={() => setShowWarning(false)}
@@ -316,9 +390,13 @@ export default function Quiz() {
                 exit={{ scale: 0.9, opacity: 0 }}
                 className="w-full max-w-md p-6 bg-white rounded-xl"
               >
-                <h3 className="mb-4 text-xl font-bold text-gray-900">Submit Quiz?</h3>
+                <h3 className="mb-4 text-xl font-bold text-gray-900">
+                  Submit Quiz?
+                </h3>
                 <p className="mb-6 text-gray-600">
-                  Are you sure you want to submit your quiz? You have answered {getAnsweredCount()} out of {state.questions.length} questions.
+                  Are you sure you want to submit your quiz? You have answered{" "}
+                  {getAnsweredCount()} out of {state.questions.length}{" "}
+                  questions.
                 </p>
                 <div className="flex space-x-4">
                   <button
@@ -348,7 +426,7 @@ export default function Quiz() {
                 {state.user?.name} • {state.user?.rollNo}
               </div>
             </div>
-            
+
             {/* Timer */}
             <div className="flex items-center space-x-4">
               {state.fullscreenWarnings > 0 && (
@@ -373,18 +451,26 @@ export default function Quiz() {
             {/* Question Navigator */}
             <div className="lg:col-span-1">
               <div className="sticky p-4 border bg-white/10 backdrop-blur-md border-white/20 rounded-xl top-4">
-                <h3 className="mb-4 text-lg font-semibold text-white">Questions</h3>
-                
+                <h3 className="mb-4 text-lg font-semibold text-white">
+                  Questions
+                </h3>
+
                 {/* Progress Bar */}
                 <div className="mb-4">
                   <div className="flex justify-between mb-2 text-sm text-gray-300">
                     <span>Progress</span>
-                    <span>{getAnsweredCount()}/{state.questions.length}</span>
+                    <span>
+                      {getAnsweredCount()}/{state.questions.length}
+                    </span>
                   </div>
                   <div className="w-full h-2 bg-gray-700 rounded-full">
-                    <div 
+                    <div
                       className="h-2 transition-all duration-300 bg-green-500 rounded-full"
-                      style={{ width: `${(getAnsweredCount() / state.questions.length) * 100}%` }}
+                      style={{
+                        width: `${
+                          (getAnsweredCount() / state.questions.length) * 100
+                        }%`,
+                      }}
                     ></div>
                   </div>
                 </div>
@@ -392,19 +478,20 @@ export default function Quiz() {
                 {/* Question Grid */}
                 <div className="grid grid-cols-5 gap-2">
                   {state.questions.map((_, index) => {
-                    const isAnswered = state.answers[state.questions[index]?.id] !== undefined;
+                    const isAnswered =
+                      state.answers[state.questions[index]?.id] !== undefined;
                     const isCurrent = index === state.currentQuestion;
-                    
+
                     return (
                       <button
                         key={index}
                         onClick={() => jumpToQuestion(index)}
                         className={`w-10 h-10 rounded-lg text-sm font-semibold transition-all ${
                           isCurrent
-                            ? 'bg-blue-500 text-white ring-2 ring-blue-300'
+                            ? "bg-blue-500 text-white ring-2 ring-blue-300"
                             : isAnswered
-                            ? 'bg-green-500 text-white'
-                            : 'bg-gray-600 text-gray-300 hover:bg-gray-500'
+                            ? "bg-green-500 text-white"
+                            : "bg-gray-600 text-gray-300 hover:bg-gray-500"
                         }`}
                       >
                         {index + 1}
@@ -429,7 +516,8 @@ export default function Quiz() {
                 <div className="mb-6">
                   <div className="flex items-center justify-between mb-4">
                     <h2 className="text-lg font-semibold text-white">
-                      Question {state.currentQuestion + 1} of {state.questions.length}
+                      Question {state.currentQuestion + 1} of{" "}
+                      {state.questions.length}
                     </h2>
                     {currentAnswer !== undefined && (
                       <div className="flex items-center space-x-2 text-green-400">
@@ -438,7 +526,7 @@ export default function Quiz() {
                       </div>
                     )}
                   </div>
-                  
+
                   <p className="text-xl leading-relaxed text-white">
                     {currentQuestion?.question}
                   </p>
@@ -454,16 +542,18 @@ export default function Quiz() {
                       onClick={() => handleAnswerSelect(index)}
                       className={`w-full p-4 rounded-lg text-left transition-all border-2 ${
                         currentAnswer === index
-                          ? 'bg-blue-500/30 border-blue-400 text-white'
-                          : 'bg-white/5 border-white/20 text-gray-300 hover:bg-white/10 hover:border-white/30'
+                          ? "bg-blue-500/30 border-blue-400 text-white"
+                          : "bg-white/5 border-white/20 text-gray-300 hover:bg-white/10 hover:border-white/30"
                       }`}
                     >
                       <div className="flex items-center space-x-3">
-                        <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center ${
-                          currentAnswer === index
-                            ? 'border-blue-400 bg-blue-500'
-                            : 'border-gray-400'
-                        }`}>
+                        <div
+                          className={`w-6 h-6 rounded-full border-2 flex items-center justify-center ${
+                            currentAnswer === index
+                              ? "border-blue-400 bg-blue-500"
+                              : "border-gray-400"
+                          }`}
+                        >
                           {currentAnswer === index && (
                             <div className="w-3 h-3 bg-white rounded-full"></div>
                           )}
@@ -480,7 +570,7 @@ export default function Quiz() {
                 {/* Navigation */}
                 <div className="flex items-center justify-between">
                   <button
-                    onClick={() => navigateQuestion('prev')}
+                    onClick={() => navigateQuestion("prev")}
                     disabled={state.currentQuestion === 0}
                     className="flex items-center px-6 py-3 space-x-2 font-semibold text-white transition-colors bg-gray-600 rounded-lg hover:bg-gray-700 disabled:bg-gray-800 disabled:cursor-not-allowed"
                   >
@@ -493,8 +583,10 @@ export default function Quiz() {
                   </div>
 
                   <button
-                    onClick={() => navigateQuestion('next')}
-                    disabled={state.currentQuestion === state.questions.length - 1}
+                    onClick={() => navigateQuestion("next")}
+                    disabled={
+                      state.currentQuestion === state.questions.length - 1
+                    }
                     className="flex items-center px-6 py-3 space-x-2 font-semibold text-white transition-colors bg-blue-600 rounded-lg hover:bg-blue-700 disabled:bg-gray-800 disabled:cursor-not-allowed"
                   >
                     <span>Next</span>

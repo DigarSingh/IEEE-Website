@@ -73,49 +73,128 @@ export default function AdminQuizDashboard() {
   // Leaderboard functions
   const fetchLeaderboard = async (type = "overall", round = null) => {
     try {
+      console.log("🔄 Fetching leaderboard data...", { type, round });
       const result = await getQuizResults();
 
+      console.log("📊 Quiz results received:", result);
+
       if (result.success) {
+        console.log("✅ Results data:", result.data);
+        console.log("📝 Total results:", result.data.length);
+
         // Filter and sort results for leaderboard
         let filteredResults = result.data;
 
-        if (round) {
+        // Apply filters based on type
+        if (type === "round" && round) {
           filteredResults = result.data.filter(
-            (r) => r.selectedRound === round
+            (r) => r.selectedRound === round || r.round === round
           );
+          console.log(
+            `🔍 Filtered for round ${round}:`,
+            filteredResults.length
+          );
+        } else if (type === "recent") {
+          const thirtyMinutesAgo = new Date(Date.now() - 30 * 60 * 1000);
+          filteredResults = result.data.filter(
+            (r) => new Date(r.completedAt) > thirtyMinutesAgo
+          );
+          console.log("🔍 Filtered for recent:", filteredResults.length);
         }
 
+        // Log first result to see structure
+        if (filteredResults.length > 0) {
+          console.log("📋 Sample result structure:", filteredResults[0]);
+        }
+
+        // Sort by percentage (desc) and time (asc)
         const leaderboard = filteredResults
+          .map((r, index) => {
+            const mapped = {
+              id: r._id || r.id || index,
+              rank: index + 1,
+              name: r.name || r.userName || "N/A",
+              rollNo: r.rollNo || "N/A",
+              score: r.score || 0,
+              totalQuestions: r.totalQuestions || 20,
+              percentage: Math.round(r.percentage || 0),
+              grade: r.grade || calculateGrade(r.percentage || 0),
+              timeTaken: r.timeTaken
+                ? formatTimeTaken(r.timeTaken)
+                : r.timeSpent
+                ? formatTimeTaken(r.timeSpent)
+                : "N/A",
+              timeSpent: r.timeTaken || r.timeSpent || 0,
+              round: r.round || r.selectedRound || 1,
+              completed:
+                r.completed !== undefined
+                  ? r.completed
+                  : r.quizCompleted || false,
+              warnings: r.warnings || 0,
+              completedAt: r.completedAt || new Date().toISOString(),
+            };
+            return mapped;
+          })
           .sort((a, b) => {
             if (b.percentage !== a.percentage) {
               return b.percentage - a.percentage;
             }
             return a.timeSpent - b.timeSpent;
           })
-          .slice(0, 20);
+          .slice(0, 50); // Limit to top 50
 
+        // Update ranks after sorting
+        leaderboard.forEach((item, index) => {
+          item.rank = index + 1;
+        });
+
+        console.log("🏆 Final leaderboard:", leaderboard);
         setLeaderboard(leaderboard);
 
         // Calculate statistics
         const stats = {
           totalParticipants: result.data.length,
-          averageScore:
-            result.data.reduce((sum, r) => sum + r.percentage, 0) /
-              result.data.length || 0,
-          highestScore: Math.max(...result.data.map((r) => r.percentage), 0),
-          completedQuizzes: result.data.filter((r) => r.quizCompleted).length,
+          completedQuizzes: result.data.filter(
+            (r) => r.completed || r.quizCompleted
+          ).length,
+          averageScore: Math.round(
+            result.data.reduce((sum, r) => sum + (r.percentage || 0), 0) /
+              (result.data.length || 1)
+          ),
+          topScore: Math.max(...result.data.map((r) => r.percentage || 0), 0),
         };
 
+        console.log("📈 Statistics:", stats);
         setStats((prev) => ({
           ...prev,
           ...stats,
         }));
       } else {
-        console.error("Error fetching leaderboard:", result.error);
+        console.error("❌ Error fetching leaderboard:", result.error);
+        setLeaderboard([]);
       }
     } catch (error) {
-      console.error("Error fetching leaderboard:", error);
+      console.error("❌ Error in fetchLeaderboard:", error);
+      setLeaderboard([]);
     }
+  };
+
+  // Helper function to calculate grade
+  const calculateGrade = (percentage) => {
+    if (percentage >= 90) return "A+";
+    if (percentage >= 80) return "A";
+    if (percentage >= 70) return "B+";
+    if (percentage >= 60) return "B";
+    if (percentage >= 50) return "C";
+    return "F";
+  };
+
+  // Helper function to format time
+  const formatTimeTaken = (seconds) => {
+    if (!seconds) return "N/A";
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${mins}:${String(secs).padStart(2, "0")}`;
   };
 
   const updateLeaderboard = () => {
@@ -363,48 +442,66 @@ export default function AdminQuizDashboard() {
     // Poll MongoDB for quiz results every 5 seconds
     const pollResults = async () => {
       try {
+        console.log("🔄 Polling results...");
         const result = await getQuizResults();
         if (result.success) {
-          setResults(result.data);
+          console.log("✅ Poll results:", result.data.length, "records");
+
+          // Map results to consistent format
+          const mappedResults = result.data.map((r, index) => ({
+            id: r._id || r.id || index,
+            userName: r.name || r.userName || "N/A",
+            name: r.name || r.userName || "N/A",
+            rollNo: r.rollNo || "N/A",
+            score: r.score || 0,
+            totalQuestions: r.totalQuestions || 20,
+            percentage: Math.round(r.percentage || 0),
+            grade: r.grade || calculateGrade(r.percentage || 0),
+            timeSpent: r.timeTaken || r.timeSpent || 0,
+            round: r.round || r.selectedRound || 1,
+            completed:
+              r.completed !== undefined
+                ? r.completed
+                : r.quizCompleted || false,
+            quizCompleted:
+              r.completed !== undefined
+                ? r.completed
+                : r.quizCompleted || false,
+            warnings: r.warnings || 0,
+            completedAt: r.completedAt || new Date().toISOString(),
+          }));
+
+          setResults(mappedResults);
 
           // Calculate statistics
           const now = new Date();
           const thirtyMinutesAgo = new Date(now.getTime() - 30 * 60 * 1000);
 
-          const recentResults = result.data.filter(
+          const recentResults = mappedResults.filter(
             (r) => new Date(r.completedAt) > thirtyMinutesAgo
           );
 
-          const totalScore = result.data.reduce(
+          const totalScore = mappedResults.reduce(
             (sum, r) => sum + (r.percentage || 0),
             0
           );
           const avgScore =
-            result.data.length > 0
-              ? Math.round(totalScore / result.data.length)
+            mappedResults.length > 0
+              ? Math.round(totalScore / mappedResults.length)
               : 0;
 
           setStats({
-            totalParticipants: result.data.length,
+            totalParticipants: mappedResults.length,
             activeParticipants: recentResults.length,
-            completedQuizzes: result.data.length,
+            completedQuizzes: mappedResults.filter((r) => r.completed).length,
             averageScore: avgScore,
           });
 
-          // Create leaderboard
-          const sortedResults = [...result.data]
-            .sort((a, b) => {
-              if (b.percentage === a.percentage) {
-                return (a.timeSpent || 0) - (b.timeSpent || 0); // Less time is better
-              }
-              return (b.percentage || 0) - (a.percentage || 0); // Higher percentage is better
-            })
-            .slice(0, 10);
-
-          setLeaderboard(sortedResults);
+          // Refresh leaderboard with current filters
+          fetchLeaderboard(leaderboardType, selectedRound);
         }
       } catch (error) {
-        console.error("Error polling results:", error);
+        console.error("❌ Error polling results:", error);
       }
     };
 
@@ -1165,7 +1262,7 @@ export default function AdminQuizDashboard() {
               </div>
 
               <div className="space-y-3 overflow-y-auto max-h-96">
-                {leaderboard.map((result, index) => (
+                {leaderboard.slice(0, 10).map((result, index) => (
                   <div
                     key={result.id}
                     className="flex items-center justify-between p-3 transition-colors rounded-lg bg-gray-50 hover:bg-gray-100"
@@ -1186,7 +1283,7 @@ export default function AdminQuizDashboard() {
                       </div>
                       <div>
                         <div className="font-semibold text-gray-900">
-                          {result.userName}
+                          {result.name}
                         </div>
                         <div className="text-sm text-gray-500">
                           {result.rollNo}
@@ -1198,9 +1295,13 @@ export default function AdminQuizDashboard() {
                         {result.percentage}%
                       </div>
                       <div className="text-sm text-gray-500">
-                        {Math.floor((result.timeSpent || 0) / 60)}:
-                        {String((result.timeSpent || 0) % 60).padStart(2, "0")}
+                        {result.timeTaken}
                       </div>
+                      {result.warnings > 0 && (
+                        <div className="text-xs text-red-500">
+                          ⚠️ {result.warnings}
+                        </div>
+                      )}
                     </div>
                   </div>
                 ))}
