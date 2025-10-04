@@ -396,7 +396,7 @@ export default function AdminQuizDashboard() {
 
         setQuizState(newQuizState);
 
-        // Update settings
+        // Update settings from loaded data
         const newSettings = {
           round1: {
             duration: 30,
@@ -406,10 +406,28 @@ export default function AdminQuizDashboard() {
           round2: {
             duration: 45,
             questionsCount: 20,
-            password: "ieee@321",
+            password: "ieeegg@321",
           },
         };
 
+        // Load round-specific settings from database
+        if (data.round1) {
+          newSettings.round1 = {
+            duration: Math.floor((data.round1.duration || 30 * 60) / 60), // Convert seconds to minutes
+            questionsCount: data.round1.questionsCount || 20,
+            password: data.round1.password || "ieee@321",
+          };
+        }
+        
+        if (data.round2) {
+          newSettings.round2 = {
+            duration: Math.floor((data.round2.duration || 45 * 60) / 60), // Convert seconds to minutes
+            questionsCount: data.round2.questionsCount || 20,
+            password: data.round2.password || "ieeegg@321",
+          };
+        }
+
+        // Fallback to old settings structure if available
         if (data.settings) {
           if (data.settings.round1) {
             newSettings.round1 = {
@@ -426,7 +444,7 @@ export default function AdminQuizDashboard() {
                 (data.settings.round2.duration || 45 * 60) / 60
               ),
               questionsCount: data.settings.round2.questionsCount || 20,
-              password: data.settings.round2.password || "ieee@321",
+              password: data.settings.round2.password || "ieeegg@321",
             };
           }
         }
@@ -637,10 +655,17 @@ export default function AdminQuizDashboard() {
       setLoading(true);
 
       const settingsData = {
-        duration: settings.duration * 60,
-        questionsCount: settings.questionsCount,
-        password: settings.password,
+        round1: {
+          duration: settings.round1.duration, // Already in minutes
+          password: settings.round1.password,
+        },
+        round2: {
+          duration: settings.round2.duration, // Already in minutes
+          password: settings.round2.password,
+        }
       };
+
+      console.log('🔄 Updating settings:', settingsData);
 
       const result = await updateQuizState(
         "UPDATE_SETTINGS",
@@ -654,6 +679,9 @@ export default function AdminQuizDashboard() {
 
       setShowSettings(false);
       alert("Settings updated successfully!");
+      
+      // Reload quiz state to reflect changes
+      loadQuizState();
     } catch (error) {
       console.error("Error updating settings:", error);
       alert("Error updating settings. Please try again.");
@@ -1422,62 +1450,127 @@ export default function AdminQuizDashboard() {
           {/* Settings Modal */}
           {showSettings && (
             <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
-              <div className="w-full max-w-md p-6 bg-white rounded-2xl">
+              <div className="w-full max-w-2xl p-6 bg-white rounded-2xl max-h-[90vh] overflow-y-auto">
                 <h3 className="mb-6 text-xl font-bold text-gray-900">
                   Quiz Settings
                 </h3>
 
-                <div className="space-y-4">
-                  <div>
-                    <label className="block mb-2 text-sm font-medium text-gray-700">
-                      Duration (minutes)
-                    </label>
-                    <input
-                      type="number"
-                      min="5"
-                      max="120"
-                      value={settings.duration}
-                      onChange={(e) =>
-                        setSettings({
-                          ...settings,
-                          duration: parseInt(e.target.value) || 30,
-                        })
-                      }
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-                    />
+                <div className="space-y-6">
+                  {/* Round 1 Settings */}
+                  <div className="p-4 border border-blue-200 rounded-lg bg-blue-50">
+                    <h4 className="mb-4 text-lg font-semibold text-blue-900">
+                      Round 1 Settings
+                    </h4>
+                    
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div>
+                        <label className="block mb-2 text-sm font-medium text-gray-700">
+                          Duration (minutes)
+                        </label>
+                        <input
+                          type="number"
+                          min="5"
+                          max="120"
+                          value={settings.round1.duration}
+                          onChange={(e) =>
+                            setSettings({
+                              ...settings,
+                              round1: {
+                                ...settings.round1,
+                                duration: parseInt(e.target.value) || 30,
+                              }
+                            })
+                          }
+                          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block mb-2 text-sm font-medium text-gray-700">
+                          Quiz Password
+                        </label>
+                        <input
+                          type="text"
+                          value={settings.round1.password}
+                          onChange={(e) =>
+                            setSettings({
+                              ...settings,
+                              round1: {
+                                ...settings.round1,
+                                password: e.target.value
+                              }
+                            })
+                          }
+                          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+                        />
+                      </div>
+                    </div>
                   </div>
 
-                  <div>
-                    <label className="block mb-2 text-sm font-medium text-gray-700">
-                      Number of Questions
-                    </label>
-                    <input
-                      type="number"
-                      min="10"
-                      max="50"
-                      value={settings.questionsCount}
-                      onChange={(e) =>
-                        setSettings({
-                          ...settings,
-                          questionsCount: parseInt(e.target.value) || 20,
-                        })
-                      }
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-                    />
+                  {/* Round 2 Settings */}
+                  <div className="p-4 border border-green-200 rounded-lg bg-green-50">
+                    <h4 className="mb-4 text-lg font-semibold text-green-900">
+                      Round 2 Settings
+                    </h4>
+                    
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div>
+                        <label className="block mb-2 text-sm font-medium text-gray-700">
+                          Duration (minutes)
+                        </label>
+                        <input
+                          type="number"
+                          min="5"
+                          max="120"
+                          value={settings.round2.duration}
+                          onChange={(e) =>
+                            setSettings({
+                              ...settings,
+                              round2: {
+                                ...settings.round2,
+                                duration: parseInt(e.target.value) || 45,
+                              }
+                            })
+                          }
+                          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-400"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block mb-2 text-sm font-medium text-gray-700">
+                          Quiz Password
+                        </label>
+                        <input
+                          type="text"
+                          value={settings.round2.password}
+                          onChange={(e) =>
+                            setSettings({
+                              ...settings,
+                              round2: {
+                                ...settings.round2,
+                                password: e.target.value
+                              }
+                            })
+                          }
+                          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-400"
+                        />
+                      </div>
+                    </div>
                   </div>
 
-                  <div>
-                    <label className="block mb-2 text-sm font-medium text-gray-700">
-                      Quiz Password
-                    </label>
-                    <input
-                      type="text"
-                      value={settings.password}
-                      onChange={(e) =>
-                        setSettings({ ...settings, password: e.target.value })
-                      }
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-                    />
+                  {/* Current Settings Display */}
+                  <div className="p-4 border border-gray-200 rounded-lg bg-gray-50">
+                    <h4 className="mb-3 text-sm font-semibold text-gray-800 uppercase tracking-wide">
+                      Current Settings Summary
+                    </h4>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                      <div>
+                        <p><strong>Round 1:</strong> {settings.round1.duration} min, Password: {settings.round1.password}</p>
+                      </div>
+                      <div>
+                        <p><strong>Round 2:</strong> {settings.round2.duration} min, Password: {settings.round2.password}</p>
+                      </div>
+                    </div>
                   </div>
                 </div>
 

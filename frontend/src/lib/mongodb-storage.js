@@ -20,17 +20,48 @@ export const storeStudentData = async (studentData) => {
     console.log('📊 MongoDB result:', result);
     
     if (!result.success) {
+      // Handle specific error types
+      if (result.code === 'DUPLICATE_STUDENT' || result.code === 'DUPLICATE_KEY') {
+        console.log('🔄 Student already registered, treating as successful login');
+        // For duplicate key errors, we can still proceed if the student exists
+        return { 
+          success: true, 
+          id: null, 
+          data: null, 
+          message: result.error,
+          isDuplicate: true 
+        };
+      }
       throw new Error(result.error);
     }
     
     console.log('✅ Student data stored successfully:', result.id);
-    return { success: true, id: result.id, data: result.data };
+    return { 
+      success: true, 
+      id: result.id, 
+      data: result.data, 
+      message: result.message || 'Student registered successfully',
+      isDuplicate: false 
+    };
   } catch (error) {
     console.error('❌ Error storing student data:', error);
     console.error('❌ Error details:', {
       message: error.message,
       stack: error.stack
     });
+    
+    // Check if it's a duplicate key error from the message
+    if (error.message.includes('E11000') || error.message.includes('duplicate key')) {
+      console.log('🔄 Detected duplicate key error, treating as existing student');
+      return { 
+        success: true, 
+        id: null, 
+        data: null, 
+        message: 'Student with this roll number is already registered for this round',
+        isDuplicate: true 
+      };
+    }
+    
     return { success: false, error: error.message };
   }
 };

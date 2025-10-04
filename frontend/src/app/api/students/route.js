@@ -44,37 +44,114 @@ export async function POST(request) {
       }, { status: 400 });
     }
     
-    // Check if student already exists
-    const existingStudent = await Student.findOne({ rollNo });
+    const trimmedRollNo = rollNo.trim();
+    const trimmedName = name.trim();
+    
+    console.log(`🔄 Processing student registration: ${trimmedRollNo} for Round ${selectedRound}`);
+    
+    // Check if student already exists for this specific round
+    const existingStudent = await Student.findOne({ rollNo: trimmedRollNo, selectedRound });
     if (existingStudent) {
+      // Student already exists for this round - just update login time
+      console.log(`🔄 Student ${trimmedRollNo} re-logging into Round ${selectedRound}`);
+      
+      existingStudent.loginTime = loginTime || new Date();
+      existingStudent.lastSeen = new Date();
+      existingStudent.isActive = true;
+      
+      const updatedStudent = await existingStudent.save();
+      
+      console.log('✅ Student login updated:', updatedStudent._id);
       return NextResponse.json({ 
-        success: false, 
-        error: 'Student with this roll number already exists' 
-      }, { status: 409 });
+        success: true, 
+        id: updatedStudent._id.toString(),
+        data: updatedStudent,
+        message: `Successfully re-logged into Round ${selectedRound}`
+      }, { status: 200 });
     }
     
-    // Create new student
-    const student = new Student({
-      name: name.trim(),
-      rollNo: rollNo.trim(),
+    // Check if student exists for a different round
+    const studentOtherRound = await Student.findOne({ rollNo: trimmedRollNo, selectedRound: { $ne: selectedRound } });
+    if (studentOtherRound) {
+      console.log(`✅ Student ${trimmedRollNo} participating in Round ${selectedRound} (previously participated in Round ${studentOtherRound.selectedRound})`);
+    }
+    
+    // Create new student record for this round
+    const studentData = {
+      name: trimmedName,
+      rollNo: trimmedRollNo,
       selectedRound,
       loginTime: loginTime || new Date(),
       isActive: true,
       lastSeen: new Date()
-    });
+    };
     
-    const savedStudent = await student.save();
+    const student = new Student(studentData);
     
-    console.log('✅ Student created:', savedStudent._id);
-    return NextResponse.json({ 
-      success: true, 
-      id: savedStudent._id.toString(),
-      data: savedStudent 
-    }, { status: 201 });
+    try {
+      const savedStudent = await student.save();
+      console.log('✅ New student record created:', savedStudent._id);
+      return NextResponse.json({ 
+        success: true, 
+        id: savedStudent._id.toString(),
+        data: savedStudent,
+        message: `Successfully registered for Round ${selectedRound}`
+      }, { status: 201 });
+    } catch (saveError) {
+      // Handle MongoDB duplicate key errors specifically
+      if (saveError.code === 11000) {
+        console.log(`⚠️ Duplicate key error for ${trimmedRollNo}, attempting to find existing record...`);
+        
+        // Try to find the existing student record
+        const existingRecord = await Student.findOne({ rollNo: trimmedRollNo, selectedRound });
+        if (existingRecord) {
+          // Update the existing record instead
+          existingRecord.name = trimmedName;
+          existingRecord.loginTime = loginTime || new Date();
+          existingRecord.lastSeen = new Date();
+          existingRecord.isActive = true;
+          
+          const updatedRecord = await existingRecord.save();
+          console.log('✅ Updated existing student record:', updatedRecord._id);
+          return NextResponse.json({ 
+            success: true, 
+            id: updatedRecord._id.toString(),
+            data: updatedRecord,
+            message: `Successfully updated registration for Round ${selectedRound}`
+          }, { status: 200 });
+        }
+        
+        // If we still can't find the record, there might be an index issue
+        console.error('❌ Duplicate key error but no existing record found. Possible index conflict.');
+        return NextResponse.json({ 
+          success: false, 
+          error: `Student with roll number ${trimmedRollNo} may already be registered. Please contact administrator if this persists.`,
+          code: 'DUPLICATE_STUDENT'
+        }, { status: 409 });
+      }
+      
+      // Re-throw other save errors
+      throw saveError;
+    }
     
   } catch (error) {
-    console.error('Error creating student:', error);
-    return NextResponse.json({ success: false, error: error.message }, { status: 500 });
+    console.error('❌ Error creating/updating student:', error);
+    
+    // Provide more specific error messages
+    if (error.code === 11000) {
+      const field = error.keyPattern ? Object.keys(error.keyPattern)[0] : 'rollNo';
+      return NextResponse.json({ 
+        success: false, 
+        error: `A student with this ${field} already exists for the selected round.`,
+        code: 'DUPLICATE_KEY'
+      }, { status: 409 });
+    }
+    
+    return NextResponse.json({ 
+      success: false, 
+      error: error.message || 'Failed to register student',
+      code: 'REGISTRATION_ERROR'
+    }, { status: 500 });
   }
 }
 

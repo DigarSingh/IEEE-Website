@@ -33,9 +33,18 @@ export default function Round2Result() {
     }
 
     const parsedResult = JSON.parse(savedResult);
+    
+    console.log('📊 Round 2 Result Page - Loading saved results');
+    console.log('🎯 Saved score:', parsedResult.score);
+    console.log('💯 Saved percentage:', parsedResult.percentage);
+    console.log('⏱️ Saved timeSpent:', parsedResult.timeSpent);
+    console.log('✅ Saved status:', parsedResult.passed);
+    
+    // Use the ALREADY CALCULATED values from quiz submission
+    // Don't recalculate - this can cause discrepancies!
     setResult(parsedResult);
     
-    // Calculate detailed results
+    // Calculate detailed results for display only
     const detailed = round2Questions.map(question => {
       const userAnswer = parsedResult.answers[question.id];
       let isCorrect = false;
@@ -200,7 +209,7 @@ export default function Round2Result() {
               {/* Percentage */}
               <div className="text-center">
                 <div className="text-3xl font-bold text-green-600 mb-2">
-                  {result.percentage}%
+                  {typeof result.percentage === 'number' ? result.percentage.toFixed(2) : result.percentage}%
                 </div>
                 <div className="text-sm text-gray-600">Percentage</div>
               </div>

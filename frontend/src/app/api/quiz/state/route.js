@@ -19,13 +19,17 @@ export async function GET() {
           isActive: false,
           globalTimer: 0,
           startTime: null,
-          endTime: null
+          endTime: null,
+          duration: 30 * 60, // 30 minutes in seconds
+          password: "ieee@321"
         },
         round2: {
           isActive: false,
           globalTimer: 0,
           startTime: null,
-          endTime: null
+          endTime: null,
+          duration: 45 * 60, // 45 minutes in seconds
+          password: "ieeegg@321"
         },
         quizSettings: {
           duration: 30,
@@ -109,7 +113,21 @@ export async function POST(request) {
         
       case 'UPDATE_SETTINGS':
         if (settings) {
-          quizState.quizSettings = { ...quizState.quizSettings, ...settings };
+          // Update general quiz settings
+          if (settings.general) {
+            quizState.quizSettings = { ...quizState.quizSettings, ...settings.general };
+          }
+          
+          // Update round-specific settings
+          if (settings.round1) {
+            quizState.round1.duration = settings.round1.duration * 60; // Convert minutes to seconds
+            quizState.round1.password = settings.round1.password;
+          }
+          
+          if (settings.round2) {
+            quizState.round2.duration = settings.round2.duration * 60; // Convert minutes to seconds
+            quizState.round2.password = settings.round2.password;
+          }
         }
         break;
         

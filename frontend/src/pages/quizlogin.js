@@ -54,14 +54,44 @@ export default function QuizLogin() {
     setError("");
   };
 
-  const validateCredentials = (name, rollNo, password) => {
-    // Simple validation - in production, this would be against a real database
-    const validPasswords = "ieee@321";
-    return (
-      validPasswords.includes(password) &&
-      name.length >= 2 &&
-      rollNo.match(/^\d{8}$/)
-    );
+  const validateCredentials = async (name, rollNo, password, selectedRound) => {
+    try {
+      // Fetch current quiz settings to get the correct password for the selected round
+      const response = await fetch('/api/quiz/settings');
+      const result = await response.json();
+      
+      if (!result.success) {
+        console.error('Failed to fetch quiz settings:', result.error);
+        // Fallback to default passwords
+        const fallbackPasswords = {
+          1: "ieee@321",
+          2: "ieeegg@321"
+        };
+        const validPassword = fallbackPasswords[selectedRound];
+        return validPassword === password && name.length >= 2 && rollNo.match(/^\d{8}$/);
+      }
+      
+      const validPassword = selectedRound === 1 
+        ? result.data.round1.password 
+        : result.data.round2.password;
+      
+      console.log(`🔑 Validating Round ${selectedRound} password`);
+      
+      return (
+        validPassword === password &&
+        name.length >= 2 &&
+        rollNo.match(/^\d{8}$/)
+      );
+    } catch (error) {
+      console.error('Error validating credentials:', error);
+      // Fallback validation in case of API error
+      const fallbackPasswords = {
+        1: "ieee@321",
+        2: "ieeegg@321"
+      };
+      const validPassword = fallbackPasswords[selectedRound];
+      return validPassword === password && name.length >= 2 && rollNo.match(/^\d{8}$/);
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -76,7 +106,8 @@ export default function QuizLogin() {
         throw new Error("All fields are required");
       }
 
-      if (!validateCredentials(name, rollNo, password)) {
+      const isValid = await validateCredentials(name, rollNo, password, selectedRound);
+      if (!isValid) {
         throw new Error(
           "Invalid credentials. Please check your details and password."
         );

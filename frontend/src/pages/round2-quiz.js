@@ -13,12 +13,17 @@ import {
   FaCode,
   FaKeyboard,
   FaListUl,
-  FaLightbulb
+  FaLightbulb,
+  FaMoon,
+  FaSun
 } from 'react-icons/fa';
 import { round2Questions, round2Config } from '../data/round2Questions';
+import { storeStudentResult } from "../lib/mongodb-storage";
+import { useTheme } from '../contexts/ThemeContext';
 
 export default function Round2Quiz() {
   const router = useRouter();
+  const { theme, toggleTheme } = useTheme();
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [answers, setAnswers] = useState({});
   const [timeRemaining, setTimeRemaining] = useState(round2Config.timeLimit * 60); // Convert to seconds
@@ -29,11 +34,22 @@ export default function Round2Quiz() {
   const [fullscreenWarnings, setFullscreenWarnings] = useState(0);
   const [quizStarted, setQuizStarted] = useState(false);
   const [quizCompleted, setQuizCompleted] = useState(false);
+  const [user, setUser] = useState(null);
 
   // Check authentication
   useEffect(() => {
     const savedUser = localStorage.getItem('quizUser');
     if (!savedUser) {
+      router.push('/quizlogin');
+      return;
+    }
+
+    // Parse and set user data
+    try {
+      const userData = JSON.parse(savedUser);
+      setUser(userData);
+    } catch (error) {
+      console.error('Error parsing user data:', error);
       router.push('/quizlogin');
       return;
     }
@@ -127,6 +143,18 @@ export default function Round2Quiz() {
     return `${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
   };
 
+  // Helper function to count answered questions
+  const getAnsweredCount = () => {
+    return Object.keys(answers).length;
+  };
+
+  // Function to jump to a specific question
+  const jumpToQuestion = (questionIndex) => {
+    if (questionIndex >= 0 && questionIndex < round2Questions.length) {
+      setCurrentQuestion(questionIndex);
+    }
+  };
+
   const handleAnswer = (questionId, answer) => {
     setAnswers(prev => ({
       ...prev,
@@ -175,29 +203,83 @@ export default function Round2Quiz() {
     return totalScore;
   };
 
+  // Grade calculation for Round 2 (Advanced Round) - slightly stricter criteria
+  const getGrade = (percentage) => {
+    if (percentage >= 95) return "A+";
+    if (percentage >= 85) return "A";
+    if (percentage >= 75) return "B+";
+    if (percentage >= 65) return "B";
+    if (percentage >= 55) return "C";
+    if (percentage >= 45) return "D";
+    return "F";
+  };
+
   const handleSubmitQuiz = async () => {
     try {
       const score = calculateScore();
       const userData = JSON.parse(localStorage.getItem('quizUser'));
+      const timeSpent = (round2Config.timeLimit * 60) - timeRemaining;
+      const percentage = ((score / round2Config.totalPoints) * 100).toFixed(2);
+      const grade = getGrade(parseFloat(percentage));
+      const completedAt = new Date().toISOString();
+      
+      console.log('🎯 Round 2 Quiz Submission');
+      console.log('📊 Calculated score:', score);
+      console.log('💯 Calculated percentage:', percentage);
+      console.log('🎓 Calculated grade:', grade);
+      console.log('⏱️ Time spent:', timeSpent);
+      console.log('✅ Passed:', score >= round2Config.passingScore);
+      
+      // Prepare result data for MongoDB
+      const resultData = {
+        name: userData.name,
+        rollNo: userData.rollNo,
+        studentId: userData.studentId,
+        round: 2,
+        score: score,
+        totalQuestions: round2Questions.length,
+        totalPoints: round2Config.totalPoints,
+        percentage: parseFloat(percentage),
+        grade: grade,
+        timeTaken: timeSpent, // Time in seconds
+        timeSpent: timeSpent, // Time in seconds
+        loginTime: userData.loginTime,
+        completedAt: completedAt,
+        answers: answers, // All answers
+        passed: score >= round2Config.passingScore
+      };
+
+      console.log('📤 Submitting Round 2 results to MongoDB:', resultData);
+
+      // Store in MongoDB (this updates the Student record)
+      const mongoResult = await storeStudentResult(resultData);
+      if (mongoResult.success) {
+        console.log('✅ Round 2 result stored in MongoDB:', mongoResult.id);
+        console.log('✅ Student record updated with Round 2 completion data');
+      } else {
+        console.error('❌ Failed to store Round 2 result:', mongoResult.error);
+      }
       
       const result = {
         userId: userData.name,
         email: userData.email,
         score: score,
         totalPoints: round2Config.totalPoints,
-        percentage: ((score / round2Config.totalPoints) * 100).toFixed(2),
+        percentage: parseFloat(percentage), // Store as number for consistency
+        grade: grade,
         answers: answers,
-        timeSpent: (round2Config.timeLimit * 60) - timeRemaining,
+        timeSpent: timeSpent,
         round: 2,
-        submittedAt: new Date().toISOString(),
-        passed: score >= round2Config.passingScore
+        submittedAt: completedAt,
+        passed: score >= round2Config.passingScore,
+        mongoId: mongoResult.id
       };
 
       // Save to localStorage
       localStorage.setItem('round2Result', JSON.stringify(result));
       localStorage.setItem('round2Completed', 'true');
 
-      // Results are handled by MongoDB
+      console.log('💾 Round 2 results saved to localStorage');
 
       setQuizCompleted(true);
       router.push('/round2-result');
@@ -230,19 +312,29 @@ export default function Round2Quiz() {
     };
 
     return (
-      <div className="p-8 bg-white shadow-lg rounded-xl">
+      <div className={`p-8 rounded-xl shadow-xl transition-all duration-300 ${
+        theme === 'dark'
+          ? 'bg-white/10 backdrop-blur-md border border-white/20'
+          : 'bg-white border border-gray-200 shadow-lg'
+      }`}>
         {/* Question Header */}
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center space-x-3">
             {getQuestionIcon()}
-            <span className="text-sm font-medium text-gray-600">
+            <span className={`text-sm font-medium transition-colors duration-300 ${
+              theme === 'dark' ? 'text-white/80' : 'text-gray-600'
+            }`}>
               {getQuestionTypeLabel()} • {question.points} points
             </span>
           </div>
           {question.hint && (
             <button
               onClick={() => toggleHint(question.id)}
-              className="flex items-center px-3 py-1 space-x-2 text-yellow-700 transition-colors bg-yellow-100 rounded-lg hover:bg-yellow-200"
+              className={`flex items-center px-3 py-1 space-x-2 transition-colors rounded-lg ${
+                theme === 'dark'
+                  ? 'text-yellow-200 bg-yellow-600/20 backdrop-blur-md border border-yellow-400/30 hover:bg-yellow-600/30'
+                  : 'text-yellow-700 bg-yellow-100 border border-yellow-300 hover:bg-yellow-200'
+              }`}
             >
               <FaLightbulb className="text-sm" />
               <span className="text-sm">Hint</span>
@@ -251,7 +343,9 @@ export default function Round2Quiz() {
         </div>
 
         {/* Question Text */}
-        <h2 className="mb-6 text-xl font-semibold text-gray-800">
+        <h2 className={`mb-6 text-xl font-semibold transition-colors duration-300 ${
+          theme === 'dark' ? 'text-white' : 'text-gray-800'
+        }`}>
           {question.question}
         </h2>
 
@@ -271,9 +365,15 @@ export default function Round2Quiz() {
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: 'auto' }}
               exit={{ opacity: 0, height: 0 }}
-              className="p-4 mb-6 border border-yellow-200 rounded-lg bg-yellow-50"
+              className={`p-4 mb-6 rounded-lg transition-colors duration-300 ${
+                theme === 'dark'
+                  ? 'border border-yellow-400/30 bg-yellow-600/20 backdrop-blur-md'
+                  : 'border border-yellow-200 bg-yellow-50'
+              }`}
             >
-              <p className="text-sm text-yellow-800">
+              <p className={`text-sm transition-colors duration-300 ${
+                theme === 'dark' ? 'text-yellow-200' : 'text-yellow-800'
+              }`}>
                 <FaLightbulb className="inline mr-2" />
                 <strong>Hint:</strong> {question.hint}
               </p>
@@ -291,8 +391,12 @@ export default function Round2Quiz() {
                   key={index}
                   className={`flex items-center p-4 border-2 rounded-lg cursor-pointer transition-all ${
                     answers[question.id] === index.toString()
-                      ? 'border-blue-500 bg-blue-50'
-                      : 'border-gray-200 hover:border-blue-300'
+                      ? theme === 'dark'
+                        ? 'border-blue-400 bg-blue-500/20 backdrop-blur-md'
+                        : 'border-blue-500 bg-blue-50'
+                      : theme === 'dark'
+                        ? 'border-white/20 bg-white/5 backdrop-blur-md hover:border-blue-400/50 hover:bg-white/10'
+                        : 'border-gray-200 hover:border-blue-300 bg-white'
                   }`}
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
@@ -314,7 +418,9 @@ export default function Round2Quiz() {
                       <div className="w-2 h-2 bg-white rounded-full"></div>
                     )}
                   </div>
-                  <span className="text-gray-700">{option}</span>
+                  <span className={`transition-colors duration-300 ${
+                    theme === 'dark' ? 'text-white' : 'text-gray-700'
+                  }`}>{option}</span>
                 </motion.label>
               ))}
             </div>
@@ -326,10 +432,16 @@ export default function Round2Quiz() {
                 placeholder={question.type === 'oneword' ? "Enter your answer" : "Enter the output"}
                 value={answers[question.id] || ''}
                 onChange={(e) => handleAnswer(question.id, e.target.value)}
-                className="w-full p-4 text-lg border-2 border-gray-200 rounded-lg focus:border-blue-500 focus:outline-none"
+                className={`w-full p-4 text-lg border-2 rounded-lg focus:outline-none transition-all duration-300 ${
+                  theme === 'dark'
+                    ? 'border-white/20 bg-white/10 backdrop-blur-md focus:border-blue-400 text-white placeholder-white/60'
+                    : 'border-gray-200 bg-white focus:border-blue-500 text-gray-900 placeholder-gray-500'
+                }`}
                 autoComplete="off"
               />
-              <p className="mt-2 text-sm text-gray-500">
+              <p className={`mt-2 text-sm transition-colors duration-300 ${
+                theme === 'dark' ? 'text-white/60' : 'text-gray-500'
+              }`}>
                 {question.type === 'oneword' 
                   ? "Enter a single word answer (case insensitive)"
                   : "Enter the exact output (case sensitive for strings)"
@@ -357,25 +469,66 @@ export default function Round2Quiz() {
         <meta name="description" content="Kindle Jr 4.0 Round 2 Quiz" />
       </Head>
 
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
+      <div className={`min-h-screen transition-colors duration-300 ${
+        theme === 'dark' 
+          ? 'bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900' 
+          : 'bg-gradient-to-br from-blue-50 via-white to-purple-50'
+      }`}>
         {/* Header */}
-        <div className="bg-white border-b shadow-sm">
+        <div className={`border-b shadow-sm transition-colors duration-300 ${
+          theme === 'dark' 
+            ? 'bg-white/10 backdrop-blur-md border-white/20' 
+            : 'bg-white border-gray-200'
+        }`}>
           <div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
             <div className="flex items-center justify-between h-16">
               {/* Quiz Title */}
-              <div className="flex items-center space-x-4">
-                <h1 className="text-xl font-bold text-gray-900">
-                  Kindle Jr 4.0 - Round 2
-                </h1>
-                <span className="px-3 py-1 text-sm font-medium text-purple-700 bg-purple-100 rounded-full">
-                  Advanced Round
-                </span>
+              <div className="flex items-center space-x-6">
+                <div className="flex items-center space-x-4">
+                  <h1 className={`text-xl font-bold transition-colors duration-300 ${
+                    theme === 'dark' ? 'text-white' : 'text-gray-900'
+                  }`}>
+                    Kindle Jr 4.0 - Round 2
+                  </h1>
+                  <span className={`px-3 py-1 text-sm font-medium rounded-full transition-colors duration-300 ${
+                    theme === 'dark' 
+                      ? 'text-purple-200 bg-purple-800/50' 
+                      : 'text-purple-700 bg-purple-100'
+                  }`}>
+                    Advanced Round
+                  </span>
+                </div>
+                <div className={`text-sm transition-colors duration-300 ${
+                  theme === 'dark' ? 'text-purple-200' : 'text-purple-600'
+                }`}>
+                  {user?.name} • {user?.rollNo}
+                </div>
               </div>
 
-              {/* Timer */}
-              <div className="flex items-center space-x-6">
+              {/* Timer and Theme Toggle */}
+              <div className="flex items-center space-x-4">
+                {/* Theme Toggle Button */}
+                <button
+                  onClick={toggleTheme}
+                  className={`p-2 rounded-lg transition-all duration-300 ${
+                    theme === 'dark'
+                      ? 'bg-white/10 hover:bg-white/20 text-white border border-white/20'
+                      : 'bg-gray-100 hover:bg-gray-200 text-gray-700 border border-gray-300'
+                  }`}
+                  title={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
+                >
+                  {theme === 'dark' ? <FaSun className="text-yellow-400" /> : <FaMoon className="text-blue-600" />}
+                </button>
+                
+                {/* Timer */}
                 <div className={`flex items-center space-x-2 px-4 py-2 rounded-lg ${
-                  timeRemaining < 300 ? 'bg-red-100 text-red-700' : 'bg-blue-100 text-blue-700'
+                  timeRemaining < 300 
+                    ? theme === 'dark'
+                      ? 'bg-red-500/20 text-red-200 border border-red-400/30'
+                      : 'bg-red-100 text-red-700 border border-red-300'
+                    : theme === 'dark'
+                      ? 'bg-white/10 text-white border border-white/20'
+                      : 'bg-blue-100 text-blue-700 border border-blue-300'
                 }`}>
                   <FaClock />
                   <span className="font-mono font-bold">{formatTime(timeRemaining)}</span>
@@ -403,25 +556,91 @@ export default function Round2Quiz() {
         </AnimatePresence>
 
         {/* Main Content */}
-        <div className="max-w-4xl px-4 py-8 mx-auto sm:px-6 lg:px-8">
-          {/* Progress Bar */}
-          <div className="mb-8">
-            <div className="flex items-center justify-between mb-2">
-              <span className="text-sm font-medium text-gray-600">
-                Question {currentQuestion + 1} of {round2Questions.length}
-              </span>
-              <span className="text-sm text-gray-500">
-                {Object.keys(answers).length} answered
-              </span>
-            </div>
-            <div className="w-full h-2 bg-gray-200 rounded-full">
-              <div
-                className="h-2 transition-all duration-300 rounded-full bg-gradient-to-r from-blue-500 to-purple-500"
-                style={{ width: `${((currentQuestion + 1) / round2Questions.length) * 100}%` }}
-              ></div>
-            </div>
-          </div>
+        <div className="max-w-6xl px-4 py-8 mx-auto sm:px-6 lg:px-8">
+          <div className="grid gap-6 lg:grid-cols-4">
+            {/* Question Navigator */}
+            <div className="lg:col-span-1">
+              <div className={`sticky p-4 border rounded-xl top-4 transition-all duration-300 ${
+                theme === 'dark'
+                  ? 'bg-white/10 backdrop-blur-md border-white/20'
+                  : 'bg-white border-gray-200 shadow-lg'
+              }`}>
+                <h3 className={`mb-4 text-lg font-semibold transition-colors duration-300 ${
+                  theme === 'dark' ? 'text-white' : 'text-gray-900'
+                }`}>
+                  Questions
+                </h3>
 
+                {/* Progress Bar */}
+                <div className="mb-4">
+                  <div className={`flex justify-between mb-2 text-sm transition-colors duration-300 ${
+                    theme === 'dark' ? 'text-gray-300' : 'text-gray-600'
+                  }`}>
+                    <span>Progress</span>
+                    <span>
+                      {getAnsweredCount()}/{round2Questions.length}
+                    </span>
+                  </div>
+                  <div className={`w-full h-2 rounded-full transition-colors duration-300 ${
+                    theme === 'dark' ? 'bg-gray-700' : 'bg-gray-200'
+                  }`}>
+                    <div
+                      className="h-2 transition-all duration-300 bg-green-500 rounded-full"
+                      style={{
+                        width: `${
+                          (getAnsweredCount() / round2Questions.length) * 100
+                        }%`,
+                      }}
+                    ></div>
+                  </div>
+                </div>
+
+                {/* Question Grid */}
+                <div className="grid grid-cols-5 gap-2">
+                  {round2Questions.map((_, index) => {
+                    const isAnswered = answers[round2Questions[index]?.id] !== undefined;
+                    const isCurrent = index === currentQuestion;
+
+                    return (
+                      <button
+                        key={index}
+                        onClick={() => jumpToQuestion(index)}
+                        className={`w-10 h-10 rounded-lg text-sm font-semibold transition-all ${
+                          isCurrent
+                            ? theme === 'dark'
+                              ? "bg-blue-500 text-white ring-2 ring-blue-300"
+                              : "bg-blue-600 text-white ring-2 ring-blue-400"
+                            : isAnswered
+                            ? theme === 'dark'
+                              ? "bg-green-500 text-white"
+                              : "bg-green-600 text-white"
+                            : theme === 'dark'
+                              ? "bg-gray-600 text-gray-300 hover:bg-gray-500"
+                              : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+                        }`}
+                      >
+                        {index + 1}
+                      </button>
+                    );
+                  })}
+                </div>
+
+                <button
+                  onClick={() => setShowSubmitModal(true)}
+                  className={`flex items-center justify-center w-full px-4 py-3 mt-6 space-x-2 font-semibold transition-colors rounded-lg ${
+                    theme === 'dark'
+                      ? 'text-white bg-green-600 hover:bg-green-700'
+                      : 'text-white bg-green-600 hover:bg-green-700'
+                  }`}
+                >
+                  <FaFlag />
+                  <span>Submit Quiz</span>
+                </button>
+              </div>
+            </div>
+
+            {/* Question Area */}
+            <div className="lg:col-span-3">
           {/* Question */}
           {renderQuestion()}
 
@@ -430,11 +649,21 @@ export default function Round2Quiz() {
             <button
               onClick={handlePreviousQuestion}
               disabled={currentQuestion === 0}
-              className="flex items-center px-6 py-3 space-x-2 text-gray-700 transition-colors bg-gray-100 rounded-lg hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed"
+              className={`flex items-center px-6 py-3 space-x-2 transition-all disabled:opacity-50 disabled:cursor-not-allowed rounded-lg ${
+                theme === 'dark'
+                  ? 'text-white bg-white/10 backdrop-blur-md border border-white/20 hover:bg-white/20'
+                  : 'text-gray-700 bg-gray-100 border border-gray-300 hover:bg-gray-200'
+              }`}
             >
               <FaArrowLeft />
               <span>Previous</span>
             </button>
+
+            <div className={`text-sm transition-colors duration-300 ${
+              theme === 'dark' ? 'text-gray-300' : 'text-gray-600'
+            }`}>
+              {getAnsweredCount()} of {round2Questions.length} answered
+            </div>
 
             <div className="flex items-center space-x-4">
               {currentQuestion === round2Questions.length - 1 ? (
@@ -453,7 +682,8 @@ export default function Round2Quiz() {
                   <span>Next</span>
                   <FaArrowRight />
                 </button>
-              )}
+              )}            </div>
+          </div>
             </div>
           </div>
         </div>
@@ -471,21 +701,33 @@ export default function Round2Quiz() {
                 initial={{ scale: 0.8, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
                 exit={{ scale: 0.8, opacity: 0 }}
-                className="w-full max-w-md p-8 bg-white rounded-xl"
+                className={`w-full max-w-md p-8 rounded-xl transition-all duration-300 ${
+                  theme === 'dark'
+                    ? 'bg-white/10 backdrop-blur-md border border-white/20'
+                    : 'bg-white border border-gray-200 shadow-lg'
+                }`}
               >
                 <div className="text-center">
                   <FaFlag className="mx-auto mb-4 text-4xl text-green-500" />
-                  <h3 className="mb-4 text-xl font-bold text-gray-900">
+                  <h3 className={`mb-4 text-xl font-bold transition-colors duration-300 ${
+                    theme === 'dark' ? 'text-white' : 'text-gray-900'
+                  }`}>
                     Submit Round 2 Quiz?
                   </h3>
-                  <p className="mb-6 text-gray-600">
-                    You have answered {Object.keys(answers).length} out of {round2Questions.length} questions.
+                  <p className={`mb-6 transition-colors duration-300 ${
+                    theme === 'dark' ? 'text-white/80' : 'text-gray-600'
+                  }`}>
+                    You have answered {getAnsweredCount()} out of {round2Questions.length} questions.
                     Are you sure you want to submit your quiz?
                   </p>
                   <div className="flex space-x-4">
                     <button
                       onClick={() => setShowSubmitModal(false)}
-                      className="flex-1 px-6 py-3 text-gray-700 transition-colors border border-gray-300 rounded-lg hover:bg-gray-50"
+                      className={`flex-1 px-6 py-3 transition-all rounded-lg ${
+                        theme === 'dark'
+                          ? 'text-white bg-white/10 backdrop-blur-md border border-white/20 hover:bg-white/20'
+                          : 'text-gray-700 bg-gray-100 border border-gray-300 hover:bg-gray-200'
+                      }`}
                     >
                       Cancel
                     </button>

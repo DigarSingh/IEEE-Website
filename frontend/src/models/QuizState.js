@@ -30,6 +30,14 @@ const QuizStateSchema = new mongoose.Schema({
     endTime: {
       type: Date,
       default: null
+    },
+    duration: {
+      type: Number,
+      default: 30 * 60 // 30 minutes in seconds
+    },
+    password: {
+      type: String,
+      default: "ieee@321"
     }
   },
   round2: {
@@ -48,6 +56,14 @@ const QuizStateSchema = new mongoose.Schema({
     endTime: {
       type: Date,
       default: null
+    },
+    duration: {
+      type: Number,
+      default: 45 * 60 // 45 minutes in seconds
+    },
+    password: {
+      type: String,
+      default: "ieeegg@321"
     }
   },
   quizSettings: {
