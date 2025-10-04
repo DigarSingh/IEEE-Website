@@ -1,31 +1,43 @@
-import { useState, useEffect } from 'react';
-import { useRouter } from 'next/router';
-import Head from 'next/head';
-import Link from 'next/link';
-import { motion } from 'framer-motion';
-import { FaUser, FaIdCard, FaLock, FaArrowRight, FaExclamationTriangle, FaEye, FaEyeSlash, FaTrophy, FaCode, FaSpinner, FaClock } from 'react-icons/fa';
-import { useQuiz } from '../contexts/QuizContext';
-import { storeStudentData, getStudentByRollNo } from '../lib/mongodb-storage';
+import { useState, useEffect } from "react";
+import { useRouter } from "next/router";
+import Head from "next/head";
+import Link from "next/link";
+import { motion } from "framer-motion";
+import {
+  FaUser,
+  FaIdCard,
+  FaLock,
+  FaArrowRight,
+  FaExclamationTriangle,
+  FaEye,
+  FaEyeSlash,
+  FaTrophy,
+  FaCode,
+  FaSpinner,
+  FaClock,
+} from "react-icons/fa";
+import { useQuiz } from "../contexts/QuizContext";
+import { storeStudentData, getStudentByRollNo } from "../lib/mongodb-storage";
 
 export default function QuizLogin() {
   const router = useRouter();
   const { state, dispatch } = useQuiz();
   const [formData, setFormData] = useState({
-    name: '',
-    rollNo: '',
-    password: ''
+    name: "",
+    rollNo: "",
+    password: "",
   });
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [selectedRound, setSelectedRound] = useState(1);
   // Removed quiz state checking - no longer needed
 
   // Redirect if already logged in
   useEffect(() => {
-    const savedUser = localStorage.getItem('quizUser');
+    const savedUser = localStorage.getItem("quizUser");
     if (savedUser) {
-      router.push('/instructions');
+      router.push("/instructions");
     }
   }, [router]);
 
@@ -37,53 +49,57 @@ export default function QuizLogin() {
   const handleInputChange = (e) => {
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
-    setError('');
+    setError("");
   };
 
   const validateCredentials = (name, rollNo, password) => {
     // Simple validation - in production, this would be against a real database
-    const validPasswords = 'ieee@321';
-    return validPasswords.includes(password) && 
-           name.length >= 2 && 
-           rollNo.match(/^\d{8}$/);
+    const validPasswords = "ieee@321";
+    return (
+      validPasswords.includes(password) &&
+      name.length >= 2 &&
+      rollNo.match(/^\d{8}$/)
+    );
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    setError('');
+    setError("");
 
     try {
       const { name, rollNo, password } = formData;
-      
+
       if (!name || !rollNo || !password) {
-        throw new Error('All fields are required');
+        throw new Error("All fields are required");
       }
 
       if (!validateCredentials(name, rollNo, password)) {
-        throw new Error('Invalid credentials. Please check your details and password.');
+        throw new Error(
+          "Invalid credentials. Please check your details and password."
+        );
       }
 
       // Check if student already exists
       const existingStudent = await getStudentByRollNo(rollNo.trim());
-      
+
       // Store user data with selected round
       const userData = {
         name: name.trim(),
         rollNo: rollNo.trim(),
         selectedRound: selectedRound,
-        loginTime: new Date().toISOString()
+        loginTime: new Date().toISOString(),
       };
 
       // Store in MongoDB
-      console.log('🔄 Attempting to store student data in MongoDB...');
+      console.log("🔄 Attempting to store student data in MongoDB...");
       const mongoResult = await storeStudentData(userData);
-      console.log('📊 MongoDB result:', mongoResult);
-      
+      console.log("📊 MongoDB result:", mongoResult);
+
       if (!mongoResult.success) {
-        console.error('❌ MongoDB storage failed:', mongoResult.error);
+        console.error("❌ MongoDB storage failed:", mongoResult.error);
         throw new Error(`Failed to store student data: ${mongoResult.error}`);
       }
 
@@ -91,16 +107,16 @@ export default function QuizLogin() {
       userData.studentId = mongoResult.id;
 
       // Store in localStorage and context
-      localStorage.setItem('quizUser', JSON.stringify(userData));
-      dispatch({ type: 'SET_USER', payload: userData });
+      localStorage.setItem("quizUser", JSON.stringify(userData));
+      dispatch({ type: "SET_USER", payload: userData });
 
-      console.log('✅ Student data stored in MongoDB:', mongoResult.id);
+      console.log("✅ Student data stored in MongoDB:", mongoResult.id);
 
       // Redirect based on selected round
-      if (selectedRound === 2) {
-        router.push('/round2-quiz');
+      if (selectedRound === 1) {
+        router.push("/round1-quiz");
       } else {
-        router.push('/instructions');
+        router.push("/instructions");
       }
     } catch (err) {
       setError(err.message);
@@ -115,17 +131,23 @@ export default function QuizLogin() {
     <>
       <Head>
         <title>Quiz Login | IEEE GEU Student Branch</title>
-        <meta name="description" content="Login to participate in IEEE GEU Quiz Competition" />
+        <meta
+          name="description"
+          content="Login to participate in IEEE GEU Quiz Competition"
+        />
       </Head>
 
       <div className="flex items-center justify-center min-h-screen px-4 bg-gradient-to-br from-blue-900 via-purple-900 to-indigo-900">
         {/* Background Pattern */}
         <div className="absolute inset-0 opacity-10">
-          <div className="absolute inset-0" style={{
-            backgroundImage: `radial-gradient(circle at 25px 25px, rgba(255,255,255,0.2) 2%, transparent 0%), 
+          <div
+            className="absolute inset-0"
+            style={{
+              backgroundImage: `radial-gradient(circle at 25px 25px, rgba(255,255,255,0.2) 2%, transparent 0%), 
                              radial-gradient(circle at 75px 75px, rgba(255,255,255,0.1) 2%, transparent 0%)`,
-            backgroundSize: '100px 100px'
-          }}></div>
+              backgroundSize: "100px 100px",
+            }}
+          ></div>
         </div>
 
         <motion.div
@@ -137,9 +159,15 @@ export default function QuizLogin() {
           {/* Header */}
           <div className="mb-8 text-center">
             <Link href="/" className="inline-block mb-4">
-              <img src="/images/logo.png" alt="IEEE GEU" className="w-auto h-16 mx-auto" />
+              <img
+                src="/images/logo.png"
+                alt="IEEE GEU"
+                className="w-auto h-16 mx-auto"
+              />
             </Link>
-            <h1 className="mb-2 text-3xl font-bold text-white">Kindle Jr 4.0</h1>
+            <h1 className="mb-2 text-3xl font-bold text-white">
+              Kindle Jr 4.0
+            </h1>
             <p className="text-blue-200">IEEE GEU Student Branch Quiz Portal</p>
           </div>
 
@@ -151,7 +179,9 @@ export default function QuizLogin() {
             className="mb-6"
           >
             <div className="flex justify-between items-center mb-4">
-              <h2 className="text-lg font-semibold text-white">Select Quiz Round</h2>
+              <h2 className="text-lg font-semibold text-white">
+                Select Quiz Round
+              </h2>
               <button
                 onClick={() => window.location.reload()}
                 className="px-3 py-1 text-xs bg-white/10 text-white rounded hover:bg-white/20 transition-colors"
@@ -166,8 +196,8 @@ export default function QuizLogin() {
                 onClick={() => setSelectedRound(1)}
                 className={`p-4 rounded-lg border-2 transition-all ${
                   selectedRound === 1
-                    ? 'border-blue-400 bg-blue-500/20 text-white'
-                    : 'border-white/20 bg-white/5 text-gray-300 hover:border-white/40'
+                    ? "border-blue-400 bg-blue-500/20 text-white"
+                    : "border-white/20 bg-white/5 text-gray-300 hover:border-white/40"
                 }`}
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
@@ -183,8 +213,8 @@ export default function QuizLogin() {
                 onClick={() => setSelectedRound(2)}
                 className={`p-4 rounded-lg border-2 transition-all ${
                   selectedRound === 2
-                    ? 'border-purple-400 bg-purple-500/20 text-white'
-                    : 'border-white/20 bg-white/5 text-gray-300 hover:border-white/40'
+                    ? "border-purple-400 bg-purple-500/20 text-white"
+                    : "border-white/20 bg-white/5 text-gray-300 hover:border-white/40"
                 }`}
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
@@ -211,7 +241,8 @@ export default function QuizLogin() {
                 <span className="font-medium">Welcome to IEEE Quiz</span>
               </div>
               <p className="mt-2 text-sm text-blue-100">
-                Login to join the quiz lobby. You'll be notified when the quiz starts.
+                Login to join the quiz lobby. You'll be notified when the quiz
+                starts.
               </p>
             </div>
 
@@ -313,13 +344,13 @@ export default function QuizLogin() {
                 <p className="text-sm text-center text-gray-300">
                   Need help? Contact the exam coordinators
                 </p>
-                
+
                 <div className="flex items-center space-x-2">
                   <div className="flex-1 h-px bg-white/20"></div>
                   <span className="text-xs text-gray-400">or</span>
                   <div className="flex-1 h-px bg-white/20"></div>
                 </div>
-                
+
                 <Link href="/admin-quiz">
                   <motion.button
                     className="flex items-center justify-center px-4 py-2 space-x-2 text-sm font-medium text-blue-300 transition-all duration-300 border border-blue-300/30 rounded-lg bg-blue-500/10 hover:bg-blue-500/20 hover:border-blue-300/50"
@@ -333,8 +364,6 @@ export default function QuizLogin() {
               </div>
             </div>
           </motion.div>
-
-          
         </motion.div>
       </div>
     </>
