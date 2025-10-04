@@ -1,7 +1,7 @@
 "use client";
 import React, { createContext, useContext, useReducer, useEffect } from 'react';
-import { db } from '../lib/firebase';
-import { doc, getDoc } from 'firebase/firestore';
+// MongoDB imports for quiz state management
+import { getQuizState } from '../lib/mongodb-storage';
 
 const QuizContext = createContext();
 
@@ -55,48 +55,43 @@ function quizReducer(state, action) {
 export function QuizProvider({ children }) {
   const [state, dispatch] = useReducer(quizReducer, initialState);
 
-  // Monitor admin quiz state
+  // Monitor MongoDB quiz state
   useEffect(() => {
-    const checkAdminQuizState = async () => {
+    const checkQuizState = async () => {
       try {
-        console.log('Checking admin quiz state...');
-        const quizStateDoc = await getDoc(doc(db, 'admin', 'quizState'));
-        if (quizStateDoc.exists()) {
-          const data = quizStateDoc.data();
-          console.log('Firebase data received:', data);
+        console.log('Checking MongoDB quiz state...');
+        const result = await getQuizState();
+        
+        if (result.success) {
+          const data = result.data;
+          console.log('MongoDB data received:', data);
           
-          // Check for new round-based structure
+          // Check for quiz active state
           let isQuizActive = false;
           
           if (data.isActive) {
-            // New structure: check if any round is active
             isQuizActive = data.isActive;
             console.log('Quiz active via isActive flag:', isQuizActive);
           } else if (data.round1?.isActive || data.round2?.isActive) {
-            // Alternative: check individual rounds
             isQuizActive = true;
             console.log('Quiz active via round flags');
-          } else if (data.isQuizActive !== undefined) {
-            // Fallback to old structure
-            isQuizActive = data.isQuizActive;
-            console.log('Quiz active via legacy isQuizActive flag:', isQuizActive);
           }
           
           console.log('Final quiz active state:', isQuizActive);
           dispatch({ type: 'SET_QUIZ_ACTIVE', payload: isQuizActive });
         } else {
-          console.log('No quiz state document found in Firebase');
+          console.log('No quiz state found in MongoDB');
           dispatch({ type: 'SET_QUIZ_ACTIVE', payload: false });
         }
       } catch (error) {
-        console.error('Error checking admin quiz state:', error);
+        console.error('Error checking MongoDB quiz state:', error);
       }
     };
 
-    checkAdminQuizState();
+    checkQuizState();
     
     // Check every 10 seconds for more responsive updates
-    const interval = setInterval(checkAdminQuizState, 10000);
+    const interval = setInterval(checkQuizState, 10000);
     return () => clearInterval(interval);
   }, []);
 

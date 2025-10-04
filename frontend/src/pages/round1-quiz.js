@@ -12,6 +12,7 @@ import {
   FaCheckCircle
 } from 'react-icons/fa';
 import { useQuiz } from '../contexts/QuizContext';
+import { storeQuizResult, updateStudentData } from '../lib/firebase-storage';
 
 export default function Quiz() {
   const router = useRouter();
@@ -145,21 +146,95 @@ export default function Quiz() {
     dispatch({ type: 'SET_CURRENT_QUESTION', payload: index });
   };
 
-  const handleSubmitQuiz = () => {
-    dispatch({ type: 'COMPLETE_QUIZ' });
-    
-    // Save final results
-    const results = {
-      user: state.user,
-      answers: state.answers,
-      questions: state.questions,
-      timeSpent: 30 * 60 - state.timeRemaining,
-      completedAt: new Date().toISOString(),
-      warnings: state.fullscreenWarnings
-    };
-    
-    localStorage.setItem('quizResults', JSON.stringify(results));
-    router.push('/result');
+  const handleSubmitQuiz = async () => {
+    try {
+      dispatch({ type: 'COMPLETE_QUIZ' });
+      
+      // Calculate score
+      let score = 0;
+      state.questions.forEach((question, index) => {
+        const userAnswer = state.answers[question.id];
+        if (userAnswer === question.correctAnswer) {
+          score++;
+        }
+      });
+      
+      const percentage = Math.round((score / state.questions.length) * 100);
+      const grade = getGrade(percentage);
+      const timeSpent = 30 * 60 - state.timeRemaining;
+      const completedAt = new Date().toISOString();
+      
+      // Prepare result data for Firebase
+      const resultData = {
+        name: state.user.name,
+        rollNo: state.user.rollNo,
+        studentId: state.user.studentId,
+        round: 1,
+        score: score,
+        totalQuestions: state.questions.length,
+        percentage: percentage,
+        grade: grade,
+        timeTaken: formatTime(timeSpent),
+        timeSpent: timeSpent,
+        loginTime: state.user.loginTime,
+        quizStartedAt: state.quizStartedAt,
+        completedAt: completedAt,
+        answers: state.answers,
+        warnings: state.fullscreenWarnings
+      };
+      
+      // Store in Firebase
+      const firebaseResult = await storeQuizResult(resultData);
+      if (firebaseResult.success) {
+        console.log('✅ Quiz result stored in Firebase:', firebaseResult.id);
+      } else {
+        console.error('❌ Failed to store quiz result:', firebaseResult.error);
+      }
+      
+      // Update student data in Firebase
+      if (state.user.studentId) {
+        await updateStudentData(state.user.studentId, {
+          quizCompleted: true,
+          score: score,
+          percentage: percentage,
+          grade: grade,
+          timeSpent: timeSpent,
+          completedAt: completedAt
+        });
+      }
+      
+      // Save to localStorage as backup
+      const results = {
+        user: state.user,
+        answers: state.answers,
+        questions: state.questions,
+        timeSpent: timeSpent,
+        completedAt: completedAt,
+        warnings: state.fullscreenWarnings,
+        score: score,
+        percentage: percentage,
+        grade: grade,
+        firebaseId: firebaseResult.id
+      };
+      
+      localStorage.setItem('quizResults', JSON.stringify(results));
+      router.push('/result');
+      
+    } catch (error) {
+      console.error('Error submitting quiz:', error);
+      // Still redirect to result page even if Firebase fails
+      router.push('/result');
+    }
+  };
+  
+  const getGrade = (percentage) => {
+    if (percentage >= 90) return 'A+';
+    if (percentage >= 80) return 'A';
+    if (percentage >= 70) return 'B+';
+    if (percentage >= 60) return 'B';
+    if (percentage >= 50) return 'C';
+    if (percentage >= 40) return 'D';
+    return 'F';
   };
 
   const getAnsweredCount = () => {

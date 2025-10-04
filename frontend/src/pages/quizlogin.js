@@ -3,8 +3,9 @@ import { useRouter } from 'next/router';
 import Head from 'next/head';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { FaUser, FaIdCard, FaLock, FaArrowRight, FaExclamationTriangle, FaEye, FaEyeSlash, FaTrophy, FaCode } from 'react-icons/fa';
+import { FaUser, FaIdCard, FaLock, FaArrowRight, FaExclamationTriangle, FaEye, FaEyeSlash, FaTrophy, FaCode, FaSpinner, FaClock } from 'react-icons/fa';
 import { useQuiz } from '../contexts/QuizContext';
+import { storeStudentData, getStudentByRollNo } from '../lib/mongodb-storage';
 
 export default function QuizLogin() {
   const router = useRouter();
@@ -18,6 +19,7 @@ export default function QuizLogin() {
   const [error, setError] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [selectedRound, setSelectedRound] = useState(1);
+  // Removed quiz state checking - no longer needed
 
   // Redirect if already logged in
   useEffect(() => {
@@ -27,8 +29,10 @@ export default function QuizLogin() {
     }
   }, [router]);
 
-  // Check if quiz is active
-  const isQuizAvailable = state.isQuizActive;
+  // No need for quiz state checking
+
+  // Always allow login - no need to check quiz state
+  const isQuizAvailable = true;
 
   const handleInputChange = (e) => {
     setFormData({
@@ -62,6 +66,9 @@ export default function QuizLogin() {
         throw new Error('Invalid credentials. Please check your details and password.');
       }
 
+      // Check if student already exists
+      const existingStudent = await getStudentByRollNo(rollNo.trim());
+      
       // Store user data with selected round
       const userData = {
         name: name.trim(),
@@ -70,8 +77,24 @@ export default function QuizLogin() {
         loginTime: new Date().toISOString()
       };
 
+      // Store in Firebase
+      console.log('🔄 Attempting to store student data in Firebase...');
+      const firebaseResult = await storeStudentData(userData);
+      console.log('📊 Firebase result:', firebaseResult);
+      
+      if (!firebaseResult.success) {
+        console.error('❌ Firebase storage failed:', firebaseResult.error);
+        throw new Error(`Failed to store student data: ${firebaseResult.error}`);
+      }
+
+      // Add Firebase student ID to user data
+      userData.studentId = firebaseResult.id;
+
+      // Store in localStorage and context
       localStorage.setItem('quizUser', JSON.stringify(userData));
       dispatch({ type: 'SET_USER', payload: userData });
+
+      console.log('✅ Student data stored in Firebase:', firebaseResult.id);
 
       // Redirect based on selected round
       if (selectedRound === 2) {
@@ -85,6 +108,8 @@ export default function QuizLogin() {
       setLoading(false);
     }
   };
+
+  // Remove loading state - show login form immediately
 
   return (
     <>
@@ -125,7 +150,16 @@ export default function QuizLogin() {
             transition={{ duration: 0.6, delay: 0.1 }}
             className="mb-6"
           >
-            <h2 className="mb-4 text-lg font-semibold text-white text-center">Select Quiz Round</h2>
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-lg font-semibold text-white">Select Quiz Round</h2>
+              <button
+                onClick={() => window.location.reload()}
+                className="px-3 py-1 text-xs bg-white/10 text-white rounded hover:bg-white/20 transition-colors"
+                title="Refresh quiz status"
+              >
+                🔄 Refresh
+              </button>
+            </div>
             <div className="grid grid-cols-2 gap-4">
               <motion.button
                 type="button"
@@ -170,17 +204,16 @@ export default function QuizLogin() {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="p-8 border shadow-2xl bg-white/10 backdrop-blur-md border-white/20 rounded-2xl"
           >
-            {!isQuizAvailable && (
-              <div className="mb-6 p-4 bg-yellow-500/20 border border-yellow-400/30 rounded-lg">
-                <div className="flex items-center space-x-2 text-yellow-200">
-                  <FaExclamationTriangle />
-                  <span className="font-medium">Quiz Not Available</span>
-                </div>
-                <p className="mt-2 text-sm text-yellow-100">
-                  The quiz is currently not active. Please wait for the admin to start the quiz session.
-                </p>
+            {/* Welcome Message */}
+            <div className="mb-6 p-4 bg-blue-500/20 border border-blue-400/30 rounded-lg">
+              <div className="flex items-center space-x-2 text-blue-200">
+                <FaClock />
+                <span className="font-medium">Welcome to IEEE Quiz</span>
               </div>
-            )}
+              <p className="mt-2 text-sm text-blue-100">
+                Login to join the quiz lobby. You'll be notified when the quiz starts.
+              </p>
+            </div>
 
             <form onSubmit={handleSubmit} className="space-y-6">
               <div>
@@ -194,7 +227,7 @@ export default function QuizLogin() {
                     name="name"
                     value={formData.name}
                     onChange={handleInputChange}
-                    disabled={!isQuizAvailable}
+                    disabled={false}
                     className="w-full py-3 pl-10 pr-4 text-white placeholder-gray-300 border rounded-lg bg-white/10 border-white/20 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent disabled:opacity-50 disabled:cursor-not-allowed"
                     placeholder="Enter your full name"
                     required
@@ -213,7 +246,7 @@ export default function QuizLogin() {
                     name="rollNo"
                     value={formData.rollNo}
                     onChange={handleInputChange}
-                    disabled={!isQuizAvailable}
+                    disabled={false}
                     className="w-full py-3 pl-10 pr-4 text-white placeholder-gray-300 border rounded-lg bg-white/10 border-white/20 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent disabled:opacity-50 disabled:cursor-not-allowed"
                     placeholder="Enter your roll number"
                     required
@@ -232,7 +265,7 @@ export default function QuizLogin() {
                     name="password"
                     value={formData.password}
                     onChange={handleInputChange}
-                    disabled={!isQuizAvailable}
+                    disabled={false}
                     className="w-full py-3 pl-10 pr-12 text-white placeholder-gray-300 border rounded-lg bg-white/10 border-white/20 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent disabled:opacity-50 disabled:cursor-not-allowed"
                     placeholder="Password provided at exam hall"
                     required
@@ -240,7 +273,7 @@ export default function QuizLogin() {
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    disabled={!isQuizAvailable}
+                    disabled={false}
                     className="absolute text-gray-400 transition-colors transform -translate-y-1/2 right-3 top-1/2 hover:text-white disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     {showPassword ? <FaEyeSlash /> : <FaEye />}
@@ -261,14 +294,14 @@ export default function QuizLogin() {
 
               <button
                 type="submit"
-                disabled={loading || !isQuizAvailable}
+                disabled={loading}
                 className="flex items-center justify-center w-full px-4 py-3 space-x-2 font-semibold text-white transition-all duration-300 rounded-lg bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {loading ? (
                   <div className="w-5 h-5 border-b-2 border-white rounded-full animate-spin"></div>
                 ) : (
                   <>
-                    <span>{isQuizAvailable ? 'Login to Quiz' : 'Quiz Not Available'}</span>
+                    <span>Login to Quiz</span>
                     <FaArrowRight />
                   </>
                 )}

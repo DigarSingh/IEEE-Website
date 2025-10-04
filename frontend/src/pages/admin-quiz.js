@@ -1,19 +1,13 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
-import { db } from '../lib/firebase';
+// MongoDB imports for admin functionality
 import { 
-  doc, 
-  setDoc, 
-  getDoc, 
-  collection, 
-  onSnapshot, 
-  query, 
-  orderBy, 
-  addDoc,
-  updateDoc,
-  serverTimestamp
-} from 'firebase/firestore';
+  getQuizState,
+  updateQuizState,
+  getAllStudents,
+  getQuizResults
+} from '../lib/mongodb-storage';
 
 export default function AdminQuizDashboard() {
   const router = useRouter();
@@ -69,10 +63,113 @@ export default function AdminQuizDashboard() {
   // Results and Leaderboard
   const [results, setResults] = useState([]);
   const [leaderboard, setLeaderboard] = useState([]);
+  const [showLeaderboard, setShowLeaderboard] = useState(false);
+  const [leaderboardType, setLeaderboardType] = useState('overall'); // overall, round, recent
   
   // UI State
   const [showSettings, setShowSettings] = useState(false);
   const [showExportModal, setShowExportModal] = useState(false);
+  
+  // Leaderboard functions
+  const fetchLeaderboard = async (type = 'overall', round = null) => {
+    try {
+      const result = await getQuizResults();
+      
+      if (result.success) {
+        // Filter and sort results for leaderboard
+        let filteredResults = result.data;
+        
+        if (round) {
+          filteredResults = result.data.filter(r => r.selectedRound === round);
+        }
+        
+        const leaderboard = filteredResults
+          .sort((a, b) => {
+            if (b.percentage !== a.percentage) {
+              return b.percentage - a.percentage;
+            }
+            return a.timeSpent - b.timeSpent;
+          })
+          .slice(0, 20);
+        
+        setLeaderboard(leaderboard);
+        
+        // Calculate statistics
+        const stats = {
+          totalParticipants: result.data.length,
+          averageScore: result.data.reduce((sum, r) => sum + r.percentage, 0) / result.data.length || 0,
+          highestScore: Math.max(...result.data.map(r => r.percentage), 0),
+          completedQuizzes: result.data.filter(r => r.quizCompleted).length
+        };
+        
+        setStats(prev => ({
+          ...prev,
+          ...stats
+        }));
+      } else {
+        console.error('Error fetching leaderboard:', result.error);
+      }
+    } catch (error) {
+      console.error('Error fetching leaderboard:', error);
+    }
+  };
+
+  const updateLeaderboard = () => {
+    fetchLeaderboard(leaderboardType, selectedRound);
+  };
+
+  const exportLeaderboardCSV = () => {
+    if (leaderboard.length === 0) {
+      alert("No data to export");
+      return;
+    }
+
+    const headers = [
+      "Rank", "Name", "Roll No", "Score", "Total Questions", "Percentage", "Grade",
+      "Time Taken", "Round", "Status", "Warnings", "Completed At"
+    ];
+    
+    const csvRows = [];
+    csvRows.push(headers.join(','));
+    
+    leaderboard.forEach((participant, index) => {
+      const row = [
+        index + 1,
+        `"${participant.name}"`,
+        `"${participant.rollNo}"`,
+        participant.score || 0,
+        participant.totalQuestions || 20,
+        participant.percentage || 0,
+        `"${participant.grade || 'N/A'}"`,
+        `"${participant.timeTaken || 'N/A'}"`,
+        participant.round || 1,
+        participant.completed ? 'Completed' : 'In Progress',
+        participant.warnings || 0,
+        `"${new Date(participant.completedAt).toLocaleString()}"`
+      ];
+      csvRows.push(row.join(','));
+    });
+    
+    const csvString = csvRows.join('\n');
+    const blob = new Blob([csvString], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.setAttribute('download', `leaderboard_${leaderboardType}_${new Date().toISOString().split('T')[0]}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
+  // Auto-refresh leaderboard every 30 seconds
+  useEffect(() => {
+    if (isAuthenticated) {
+      const interval = setInterval(() => {
+        fetchLeaderboard(leaderboardType, selectedRound);
+      }, 30000); // 30 seconds
+      
+      return () => clearInterval(interval);
+    }
+  }, [isAuthenticated, leaderboardType, selectedRound]);
 
   // Timer effect for countdown
   useEffect(() => {
@@ -96,10 +193,24 @@ export default function AdminQuizDashboard() {
     return () => clearInterval(interval);
   }, [quizState.round1.isActive, quizState.round1.globalTimer, quizState.round2.isActive, quizState.round2.globalTimer, quizState.currentRound]);
 
+  // Initialize leaderboard on component mount
+  useEffect(() => {
+    if (isAuthenticated) {
+      fetchLeaderboard();
+    }
+  }, [isAuthenticated]);
+
+  // Update leaderboard when type or round changes
+  useEffect(() => {
+    if (isAuthenticated) {
+      fetchLeaderboard(leaderboardType, selectedRound);
+    }
+  }, [leaderboardType, selectedRound, isAuthenticated]);
+
   // Load quiz state and setup real-time listeners
   useEffect(() => {
     if (isAuthenticated) {
-      loadQuizState();
+      loadQuizState(); // Load quiz state from MongoDB
       setupRealtimeListeners();
     }
   }, [isAuthenticated]);
@@ -114,9 +225,9 @@ export default function AdminQuizDashboard() {
 
   const loadQuizState = async () => {
     try {
-      const quizDoc = await getDoc(doc(db, 'admin', 'quizState'));
-      if (quizDoc.exists()) {
-        const data = quizDoc.data();
+      const result = await getQuizState();
+      if (result.success) {
+        const data = result.data;
         
         // Handle new round-based structure
         const newQuizState = {
@@ -200,53 +311,56 @@ export default function AdminQuizDashboard() {
   };
 
   const setupRealtimeListeners = () => {
-    // Listen to quiz results
-    const resultsQuery = query(
-      collection(db, 'quizResults'),
-      orderBy('completedAt', 'desc')
-    );
+    // Poll MongoDB for quiz results every 5 seconds
+    const pollResults = async () => {
+      try {
+        const result = await getQuizResults();
+        if (result.success) {
+          setResults(result.data);
+          
+          // Calculate statistics
+          const now = new Date();
+          const thirtyMinutesAgo = new Date(now.getTime() - 30 * 60 * 1000);
+          
+          const recentResults = result.data.filter(r => 
+            new Date(r.completedAt) > thirtyMinutesAgo
+          );
+          
+          const totalScore = result.data.reduce((sum, r) => sum + (r.percentage || 0), 0);
+          const avgScore = result.data.length > 0 ? Math.round(totalScore / result.data.length) : 0;
+          
+          setStats({
+            totalParticipants: result.data.length,
+            activeParticipants: recentResults.length,
+            completedQuizzes: result.data.length,
+            averageScore: avgScore
+          });
+          
+          // Create leaderboard
+          const sortedResults = [...result.data]
+            .sort((a, b) => {
+              if (b.percentage === a.percentage) {
+                return (a.timeSpent || 0) - (b.timeSpent || 0); // Less time is better
+              }
+              return (b.percentage || 0) - (a.percentage || 0); // Higher percentage is better
+            })
+            .slice(0, 10);
+          
+          setLeaderboard(sortedResults);
+        }
+      } catch (error) {
+        console.error('Error polling results:', error);
+      }
+    };
     
-    const unsubscribeResults = onSnapshot(resultsQuery, (snapshot) => {
-      const allResults = [];
-      snapshot.forEach((doc) => {
-        allResults.push({ id: doc.id, ...doc.data() });
-      });
-      
-      setResults(allResults);
-      
-      // Calculate statistics
-      const now = new Date();
-      const thirtyMinutesAgo = new Date(now.getTime() - 30 * 60 * 1000);
-      
-      const recentResults = allResults.filter(r => 
-        new Date(r.completedAt) > thirtyMinutesAgo
-      );
-      
-      const totalScore = allResults.reduce((sum, r) => sum + (r.percentage || 0), 0);
-      const avgScore = allResults.length > 0 ? Math.round(totalScore / allResults.length) : 0;
-      
-      setStats({
-        totalParticipants: allResults.length,
-        activeParticipants: recentResults.length,
-        completedQuizzes: allResults.length,
-        averageScore: avgScore
-      });
-      
-      // Create leaderboard
-      const sortedResults = [...allResults]
-        .sort((a, b) => {
-          if (b.percentage === a.percentage) {
-            return (a.timeSpent || 0) - (b.timeSpent || 0); // Less time is better
-          }
-          return (b.percentage || 0) - (a.percentage || 0); // Higher percentage is better
-        })
-        .slice(0, 10);
-      
-      setLeaderboard(sortedResults);
-    });
-
+    // Poll every 5 seconds
+    const interval = setInterval(pollResults, 5000);
+    
+    // Initial poll
+    pollResults();
+    
     return () => {
-      unsubscribeResults();
+      clearInterval(interval);
     };
   };
 
@@ -264,31 +378,6 @@ export default function AdminQuizDashboard() {
     setIsAuthenticated(false);
     localStorage.removeItem('adminAuth');
     router.push('/');
-  };
-
-  const testFirebaseConnection = async () => {
-    try {
-      console.log('Testing Firebase connection...');
-      const testData = {
-        isActive: true,
-        testTime: new Date().toISOString(),
-        round1: { isActive: false },
-        round2: { isActive: false }
-      };
-      
-      await setDoc(doc(db, 'admin', 'quizState'), testData);
-      console.log('Firebase test write successful');
-      alert('Firebase connection test successful! Check console for details.');
-      
-      // Read it back
-      const readDoc = await getDoc(doc(db, 'admin', 'quizState'));
-      if (readDoc.exists()) {
-        console.log('Firebase test read successful:', readDoc.data());
-      }
-    } catch (error) {
-      console.error('Firebase connection test failed:', error);
-      alert('Firebase connection test failed! Check console for error details.');
-    }
   };
 
   const handleStartQuiz = async () => {
@@ -318,16 +407,14 @@ export default function AdminQuizDashboard() {
         }
       };
       
-      await setDoc(doc(db, 'admin', 'quizState'), quizData);
-      
-      // Log admin action
-      await addDoc(collection(db, 'adminLogs'), {
-        action: `START_QUIZ_ROUND_${selectedRound}`,
-        timestamp: serverTimestamp(),
-        round: selectedRound,
+      const result = await updateQuizState('START_ROUND', selectedRound, {
         duration: roundSettings.duration,
         questionsCount: roundSettings.questionsCount
       });
+      
+      if (!result.success) {
+        throw new Error(result.error);
+      }
       
       setQuizState(prev => ({
         ...prev,
@@ -341,6 +428,8 @@ export default function AdminQuizDashboard() {
           globalTimer: duration
         }
       }));
+      
+      alert(`Round ${selectedRound} started successfully!`);
       
     } catch (error) {
       console.error('Error starting quiz:', error);
@@ -366,14 +455,11 @@ export default function AdminQuizDashboard() {
         settings: settings
       };
       
-      await updateDoc(doc(db, 'admin', 'quizState'), quizData);
+      const result = await updateQuizState('STOP_ROUND', quizState.currentRound);
       
-      // Log admin action
-      await addDoc(collection(db, 'adminLogs'), {
-        action: `STOP_QUIZ_ROUND_${quizState.currentRound}`,
-        timestamp: serverTimestamp(),
-        round: quizState.currentRound
-      });
+      if (!result.success) {
+        throw new Error(result.error);
+      }
       
       setQuizState(prev => ({
         ...prev,
@@ -403,9 +489,11 @@ export default function AdminQuizDashboard() {
         password: settings.password
       };
       
-      await updateDoc(doc(db, 'admin', 'quizState'), {
-        settings: settingsData
-      });
+      const result = await updateQuizState('UPDATE_SETTINGS', null, settingsData);
+      
+      if (!result.success) {
+        throw new Error(result.error);
+      }
       
       setShowSettings(false);
       alert('Settings updated successfully!');
@@ -530,12 +618,6 @@ export default function AdminQuizDashboard() {
                 </p>
               </div>
               <div className="flex space-x-4">
-                <button
-                  onClick={testFirebaseConnection}
-                  className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors"
-                >
-                  Test Firebase Connection
-                </button>
                 <button
                   onClick={() => setShowSettings(true)}
                   className="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-lg transition-colors flex items-center space-x-2"
@@ -725,6 +807,167 @@ export default function AdminQuizDashboard() {
             </div>
           </div>
 
+          {/* Enhanced Leaderboard Section */}
+          <div className="bg-white rounded-2xl shadow-lg p-6 mb-8">
+            <div className="flex justify-between items-center mb-6">
+              <h2 className="text-2xl font-bold text-gray-900 flex items-center">
+                <span className="mr-3 text-yellow-500">🏆</span>
+                Live Leaderboard
+              </h2>
+              <div className="flex items-center space-x-4">
+                <div className="flex items-center space-x-2">
+                  <label className="text-sm font-medium text-gray-700">Type:</label>
+                  <select
+                    value={leaderboardType}
+                    onChange={(e) => setLeaderboardType(e.target.value)}
+                    className="px-3 py-1 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  >
+                    <option value="overall">Overall</option>
+                    <option value="round">Round Specific</option>
+                    <option value="recent">Recent</option>
+                  </select>
+                </div>
+                <button
+                  onClick={updateLeaderboard}
+                  className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors text-sm font-medium"
+                >
+                  🔄 Refresh
+                </button>
+                <button
+                  onClick={() => setShowLeaderboard(!showLeaderboard)}
+                  className="px-4 py-2 bg-purple-500 text-white rounded-lg hover:bg-purple-600 transition-colors text-sm font-medium"
+                >
+                  {showLeaderboard ? 'Hide' : 'Show'} Details
+                </button>
+                <button
+                  onClick={exportLeaderboardCSV}
+                  className="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors text-sm font-medium"
+                >
+                  📊 Export CSV
+                </button>
+              </div>
+            </div>
+
+            {showLeaderboard && (
+              <div className="space-y-4">
+                {/* Leaderboard Stats */}
+                <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+                  <div className="bg-gradient-to-r from-blue-50 to-blue-100 p-4 rounded-lg">
+                    <div className="text-2xl font-bold text-blue-600">{stats.totalParticipants}</div>
+                    <div className="text-sm text-blue-800">Total Participants</div>
+                  </div>
+                  <div className="bg-gradient-to-r from-green-50 to-green-100 p-4 rounded-lg">
+                    <div className="text-2xl font-bold text-green-600">{stats.completedQuizzes}</div>
+                    <div className="text-sm text-green-800">Completed</div>
+                  </div>
+                  <div className="bg-gradient-to-r from-yellow-50 to-yellow-100 p-4 rounded-lg">
+                    <div className="text-2xl font-bold text-yellow-600">{stats.averageScore}%</div>
+                    <div className="text-sm text-yellow-800">Average Score</div>
+                  </div>
+                  <div className="bg-gradient-to-r from-purple-50 to-purple-100 p-4 rounded-lg">
+                    <div className="text-2xl font-bold text-purple-600">{stats.topScore}%</div>
+                    <div className="text-sm text-purple-800">Top Score</div>
+                  </div>
+                </div>
+
+                {/* Leaderboard Table */}
+                <div className="overflow-x-auto">
+                  <table className="w-full">
+                    <thead>
+                      <tr className="bg-gray-50">
+                        <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700">Rank</th>
+                        <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700">Participant</th>
+                        <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700">Score</th>
+                        <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700">Percentage</th>
+                        <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700">Time</th>
+                        <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700">Round</th>
+                        <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700">Status</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {leaderboard.map((participant, index) => (
+                        <tr key={participant.id} className={`border-b hover:bg-gray-50 ${
+                          index < 3 ? 'bg-gradient-to-r from-yellow-50 to-orange-50' : ''
+                        }`}>
+                          <td className="px-4 py-3">
+                            <div className="flex items-center">
+                              {index === 0 && <span className="text-yellow-500 mr-2">🥇</span>}
+                              {index === 1 && <span className="text-gray-400 mr-2">🥈</span>}
+                              {index === 2 && <span className="text-orange-500 mr-2">🥉</span>}
+                              <span className={`font-bold ${
+                                index < 3 ? 'text-lg' : 'text-base'
+                              }`}>
+                                #{participant.rank || index + 1}
+                              </span>
+                            </div>
+                          </td>
+                          <td className="px-4 py-3">
+                            <div>
+                              <div className="font-semibold text-gray-900">{participant.name}</div>
+                              <div className="text-sm text-gray-500">{participant.rollNo}</div>
+                            </div>
+                          </td>
+                          <td className="px-4 py-3">
+                            <div className="font-bold text-lg text-blue-600">
+                              {participant.score || 0}/{participant.totalQuestions || 20}
+                            </div>
+                          </td>
+                          <td className="px-4 py-3">
+                            <div className={`font-bold ${
+                              (participant.percentage || 0) >= 90 ? 'text-green-600' :
+                              (participant.percentage || 0) >= 80 ? 'text-blue-600' :
+                              (participant.percentage || 0) >= 70 ? 'text-yellow-600' :
+                              (participant.percentage || 0) >= 60 ? 'text-orange-600' :
+                              'text-red-600'
+                            }`}>
+                              {participant.percentage || 0}%
+                            </div>
+                            <div className="text-xs text-gray-500">
+                              Grade: {participant.grade || 'N/A'}
+                            </div>
+                          </td>
+                          <td className="px-4 py-3">
+                            <div className="text-sm text-gray-600">
+                              {participant.timeTaken || 'N/A'}
+                            </div>
+                          </td>
+                          <td className="px-4 py-3">
+                            <span className="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">
+                              Round {participant.round || 1}
+                            </span>
+                          </td>
+                          <td className="px-4 py-3">
+                            <div className="flex items-center">
+                              <span className={`w-2 h-2 rounded-full mr-2 ${
+                                participant.completed ? 'bg-green-500' : 'bg-yellow-500'
+                              }`}></span>
+                              <span className="text-sm text-gray-600">
+                                {participant.completed ? 'Completed' : 'In Progress'}
+                              </span>
+                            </div>
+                            {participant.warnings > 0 && (
+                              <div className="text-xs text-red-500 mt-1">
+                                ⚠️ {participant.warnings} warnings
+                              </div>
+                            )}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+
+                {leaderboard.length === 0 && (
+                  <div className="text-center py-12">
+                    <div className="text-6xl mb-4">🏆</div>
+                    <h3 className="text-xl font-semibold text-gray-700 mb-2">No Results Yet</h3>
+                    <p className="text-gray-500">Leaderboard will populate as participants complete the quiz</p>
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+
           {/* Results and Leaderboard */}
           <div className="grid gap-6 lg:grid-cols-2">
             {/* Live Leaderboard */}
@@ -849,7 +1092,7 @@ export default function AdminQuizDashboard() {
                   </div>
                 </div>
                 <div className="bg-gray-50 p-4 rounded-lg">
-                  <h3 className="font-semibold text-gray-700 mb-2">Firebase Raw Data</h3>
+                  <h3 className="font-semibold text-gray-700 mb-2">MongoDB Raw Data</h3>
                   <pre className="text-xs text-gray-600 bg-white p-2 rounded border overflow-x-auto max-h-32">
                     {JSON.stringify(quizState, null, 2)}
                   </pre>

@@ -2,8 +2,10 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
 import { motion } from 'framer-motion';
-import { FaCheckCircle, FaClock, FaExclamationTriangle, FaRocket, FaUser, FaShieldAlt, FaSignOutAlt } from 'react-icons/fa';
+import { FaCheckCircle, FaClock, FaExclamationTriangle, FaRocket, FaUser, FaShieldAlt, FaSignOutAlt, FaSpinner, FaTrophy, FaCode } from 'react-icons/fa';
 import { useQuiz } from '../contexts/QuizContext';
+// MongoDB imports for quiz state
+import { getQuizState, updateQuizState } from '../lib/mongodb-storage';
 import questionsData from '../data/questions.json';
 
 export default function Instructions() {
@@ -11,6 +13,13 @@ export default function Instructions() {
   const { state, dispatch } = useQuiz();
   const [user, setUser] = useState(null);
   const [acknowledged, setAcknowledged] = useState(false);
+  const [quizState, setQuizState] = useState({
+    isActive: false,
+    currentRound: 1,
+    round1: { isActive: false, globalTimer: 0 },
+    round2: { isActive: false, globalTimer: 0 }
+  });
+  const [loadingQuizState, setLoadingQuizState] = useState(true);
 
   useEffect(() => {
     // Check if user is logged in
@@ -24,6 +33,37 @@ export default function Instructions() {
     setUser(userData);
     dispatch({ type: 'SET_USER', payload: userData });
   }, [router, dispatch]);
+
+  // Fetch quiz state from MongoDB
+  useEffect(() => {
+    const fetchQuizState = async () => {
+      try {
+        setLoadingQuizState(true);
+        const result = await getQuizState();
+        
+        if (result.success) {
+          setQuizState(result.data);
+          // Update context with quiz state
+          const isQuizActive = result.data.isActive || result.data[`round${user?.selectedRound || 1}`]?.isActive;
+          dispatch({ type: 'SET_QUIZ_ACTIVE', payload: isQuizActive });
+        } else {
+          console.error('Failed to fetch quiz state:', result.error);
+        }
+      } catch (error) {
+        console.error('Error fetching quiz state:', error);
+      } finally {
+        setLoadingQuizState(false);
+      }
+    };
+
+    if (user) {
+      fetchQuizState();
+      
+      // Poll for quiz state updates every 5 seconds
+      const interval = setInterval(fetchQuizState, 5000);
+      return () => clearInterval(interval);
+    }
+  }, [user, dispatch]);
 
   const shuffleArray = (array) => {
     const shuffled = [...array];
@@ -48,8 +88,10 @@ export default function Instructions() {
   };
 
   const startQuiz = () => {
-    // Check if quiz is active
-    if (!state.isQuizActive) {
+    // Check if quiz is active using MongoDB state
+    const isQuizActive = quizState.isActive || quizState[`round${user?.selectedRound || 1}`]?.isActive;
+    
+    if (!isQuizActive) {
       alert('Quiz is not currently active. Please wait for the admin to start the quiz session.');
       return;
     }
@@ -61,7 +103,12 @@ export default function Instructions() {
     dispatch({ type: 'SET_QUESTIONS', payload: selectedQuestions });
     dispatch({ type: 'START_QUIZ' });
     
-    router.push('/quiz');
+    // Redirect based on selected round
+    if (user?.selectedRound === 2) {
+      router.push('/round2-quiz');
+    } else {
+      router.push('/round1-quiz');
+    }
   };
 
   if (!user) {
@@ -110,24 +157,43 @@ export default function Instructions() {
               </div>
             </div>
             
-            {/* Quiz Status Indicator */}
-            <div className={`mt-4 p-3 rounded-lg border ${
-              state.isQuizActive 
+            {/* Quiz Status Indicator - Enhanced Lobby View */}
+            <div className={`mt-4 p-4 rounded-lg border ${
+              quizState.isActive || quizState[`round${user?.selectedRound || 1}`]?.isActive
                 ? 'bg-green-500/20 border-green-400/30 text-green-200' 
-                : 'bg-red-500/20 border-red-400/30 text-red-200'
+                : 'bg-blue-500/20 border-blue-400/30 text-blue-200'
             }`}>
-              <div className="flex items-center justify-center space-x-2">
+              <div className="flex items-center justify-center space-x-2 mb-2">
                 <div className={`w-3 h-3 rounded-full ${
-                  state.isQuizActive ? 'bg-green-400' : 'bg-red-400'
+                  quizState.isActive || quizState[`round${user?.selectedRound || 1}`]?.isActive ? 'bg-green-400' : 'bg-blue-400'
                 }`}></div>
                 <span className="font-medium">
-                  Quiz Status: {state.isQuizActive ? 'ACTIVE' : 'INACTIVE'}
+                  {quizState.isActive || quizState[`round${user?.selectedRound || 1}`]?.isActive ? 'QUIZ IS ACTIVE!' : 'WAITING IN LOBBY'}
                 </span>
               </div>
-              {!state.isQuizActive && (
-                <p className="text-center text-sm mt-2 opacity-80">
-                  Please wait for the admin to start the quiz session
-                </p>
+              
+              {loadingQuizState ? (
+                <div className="flex items-center justify-center space-x-2">
+                  <FaSpinner className="animate-spin" />
+                  <span className="text-sm">Loading quiz status...</span>
+                </div>
+              ) : (
+                <div className="text-center">
+                  <p className="text-sm mb-2">
+                    {false // Simplified - always show waiting state 
+                      ? 'The quiz is now active! You can start when ready.'
+                      : 'Please wait for the admin to start the quiz session'
+                    }
+                  </p>
+                  
+                  <div className="text-xs space-y-1">
+                    <p>Selected Round: {user?.selectedRound || 1}</p>
+                    <p>Round Status: {quizState[`round${user?.selectedRound || 1}`]?.isActive ? 'Active' : 'Inactive'}</p>
+                    {quizState[`round${user?.selectedRound || 1}`]?.globalTimer > 0 && (
+                      <p>Time Remaining: {Math.floor(quizState[`round${user?.selectedRound || 1}`].globalTimer / 60)}:{(quizState[`round${user?.selectedRound || 1}`].globalTimer % 60).toString().padStart(2, '0')}</p>
+                    )}
+                  </div>
+                </div>
               )}
             </div>
           </motion.div>
@@ -185,13 +251,57 @@ export default function Instructions() {
               </div>
             </motion.div>
 
-            {/* Quiz Details */}
+            {/* Lobby/Waiting Area */}
             <motion.div
               initial={{ opacity: 0, x: 50 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
               className="space-y-6"
             >
+              {/* Lobby Status Card */}
+              <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-6">
+                <h3 className="text-xl font-bold text-white mb-4 flex items-center">
+                  <FaClock className="mr-2 text-blue-400" />
+                  Lobby Status
+                </h3>
+                
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between">
+                    <span className="text-gray-300">Selected Round:</span>
+                    <span className="text-white font-semibold">Round {user?.selectedRound || 1}</span>
+                  </div>
+                  
+                  <div className="flex items-center justify-between">
+                    <span className="text-gray-300">Quiz Status:</span>
+                    <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                      quizState.isActive || quizState[`round${user?.selectedRound || 1}`]?.isActive
+                        ? 'bg-green-500/20 text-green-300'
+                        : 'bg-blue-500/20 text-blue-300'
+                    }`}>
+                      {quizState.isActive || quizState[`round${user?.selectedRound || 1}`]?.isActive ? 'ACTIVE' : 'WAITING'}
+                    </span>
+                  </div>
+                  
+                  {quizState[`round${user?.selectedRound || 1}`]?.globalTimer > 0 && (
+                    <div className="flex items-center justify-between">
+                      <span className="text-gray-300">Time Remaining:</span>
+                      <span className="text-yellow-300 font-mono">
+                        {Math.floor(quizState[`round${user?.selectedRound || 1}`].globalTimer / 60)}:{(quizState[`round${user?.selectedRound || 1}`].globalTimer % 60).toString().padStart(2, '0')}
+                      </span>
+                    </div>
+                  )}
+                </div>
+                
+                <div className="mt-4 pt-4 border-t border-white/20">
+                  <button
+                    onClick={() => window.location.reload()}
+                    className="w-full px-4 py-2 text-sm bg-white/10 hover:bg-white/20 text-white rounded-lg transition-colors flex items-center justify-center space-x-2"
+                  >
+                    <FaSpinner className="w-3 h-3" />
+                    <span>Refresh Status</span>
+                  </button>
+                </div>
+              </div>
               {/* Quick Stats */}
               <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-6">
                 <h3 className="text-xl font-bold text-white mb-4">Quiz Overview</h3>
@@ -247,15 +357,15 @@ export default function Instructions() {
 
               {/* Start Button */}
               <motion.button
-                whileHover={{ scale: state.isQuizActive && acknowledged ? 1.05 : 1 }}
-                whileTap={{ scale: state.isQuizActive && acknowledged ? 0.95 : 1 }}
+                whileHover={{ scale: (quizState.isActive || quizState[`round${user?.selectedRound || 1}`]?.isActive) && acknowledged ? 1.05 : 1 }}
+                whileTap={{ scale: (quizState.isActive || quizState[`round${user?.selectedRound || 1}`]?.isActive) && acknowledged ? 0.95 : 1 }}
                 onClick={startQuiz}
-                disabled={!acknowledged || !state.isQuizActive}
+                disabled={!acknowledged || !(quizState.isActive || quizState[`round${user?.selectedRound || 1}`]?.isActive)}
                 className="w-full bg-gradient-to-r from-green-500 to-blue-600 hover:from-green-600 hover:to-blue-700 text-white font-bold py-4 px-6 rounded-xl transition-all duration-300 flex items-center justify-center space-x-3 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
               >
                 <FaRocket />
                 <span>
-                  {!state.isQuizActive 
+                  {!(quizState.isActive || quizState[`round${user?.selectedRound || 1}`]?.isActive)
                     ? 'Quiz Not Available' 
                     : !acknowledged 
                       ? 'Accept Terms to Continue'

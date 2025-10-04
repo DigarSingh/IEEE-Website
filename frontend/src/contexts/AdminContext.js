@@ -1,18 +1,6 @@
 import { createContext, useContext, useReducer, useEffect } from 'react';
-import { db } from '../lib/firebase';
-import { 
-  collection, 
-  addDoc, 
-  getDocs, 
-  doc, 
-  setDoc, 
-  getDoc, 
-  onSnapshot, 
-  query, 
-  orderBy, 
-  updateDoc,
-  serverTimestamp 
-} from 'firebase/firestore';
+// MongoDB imports for admin functionality
+import { getQuizState, updateQuizState, getAllStudents, getQuizResults } from '../lib/mongodb-storage';
 
 const AdminContext = createContext();
 
@@ -84,7 +72,7 @@ function adminReducer(state, action) {
 export function AdminProvider({ children }) {
   const [state, dispatch] = useReducer(adminReducer, initialState);
 
-  // Load quiz state from Firebase on mount
+  // Load MongoDB quiz state on mount
   useEffect(() => {
     loadQuizState();
     setupRealtimeListeners();
@@ -107,10 +95,12 @@ export function AdminProvider({ children }) {
   const loadQuizState = async () => {
     try {
       dispatch({ type: 'SET_LOADING', payload: true });
-      const quizStateDoc = await getDoc(doc(db, 'admin', 'quizState'));
-      if (quizStateDoc.exists()) {
-        const data = quizStateDoc.data();
-        dispatch({ type: 'SET_QUIZ_STATE', payload: data });
+      const result = await getQuizState();
+      
+      if (result.success) {
+        dispatch({ type: 'SET_QUIZ_STATE', payload: result.data });
+      } else {
+        console.error('Failed to load quiz state:', result.error);
       }
     } catch (error) {
       console.error('Error loading quiz state:', error);
@@ -121,46 +111,43 @@ export function AdminProvider({ children }) {
   };
 
   const setupRealtimeListeners = () => {
-    // Listen to quiz results
-    const resultsQuery = query(
-      collection(db, 'quizResults'),
-      orderBy('timestamp', 'desc')
-    );
-    
-    const unsubscribeResults = onSnapshot(resultsQuery, (snapshot) => {
-      const results = [];
-      snapshot.forEach((doc) => {
-        results.push({ id: doc.id, ...doc.data() });
-      });
-      dispatch({ type: 'SET_RESULTS', payload: results });
-      
-      // Update leaderboard
-      const leaderboard = [...results]
-        .sort((a, b) => {
-          if (b.percentage === a.percentage) {
-            return a.timeSpent - b.timeSpent; // Less time is better
-          }
-          return b.percentage - a.percentage; // Higher percentage is better
-        })
-        .slice(0, 10); // Top 10
-      
-      dispatch({ type: 'SET_LEADERBOARD', payload: leaderboard });
-      
-      // Update participant counts
-      dispatch({
-        type: 'SET_PARTICIPANTS',
-        payload: {
-          total: results.length,
-          active: results.filter(r => 
-            new Date(r.completedAt) > new Date(Date.now() - 30 * 60 * 1000)
-          ).length
+    // Poll MongoDB for updates every 5 seconds
+    const interval = setInterval(async () => {
+      try {
+        // Update quiz results/leaderboard
+        const resultsResult = await getQuizResults();
+        if (resultsResult.success) {
+          dispatch({ type: 'SET_RESULTS', payload: resultsResult.data });
+          
+          // Update leaderboard
+          const leaderboard = [...resultsResult.data]
+            .sort((a, b) => {
+              if (b.percentage !== a.percentage) {
+                return b.percentage - a.percentage;
+              }
+              return a.timeSpent - b.timeSpent;
+            })
+            .slice(0, 10);
+          
+          dispatch({ type: 'SET_LEADERBOARD', payload: leaderboard });
+          
+          // Update participant counts
+          dispatch({
+            type: 'SET_PARTICIPANTS',
+            payload: {
+              total: resultsResult.data.length,
+              active: resultsResult.data.filter(r => 
+                new Date(r.completedAt) > new Date(Date.now() - 30 * 60 * 1000)
+              ).length
+            }
+          });
         }
-      });
-    });
+      } catch (error) {
+        console.error('Error updating realtime data:', error);
+      }
+    }, 5000);
 
-    return () => {
-      unsubscribeResults();
-    };
+    return () => clearInterval(interval);
   };
 
   const startQuiz = async (settings = {}) => {
@@ -179,8 +166,11 @@ export function AdminProvider({ children }) {
         quizSettings: { ...state.quizSettings, ...settings }
       };
       
-      // Save to Firebase
-      await setDoc(doc(db, 'admin', 'quizState'), quizState);
+      // Save to MongoDB
+      const result = await updateQuizState('START_QUIZ', state.currentRound, settings);
+      if (!result.success) {
+        throw new Error(result.error);
+      }
       
       dispatch({
         type: 'START_QUIZ',
@@ -216,8 +206,11 @@ export function AdminProvider({ children }) {
         quizEndTime: new Date().toISOString()
       };
       
-      // Save to Firebase
-      await setDoc(doc(db, 'admin', 'quizState'), quizState, { merge: true });
+      // Save to MongoDB
+      const result = await updateQuizState('STOP_QUIZ');
+      if (!result.success) {
+        throw new Error(result.error);
+      }
       
       dispatch({ type: 'STOP_QUIZ' });
       
