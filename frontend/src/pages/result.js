@@ -9,7 +9,6 @@ import {
   FaCheckCircle, 
   FaTimes, 
   FaHome, 
-  FaChartBar,
   FaRedo,
   FaShare,
   FaSignOutAlt
@@ -249,13 +248,6 @@ export default function Result() {
               <span className="flex items-center justify-center px-6 py-3 space-x-2 font-semibold text-white transition-colors bg-blue-600 rounded-lg cursor-pointer hover:bg-blue-700">
                 <FaHome />
                 <span>Back to Home</span>
-              </span>
-            </Link>
-            
-            <Link href="/leaderboard">
-              <span className="flex items-center justify-center px-6 py-3 space-x-2 font-semibold text-white transition-colors bg-purple-600 rounded-lg cursor-pointer hover:bg-purple-700">
-                <FaChartBar />
-                <span>View Leaderboard</span>
               </span>
             </Link>
             

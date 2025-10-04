@@ -230,7 +230,7 @@ export default function Round2Quiz() {
     };
 
     return (
-      <div className="bg-white rounded-xl shadow-lg p-8">
+      <div className="p-8 bg-white shadow-lg rounded-xl">
         {/* Question Header */}
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center space-x-3">
@@ -242,7 +242,7 @@ export default function Round2Quiz() {
           {question.hint && (
             <button
               onClick={() => toggleHint(question.id)}
-              className="flex items-center space-x-2 px-3 py-1 bg-yellow-100 text-yellow-700 rounded-lg hover:bg-yellow-200 transition-colors"
+              className="flex items-center px-3 py-1 space-x-2 text-yellow-700 transition-colors bg-yellow-100 rounded-lg hover:bg-yellow-200"
             >
               <FaLightbulb className="text-sm" />
               <span className="text-sm">Hint</span>
@@ -251,14 +251,14 @@ export default function Round2Quiz() {
         </div>
 
         {/* Question Text */}
-        <h2 className="text-xl font-semibold text-gray-800 mb-6">
+        <h2 className="mb-6 text-xl font-semibold text-gray-800">
           {question.question}
         </h2>
 
         {/* Code Snippet */}
         {question.code && (
           <div className="mb-6">
-            <pre className="bg-gray-900 text-green-400 p-4 rounded-lg overflow-x-auto text-sm font-mono">
+            <pre className="p-4 overflow-x-auto font-mono text-sm text-green-400 bg-gray-900 rounded-lg">
               <code>{question.code}</code>
             </pre>
           </div>
@@ -271,9 +271,9 @@ export default function Round2Quiz() {
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: 'auto' }}
               exit={{ opacity: 0, height: 0 }}
-              className="mb-6 p-4 bg-yellow-50 border border-yellow-200 rounded-lg"
+              className="p-4 mb-6 border border-yellow-200 rounded-lg bg-yellow-50"
             >
-              <p className="text-yellow-800 text-sm">
+              <p className="text-sm text-yellow-800">
                 <FaLightbulb className="inline mr-2" />
                 <strong>Hint:</strong> {question.hint}
               </p>
@@ -326,10 +326,10 @@ export default function Round2Quiz() {
                 placeholder={question.type === 'oneword' ? "Enter your answer" : "Enter the output"}
                 value={answers[question.id] || ''}
                 onChange={(e) => handleAnswer(question.id, e.target.value)}
-                className="w-full p-4 border-2 border-gray-200 rounded-lg focus:border-blue-500 focus:outline-none text-lg"
+                className="w-full p-4 text-lg border-2 border-gray-200 rounded-lg focus:border-blue-500 focus:outline-none"
                 autoComplete="off"
               />
-              <p className="text-sm text-gray-500 mt-2">
+              <p className="mt-2 text-sm text-gray-500">
                 {question.type === 'oneword' 
                   ? "Enter a single word answer (case insensitive)"
                   : "Enter the exact output (case sensitive for strings)"
@@ -344,8 +344,8 @@ export default function Round2Quiz() {
 
   if (!quizStarted) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-500"></div>
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="w-32 h-32 border-b-2 border-blue-500 rounded-full animate-spin"></div>
       </div>
     );
   }
@@ -359,15 +359,15 @@ export default function Round2Quiz() {
 
       <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
         {/* Header */}
-        <div className="bg-white shadow-sm border-b">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="bg-white border-b shadow-sm">
+          <div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
             <div className="flex items-center justify-between h-16">
               {/* Quiz Title */}
               <div className="flex items-center space-x-4">
                 <h1 className="text-xl font-bold text-gray-900">
                   Kindle Jr 4.0 - Round 2
                 </h1>
-                <span className="px-3 py-1 bg-purple-100 text-purple-700 rounded-full text-sm font-medium">
+                <span className="px-3 py-1 text-sm font-medium text-purple-700 bg-purple-100 rounded-full">
                   Advanced Round
                 </span>
               </div>
@@ -392,7 +392,7 @@ export default function Round2Quiz() {
               initial={{ opacity: 0, y: -100 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -100 }}
-              className="fixed top-20 left-1/2 transform -translate-x-1/2 z-50 bg-red-500 text-white px-6 py-3 rounded-lg shadow-lg"
+              className="fixed z-50 px-6 py-3 text-white transform -translate-x-1/2 bg-red-500 rounded-lg shadow-lg top-20 left-1/2"
             >
               <div className="flex items-center space-x-2">
                 <FaExclamationTriangle />
@@ -403,7 +403,7 @@ export default function Round2Quiz() {
         </AnimatePresence>
 
         {/* Main Content */}
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="max-w-4xl px-4 py-8 mx-auto sm:px-6 lg:px-8">
           {/* Progress Bar */}
           <div className="mb-8">
             <div className="flex items-center justify-between mb-2">
@@ -414,9 +414,9 @@ export default function Round2Quiz() {
                 {Object.keys(answers).length} answered
               </span>
             </div>
-            <div className="w-full bg-gray-200 rounded-full h-2">
+            <div className="w-full h-2 bg-gray-200 rounded-full">
               <div
-                className="bg-gradient-to-r from-blue-500 to-purple-500 h-2 rounded-full transition-all duration-300"
+                className="h-2 transition-all duration-300 rounded-full bg-gradient-to-r from-blue-500 to-purple-500"
                 style={{ width: `${((currentQuestion + 1) / round2Questions.length) * 100}%` }}
               ></div>
             </div>
@@ -430,7 +430,7 @@ export default function Round2Quiz() {
             <button
               onClick={handlePreviousQuestion}
               disabled={currentQuestion === 0}
-              className="flex items-center space-x-2 px-6 py-3 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              className="flex items-center px-6 py-3 space-x-2 text-gray-700 transition-colors bg-gray-100 rounded-lg hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <FaArrowLeft />
               <span>Previous</span>
@@ -440,7 +440,7 @@ export default function Round2Quiz() {
               {currentQuestion === round2Questions.length - 1 ? (
                 <button
                   onClick={() => setShowSubmitModal(true)}
-                  className="flex items-center space-x-2 px-6 py-3 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors"
+                  className="flex items-center px-6 py-3 space-x-2 text-white transition-colors bg-green-500 rounded-lg hover:bg-green-600"
                 >
                   <FaFlag />
                   <span>Submit Quiz</span>
@@ -448,7 +448,7 @@ export default function Round2Quiz() {
               ) : (
                 <button
                   onClick={handleNextQuestion}
-                  className="flex items-center space-x-2 px-6 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
+                  className="flex items-center px-6 py-3 space-x-2 text-white transition-colors bg-blue-500 rounded-lg hover:bg-blue-600"
                 >
                   <span>Next</span>
                   <FaArrowRight />
@@ -465,33 +465,33 @@ export default function Round2Quiz() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4"
+              className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-50"
             >
               <motion.div
                 initial={{ scale: 0.8, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
                 exit={{ scale: 0.8, opacity: 0 }}
-                className="bg-white rounded-xl p-8 max-w-md w-full"
+                className="w-full max-w-md p-8 bg-white rounded-xl"
               >
                 <div className="text-center">
-                  <FaFlag className="text-4xl text-green-500 mx-auto mb-4" />
-                  <h3 className="text-xl font-bold text-gray-900 mb-4">
+                  <FaFlag className="mx-auto mb-4 text-4xl text-green-500" />
+                  <h3 className="mb-4 text-xl font-bold text-gray-900">
                     Submit Round 2 Quiz?
                   </h3>
-                  <p className="text-gray-600 mb-6">
+                  <p className="mb-6 text-gray-600">
                     You have answered {Object.keys(answers).length} out of {round2Questions.length} questions.
                     Are you sure you want to submit your quiz?
                   </p>
                   <div className="flex space-x-4">
                     <button
                       onClick={() => setShowSubmitModal(false)}
-                      className="flex-1 px-6 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
+                      className="flex-1 px-6 py-3 text-gray-700 transition-colors border border-gray-300 rounded-lg hover:bg-gray-50"
                     >
                       Cancel
                     </button>
                     <button
                       onClick={handleSubmitQuiz}
-                      className="flex-1 px-6 py-3 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors"
+                      className="flex-1 px-6 py-3 text-white transition-colors bg-green-500 rounded-lg hover:bg-green-600"
                     >
                       Submit
                     </button>
