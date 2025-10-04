@@ -32,7 +32,7 @@ export default function Result() {
     const parsedResults = JSON.parse(savedResults);
     setResults(parsedResults);
     
-    // Calculate score
+    // Calculate scored
     let correctAnswers = 0;
     parsedResults.questions.forEach(question => {
       const userAnswer = parsedResults.answers[question.id];
