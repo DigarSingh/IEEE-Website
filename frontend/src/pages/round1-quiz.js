@@ -20,7 +20,7 @@ import {
   updateStudentProgress,
 } from "../lib/mongodb-storage";
 
-export default function Quiz() {
+export default function Round1Quiz() {
   const router = useRouter();
   const { state, dispatch } = useQuiz();
   const { theme, toggleTheme } = useTheme();
@@ -28,7 +28,7 @@ export default function Quiz() {
   const [warningMessage, setWarningMessage] = useState("");
   const [showSubmitModal, setShowSubmitModal] = useState(false);
 
-  // Check authentication and quiz state
+  // Check authentication and Round 1 quiz state
   useEffect(() => {
     const savedUser = localStorage.getItem("quizUser");
     if (!savedUser) {
@@ -42,7 +42,7 @@ export default function Quiz() {
     }
 
     if (state.quizCompleted) {
-      router.push("/result");
+      router.push("/round1-result");
       return;
     }
   }, [router, state]);
@@ -59,11 +59,11 @@ export default function Quiz() {
         if (state.fullscreenWarnings >= 1) {
           handleSubmitQuiz();
           setWarningMessage(
-            "Quiz submitted automatically due to multiple fullscreen violations."
+            "Round 1 quiz submitted automatically due to multiple fullscreen violations."
           );
         } else {
           setWarningMessage(
-            "Warning: You exited fullscreen mode. Please return to fullscreen or your quiz will be submitted."
+            "Warning: You exited fullscreen mode. Please return to fullscreen or your Round 1 quiz will be submitted."
           );
           setShowWarning(true);
           setTimeout(() => setShowWarning(false), 5000);
@@ -263,15 +263,15 @@ export default function Quiz() {
         warnings: state.fullscreenWarnings,
       };
 
-      console.log("📤 Submitting quiz results:", resultData);
+      console.log("📤 Submitting Round 1 quiz results:", resultData);
 
       // Store in MongoDB (this updates the Student record)
       const mongoResult = await storeStudentResult(resultData);
       if (mongoResult.success) {
-        console.log("✅ Quiz result stored in MongoDB:", mongoResult.id);
-        console.log("✅ Student record updated with quiz completion data");
+        console.log("✅ Round 1 quiz result stored in MongoDB:", mongoResult.id);
+        console.log("✅ Student record updated with Round 1 quiz completion data");
       } else {
-        console.error("❌ Failed to store quiz result:", mongoResult.error);
+        console.error("❌ Failed to store Round 1 quiz result:", mongoResult.error);
       }
 
       // Save to localStorage as backup
@@ -289,14 +289,14 @@ export default function Quiz() {
         mongoId: mongoResult.id,
       };
 
-      localStorage.setItem("quizResults", JSON.stringify(results));
+      localStorage.setItem("round1Results", JSON.stringify(results));
 
-      console.log("✅ Quiz submission complete, redirecting to results...");
-      router.push("/result");
+      console.log("✅ Round 1 quiz submission complete, redirecting to results...");
+      router.push("/round1-result");
     } catch (error) {
-      console.error("❌ Error submitting quiz:", error);
+      console.error("❌ Error submitting Round 1 quiz:", error);
       // Still redirect to result page even if MongoDB fails
-      router.push("/result");
+      router.push("/round1-result");
     }
   };
 
@@ -408,12 +408,12 @@ export default function Quiz() {
                 <h3 className={`mb-4 text-xl font-bold transition-colors duration-300 ${
                   theme === 'dark' ? 'text-white' : 'text-gray-900'
                 }`}>
-                  Submit Quiz?
+                  Submit Round 1 Quiz?
                 </h3>
                 <p className={`mb-6 transition-colors duration-300 ${
                   theme === 'dark' ? 'text-white/80' : 'text-gray-600'
                 }`}>
-                  Are you sure you want to submit your quiz? You have answered{" "}
+                  Are you sure you want to submit your Round 1 quiz? You have answered{" "}
                   {getAnsweredCount()} out of {state.questions.length}{" "}
                   questions.
                 </p>
@@ -594,7 +594,7 @@ export default function Quiz() {
                   }`}
                 >
                   <FaFlag />
-                  <span>Submit Quiz</span>
+                  <span>Submit Round 1 Quiz</span>
                 </button>
               </div>
             </div>

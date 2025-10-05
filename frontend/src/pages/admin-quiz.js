@@ -64,14 +64,14 @@ export default function AdminQuizDashboard() {
   const [results, setResults] = useState([]);
   const [leaderboard, setLeaderboard] = useState([]);
   const [showLeaderboard, setShowLeaderboard] = useState(false);
-  const [leaderboardType, setLeaderboardType] = useState("overall"); // overall, round, recent
+  const [leaderboardType, setLeaderboardType] = useState("round"); // overall, round, recent
 
   // UI State
   const [showSettings, setShowSettings] = useState(false);
   const [showExportModal, setShowExportModal] = useState(false);
 
   // Leaderboard functions
-  const fetchLeaderboard = async (type = "overall", round = null) => {
+  const fetchLeaderboard = async (type = "round", round = null) => {
     try {
       console.log("🔄 Fetching leaderboard data...", { type, round });
       const result = await getQuizResults();
@@ -86,12 +86,21 @@ export default function AdminQuizDashboard() {
         let filteredResults = result.data;
 
         // Apply filters based on type
-        if (type === "round" && round) {
+        if (type === "round") {
+          // Default to current selected round if no round specified
+          const targetRound = round || selectedRound;
           filteredResults = result.data.filter(
-            (r) => r.selectedRound === round || r.round === round
+            (r) => (r.selectedRound === targetRound || r.round === targetRound)
           );
           console.log(
-            `🔍 Filtered for round ${round}:`,
+            `🔍 Filtered for round ${targetRound}:`,
+            filteredResults.length
+          );
+        } else if (type === "overall") {
+          // For overall view, show all results but clearly mark which round
+          filteredResults = result.data;
+          console.log(
+            `🔍 Showing overall results:`,
             filteredResults.length
           );
         } else if (type === "recent") {
@@ -269,32 +278,54 @@ export default function AdminQuizDashboard() {
     }
   }, [isAuthenticated, leaderboardType, selectedRound]);
 
-  // Timer effect for countdown
+  // Timer effect for countdown - handle both rounds independently
   useEffect(() => {
-    let interval;
-    const currentRoundData = quizState[`round${quizState.currentRound}`];
+    let interval1, interval2;
 
-    if (currentRoundData.isActive && currentRoundData.globalTimer > 0) {
-      interval = setInterval(() => {
+    // Round 1 timer
+    if (quizState.round1.isActive && quizState.round1.globalTimer > 0) {
+      interval1 = setInterval(() => {
         setQuizState((prev) => ({
           ...prev,
-          [`round${prev.currentRound}`]: {
-            ...prev[`round${prev.currentRound}`],
-            globalTimer: Math.max(
-              0,
-              prev[`round${prev.currentRound}`].globalTimer - 1
-            ),
+          round1: {
+            ...prev.round1,
+            globalTimer: Math.max(0, prev.round1.globalTimer - 1),
           },
         }));
       }, 1000);
-    } else if (
-      currentRoundData.isActive &&
-      currentRoundData.globalTimer === 0
-    ) {
-      // Auto-stop quiz when timer reaches 0
-      handleStopQuiz();
+    } else if (quizState.round1.isActive && quizState.round1.globalTimer === 0) {
+      // Auto-stop Round 1 when timer reaches 0
+      updateQuizState("STOP_ROUND", 1);
+      setQuizState((prev) => ({
+        ...prev,
+        round1: { ...prev.round1, isActive: false, globalTimer: 0 },
+      }));
     }
-    return () => clearInterval(interval);
+
+    // Round 2 timer
+    if (quizState.round2.isActive && quizState.round2.globalTimer > 0) {
+      interval2 = setInterval(() => {
+        setQuizState((prev) => ({
+          ...prev,
+          round2: {
+            ...prev.round2,
+            globalTimer: Math.max(0, prev.round2.globalTimer - 1),
+          },
+        }));
+      }, 1000);
+    } else if (quizState.round2.isActive && quizState.round2.globalTimer === 0) {
+      // Auto-stop Round 2 when timer reaches 0
+      updateQuizState("STOP_ROUND", 2);
+      setQuizState((prev) => ({
+        ...prev,
+        round2: { ...prev.round2, isActive: false, globalTimer: 0 },
+      }));
+    }
+
+    return () => {
+      clearInterval(interval1);
+      clearInterval(interval2);
+    };
   }, [
     quizState.round1.isActive,
     quizState.round1.globalTimer,
@@ -588,7 +619,7 @@ export default function AdminQuizDashboard() {
 
       setQuizState((prev) => ({
         ...prev,
-        isActive: true,
+        isActive: true, // Set global active when any round starts
         currentRound: selectedRound,
         [`round${selectedRound}`]: {
           isActive: true,
@@ -612,11 +643,11 @@ export default function AdminQuizDashboard() {
     try {
       setLoading(true);
 
-      const currentRoundData = quizState[`round${quizState.currentRound}`];
+      const currentRoundData = quizState[`round${selectedRound}`];
       const quizData = {
         isActive: false, // Global flag for compatibility
-        currentRound: quizState.currentRound,
-        [`round${quizState.currentRound}`]: {
+        currentRound: selectedRound,
+        [`round${selectedRound}`]: {
           ...currentRoundData,
           isActive: false,
           endTime: new Date().toISOString(),
@@ -626,7 +657,7 @@ export default function AdminQuizDashboard() {
 
       const result = await updateQuizState(
         "STOP_ROUND",
-        quizState.currentRound
+        selectedRound
       );
 
       if (!result.success) {
@@ -635,13 +666,15 @@ export default function AdminQuizDashboard() {
 
       setQuizState((prev) => ({
         ...prev,
-        isActive: false,
-        [`round${prev.currentRound}`]: {
-          ...prev[`round${prev.currentRound}`],
+        isActive: prev.round1.isActive || prev.round2.isActive ? true : false, // Keep global active if any round is still active
+        [`round${selectedRound}`]: {
+          ...prev[`round${selectedRound}`],
           isActive: false,
           globalTimer: 0,
         },
       }));
+
+      alert(`Round ${selectedRound} stopped successfully!`);
     } catch (error) {
       console.error("Error stopping quiz:", error);
       alert("Error stopping quiz. Please try again.");
@@ -1058,6 +1091,11 @@ export default function AdminQuizDashboard() {
               <h2 className="flex items-center text-2xl font-bold text-gray-900">
                 <span className="mr-3 text-yellow-500">🏆</span>
                 Live Leaderboard
+                {leaderboardType === "round" && (
+                  <span className="ml-2 text-lg text-gray-600">
+                    - Round {selectedRound}
+                  </span>
+                )}
               </h2>
               <div className="flex items-center space-x-4">
                 <div className="flex items-center space-x-2">
@@ -1074,6 +1112,31 @@ export default function AdminQuizDashboard() {
                     <option value="recent">Recent</option>
                   </select>
                 </div>
+                {leaderboardType === "round" && (
+                  <div className="flex items-center space-x-2">
+                    <span className="text-sm font-medium text-gray-700">Quick:</span>
+                    <button
+                      onClick={() => setSelectedRound(1)}
+                      className={`px-3 py-1 text-xs font-medium rounded transition-colors ${
+                        selectedRound === 1
+                          ? 'bg-blue-500 text-white'
+                          : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                      }`}
+                    >
+                      Round 1
+                    </button>
+                    <button
+                      onClick={() => setSelectedRound(2)}
+                      className={`px-3 py-1 text-xs font-medium rounded transition-colors ${
+                        selectedRound === 2
+                          ? 'bg-purple-500 text-white'
+                          : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                      }`}
+                    >
+                      Round 2
+                    </button>
+                  </div>
+                )}
                 <button
                   onClick={updateLeaderboard}
                   className="px-4 py-2 text-sm font-medium text-white transition-colors bg-blue-500 rounded-lg hover:bg-blue-600"
@@ -1126,6 +1189,19 @@ export default function AdminQuizDashboard() {
                     <div className="text-sm text-purple-800">Top Score</div>
                   </div>
                 </div>
+
+                {/* Warning for Overall View */}
+                {leaderboardType === "overall" && (
+                  <div className="mb-4 p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
+                    <div className="flex items-center">
+                      <span className="text-yellow-600 mr-2">⚠️</span>
+                      <span className="text-sm text-yellow-800">
+                        <strong>Overall View:</strong> Users may appear multiple times (once per round). 
+                        Switch to "Round Specific" to view results for a single round only.
+                      </span>
+                    </div>
+                  </div>
+                )}
 
                 {/* Leaderboard Table */}
                 <div className="overflow-x-auto">
@@ -1227,7 +1303,11 @@ export default function AdminQuizDashboard() {
                             </div>
                           </td>
                           <td className="px-4 py-3">
-                            <span className="px-2 py-1 text-xs text-blue-800 bg-blue-100 rounded-full">
+                            <span className={`px-2 py-1 text-xs rounded-full font-medium ${
+                              (participant.round || 1) === 1 
+                                ? 'text-blue-800 bg-blue-100' 
+                                : 'text-purple-800 bg-purple-100'
+                            }`}>
                               Round {participant.round || 1}
                             </span>
                           </td>

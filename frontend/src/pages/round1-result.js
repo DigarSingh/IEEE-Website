@@ -23,7 +23,7 @@ export default function Result() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const savedResults = localStorage.getItem("quizResults");
+    const savedResults = localStorage.getItem("round1Results");
     if (!savedResults) {
       router.push("/quizlogin");
       return;
@@ -67,9 +67,9 @@ export default function Result() {
   };
 
   const shareResults = () => {
-    const text = `I scored ${score}/${results?.questions.length} (${percentage}%) in the IEEE GEU Quiz! 🎉`;
+    const text = `I scored ${score}/${results?.questions.length} (${percentage}%) in the IEEE GEU Round 1 Quiz! 🎉`;
     if (navigator.share) {
-      navigator.share({ title: "Quiz Results", text });
+      navigator.share({ title: "Round 1 Quiz Results", text });
     } else {
       navigator.clipboard.writeText(text);
       alert("Results copied to clipboard!");
@@ -77,9 +77,9 @@ export default function Result() {
   };
 
   const handleLogout = () => {
-    // Clear quiz data
+    // Clear Round 1 quiz data
     localStorage.removeItem("quizUser");
-    localStorage.removeItem("quizResults");
+    localStorage.removeItem("round1Results");
     localStorage.removeItem("quizState");
 
     // Redirect to login
@@ -99,8 +99,8 @@ export default function Result() {
   return (
     <>
       <Head>
-        <title>Quiz Results | IEEE GEU Student Branch</title>
-        <meta name="description" content="Your quiz results and score" />
+        <title>Round 1 Quiz Results | IEEE GEU Student Branch</title>
+        <meta name="description" content="Your Round 1 quiz results and score" />
       </Head>
 
       <div className="min-h-screen px-4 py-8 bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900">
@@ -117,7 +117,7 @@ export default function Result() {
               <div className="flex flex-col items-center flex-1">
                 <FaTrophy className="mx-auto mb-4 text-6xl text-yellow-400" />
                 <h1 className="mb-2 text-4xl font-bold text-white">
-                  Quiz Completed!
+                  Round 1 Quiz Completed!
                 </h1>
                 <p className="text-blue-200">Here are your results</p>
               </div>

@@ -110,9 +110,10 @@ export async function POST(request) {
 
     console.log("📊 Calculated values:", { percentage, grade });
 
-    // Find existing student record
+    // Find existing student record for the specific round
     const existingStudent = await Student.findOne({
       rollNo: resultData.rollNo,
+      selectedRound: resultData.round || 1,
     });
 
     console.log("🔍 Found existing student:", existingStudent ? "Yes" : "No");
