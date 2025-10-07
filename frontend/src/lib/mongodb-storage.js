@@ -203,11 +203,16 @@ export const getAllStudents = async () => {
 /**
  * Get quiz results (for leaderboard)
  */
-export const getQuizResults = async () => {
+export const getQuizResults = async (round = null) => {
   try {
-    console.log('🔄 Fetching quiz results...');
+    console.log('🔄 Fetching quiz results...', { round });
     
-    const response = await fetch('/api/quiz/results');
+    let url = '/api/quiz/results';
+    if (round !== null) {
+      url += `?round=${round}`;
+    }
+    
+    const response = await fetch(url);
     const result = await response.json();
     
     if (!result.success) {

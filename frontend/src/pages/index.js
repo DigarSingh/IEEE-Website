@@ -281,24 +281,24 @@ export default function Home() {
           <div className="announcement-scroll">
             <div className="flex items-center justify-center py-3 text-sm font-medium text-white md:text-base whitespace-nowrap">
               <span className="mr-4">🎉</span>
-              <span className="mr-2">IEEE Membership Drive is now OPEN!</span>
-              <span className="mr-4">Apply now and join our community of innovators.</span>
-              <Link href="/membership" className="inline-flex items-center px-3 py-1 text-xs font-semibold text-purple-600 transition-colors duration-200 bg-white rounded-full hover:bg-gray-100">
-                Click Here to Fill Form
+              <span className="mr-2">Upcoming Event: Kindle Jr 4.0!</span>
+              <span className="mr-4">Get ready for the ultimate competition.</span>
+              <Link href="/events" className="inline-flex items-center px-3 py-1 text-xs font-semibold text-purple-600 transition-colors duration-200 bg-white rounded-full hover:bg-gray-100">
+                Learn More
                 <FaArrowRight className="ml-1 text-xs" />
               </Link>
               <span className="ml-4">🎉</span>
-              <span className="ml-2">IEEE Membership Drive is now OPEN!</span>
-              <span className="ml-4">Apply now and join our community of innovators.</span>
-              <Link href="/membership" className="inline-flex items-center px-3 py-1 text-xs font-semibold text-purple-600 transition-colors duration-200 bg-white rounded-full hover:bg-gray-100">
-                Click Here to Fill Form
+              <span className="ml-2">Upcoming Event: Kindle Jr 4.0!</span>
+              <span className="ml-4">Get ready for the ultimate competition.</span>
+              <Link href="/events" className="inline-flex items-center px-3 py-1 text-xs font-semibold text-purple-600 transition-colors duration-200 bg-white rounded-full hover:bg-gray-100">
+                Learn More
                 <FaArrowRight className="ml-1 text-xs" />
               </Link>
               <span className="ml-4">🎉</span>
-              <span className="ml-2">IEEE Membership Drive is now OPEN!</span>
-              <span className="ml-4">Apply now and join our community of innovators.</span>
-              <Link href="/membership" className="inline-flex items-center px-3 py-1 text-xs font-semibold text-purple-600 transition-colors duration-200 bg-white rounded-full hover:bg-gray-100">
-                Click Here to Fill Form
+              <span className="ml-2">Upcoming Event: Kindle Jr 4.0!</span>
+              <span className="ml-4">Get ready for the ultimate competition.</span>
+              <Link href="/events" className="inline-flex items-center px-3 py-1 text-xs font-semibold text-purple-600 transition-colors duration-200 bg-white rounded-full hover:bg-gray-100">
+                Learn More
                 <FaArrowRight className="ml-1 text-xs" />
               </Link>
             </div>

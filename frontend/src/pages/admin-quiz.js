@@ -74,7 +74,10 @@ export default function AdminQuizDashboard() {
   const fetchLeaderboard = async (type = "round", round = null) => {
     try {
       console.log("🔄 Fetching leaderboard data...", { type, round });
-      const result = await getQuizResults();
+      
+      // For round-specific queries, fetch only that round's data from database
+      const dbRound = (type === "round" && round !== null) ? round : null;
+      const result = await getQuizResults(dbRound);
 
       console.log("📊 Quiz results received:", result);
 
@@ -87,13 +90,15 @@ export default function AdminQuizDashboard() {
 
         // Apply filters based on type
         if (type === "round") {
-          // Default to current selected round if no round specified
-          const targetRound = round || selectedRound;
-          filteredResults = result.data.filter(
-            (r) => (r.selectedRound === targetRound || r.round === targetRound)
-          );
+          // If we didn't filter at database level, filter here
+          if (dbRound === null) {
+            const targetRound = round || selectedRound;
+            filteredResults = result.data.filter(
+              (r) => (r.selectedRound === targetRound || r.round === targetRound)
+            );
+          }
           console.log(
-            `🔍 Filtered for round ${targetRound}:`,
+            `🔍 Filtered for round ${round || selectedRound}:`,
             filteredResults.length
           );
         } else if (type === "overall") {
@@ -207,7 +212,9 @@ export default function AdminQuizDashboard() {
   };
 
   const updateLeaderboard = () => {
-    fetchLeaderboard(leaderboardType, selectedRound);
+    // For overall type, don't pass a specific round
+    const roundParam = leaderboardType === "overall" ? null : selectedRound;
+    fetchLeaderboard(leaderboardType, roundParam);
   };
 
   const exportLeaderboardCSV = () => {
@@ -271,7 +278,9 @@ export default function AdminQuizDashboard() {
   useEffect(() => {
     if (isAuthenticated) {
       const interval = setInterval(() => {
-        fetchLeaderboard(leaderboardType, selectedRound);
+        // For overall type, don't pass a specific round
+        const roundParam = leaderboardType === "overall" ? null : selectedRound;
+        fetchLeaderboard(leaderboardType, roundParam);
       }, 30000); // 30 seconds
 
       return () => clearInterval(interval);
@@ -344,7 +353,9 @@ export default function AdminQuizDashboard() {
   // Update leaderboard when type or round changes
   useEffect(() => {
     if (isAuthenticated) {
-      fetchLeaderboard(leaderboardType, selectedRound);
+      // For overall type, don't pass a specific round
+      const roundParam = leaderboardType === "overall" ? null : selectedRound;
+      fetchLeaderboard(leaderboardType, roundParam);
     }
   }, [leaderboardType, selectedRound, isAuthenticated]);
 
@@ -547,7 +558,8 @@ export default function AdminQuizDashboard() {
           });
 
           // Refresh leaderboard with current filters
-          fetchLeaderboard(leaderboardType, selectedRound);
+          const roundParam = leaderboardType === "overall" ? null : selectedRound;
+          fetchLeaderboard(leaderboardType, roundParam);
         }
       } catch (error) {
         console.error("❌ Error polling results:", error);

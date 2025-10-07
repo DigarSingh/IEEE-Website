@@ -1,40 +1,58 @@
 import { NextResponse } from "next/server";
-import { getQuizResults } from "@/lib/mongodb-storage";
+import dbConnect from "@/lib/mongodb";
+import Student from "@/models/Student";
 
 // Force dynamic rendering
 export const dynamic = "force-dynamic";
 
 export async function GET(request) {
   try {
+    await dbConnect();
+    
     const { searchParams } = new URL(request.url);
     const round = searchParams.get('round');
     const limitCount = parseInt(searchParams.get('limit')) || 20;
     const type = searchParams.get('type') || 'overall'; // overall, round, recent
     
-    // Build filters for MongoDB query
-    const filters = {};
+    // Build MongoDB query based on type
+    let query = {};
     
     if (type === 'round' && round) {
-      filters.round = parseInt(round);
+      query.selectedRound = parseInt(round);
     }
     
-    // Get results from MongoDB
-    const result = await getQuizResults(filters);
+    console.log("🔍 Leaderboard query:", { type, round, query });
     
-    if (!result.success) {
-      return NextResponse.json(
-        { success: false, message: "Failed to fetch leaderboard data" },
-        { status: 500 }
-      );
-    }
+    // Get students from database
+    const students = await Student.find(query)
+      .sort({ percentage: -1, timeSpent: 1 })
+      .lean();
     
-    let leaderboardData = result.data || [];
+    console.log("📊 Found students for leaderboard:", students.length);
+    
+    // Transform to expected format
+    let leaderboardData = students.map((student) => ({
+      id: student._id.toString(),
+      _id: student._id.toString(),
+      name: student.name,
+      rollNo: student.rollNo,
+      score: student.score || 0,
+      percentage: student.percentage || 0,
+      grade: student.grade || 'F',
+      timeSpent: student.timeSpent || 0,
+      selectedRound: student.selectedRound,
+      round: student.selectedRound, // For compatibility
+      quizCompleted: student.quizCompleted || false,
+      completedAt: student.completedAt,
+      isCompleted: student.quizCompleted || false,
+      warnings: student.warnings || 0,
+    }));
     
     // Sort and limit based on type
     switch (type) {
       case 'round':
+        // Data is already filtered by database query
         leaderboardData = leaderboardData
-          .filter(item => item.round === parseInt(round))
           .sort((a, b) => {
             if (b.score === a.score) {
               return new Date(a.completedAt) - new Date(b.completedAt);
@@ -45,7 +63,9 @@ export async function GET(request) {
         break;
         
       case 'recent':
+        const thirtyMinutesAgo = new Date(Date.now() - 30 * 60 * 1000);
         leaderboardData = leaderboardData
+          .filter(item => new Date(item.completedAt) > thirtyMinutesAgo)
           .sort((a, b) => new Date(b.completedAt) - new Date(a.completedAt))
           .slice(0, limitCount);
         break;
