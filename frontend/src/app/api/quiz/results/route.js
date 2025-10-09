@@ -41,7 +41,7 @@ export async function GET(request) {
       name: student.name,
       rollNo: student.rollNo,
       score: student.score || 0,
-      totalQuestions: 20, // Assuming 20 questions per quiz
+      totalQuestions: 25, // Assuming 25 questions per quiz
       percentage: student.percentage || 0,
       grade: student.grade || "N/A",
       timeTaken: student.timeSpent || 0,

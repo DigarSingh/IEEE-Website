@@ -33,7 +33,7 @@ export async function GET() {
         },
         quizSettings: {
           duration: 30,
-          questionsPerRound: 20,
+          questionsPerRound: 25,
           allowMultipleAttempts: false
         }
       });

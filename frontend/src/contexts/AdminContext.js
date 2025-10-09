@@ -15,7 +15,7 @@ const initialState = {
   leaderboard: [],
   quizSettings: {
     duration: 30 * 60, // 30 minutes
-    questionsCount: 20,
+    questionsCount: 25,
     password: 'ieee@321'
   },
   loading: false,

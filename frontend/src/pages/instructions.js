@@ -5,7 +5,7 @@ import { motion } from 'framer-motion';
 import { FaCheckCircle, FaClock, FaExclamationTriangle, FaRocket, FaUser, FaShieldAlt, FaSignOutAlt, FaSpinner, FaTrophy, FaCode } from 'react-icons/fa';
 import { useQuiz } from '../contexts/QuizContext';
 // MongoDB imports for quiz state
-import { getQuizState, updateQuizState } from '../lib/mongodb-storage';
+import { getQuizState, updateQuizState, getStudentByRollNo } from '../lib/mongodb-storage';
 import questionsData from '../data/questions.json';
 
 export default function Instructions() {
@@ -87,7 +87,7 @@ export default function Instructions() {
     router.push('/quizlogin');
   };
 
-  const startQuiz = () => {
+  const startQuiz = async () => {
     // Check if quiz is active using MongoDB state
     const isQuizActive = quizState.isActive || quizState[`round${user?.selectedRound || 1}`]?.isActive;
     
@@ -96,9 +96,21 @@ export default function Instructions() {
       return;
     }
 
-    // Randomly select 20 questions
+    // Check if student has already completed the quiz
+    try {
+      const existingStudent = await getStudentByRollNo(user.rollNo);
+      if (existingStudent && existingStudent.selectedRound === user.selectedRound && existingStudent.quizCompleted) {
+        alert(`You have already completed Round ${user.selectedRound} quiz. You cannot retake the quiz.`);
+        return;
+      }
+    } catch (error) {
+      console.error('Error checking quiz completion status:', error);
+      // Continue with quiz start if check fails
+    }
+
+    // Randomly select 25 questions
     const shuffledQuestions = shuffleArray(questionsData);
-    const selectedQuestions = shuffledQuestions.slice(0, 20);
+    const selectedQuestions = shuffledQuestions.slice(0, 25);
     
     dispatch({ type: 'SET_QUESTIONS', payload: selectedQuestions });
     dispatch({ type: 'START_QUIZ' });
@@ -216,7 +228,7 @@ export default function Instructions() {
                   <FaClock className="text-yellow-400 mt-1 flex-shrink-0" />
                   <div>
                     <h3 className="text-white font-semibold">Time Limit</h3>
-                    <p className="text-gray-300 text-sm">You have exactly <strong>30 minutes</strong> to complete all 20 questions.</p>
+                    <p className="text-gray-300 text-sm">You have exactly <strong>30 minutes</strong> to complete all 25 questions.</p>
                   </div>
                 </div>
 

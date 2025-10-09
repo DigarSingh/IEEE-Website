@@ -18,7 +18,7 @@ import {
   FaSun
 } from 'react-icons/fa';
 import { round2Questions, round2Config } from '../data/round2Questions';
-import { storeStudentResult } from "../lib/mongodb-storage";
+import { storeStudentResult, getStudentByRollNo } from "../lib/mongodb-storage";
 import { useTheme } from '../contexts/ThemeContext';
 
 export default function Round2Quiz() {
@@ -38,31 +38,43 @@ export default function Round2Quiz() {
 
   // Check authentication
   useEffect(() => {
-    const savedUser = localStorage.getItem('quizUser');
-    if (!savedUser) {
-      router.push('/quizlogin');
-      return;
-    }
+    const checkQuizCompletion = async () => {
+      const savedUser = localStorage.getItem('quizUser');
+      if (!savedUser) {
+        router.push('/quizlogin');
+        return;
+      }
 
-    // Parse and set user data
-    try {
-      const userData = JSON.parse(savedUser);
-      setUser(userData);
-    } catch (error) {
-      console.error('Error parsing user data:', error);
-      router.push('/quizlogin');
-      return;
-    }
+      // Parse and set user data
+      try {
+        const userData = JSON.parse(savedUser);
+        setUser(userData);
 
-    // Check if Round 1 is completed (you might want to add this check)
-    const round1Completed = localStorage.getItem('round1Completed');
-    if (!round1Completed) {
-      // Uncomment this if you want to enforce Round 1 completion
-      // router.push('/quiz');
-      // return;
-    }
+        // Check if student has already completed Round 2 quiz
+        const existingStudent = await getStudentByRollNo(userData.rollNo);
+        if (existingStudent && existingStudent.selectedRound === 2 && existingStudent.quizCompleted) {
+          alert("You have already completed Round 2 quiz. You cannot retake the quiz.");
+          router.push('/round2-result');
+          return;
+        }
+      } catch (error) {
+        console.error('Error parsing user data or checking completion:', error);
+        router.push('/quizlogin');
+        return;
+      }
 
-    setQuizStarted(true);
+      // Check if Round 1 is completed (you might want to add this check)
+      const round1Completed = localStorage.getItem('round1Completed');
+      if (!round1Completed) {
+        // Uncomment this if you want to enforce Round 1 completion
+        // router.push('/quiz');
+        // return;
+      }
+
+      setQuizStarted(true);
+    };
+
+    checkQuizCompletion();
   }, [router]);
 
   // Timer effect
@@ -281,7 +293,16 @@ export default function Round2Quiz() {
 
       console.log('💾 Round 2 results saved to localStorage');
 
+      // Clear quiz state after successful submission
       setQuizCompleted(true);
+      setCurrentQuestion(0);
+      setAnswers({});
+      setTimeRemaining(round2Config.timeLimit * 60);
+      setShowHint({});
+      localStorage.removeItem('quizState');
+      localStorage.removeItem('quizResults');
+
+      console.log('✅ Round 2 quiz submission complete, state cleared, redirecting to results...');
       router.push('/round2-result');
     } catch (error) {
       console.error('Error submitting quiz:', error);

@@ -39,12 +39,12 @@ export default function AdminQuizDashboard() {
   const [settings, setSettings] = useState({
     round1: {
       duration: 30,
-      questionsCount: 20,
+      questionsCount: 25,
       password: "ieee@321",
     },
     round2: {
       duration: 45,
-      questionsCount: 20,
+      questionsCount: 25,
       password: "ieeegg@321",
     },
   });
@@ -442,12 +442,12 @@ export default function AdminQuizDashboard() {
         const newSettings = {
           round1: {
             duration: 30,
-            questionsCount: 20,
+            questionsCount: 25,
             password: "ieee@321",
           },
           round2: {
             duration: 45,
-            questionsCount: 20,
+            questionsCount: 25,
             password: "ieeegg@321",
           },
         };
@@ -456,7 +456,7 @@ export default function AdminQuizDashboard() {
         if (data.round1) {
           newSettings.round1 = {
             duration: Math.floor((data.round1.duration || 30 * 60) / 60), // Convert seconds to minutes
-            questionsCount: data.round1.questionsCount || 20,
+            questionsCount: data.round1.questionsCount || 25,
             password: data.round1.password || "ieee@321",
           };
         }
@@ -464,7 +464,7 @@ export default function AdminQuizDashboard() {
         if (data.round2) {
           newSettings.round2 = {
             duration: Math.floor((data.round2.duration || 45 * 60) / 60), // Convert seconds to minutes
-            questionsCount: data.round2.questionsCount || 20,
+            questionsCount: data.round2.questionsCount || 25,
             password: data.round2.password || "ieeegg@321",
           };
         }
@@ -476,7 +476,7 @@ export default function AdminQuizDashboard() {
               duration: Math.floor(
                 (data.settings.round1.duration || 30 * 60) / 60
               ),
-              questionsCount: data.settings.round1.questionsCount || 20,
+              questionsCount: data.settings.round1.questionsCount || 25,
               password: data.settings.round1.password || "ieee@321",
             };
           }
@@ -485,7 +485,7 @@ export default function AdminQuizDashboard() {
               duration: Math.floor(
                 (data.settings.round2.duration || 45 * 60) / 60
               ),
-              questionsCount: data.settings.round2.questionsCount || 20,
+              questionsCount: data.settings.round2.questionsCount || 25,
               password: data.settings.round2.password || "ieeegg@321",
             };
           }

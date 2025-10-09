@@ -113,8 +113,15 @@ export default function QuizLogin() {
         );
       }
 
-      // Check if student already exists
+      // Check if student already exists and has completed the quiz
       const existingStudent = await getStudentByRollNo(rollNo.trim());
+      
+      // If student exists and has completed the quiz for this round, prevent retaking
+      if (existingStudent && existingStudent.selectedRound === selectedRound && existingStudent.quizCompleted) {
+        throw new Error(
+          `You have already completed Round ${selectedRound} quiz. You cannot retake the quiz.`
+        );
+      }
 
       // Store user data with selected round
       const userData = {

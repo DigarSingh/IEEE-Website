@@ -233,7 +233,7 @@ export const quizQuestions = [
 ];
 
 // Function to get random questions for quiz
-export function getRandomQuestions(count = 20) {
+export function getRandomQuestions(count = 25) {
   const shuffled = [...quizQuestions].sort(() => 0.5 - Math.random());
   return shuffled.slice(0, count);
 }

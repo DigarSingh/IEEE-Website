@@ -1,206 +1,507 @@
 [
   {
     "id": 1,
-    "question": "What does IEEE stand for?",
+    "question": "Who developed Python Programming Language?",
     "options": [
-      "Institute of Electrical and Electronics Engineers",
-      "International Electrical and Electronics Engineers",
-      "Institute of Electronic and Electrical Engineers",
-      "International Electronic and Electrical Engineers"
+      "Wick van Rossum",
+      "Rasmus Lerdorf",
+      "Guido van Rossum",
+      "Niene Stom"
     ],
-    "correct": 0
+    "correct": 2
   },
   {
     "id": 2,
-    "question": "Which programming language is primarily used for web development?",
-    "options": ["Python", "JavaScript", "C++", "Java"],
+    "question": "Which keyword is used for function in Python language?",
+    "options": [
+      "Function",
+      "def",
+      "Fun",
+      "Define"
+    ],
     "correct": 1
   },
   {
     "id": 3,
-    "question": "What is the full form of HTML?",
+    "question": "Is Python code compiled or interpreted?",
     "options": [
-      "Hyper Text Markup Language",
-      "High Tech Modern Language",
-      "Home Tool Markup Language",
-      "Hyperlink and Text Markup Language"
+      "Python code is both compiled and interpreted",
+      "Python code is neither compiled nor interpreted",
+      "Python code is only compiled",
+      "Python code is only interpreted"
     ],
     "correct": 0
   },
   {
     "id": 4,
-    "question": "Which company developed React.js?",
-    "options": ["Google", "Microsoft", "Facebook", "Apple"],
-    "correct": 2
-  },
-  {
-    "id": 5,
-    "question": "What is the primary purpose of CSS?",
+    "question": "Which of the following character is used to give single-line comments in Python?",
     "options": [
-      "To add functionality to web pages",
-      "To style and layout web pages",
-      "To manage databases",
-      "To handle server requests"
+      "//",
+      "#",
+      "!",
+      "/*"
     ],
     "correct": 1
   },
   {
+    "id": 5,
+    "question": "What are the values of the following Python expressions?\n\nprint(2**(3**2))\nprint((2**3)**2)\nprint(2**3**2)",
+    "options": [
+      "512, 64, 512",
+      "512, 512, 512",
+      "64, 512, 64",
+      "64, 64, 64"
+    ],
+    "correct": 0
+  },
+  {
     "id": 6,
-    "question": "Which protocol is used for secure web communication?",
-    "options": ["HTTP", "HTTPS", "FTP", "SMTP"],
+    "question": "Which of the following functions is a built-in function in python?",
+    "options": [
+      "factorial()",
+      "print()",
+      "seed()",
+      "sqrt()"
+    ],
     "correct": 1
   },
   {
     "id": 7,
-    "question": "What does API stand for?",
+    "question": "What arithmetic operators cannot be used with strings in Python?",
     "options": [
-      "Application Programming Interface",
-      "Advanced Programming Interface",
-      "Application Process Interface",
-      "Advanced Process Interface"
+      "*",
+      "–",
+      "+",
+      "All of the mentioned"
     ],
-    "correct": 0
+    "correct": 1
   },
   {
     "id": 8,
-    "question": "Which database is known as a NoSQL database?",
-    "options": ["MySQL", "PostgreSQL", "MongoDB", "SQLite"],
-    "correct": 2
+    "question": "Which of the following statements is used to create an empty set in Python?",
+    "options": [
+      "( )",
+      "[ ]",
+      "{ }",
+      "set()"
+    ],
+    "correct": 3
   },
   {
     "id": 9,
-    "question": "What is the latest version of JavaScript?",
-    "options": ["ES5", "ES6", "ES2020", "ES2023"],
+    "question": "What is the maximum possible length of an identifier in Python?",
+    "options": [
+      "79 characters",
+      "31 characters",
+      "63 characters",
+      "none of the mentioned"
+    ],
     "correct": 3
   },
   {
     "id": 10,
-    "question": "Which framework is used for building mobile applications with JavaScript?",
-    "options": ["React Native", "Angular", "Vue.js", "Svelte"],
-    "correct": 0
-  },
-  {
-    "id": 11,
-    "question": "What is the purpose of Git?",
+    "question": "What are the two main types of functions in Python?",
     "options": [
-      "Web hosting",
-      "Version control",
-      "Database management",
-      "Code compilation"
+      "System function",
+      "Custom function",
+      "Built-in function & User defined function",
+      "User function"
     ],
-    "correct": 1
-  },
-  {
-    "id": 12,
-    "question": "Which language is primarily used for iOS app development?",
-    "options": ["Java", "Kotlin", "Swift", "Objective-C"],
     "correct": 2
   },
   {
-    "id": 13,
-    "question": "What does CPU stand for?",
+    "id": 11,
+    "question": "What will be the output of the following Python code?\n\nx = 'abcd'\nfor i in range(len(x)):\n    print(i)",
     "options": [
-      "Central Processing Unit",
-      "Computer Processing Unit",
-      "Central Performance Unit",
-      "Computer Performance Unit"
+      "error",
+      "1 2 3 4",
+      "a b c d",
+      "0 1 2 3"
+    ],
+    "correct": 3
+  },
+  {
+    "id": 12,
+    "question": "What will be the output of the following Python program?\n\ndef addItem(listParam):\n    listParam += [1]\n\nmylist = [1, 2, 3, 4]\naddItem(mylist)\nprint(len(mylist))",
+    "options": [
+      "5",
+      "8",
+      "2",
+      "1"
     ],
     "correct": 0
   },
   {
+    "id": 13,
+    "question": "What will be the output of the following Python expression if x=56.236?\n\nprint(\"%.2f\"%x)",
+    "options": [
+      "56.236",
+      "56.23",
+      "56.0000",
+      "56.24"
+    ],
+    "correct": 3
+  },
+  {
     "id": 14,
-    "question": "Which cloud platform is owned by Amazon?",
-    "options": ["Azure", "Google Cloud", "AWS", "IBM Cloud"],
+    "question": "Which of the following is not a core data type in Python programming?",
+    "options": [
+      "Tuples",
+      "Lists",
+      "Class",
+      "Dictionary"
+    ],
     "correct": 2
   },
   {
     "id": 15,
-    "question": "What is the main purpose of Docker?",
+    "question": "What will be the output of the following Python code snippet if x=1?\nx<<2",
     "options": [
-      "Code editing",
-      "Containerization",
-      "Database management",
-      "Web development"
+      "4",
+      "2",
+      "1",
+      "8"
     ],
-    "correct": 1
+    "correct": 0
   },
   {
     "id": 16,
-    "question": "Which programming paradigm does Python support?",
+    "question": "What does pip stand for python?",
     "options": [
-      "Only Object-Oriented",
-      "Only Functional",
-      "Only Procedural",
-      "Multi-paradigm"
+      "Pip Installs Python",
+      "Pip Installs Packages",
+      "Preferred Installer Program",
+      "All of the mentioned"
+    ],
+    "correct": 2
+  },
+  {
+    "id": 17,
+    "question": "What will be the output of the following Python function?\nprint(len([\"hello\",2, 4, 6]))",
+    "options": [
+      "Error",
+      "6",
+      "4",
+      "3"
+    ],
+    "correct": 2
+  },
+  {
+    "id": 18,
+    "question": "What will be the output of the following Python code snippet?\n\nfor i in [1, 2, 3, 4][::-1]:\n    print(i, end=' ')",
+    "options": [
+      "4 3 2 1",
+      "error",
+      "1 2 3 4",
+      "none of the mentioned"
+    ],
+    "correct": 0
+  },
+  {
+    "id": 19,
+    "question": "What is the order of precedence in python?",
+    "options": [
+      "Exponential, Parentheses, Multiplication, Division, Addition, Subtraction",
+      "Exponential, Parentheses, Division, Multiplication, Addition, Subtraction",
+      "Parentheses, Exponential, Multiplication, Addition, Division, Subtraction",
+      "Parentheses, Exponential, Multiplication, Division, Addition, Subtraction"
     ],
     "correct": 3
   },
   {
-    "id": 17,
-    "question": "What is the default port for HTTP?",
-    "options": ["80", "443", "8080", "3000"],
-    "correct": 0
-  },
-  {
-    "id": 18,
-    "question": "Which data structure follows LIFO principle?",
-    "options": ["Queue", "Stack", "Array", "Linked List"],
-    "correct": 1
-  },
-  {
-    "id": 19,
-    "question": "What does REST stand for in web services?",
-    "options": [
-      "Representational State Transfer",
-      "Remote State Transfer",
-      "Representational System Transfer",
-      "Remote System Transfer"
-    ],
-    "correct": 0
-  },
-  {
     "id": 20,
-    "question": "Which company developed the C programming language?",
-    "options": ["Microsoft", "Bell Labs", "Google", "IBM"],
-    "correct": 1
+    "question": "Python supports the creation of anonymous functions at runtime, using a construct called________",
+    "options": [
+      "pi",
+      "anonymous",
+      "lambda",
+      "none of the mentioned"
+    ],
+    "correct": 2
   },
   {
     "id": 21,
-    "question": "What is the time complexity of binary search?",
-    "options": ["O(n)", "O(log n)", "O(n²)", "O(1)"],
+    "question": "Which data type stores decimal numbers in Python?",
+    "options": [
+      "Int",
+      "float",
+      "bool",
+      "str"
+    ],
     "correct": 1
   },
   {
     "id": 22,
-    "question": "Which protocol is used for email transmission?",
-    "options": ["HTTP", "FTP", "SMTP", "DNS"],
+    "question": "Who is the father of C language?",
+    "options": [
+      "Steve Jobs",
+      "James Gosling",
+      "Dennis Ritchie",
+      "Rasmus Lerdorf"
+    ],
     "correct": 2
   },
   {
     "id": 23,
-    "question": "What is the primary function of an operating system?",
+    "question": "Which is valid C expression?",
     "options": [
-      "Run applications",
-      "Manage hardware resources",
-      "Provide user interface",
-      "All of the above"
+      "int my_num = 100,000;",
+      "int my_num = 100000;",
+      "int my num = 1000;",
+      "int $my_num = 10000;"
+    ],
+    "correct": 1
+  },
+  {
+    "id": 24,
+    "question": "Which of the following declaration is not supported by C language?",
+    "options": [
+      "String str;",
+      "char *str;",
+      "float str = 3e2;",
+      "Both \"String str;\" and \"float str = 3e2;\""
+    ],
+    "correct": 0
+  },
+  {
+    "id": 25,
+    "question": "What is the result of logical or relational expression in C?",
+    "options": [
+      "True or False",
+      "0 or 1",
+      "0 if an expression is false and any positive number if an expression is true",
+      "None of the mentioned"
+    ],
+    "correct": 1
+  },
+  {
+    "id": 26,
+    "question": "Which of the following typecasting is accepted by C language?",
+    "options": [
+      "Widening conversions",
+      "Narrowing conversions",
+      "Widening & Narrowing conversions",
+      "None of the mentioned"
+    ],
+    "correct": 2
+  },
+  {
+    "id": 27,
+    "question": "What is an example of iteration in C?",
+    "options": [
+      "for",
+      "while",
+      "do-while",
+      "all of the mentioned"
     ],
     "correct": 3
   },
   {
-    "id": 24,
-    "question": "Which sorting algorithm has the best average-case time complexity?",
-    "options": ["Bubble Sort", "Selection Sort", "Quick Sort", "Insertion Sort"],
+    "id": 28,
+    "question": "What is #include <stdio.h>?",
+    "options": [
+      "Preprocessor directive",
+      "Inclusion directive",
+      "File inclusion directive",
+      "None of the mentioned"
+    ],
+    "correct": 0
+  },
+  {
+    "id": 29,
+    "question": "In C language, FILE is of which data type?",
+    "options": [
+      "int",
+      "char *",
+      "struct",
+      "None of the mentioned"
+    ],
     "correct": 2
   },
   {
-    "id": 25,
-    "question": "What does SQL stand for?",
+    "id": 30,
+    "question": "What will be the output of the following C code?\n\n#include <stdio.h>\nint main()\n{\n    int y = 10000;\n    int y = 34;\n    printf(\"Hello World! %d\\n\", y);\n    return 0;\n}",
     "options": [
-      "Structured Query Language",
-      "Standard Query Language",
-      "System Query Language",
-      "Sequential Query Language"
+      "Compile time error",
+      "Hello World! 34",
+      "Hello World! 1000",
+      "Hello World! followed by a junk value"
+    ],
+    "correct": 0
+  },
+  {
+    "id": 31,
+    "question": "What will happen if the following C code is executed?\n\n#include <stdio.h>\nint main()\n{\n    int main = 3;\n    printf(\"%d\", main);\n    return 0;\n}",
+    "options": [
+      "It will cause a compile-time error",
+      "It will cause a run-time error",
+      "It will run without any error and prints 3",
+      "It will experience infinite looping"
+    ],
+    "correct": 0
+  },
+  {
+    "id": 32,
+    "question": "What will be the output of the following C function?\n\n#include <stdio.h>\nenum birds {SPARROW, PEACOCK, PARROT};\nenum animals {TIGER = 8, LION, RABBIT, ZEBRA};\nint main()\n{\n    enum birds m = TIGER;\n    int k;\n    k = m;\n    printf(\"%d\\n\", k);\n    return 0;\n}",
+    "options": [
+      "0",
+      "Compile time error",
+      "1",
+      "8"
+    ],
+    "correct": 1
+  },
+  {
+    "id": 33,
+    "question": "What will be the final value of x in the following C code?\n\n#include <stdio.h>\nvoid main()\n{\n    int x = 5 * 9 / 3 + 9;\n}",
+    "options": [
+      "3.75",
+      "Depends on compiler",
+      "24",
+      "3"
+    ],
+    "correct": 2
+  },
+  {
+    "id": 34,
+    "question": "What will be the output of the following C code considering the size of a short int is 2, char is 1 and int is 4 bytes?\n\n#include <stdio.h>\nint main()\n{\n    short int i = 20;\n    char c = 97;\n    printf(\"%d, %d, %d\\n\", sizeof(i), sizeof(c), sizeof(c + i));\n    return 0;\n}",
+    "options": [
+      "2, 1, 2",
+      "2, 1, 1",
+      "2, 1, 4",
+      "2, 2, 8"
+    ],
+    "correct": 2
+  },
+  {
+    "id": 35,
+    "question": "The standard header _______ is used for variable list arguments (…) in C.",
+    "options": [
+      "<stdio.h>",
+      "<stdlib.h>",
+      "<math.h>",
+      "<stdarg.h>"
+    ],
+    "correct": 3
+  },
+  {
+    "id": 36,
+    "question": "Which of the following is not an operator in C?",
+    "options": [
+      ",",
+      "sizeof()",
+      "~",
+      "None of the mentioned"
+    ],
+    "correct": 3
+  },
+  {
+    "id": 37,
+    "question": "Which of the following is a valid variable name in C?",
+    "options": [
+      "int",
+      "my_var",
+      "7var",
+      "char"
+    ],
+    "correct": 1
+  },
+  {
+    "id": 38,
+    "question": "What is the size of an int data type in 32-bit architecture?",
+    "options": [
+      "1 byte",
+      "2 bytes",
+      "4 bytes",
+      "8 bytes"
+    ],
+    "correct": 2
+  },
+  {
+    "id": 39,
+    "question": "Which of the following can be used to stop a loop immediately?",
+    "options": [
+      "continue",
+      "break",
+      "exit",
+      "stop"
+    ],
+    "correct": 1
+  },
+  {
+    "id": 40,
+    "question": "What does the 'extern' keyword mean in C?",
+    "options": [
+      "Defines a function",
+      "Declares a variable",
+      "Declares a variable defined elsewhere",
+      "Local variable"
+    ],
+    "correct": 2
+  },
+  {
+    "id": 41,
+    "question": "Which function is used to read a string input safely to avoid buffer overflow?",
+    "options": [
+      "gets()",
+      "fgets()",
+      "scanf()",
+      "gets_s()"
+    ],
+    "correct": 1
+  },
+  {
+    "id": 42,
+    "question": "What will happen if you divide an integer by zero in C?",
+    "options": [
+      "Program crashes",
+      "Compiler error",
+      "Undefined behavior",
+      "Returns zero"
+    ],
+    "correct": 2
+  },
+  {
+    "id": 43,
+    "question": "How are multi-line comments written in C?",
+    "options": [
+      "// comment",
+      "/* comment */",
+      "<!-- comment -->",
+      "# comment"
+    ],
+    "correct": 1
+  },
+  {
+    "id": 44,
+    "question": "What will be the output of: printf(\"%d\", sizeof(char));",
+    "options": [
+      "1",
+      "2",
+      "4",
+      "Compiler dependent"
+    ],
+    "correct": 0
+  },
+  {
+    "id": 45,
+    "question": "How is a pointer initialized in C?",
+    "options": [
+      "int *p = 0;",
+      "int *p = NULL;",
+      "int p;",
+      "int p = *;"
+    ],
+    "correct": 1
+  },
+  {
+    "id": 46,
+    "question": "Which of the following is correct about the precedence of operators in C?",
+    "options": [
+      "*, / have same precedence, higher than +, -",
+      "+, - have higher precedence than *, /",
+      "() has higher precedence than * and / only",
+      "++ has lower precedence than +"
     ],
     "correct": 0
   }

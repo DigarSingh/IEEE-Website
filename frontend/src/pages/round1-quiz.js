@@ -18,6 +18,7 @@ import { useTheme } from '../contexts/ThemeContext';
 import {
   storeStudentResult,
   updateStudentProgress,
+  getStudentByRollNo,
 } from "../lib/mongodb-storage";
 
 export default function Round1Quiz() {
@@ -30,21 +31,39 @@ export default function Round1Quiz() {
 
   // Check authentication and Round 1 quiz state
   useEffect(() => {
-    const savedUser = localStorage.getItem("quizUser");
-    if (!savedUser) {
-      router.push("/quizlogin");
-      return;
-    }
+    const checkQuizCompletion = async () => {
+      const savedUser = localStorage.getItem("quizUser");
+      if (!savedUser) {
+        router.push("/quizlogin");
+        return;
+      }
 
-    if (!state.quizStarted || state.questions.length === 0) {
-      router.push("/instructions");
-      return;
-    }
+      // Check if student has already completed the quiz
+      try {
+        const userData = JSON.parse(savedUser);
+        const existingStudent = await getStudentByRollNo(userData.rollNo);
+        if (existingStudent && existingStudent.selectedRound === 1 && existingStudent.quizCompleted) {
+          alert("You have already completed Round 1 quiz. You cannot retake the quiz.");
+          router.push("/round1-result");
+          return;
+        }
+      } catch (error) {
+        console.error('Error checking quiz completion status:', error);
+        // Continue with normal flow if check fails
+      }
 
-    if (state.quizCompleted) {
-      router.push("/round1-result");
-      return;
-    }
+      if (!state.quizStarted || state.questions.length === 0) {
+        router.push("/instructions");
+        return;
+      }
+
+      if (state.quizCompleted) {
+        router.push("/round1-result");
+        return;
+      }
+    };
+
+    checkQuizCompletion();
   }, [router, state]);
 
   // Fullscreen monitoring
@@ -291,7 +310,12 @@ export default function Round1Quiz() {
 
       localStorage.setItem("round1Results", JSON.stringify(results));
 
-      console.log("✅ Round 1 quiz submission complete, redirecting to results...");
+      // Clear quiz state after successful submission
+      dispatch({ type: "RESET_QUIZ" });
+      localStorage.removeItem("quizState");
+      localStorage.removeItem("quizResults");
+
+      console.log("✅ Round 1 quiz submission complete, state cleared, redirecting to results...");
       router.push("/round1-result");
     } catch (error) {
       console.error("❌ Error submitting Round 1 quiz:", error);

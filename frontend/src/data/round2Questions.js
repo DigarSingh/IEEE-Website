@@ -273,11 +273,11 @@ print(len(x))
 
 // Question distribution
 export const round2Config = {
-  totalQuestions: 20,
-  mcqQuestions: 5,      // 5 MCQ questions (2-3 points each)
-  oneWordQuestions: 5,  // 5 One Word questions (3 points each)
+  totalQuestions: 25,
+  mcqQuestions: 8,      // 8 MCQ questions (2-3 points each)
+  oneWordQuestions: 7,  // 7 One Word questions (3 points each)
   codeQuestions: 10,    // 10 Code Snippet questions (4-6 points each)
-  totalPoints: 85,      // Maximum possible points
+  totalPoints: 95,      // Maximum possible points
   timeLimit: 45,        // 45 minutes
   passingScore: 50      // 50 points to pass
 };
