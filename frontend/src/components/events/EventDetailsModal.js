@@ -31,39 +31,39 @@ export default function EventDetailsModal({ event, isOpen, onClose }) {
     <div className="space-y-6">
       {/* Event Poster Section */}
       <div>
-        <h3 className="text-lg font-semibold text-gray-900 mb-3">Event Poster</h3>
+        <h3 className="mb-3 text-lg font-semibold text-gray-900">Event Poster</h3>
         <div 
-          className="relative bg-gray-100 rounded-lg overflow-hidden cursor-pointer group"
+          className="relative overflow-hidden bg-gray-100 rounded-lg cursor-pointer group"
           onClick={() => setShowFullPoster(true)}
         >
           <img
             src={event.image || "/images/events/default.jpg"}
             alt={event.title}
-            className="w-full h-64 object-cover transition-transform duration-300 group-hover:scale-105"
+            className="object-cover w-full h-64 transition-transform duration-300 group-hover:scale-105"
           />
-          <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-all duration-300 flex items-center justify-center">
-            <div className="bg-white bg-opacity-0 group-hover:bg-opacity-90 rounded-full p-3 transition-all duration-300">
-              <FaExpand className="text-gray-800 opacity-0 group-hover:opacity-100 transition-opacity duration-300" size={20} />
+          <div className="absolute inset-0 flex items-center justify-center transition-all duration-300 bg-black bg-opacity-0 group-hover:bg-opacity-20">
+            <div className="p-3 transition-all duration-300 bg-white bg-opacity-0 rounded-full group-hover:bg-opacity-90">
+              <FaExpand className="text-gray-800 transition-opacity duration-300 opacity-0 group-hover:opacity-100" size={20} />
             </div>
           </div>
-          <div className="absolute bottom-3 right-3 bg-black bg-opacity-50 backdrop-blur-sm rounded-full px-3 py-1 text-white text-sm">
+          <div className="absolute px-3 py-1 text-sm text-white bg-black bg-opacity-50 rounded-full bottom-3 right-3 backdrop-blur-sm">
             Click to view full size
           </div>
         </div>
       </div>
 
       <div>
-        <h3 className="text-lg font-semibold text-gray-900 mb-3">About This Event</h3>
-        <p className="text-gray-600 leading-relaxed">{event.detailedContent.overview}</p>
+        <h3 className="mb-3 text-lg font-semibold text-gray-900">About This Event</h3>
+        <p className="leading-relaxed text-gray-600">{event.detailedContent.overview}</p>
       </div>
       
       {event.detailedContent.objectives && (
         <div>
-          <h3 className="text-lg font-semibold text-gray-900 mb-3">Learning Objectives</h3>
+          <h3 className="mb-3 text-lg font-semibold text-gray-900">Learning Objectives</h3>
           <ul className="space-y-2">
             {event.detailedContent.objectives.map((objective, index) => (
               <li key={index} className="flex items-start">
-                <span className="inline-block w-2 h-2 bg-ieee-blue rounded-full mt-2 mr-3 flex-shrink-0"></span>
+                <span className="flex-shrink-0 inline-block w-2 h-2 mt-2 mr-3 rounded-full bg-ieee-blue"></span>
                 <span className="text-gray-600">{objective}</span>
               </li>
             ))}
@@ -73,11 +73,11 @@ export default function EventDetailsModal({ event, isOpen, onClose }) {
 
       {event.detailedContent.prerequisites && (
         <div>
-          <h3 className="text-lg font-semibold text-gray-900 mb-3">Prerequisites</h3>
+          <h3 className="mb-3 text-lg font-semibold text-gray-900">Prerequisites</h3>
           <ul className="space-y-2">
             {event.detailedContent.prerequisites.map((prereq, index) => (
               <li key={index} className="flex items-start">
-                <span className="inline-block w-2 h-2 bg-green-500 rounded-full mt-2 mr-3 flex-shrink-0"></span>
+                <span className="flex-shrink-0 inline-block w-2 h-2 mt-2 mr-3 bg-green-500 rounded-full"></span>
                 <span className="text-gray-600">{prereq}</span>
               </li>
             ))}
@@ -91,10 +91,10 @@ export default function EventDetailsModal({ event, isOpen, onClose }) {
     <div className="space-y-6">
       {event.detailedContent.agenda && (
         <div>
-          <h3 className="text-lg font-semibold text-gray-900 mb-4">Event Schedule</h3>
+          <h3 className="mb-4 text-lg font-semibold text-gray-900">Event Schedule</h3>
           <div className="space-y-3">
             {event.detailedContent.agenda.map((item, index) => (
-              <div key={index} className="border-l-4 border-ieee-blue pl-4 py-2">
+              <div key={index} className="py-2 pl-4 border-l-4 border-ieee-blue">
                 <div className="text-sm font-medium text-ieee-blue">{item.split(':')[0]}:{item.split(':')[1]}</div>
                 <div className="text-gray-700">{item.split(': ').slice(1).join(': ')}</div>
               </div>
@@ -105,10 +105,10 @@ export default function EventDetailsModal({ event, isOpen, onClose }) {
 
       {event.detailedContent.curriculum && (
         <div>
-          <h3 className="text-lg font-semibold text-gray-900 mb-4">Curriculum</h3>
+          <h3 className="mb-4 text-lg font-semibold text-gray-900">Curriculum</h3>
           <div className="space-y-3">
             {event.detailedContent.curriculum.map((item, index) => (
-              <div key={index} className="border-l-4 border-ieee-blue pl-4 py-2">
+              <div key={index} className="py-2 pl-4 border-l-4 border-ieee-blue">
                 <div className="text-sm font-medium text-ieee-blue">{item.split(':')[0]}:{item.split(':')[1]}</div>
                 <div className="text-gray-700">{item.split(': ').slice(1).join(': ')}</div>
               </div>
@@ -119,10 +119,10 @@ export default function EventDetailsModal({ event, isOpen, onClose }) {
 
       {event.detailedContent.timeline && (
         <div>
-          <h3 className="text-lg font-semibold text-gray-900 mb-4">Event Timeline</h3>
+          <h3 className="mb-4 text-lg font-semibold text-gray-900">Event Timeline</h3>
           <div className="space-y-3">
             {event.detailedContent.timeline.map((item, index) => (
-              <div key={index} className="border-l-4 border-ieee-blue pl-4 py-2">
+              <div key={index} className="py-2 pl-4 border-l-4 border-ieee-blue">
                 <div className="text-sm font-medium text-ieee-blue">{item.split(':')[0]}:{item.split(':')[1]}</div>
                 <div className="text-gray-700">{item.split(': ').slice(1).join(': ')}</div>
               </div>
@@ -133,10 +133,10 @@ export default function EventDetailsModal({ event, isOpen, onClose }) {
 
       {event.detailedContent.program && (
         <div>
-          <h3 className="text-lg font-semibold text-gray-900 mb-4">Program Schedule</h3>
+          <h3 className="mb-4 text-lg font-semibold text-gray-900">Program Schedule</h3>
           <div className="space-y-3">
             {event.detailedContent.program.map((item, index) => (
-              <div key={index} className="border-l-4 border-ieee-blue pl-4 py-2">
+              <div key={index} className="py-2 pl-4 border-l-4 border-ieee-blue">
                 <div className="text-sm font-medium text-ieee-blue">{item.split(':')[0]}:{item.split(':')[1]}</div>
                 <div className="text-gray-700">{item.split(': ').slice(1).join(': ')}</div>
               </div>
@@ -147,12 +147,12 @@ export default function EventDetailsModal({ event, isOpen, onClose }) {
 
       {event.detailedContent.rounds && (
         <div>
-          <h3 className="text-lg font-semibold text-gray-900 mb-4">Competition Rounds</h3>
+          <h3 className="mb-4 text-lg font-semibold text-gray-900">Competition Rounds</h3>
           <div className="space-y-4">
             {event.detailedContent.rounds.map((round, index) => (
-              <div key={index} className="bg-gray-50 rounded-lg p-4">
-                <h4 className="font-semibold text-ieee-blue mb-2">{round.round}</h4>
-                <p className="text-gray-600 mb-2">{round.description}</p>
+              <div key={index} className="p-4 rounded-lg bg-gray-50">
+                <h4 className="mb-2 font-semibold text-ieee-blue">{round.round}</h4>
+                <p className="mb-2 text-gray-600">{round.description}</p>
                 <div className="text-sm text-gray-500">
                   <span className="font-medium">Duration:</span> {round.duration}
                 </div>
@@ -174,10 +174,10 @@ export default function EventDetailsModal({ event, isOpen, onClose }) {
     <div className="space-y-6">
       {event.detailedContent.prizes && (
         <div>
-          <h3 className="text-lg font-semibold text-gray-900 mb-3">Prizes & Recognition</h3>
+          <h3 className="mb-3 text-lg font-semibold text-gray-900">Prizes & Recognition</h3>
           <div className="space-y-2">
             {event.detailedContent.prizes.map((prize, index) => (
-              <div key={index} className="bg-gradient-to-r from-yellow-50 to-orange-50 rounded-lg p-3">
+              <div key={index} className="p-3 rounded-lg bg-gradient-to-r from-yellow-50 to-orange-50">
                 <span className="text-gray-700">{prize}</span>
               </div>
             ))}
@@ -187,13 +187,13 @@ export default function EventDetailsModal({ event, isOpen, onClose }) {
 
       {event.detailedContent.speakers && (
         <div>
-          <h3 className="text-lg font-semibold text-gray-900 mb-3">Expert Speakers</h3>
+          <h3 className="mb-3 text-lg font-semibold text-gray-900">Expert Speakers</h3>
           <div className="grid gap-4">
             {event.detailedContent.speakers.map((speaker, index) => (
-              <div key={index} className="bg-white border rounded-lg p-4 shadow-sm">
+              <div key={index} className="p-4 bg-white border rounded-lg shadow-sm">
                 <h4 className="font-semibold text-gray-900">{speaker.name}</h4>
-                <p className="text-ieee-blue text-sm">{speaker.designation}</p>
-                <p className="text-gray-600 text-sm mt-1">{speaker.expertise}</p>
+                <p className="text-sm text-ieee-blue">{speaker.designation}</p>
+                <p className="mt-1 text-sm text-gray-600">{speaker.expertise}</p>
               </div>
             ))}
           </div>
@@ -202,11 +202,11 @@ export default function EventDetailsModal({ event, isOpen, onClose }) {
 
       {event.detailedContent.outcomes && (
         <div>
-          <h3 className="text-lg font-semibold text-gray-900 mb-3">What You'll Get</h3>
+          <h3 className="mb-3 text-lg font-semibold text-gray-900">What You'll Get</h3>
           <ul className="space-y-2">
             {event.detailedContent.outcomes.map((outcome, index) => (
               <li key={index} className="flex items-start">
-                <span className="inline-block w-2 h-2 bg-green-500 rounded-full mt-2 mr-3 flex-shrink-0"></span>
+                <span className="flex-shrink-0 inline-block w-2 h-2 mt-2 mr-3 bg-green-500 rounded-full"></span>
                 <span className="text-gray-600">{outcome}</span>
               </li>
             ))}
@@ -216,8 +216,8 @@ export default function EventDetailsModal({ event, isOpen, onClose }) {
 
       {event.detailedContent.registration && (
         <div>
-          <h3 className="text-lg font-semibold text-gray-900 mb-3">Registration Information</h3>
-          <div className="bg-blue-50 rounded-lg p-4 space-y-2">
+          <h3 className="mb-3 text-lg font-semibold text-gray-900">Registration Information</h3>
+          <div className="p-4 space-y-2 rounded-lg bg-blue-50">
             {typeof event.detailedContent.registration === 'object' ? (
               Object.entries(event.detailedContent.registration).map(([key, value]) => (
                 <div key={key} className="flex justify-between">
@@ -243,7 +243,7 @@ export default function EventDetailsModal({ event, isOpen, onClose }) {
           exit="exit"
           variants={modalVariants}
           transition={{ duration: 0.3 }}
-          className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50"
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-50"
           onClick={onClose}
         >
           <motion.div
@@ -253,33 +253,35 @@ export default function EventDetailsModal({ event, isOpen, onClose }) {
             onClick={(e) => e.stopPropagation()}
           >
             {/* Header */}
-            <div className="relative h-80 overflow-hidden">
+            <div className="relative overflow-hidden h-80">
               <img
                 src={event.image || "/images/events/default.jpg"}
                 alt={event.title}
-                className="w-full h-full object-cover cursor-pointer transition-transform duration-300 hover:scale-105"
+                className="object-cover w-full h-full transition-transform duration-300 cursor-pointer hover:scale-105"
                 onClick={() => setShowFullPoster(true)}
               />
-              {/* Minimal gradient overlay only at the bottom */}
-              <div className="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-black/60 to-transparent"></div>
+              {/* Minimal gradient overlay only at the bottom - conditional */}
+              {!showCleanPoster && (
+                <div className="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-black/60 to-transparent"></div>
+              )}
               
               {/* Top controls with minimal background */}
               <button
                 onClick={onClose}
-                className="absolute top-4 right-4 bg-black bg-opacity-40 backdrop-blur-sm rounded-full p-2 text-white hover:bg-opacity-60 transition-all z-10"
+                className="absolute z-10 p-2 text-white transition-all bg-black rounded-full top-4 right-4 bg-opacity-40 backdrop-blur-sm hover:bg-opacity-60"
               >
                 <FaTimes size={20} />
               </button>
               <button
                 onClick={() => setShowFullPoster(true)}
-                className="absolute top-4 right-16 bg-black bg-opacity-40 backdrop-blur-sm rounded-full p-2 text-white hover:bg-opacity-60 transition-all z-10"
+                className="absolute z-10 p-2 text-white transition-all bg-black rounded-full top-4 right-16 bg-opacity-40 backdrop-blur-sm hover:bg-opacity-60"
                 title="View Full Poster"
               >
                 <FaExpand size={16} />
               </button>
               <button
                 onClick={() => setShowCleanPoster(!showCleanPoster)}
-                className="absolute top-4 right-28 bg-black bg-opacity-40 backdrop-blur-sm rounded-full p-2 text-white hover:bg-opacity-60 transition-all z-10"
+                className="absolute z-10 p-2 text-white transition-all bg-black rounded-full top-4 right-28 bg-opacity-40 backdrop-blur-sm hover:bg-opacity-60"
                 title={showCleanPoster ? "Show Event Info" : "Hide Event Info"}
               >
                 {showCleanPoster ? "📄" : "🖼️"}
@@ -288,8 +290,8 @@ export default function EventDetailsModal({ event, isOpen, onClose }) {
               {/* Compact event info at bottom - conditional */}
               {!showCleanPoster && (
                 <div className="absolute bottom-3 left-4 right-4">
-                  <div className="bg-black bg-opacity-50 backdrop-blur-sm rounded-lg p-3">
-                    <h2 className="text-xl font-bold text-white mb-1 truncate">{event.title}</h2>
+                  <div className="p-3 bg-black bg-opacity-50 rounded-lg backdrop-blur-sm">
+                    <h2 className="mb-1 text-xl font-bold text-white truncate">{event.title}</h2>
                     <div className="flex items-center space-x-4 text-xs text-white/90">
                       <div className="flex items-center">
                         <FaCalendar className="mr-1" size={10} />
@@ -317,7 +319,7 @@ export default function EventDetailsModal({ event, isOpen, onClose }) {
 
             {/* Tabs */}
             <div className="border-b border-gray-200">
-              <nav className="flex space-x-8 px-6">
+              <nav className="flex px-6 space-x-8">
                 {tabs.map((tab) => {
                   const Icon = tab.icon;
                   return (
@@ -356,14 +358,14 @@ export default function EventDetailsModal({ event, isOpen, onClose }) {
             </div>
 
             {/* Footer */}
-            <div className="border-t border-gray-200 px-6 py-4 bg-gray-50">
-              <div className="flex justify-between items-center">
+            <div className="px-6 py-4 border-t border-gray-200 bg-gray-50">
+              <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-4">
                   <span className="inline-block px-3 py-1 text-sm font-medium text-white rounded-full bg-ieee-blue">
                     {event.category.charAt(0).toUpperCase() + event.category.slice(1)}
                   </span>
                   {event.difficulty && (
-                    <span className="inline-block px-3 py-1 text-sm font-medium text-gray-700 rounded-full bg-gray-200">
+                    <span className="inline-block px-3 py-1 text-sm font-medium text-gray-700 bg-gray-200 rounded-full">
                       {event.difficulty}
                     </span>
                   )}
@@ -371,7 +373,7 @@ export default function EventDetailsModal({ event, isOpen, onClose }) {
                 {event.registrationLink && (
                   <a
                     href={event.registrationLink}
-                    className="px-6 py-2 bg-ieee-blue text-white rounded-lg hover:bg-blue-700 transition-colors font-medium"
+                    className="px-6 py-2 font-medium text-white transition-colors rounded-lg bg-ieee-blue hover:bg-blue-700"
                   >
                     Register Now
                   </a>
@@ -393,7 +395,7 @@ export default function EventDetailsModal({ event, isOpen, onClose }) {
         >
           <button
             onClick={() => setShowFullPoster(false)}
-            className="absolute top-6 right-6 bg-white bg-opacity-20 backdrop-blur-sm rounded-full p-3 text-white hover:bg-opacity-30 transition-all z-10"
+            className="absolute z-10 p-3 text-white transition-all bg-white rounded-full top-6 right-6 bg-opacity-20 backdrop-blur-sm hover:bg-opacity-30"
           >
             <FaTimes size={24} />
           </button>
@@ -408,12 +410,8 @@ export default function EventDetailsModal({ event, isOpen, onClose }) {
             <img
               src={event.image || "/images/events/default.jpg"}
               alt={event.title}
-              className="max-w-full max-h-full object-contain rounded-lg shadow-2xl"
+              className="object-contain max-w-full max-h-full rounded-lg shadow-2xl"
             />
-            <div className="absolute bottom-4 left-4 right-4 bg-black bg-opacity-50 backdrop-blur-sm rounded-lg p-4 text-white">
-              <h3 className="text-xl font-bold mb-1">{event.title}</h3>
-              <p className="text-sm opacity-90">{event.date} • {event.time} • {event.location}</p>
-            </div>
           </motion.div>
         </motion.div>
       )}
