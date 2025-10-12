@@ -284,24 +284,24 @@ export default function Home() {
               <span className="mr-4">🎉</span>
               <span className="mr-2">Upcoming Event: Kindle Jr 4.0!</span>
               <span className="mr-4">Get ready for the ultimate competition.</span>
-              <Link href="/events" className="inline-flex items-center px-3 py-1 text-xs font-semibold text-purple-600 transition-colors duration-200 bg-white rounded-full hover:bg-gray-100">
-                Learn More
+              <a href="https://forms.gle/5oYNMu5d6irHVDBH6" target="_blank" rel="noopener noreferrer" className="inline-flex items-center px-3 py-1 text-xs font-semibold text-purple-600 transition-colors duration-200 bg-white rounded-full hover:bg-gray-100">
+                Register Now
                 <FaArrowRight className="ml-1 text-xs" />
-              </Link>
+              </a>
               <span className="ml-4">🎉</span>
               <span className="ml-2">Upcoming Event: Kindle Jr 4.0!</span>
               <span className="ml-4">Get ready for the ultimate competition.</span>
-              <Link href="/events" className="inline-flex items-center px-3 py-1 text-xs font-semibold text-purple-600 transition-colors duration-200 bg-white rounded-full hover:bg-gray-100">
-                Learn More
+              <a href="https://forms.gle/5oYNMu5d6irHVDBH6" target="_blank" rel="noopener noreferrer" className="inline-flex items-center px-3 py-1 text-xs font-semibold text-purple-600 transition-colors duration-200 bg-white rounded-full hover:bg-gray-100">
+                Register Now
                 <FaArrowRight className="ml-1 text-xs" />
-              </Link>
+              </a>
               <span className="ml-4">🎉</span>
               <span className="ml-2">Upcoming Event: Kindle Jr 4.0!</span>
               <span className="ml-4">Get ready for the ultimate competition.</span>
-              <Link href="/events" className="inline-flex items-center px-3 py-1 text-xs font-semibold text-purple-600 transition-colors duration-200 bg-white rounded-full hover:bg-gray-100">
-                Learn More
+              <a href="https://forms.gle/5oYNMu5d6irHVDBH6" target="_blank" rel="noopener noreferrer" className="inline-flex items-center px-3 py-1 text-xs font-semibold text-purple-600 transition-colors duration-200 bg-white rounded-full hover:bg-gray-100">
+                Register Now
                 <FaArrowRight className="ml-1 text-xs" />
-              </Link>
+              </a>
             </div>
           </div>
         </div>

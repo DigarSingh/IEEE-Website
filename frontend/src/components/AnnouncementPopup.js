@@ -72,8 +72,8 @@ export default function AnnouncementPopup() {
   };
 
   const handleRegisterClick = () => {
-    // Open registration link
-    window.open('https://www.geuieee.com', '_blank');
+    // Open registration form link
+    window.open('https://forms.gle/5oYNMu5d6irHVDBH6', '_blank');
     handleClose();
   };
 
