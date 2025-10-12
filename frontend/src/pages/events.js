@@ -30,18 +30,69 @@ export default function Events() {
     {
       id: 13,
       title: "Kindle Jr 4.0",
-      date: "October 15, 2025",
-      time: "10:00 AM - 2:00 PM",
+      date: "October 14, 2025",
+      time: "10:00 AM - 4:00 PM",
       location: "CSIT Labs",
       category: "competition",
-      image: "/images/events/kindle.jpg",
+      image: "/images/events/kindlejunior4.0.png",
       description: "The ultimate coding quiz competition is back! Test your programming knowledge, algorithms, and problem-solving skills in this exciting multi-round quiz challenge.",
       featured: true,
       attendees: 150,
       difficulty: "All Levels",
       tags: ["Coding", "Quiz", "Programming"],
       upcoming: true,
-      registrationLink: "/quizlogin"
+      registrationLink: "/quizlogin",
+      detailedContent: {
+        overview: "Kindle Jr 4.0 is the flagship coding competition that brings together programming enthusiasts from across the university. This multi-round quiz challenge tests participants' knowledge in algorithms, data structures, programming languages, and problem-solving techniques.",
+        objectives: [
+          "Test comprehensive programming knowledge across multiple languages",
+          "Challenge problem-solving and algorithmic thinking skills",
+          "Promote competitive programming culture",
+          "Identify and reward top coding talent",
+          "Foster learning through healthy competition"
+        ],
+        rounds: [
+          {
+            round: "Round 1: MCQ Blitz",
+            description: "Fast-paced multiple choice questions covering programming fundamentals",
+            duration: "35 minutes",
+            topics: ["Programming basics", "Data types", "Control structures", "OOP concepts"]
+          },
+          {
+            round: "Round 2: Code Analysis",
+            description: "Analyze code snippets and predict outputs",
+            duration: "60 minutes", 
+            topics: ["Code debugging", "Logic analysis", "Output prediction", "Error identification"]
+          },
+          {
+            round: "Final Round: Algorithm Challenge",
+            description: "Solve complex algorithmic problems",
+            duration: "90 minutes",
+            topics: ["Data structures", "Algorithms", "Optimization", "Advanced programming"]
+          }
+        ],
+        prizes: [
+          "🏆 Exciting Prizes Await!",
+        ],
+        eligibility: [
+          "Open only for 1st year students",
+          "No prior competitive programming experience required",
+          "Solo participation allowed",
+          "Valid student ID required for registration"
+        ],
+        preparation: [
+          "Review programming fundamentals in C, Java, or Python",
+          "Practice data structures and algorithms",
+          "Solve coding problems on platforms like HackerRank, LeetCode",
+          "Understand time and space complexity concepts"
+        ],
+        registration: {
+          process: "Register through the quiz portal",
+          deadline: "October 13, 2025",
+          fee: "Entry Fee: ₹99 / per person (₹49 for first 50 IEEE members)",
+          requirements: ["Valid student ID", "Basic programming knowledge"]
+        }
+      }
     },
     {
       id: 1,
@@ -55,7 +106,56 @@ export default function Events() {
       featured: true,
       attendees: 120,
       difficulty: "Intermediate",
-      tags: ["AI", "ML", "Python"]
+      tags: ["AI", "ML", "Python"],
+      detailedContent: {
+        overview: "This comprehensive machine learning workshop provides hands-on experience with industry-standard ML tools and techniques. Led by experienced data scientists and ML engineers, participants will learn to build, train, and deploy machine learning models for real-world applications.",
+        objectives: [
+          "Master fundamental machine learning algorithms and concepts",
+          "Gain hands-on experience with Python libraries (scikit-learn, pandas, numpy)",
+          "Learn data preprocessing and feature engineering techniques",
+          "Understand model evaluation and validation methods",
+          "Build end-to-end ML projects from data to deployment"
+        ],
+        agenda: [
+          "11:30 AM - 12:00 PM: Welcome & ML Fundamentals Overview",
+          "12:00 PM - 1:30 PM: Python for Data Science (pandas, numpy)",
+          "1:30 PM - 2:30 PM: Lunch Break & Networking",
+          "2:30 PM - 4:00 PM: Building Your First ML Model",
+          "4:00 PM - 5:30 PM: Model Evaluation & Hyperparameter Tuning",
+          "5:30 PM - 6:00 PM: Project Presentations & Wrap-up"
+        ],
+        prerequisites: [
+          "Basic programming knowledge in Python",
+          "Understanding of statistics and mathematics",
+          "Laptop with Python 3.7+ and Jupyter Notebook installed",
+          "Enthusiasm for data science and AI"
+        ],
+        outcomes: [
+          "Comprehensive understanding of ML workflow",
+          "Hands-on project portfolio with 3+ ML models",
+          "Industry insights from expert practitioners",
+          "Certificate of completion from IEEE GEU",
+          "Networking opportunities with ML professionals"
+        ],
+        tools: ["Python", "Jupyter Notebook", "scikit-learn", "pandas", "matplotlib", "seaborn"],
+        projects: [
+          "Predictive Analytics for Sales Forecasting",
+          "Image Classification using Neural Networks",
+          "Sentiment Analysis of Social Media Data"
+        ],
+        speakers: [
+          {
+            name: "Dr. Ankit Verma",
+            designation: "Senior Data Scientist, Google",
+            expertise: "Deep Learning & Computer Vision"
+          },
+          {
+            name: "Priya Singh",
+            designation: "ML Engineer, Amazon",
+            expertise: "Natural Language Processing"
+          }
+        ]
+      }
     },
     {
       id: 2,
@@ -67,9 +167,66 @@ export default function Events() {
       image: "/images/events/aws.jpg",
       description: "The AWS Cloud Quest Tournament and Jam Skill Builder Program is a hands-on, gamified learning experience designed to equip students with real-world cloud computing skills using the AWS platform.",
       featured: true,
-      attendees: 200,
+      attendees: 1500,
       difficulty: "Beginner",
-      tags: ["AWS", "Cloud", "DevOps"]
+      tags: ["AWS", "Cloud", "DevOps"],
+      detailedContent: {
+        overview: "AWS Jam Skill Builder Program combines gamified learning with real-world cloud scenarios. Participants will navigate through AWS Cloud Quest challenges while building practical skills in cloud architecture, deployment, and management using Amazon Web Services.",
+        objectives: [
+          "Master fundamental AWS cloud services and architecture",
+          "Gain hands-on experience with EC2, S3, RDS, and Lambda",
+          "Learn cloud security best practices and IAM policies",
+          "Understand scalable application deployment strategies",
+          "Earn AWS digital badges and certificates"
+        ],
+        program: [
+          "8:00 AM - 9:00 AM: Registration & AWS Account Setup",
+          "9:00 AM - 10:30 AM: AWS Fundamentals & Cloud Quest Introduction", 
+          "10:30 AM - 12:00 PM: Hands-on Lab Session 1: EC2 & S3",
+          "12:00 PM - 1:00 PM: Lunch & Networking",
+          "1:00 PM - 2:30 PM: Hands-on Lab Session 2: RDS & Lambda",
+          "2:30 PM - 4:00 PM: AWS Jam Challenge Competition",
+          "4:00 PM - 5:00 PM: Award Ceremony & Next Steps"
+        ],
+        challenges: [
+          "Cloud Quest: Cloud Practitioner Journey",
+          "Build and Deploy a Web Application",
+          "Serverless Computing with Lambda",
+          "Database Management with RDS",
+          "Security & Identity Management"
+        ],
+        benefits: [
+          "Official AWS digital badges upon completion",
+          "AWS credits worth $100 for continued learning",
+          "Certificate recognized by industry employers",
+          "Direct mentorship from AWS certified professionals",
+          "Opportunity to join AWS Student Ambassador program"
+        ],
+        prerequisites: [
+          "Basic understanding of computing concepts",
+          "Laptop with stable internet connection",
+          "Creating AWS Free Tier account (guidance provided)",
+          "No prior cloud experience required"
+        ],
+        prizes: [
+          "🏆 Top Performer: AWS Certification Voucher + ₹10,000",
+          "🥈 Runner-up: AWS Learning Credits + ₹5,000",
+          "🥉 Third Place: AWS Credits + ₹3,000",
+          "🎯 All Participants: AWS Digital Badges + Certificates"
+        ],
+        speakers: [
+          {
+            name: "Vikram Mehta",
+            designation: "AWS Solutions Architect",
+            expertise: "Cloud Architecture & DevOps"
+          },
+          {
+            name: "Sarah Johnson",
+            designation: "Senior Cloud Engineer, Accenture",
+            expertise: "Serverless Computing & Security"
+          }
+        ]
+      }
     },
     {
       id: 3,
@@ -81,6 +238,70 @@ export default function Events() {
       image: "/images/events/hackathon.jpg",
       description: "48-hour coding challenge with exciting prizes and opportunities.",
       featured: true,
+      detailedContent: {
+        overview: "Hackathon 2025 is the premier 48-hour coding marathon where innovation meets technology. Teams will collaborate to build groundbreaking solutions addressing real-world challenges across multiple domains including FinTech, HealthTech, EdTech, and Sustainability.",
+        objectives: [
+          "Foster innovation and creative problem-solving skills",
+          "Encourage collaboration between diverse skill sets",
+          "Build functional prototypes addressing real-world problems",
+          "Network with industry professionals and potential employers", 
+          "Showcase technical skills to judges and sponsors"
+        ],
+        timeline: [
+          "Day 1 (May 1): 9:00 AM - Problem Statements Release & Team Formation",
+          "Day 1: 10:00 AM - 11:59 PM - Development Phase Begins",
+          "Day 2 (May 2): 12:00 AM - 8:00 PM - Continued Development",
+          "Day 2: 8:00 PM - 10:00 PM - Final Submissions & Presentations",
+          "Day 2: 10:00 PM - 11:00 PM - Judging & Award Ceremony"
+        ],
+        themes: [
+          "🏥 HealthTech: Digital health solutions and medical innovations",
+          "💰 FinTech: Financial technology and payment solutions",
+          "📚 EdTech: Educational technology and learning platforms",
+          "🌱 Sustainability: Environmental and green technology solutions",
+          "🤖 AI/ML: Artificial Intelligence and Machine Learning applications"
+        ],
+        prizes: [
+          "🏆 Grand Prize: ₹200,000 + Internship Opportunities + Mentorship",
+          "🥈 Second Place: ₹150,000 + Tech Gadgets + Industry Recognition",
+          "🥉 Third Place: ₹100,000 + Software Licenses + Certificates"
+        ],
+        requirements: [
+          "Teams of 2-4 members (cross-functional preferred)",
+          "Laptop with development environment setup",
+          "Valid student/professional ID for registration",
+          "Original ideas and code (no pre-built solutions)"
+        ],
+        mentorship: [
+          "Industry mentors available throughout the event",
+          "Technical workshops on emerging technologies",
+          "Business model development guidance",
+          "Pitch presentation training sessions"
+        ],
+        sponsors: [
+          "Microsoft (Cloud Credits & Technical Support)",
+          "Google (Firebase & GCP Credits)",
+          "GitHub (Enterprise Access & Swag)",
+          "Tech Mahindra (Internship Opportunities)"
+        ],
+        judges: [
+          {
+            name: "Ravi Agarwal",
+            designation: "CTO, Paytm",
+            expertise: "FinTech & Scalable Systems"
+          },
+          {
+            name: "Dr. Meera Shah",
+            designation: "Head of Innovation, Apollo Hospitals",
+            expertise: "HealthTech & Digital Health"
+          },
+          {
+            name: "Anand Kumar",
+            designation: "Startup Founder & Angel Investor",
+            expertise: "Product Development & Entrepreneurship"
+          }
+        ]
+      }
     },
     {
       id: 4,
@@ -91,6 +312,84 @@ export default function Events() {
       category: "competition",
       image: "/images/events/accollade.jpg",
       description: "Code Hunt 2025 is here - an intense online treasure hunt crafted year-wise for 1st, 2nd & 3rd-year warriors!",
+      detailedContent: {
+        overview: "Accollade Code Hunt 2025 is an innovative online treasure hunt competition that combines coding challenges with problem-solving adventures. Designed with year-specific tracks, this competition tests participants' programming skills, logical thinking, and ability to decode clues through an engaging gamified experience.",
+        objectives: [
+          "Develop problem-solving skills through gamified coding challenges",
+          "Foster healthy competition among different academic years",
+          "Enhance logical thinking and pattern recognition abilities",
+          "Promote collaborative learning and peer mentorship",
+          "Bridge the gap between theoretical knowledge and practical application"
+        ],
+        tracks: [
+          {
+            year: "1st Year Warriors",
+            description: "Foundation-level challenges focusing on basic programming concepts",
+            topics: ["Basic Programming Logic", "Simple Algorithms", "Pattern Recognition", "Mathematical Puzzles"],
+            difficulty: "Beginner"
+          },
+          {
+            year: "2nd Year Challengers", 
+            description: "Intermediate challenges involving data structures and algorithms",
+            topics: ["Data Structures", "Sorting & Searching", "Dynamic Programming Basics", "Graph Theory"],
+            difficulty: "Intermediate"
+          },
+          {
+            year: "3rd Year Masters",
+            description: "Advanced challenges requiring complex algorithmic thinking",
+            topics: ["Advanced Algorithms", "Optimization Problems", "Competitive Programming", "System Design"],
+            difficulty: "Advanced"
+          }
+        ],
+        format: [
+          "Online treasure hunt with multiple checkpoints",
+          "Progressive difficulty levels with bonus challenges",
+          "Team-based participation (2-3 members per team)",
+          "Real-time leaderboard and progress tracking",
+          "Interactive platform with hints and clues system"
+        ],
+        timeline: [
+          "9:00 AM - 9:30 AM: Registration & Platform Access",
+          "9:30 AM - 10:00 AM: Rules Briefing & Demo Round",
+          "10:00 AM - 2:00 PM: Main Competition (4 hours)",
+          "2:00 PM - 3:00 PM: Bonus Round & Final Challenges",
+          "3:00 PM - 4:00 PM: Results & Award Ceremony"
+        ],
+        prizes: [
+          "🏆 Overall Champions (Each Year): ₹8,000 + Certificates + Tech Gadgets",
+          "🥈 Runners-up (Each Year): ₹5,000 + Certificates + Book Vouchers",
+          "🥉 Third Place (Each Year): ₹3,000 + Certificates + Swag Kit",
+          "🎯 Fastest Solver Award: ₹2,000 + Special Recognition",
+          "🔍 Best Team Strategy: ₹2,000 + Mentorship Opportunity"
+        ],
+        skills: [
+          "Programming fundamentals and debugging",
+          "Algorithmic thinking and optimization",
+          "Pattern recognition and logical reasoning",
+          "Team collaboration and communication",
+          "Time management under pressure"
+        ],
+        platform: [
+          "Custom-built online treasure hunt portal",
+          "Real-time progress tracking and hints system", 
+          "Interactive coding environment with multiple language support",
+          "Automated testing and instant feedback",
+          "Live chat support during competition"
+        ],
+        benefits: [
+          "Year-appropriate skill development and assessment",
+          "Networking with peers across different academic levels",
+          "Exposure to competitive programming environment",
+          "Recognition and portfolio enhancement",
+          "Mentorship opportunities with senior students and faculty"
+        ],
+        requirements: [
+          "Laptop with stable internet connection",
+          "Basic programming knowledge in any language",
+          "Team formation (2-3 members from same year)",
+          "Valid student ID for registration verification"
+        ]
+      }
     },
     {
       id: 5,
@@ -101,6 +400,89 @@ export default function Events() {
       category: "competition",
       image: "/images/events/kindle.jpg",
       description: "Kindle Junior 3.0 is the flagship coding competition hosted by the Computer Science Department at CSIT. Designed to challenge and celebrate coding talent, the event features three electrifying rounds—MCQ Blitz, Output Battle, and Test Case Frenzy.",
+      detailedContent: {
+        overview: "Kindle Junior 3.0 represents the third iteration of our flagship coding competition, bringing together the brightest programming minds to compete in a series of challenging rounds. This competition has become the benchmark for coding excellence at CSIT, featuring progressively difficult challenges that test both theoretical knowledge and practical coding skills.",
+        objectives: [
+          "Identify and celebrate exceptional coding talent",
+          "Promote algorithmic thinking and problem-solving skills",
+          "Foster competitive programming culture within the institution",
+          "Provide platform for peer learning and knowledge sharing",
+          "Bridge academic concepts with practical coding challenges"
+        ],
+        rounds: [
+          {
+            round: "Round 1: MCQ Blitz",
+            description: "Rapid-fire multiple choice questions testing programming fundamentals",
+            duration: "45 minutes",
+            topics: ["Programming Language Syntax", "Data Structures Basics", "Algorithm Complexity", "OOP Concepts", "Debugging Skills"],
+            format: "30 multiple choice questions with negative marking"
+          },
+          {
+            round: "Round 2: Output Battle", 
+            description: "Predict the output of given code snippets accurately",
+            duration: "60 minutes",
+            topics: ["Code Tracing", "Logic Analysis", "Memory Management", "Loop Execution", "Function Calls"],
+            format: "20 code snippets with expected output prediction"
+          },
+          {
+            round: "Round 3: Test Case Frenzy",
+            description: "Write optimized code solutions for algorithmic problems",
+            duration: "90 minutes", 
+            topics: ["Data Structures Implementation", "Algorithm Design", "Optimization Techniques", "Edge Case Handling"],
+            format: "5 coding problems with multiple test cases"
+          }
+        ],
+        agenda: [
+          "12:00 PM - 12:30 PM: Registration & Participant Check-in",
+          "12:30 PM - 1:00 PM: Welcome Address & Rules Briefing",
+          "1:00 PM - 1:45 PM: Round 1 - MCQ Blitz (45 minutes)",
+          "1:45 PM - 2:00 PM: Break & Round 1 Results",
+          "2:00 PM - 3:00 PM: Round 2 - Output Battle (60 minutes)",
+          "3:00 PM - 3:15 PM: Break & Round 2 Results",
+          "3:15 PM - 4:45 PM: Round 3 - Test Case Frenzy (90 minutes)",
+          "4:45 PM - 5:30 PM: Final Evaluation & Results Compilation",
+          "5:30 PM - 6:00 PM: Prize Distribution & Closing Ceremony"
+        ],
+        preparation: [
+          "Review fundamental programming concepts in C/C++, Java, or Python",
+          "Practice data structures: Arrays, Linked Lists, Stacks, Queues, Trees",
+          "Study algorithms: Searching, Sorting, Graph Traversal, Dynamic Programming",
+          "Solve problems on platforms like HackerRank, CodeChef, LeetCode",
+          "Focus on time complexity analysis and code optimization"
+        ],
+        prizes: [
+          "🏆 Champion: ₹8,000 + Trophy + Certificate + IEEE Student Membership",
+          "🥈 First Runner-up: ₹5,000 + Certificate + Tech Books",
+          "🥉 Second Runner-up: ₹3,000 + Certificate + Programming Kit",
+          "🎯 Best Algorithm Award: ₹2,000 + Special Recognition",
+          "⚡ Fastest Coder: ₹1,500 + Speed Programming Certificate"
+        ],
+        eligibility: [
+          "Open to all undergraduate students",
+          "Individual participation only",
+          "Valid student ID required for registration",
+          "Basic programming knowledge mandatory"
+        ],
+        judging: [
+          "Round 1: Automated scoring based on correct answers",
+          "Round 2: Manual verification of output predictions", 
+          "Round 3: Automated testing with comprehensive test cases",
+          "Final ranking based on cumulative performance across all rounds"
+        ],
+        highlights: [
+          "Legacy event with 3+ years of successful editions",
+          "Gateway to advanced competitive programming",
+          "Alumni mentorship and industry connections",
+          "Portfolio enhancement for placements and internships",
+          "Recognition in department newsletter and website"
+        ],
+        contact: [
+          "Event Coordinators: CSIT Student Council",
+          "Faculty Mentor: Dr. [Faculty Name], HOD Computer Science",
+          "Registration Support: csit.events@geu.ac.in",
+          "Technical Queries: kindle.support@geu.ac.in"
+        ]
+      }
     },
     {
       id: 6,
@@ -111,16 +493,165 @@ export default function Events() {
       category: "hackathon",
       image: "/images/events/matrix.jpg",
       description: "IEEE MATRIX is a premier inter-domain innovation challenge hosted by IEEE GEU, where creativity meets cutting-edge technology. Participants collaborate in teams to solve real-world problems across four futuristic domains: IoT, Cloud Computing, AI & ML, and Generative AI",
+      detailedContent: {
+        overview: "IEEE MATRIX represents the convergence of multiple technological domains in a single competitive platform. This inter-domain innovation challenge pushes the boundaries of what's possible when IoT, Cloud Computing, AI & ML, and Generative AI technologies work together to solve complex real-world problems.",
+        objectives: [
+          "Demonstrate interdisciplinary problem-solving capabilities",
+          "Foster innovation across multiple technology domains",
+          "Build practical solutions using cutting-edge technologies",
+          "Encourage collaboration between diverse technical backgrounds",
+          "Showcase the power of integrated technology solutions"
+        ],
+        domains: [
+          {
+            name: "🌐 Internet of Things (IoT)",
+            description: "Connected devices, sensor networks, and smart systems",
+            technologies: ["Arduino", "Raspberry Pi", "ESP32", "MQTT", "LoRaWAN"],
+            challenges: ["Smart City Solutions", "Industrial IoT", "Home Automation"]
+          },
+          {
+            name: "☁️ Cloud Computing",
+            description: "Scalable infrastructure, microservices, and distributed systems",
+            technologies: ["AWS", "Azure", "Docker", "Kubernetes", "Serverless"],
+            challenges: ["Scalable Architectures", "Edge Computing", "Hybrid Cloud Solutions"]
+          },
+          {
+            name: "🤖 AI & Machine Learning",
+            description: "Intelligent systems, predictive analytics, and automation",
+            technologies: ["TensorFlow", "PyTorch", "scikit-learn", "OpenCV", "NLP"],
+            challenges: ["Computer Vision", "Predictive Analytics", "Intelligent Automation"]
+          },
+          {
+            name: "✨ Generative AI",
+            description: "Content creation, language models, and creative applications",
+            technologies: ["GPT", "DALL-E", "Stable Diffusion", "LangChain", "Hugging Face"],
+            challenges: ["Content Generation", "Conversational AI", "Creative Applications"]
+          }
+        ],
+        judging: [
+          "Innovation and Creativity (25%)",
+          "Technical Implementation (25%)",
+          "Problem Solving Impact (20%)",
+          "Integration of Multiple Domains (20%)",
+          "Presentation and Demo (10%)"
+        ],
+        prizes: [
+          "🏆 Grand Champion: ₹25,000 + Internship Offers + IEEE Membership",
+          "🥈 Domain Excellence Awards (4): ₹10,000 each + Tech Gadgets",
+          "🥉 Innovation Prize: ₹15,000 + Patent Filing Support",
+          "🎯 Best Integration: ₹12,000 + Cloud Credits",
+          "👥 All Participants: Certificates + Workshop Access"
+        ],
+        timeline: [
+          "10:00 AM - 10:30 AM: Registration & Team Formation",
+          "10:30 AM - 11:00 AM: Problem Statement Release & Domain Briefing",
+          "11:00 AM - 2:00 PM: Development Phase (with lunch break)",
+          "2:00 PM - 3:30 PM: Final Presentations & Demonstrations",
+          "3:30 PM - 4:00 PM: Judging & Award Ceremony"
+        ],
+        requirements: [
+          "Teams of 2-4 members with diverse skill sets",
+          "Laptop with development environment",
+          "Access to cloud platforms (credits provided)",
+          "Hardware components (available on-site)"
+        ],
+        mentors: [
+          {
+            name: "Dr. Rajesh Kumar",
+            designation: "IoT Research Head, IIT Delhi", 
+            expertise: "Internet of Things & Embedded Systems"
+          },
+          {
+            name: "Priya Sharma",
+            designation: "Cloud Architect, Microsoft",
+            expertise: "Cloud Computing & DevOps"
+          },
+          {
+            name: "Arjun Patel",
+            designation: "AI Engineer, NVIDIA",
+            expertise: "Machine Learning & Computer Vision"
+          }
+        ]
+      }
     },
     {
       id: 7,
       title: "DroneDroidZ",
       date: "September 14, 2024",
-      time: "10:00 AM",
+      time: "10:00 AM - 5:00 PM",
       location: "Seminar,CSIT",
       category: "workshop",
       image: "/images/events/drone.jpg",
       description: "Join the Future of Technology: Learn to Build Your Own Drone The IEEE Student Branch and IEI Student Chapter of Graphic Era is excited to invite you to an exclusive Drone Workshop on 14th September 2024!",
+      detailedContent: {
+        overview: "DroneDroidZ is an immersive hands-on workshop that takes participants through the complete journey of drone technology - from understanding aerodynamics and electronics to building, programming, and flying your own custom drone. This workshop bridges theoretical knowledge with practical implementation in the rapidly growing field of unmanned aerial vehicles.",
+        objectives: [
+          "Understand the fundamentals of drone technology and aerodynamics",
+          "Learn about drone components, sensors, and flight controllers",
+          "Build a fully functional drone from scratch",
+          "Program autonomous flight patterns and missions",
+          "Explore commercial applications of drone technology"
+        ],
+        curriculum: [
+          "10:00 AM - 10:30 AM: Welcome & Introduction to Drone Technology",
+          "10:30 AM - 11:30 AM: Aerodynamics & Flight Principles", 
+          "11:30 AM - 12:30 PM: Drone Components & Hardware Assembly",
+          "12:30 PM - 1:30 PM: Lunch & Networking Break",
+          "1:30 PM - 2:30 PM: Flight Controller Programming",
+          "2:30 PM - 3:30 PM: Sensor Integration & Autonomous Flight",
+          "3:30 PM - 4:30 PM: Test Flights & Demonstrations",
+          "4:30 PM - 5:00 PM: Applications & Career Opportunities"
+        ],
+        components: [
+          "Quadcopter Frame & Propellers",
+          "Flight Controller (Arduino-based)",
+          "Brushless Motors & Electronic Speed Controllers",
+          "LiPo Battery & Power Distribution",
+          "GPS Module & IMU Sensors",
+          "Camera Module for FPV",
+          "Radio Transmitter & Receiver"
+        ],
+        skills: [
+          "Electronics assembly and soldering",
+          "Arduino programming and sensor integration", 
+          "Flight dynamics and control systems",
+          "Troubleshooting and debugging techniques",
+          "Safety protocols and regulations"
+        ],
+        applications: [
+          "🎬 Aerial Photography & Videography",
+          "🚁 Search & Rescue Operations",
+          "🌾 Agricultural Monitoring & Precision Farming",
+          "📦 Delivery & Logistics Solutions",
+          "🏗️ Infrastructure Inspection & Surveying",
+          "🔒 Security & Surveillance Systems"
+        ],
+        deliverables: [
+          "Fully assembled and programmed quadcopter drone",
+          "Complete programming code and documentation",
+          "Workshop manual with troubleshooting guide",
+          "Certificate of completion from IEEE & IEI",
+          "Access to online drone community and resources"
+        ],
+        prerequisites: [
+          "Basic understanding of electronics (helpful but not required)",
+          "Interest in robotics and automation",
+          "Willingness to work with hardware components",
+          "No prior drone experience necessary"
+        ],
+        instructors: [
+          {
+            name: "Capt. Vikram Singh",
+            designation: "Drone Technology Expert & Former Air Force Pilot",
+            expertise: "Flight Operations & Safety Protocols"
+          },
+          {
+            name: "Rohit Sharma",
+            designation: "Robotics Engineer, Ideaforge Technology",
+            expertise: "Drone Hardware & Programming"
+          }
+        ]
+      }
     },
     {
       id: 8,
@@ -131,6 +662,69 @@ export default function Events() {
       category: "workshop",
       image: "/images/events/devops.jpg",
       description: "From vision to reality: Impacting lives through development at Graphic Era Deemed to be University",
+      detailedContent: {
+        overview: "This comprehensive DevOps workshop bridges the gap between development and operations, teaching participants how to implement continuous integration, continuous deployment, and infrastructure automation. Learn industry-standard tools and practices that enable rapid, reliable software delivery.",
+        objectives: [
+          "Understand DevOps culture, practices, and methodology",
+          "Master CI/CD pipeline design and implementation",
+          "Learn containerization with Docker and orchestration with Kubernetes",
+          "Implement infrastructure as code and monitoring solutions",
+          "Gain hands-on experience with industry-standard DevOps tools"
+        ],
+        curriculum: [
+          "10:00 AM - 10:30 AM: Welcome & DevOps Fundamentals",
+          "10:30 AM - 11:30 AM: Version Control with Git & CI/CD Concepts",
+          "11:30 AM - 12:30 PM: Docker Containerization Hands-on",
+          "12:30 PM - 1:30 PM: Lunch Break",
+          "1:30 PM - 2:30 PM: Kubernetes Orchestration & Deployment",
+          "2:30 PM - 3:30 PM: Infrastructure as Code with Terraform",
+          "3:30 PM - 4:30 PM: Monitoring & Observability",
+          "4:30 PM - 5:00 PM: Career Paths & Industry Insights"
+        ],
+        tools: [
+          {
+            category: "Version Control & CI/CD",
+            tools: ["Git", "GitHub Actions", "Jenkins", "GitLab CI"]
+          },
+          {
+            category: "Containerization & Orchestration", 
+            tools: ["Docker", "Kubernetes", "Docker Compose", "Helm"]
+          },
+          {
+            category: "Infrastructure & Cloud",
+            tools: ["Terraform", "AWS", "Ansible", "Vagrant"]
+          },
+          {
+            category: "Monitoring & Observability",
+            tools: ["Prometheus", "Grafana", "ELK Stack", "Datadog"]
+          }
+        ],
+        projects: [
+          "Automated CI/CD pipeline for web application",
+          "Containerized microservices deployment",
+          "Infrastructure provisioning with Terraform",
+          "Complete monitoring and alerting setup"
+        ],
+        benefits: [
+          "Industry-recognized DevOps skills and certification",
+          "Hands-on experience with enterprise-grade tools",
+          "Understanding of modern software delivery practices",
+          "Career advancement in DevOps and cloud engineering",
+          "Network with DevOps professionals and recruiters"
+        ],
+        speakers: [
+          {
+            name: "Suresh Kumar",
+            designation: "Principal DevOps Engineer, Netflix",
+            expertise: "Large-scale Infrastructure & Automation"
+          },
+          {
+            name: "Rakesh Singh",
+            designation: "Cloud Solution Architect, Microsoft Azure",
+            expertise: "Cloud Infrastructure & Kubernetes"
+          }
+        ]
+      }
     },
     {
       id: 9,
@@ -141,6 +735,90 @@ export default function Events() {
       category: "competition",
       image: "/images/events/project.jpg",
       description: "Showcase your innovative projects and win exciting prizes.",
+      detailedContent: {
+        overview: "The IEEE Student Project Competition is a platform for students to showcase their innovative engineering and technology projects. This competition encourages creativity, technical excellence, and practical problem-solving while providing opportunities for recognition and career advancement.",
+        objectives: [
+          "Promote innovation and creativity in engineering projects",
+          "Provide platform for students to showcase technical skills",
+          "Encourage practical application of theoretical knowledge",
+          "Foster collaboration and knowledge sharing among peers",
+          "Connect students with industry professionals and mentors"
+        ],
+        categories: [
+          {
+            name: "🤖 Robotics & Automation",
+            description: "Autonomous systems, industrial automation, and robotic applications"
+          },
+          {
+            name: "💻 Software & Web Development",
+            description: "Mobile apps, web applications, and software solutions"
+          },
+          {
+            name: "🔋 Electronics & IoT",
+            description: "Embedded systems, IoT devices, and electronic innovations"
+          },
+          {
+            name: "🧠 AI & Machine Learning",
+            description: "Intelligent systems, data analytics, and ML applications"
+          },
+          {
+            name: "🌱 Sustainability & Green Tech",
+            description: "Environmental solutions and sustainable technology"
+          }
+        ],
+        timeline: [
+          "10:00 AM - 10:30 AM: Registration & Setup",
+          "10:30 AM - 12:00 PM: Project Presentations (Round 1)",
+          "12:00 PM - 1:00 PM: Lunch & Networking",
+          "1:00 PM - 3:00 PM: Demo Sessions & Technical Evaluation",
+          "3:00 PM - 4:00 PM: Final Presentations (Top 10 Projects)",
+          "4:00 PM - 5:00 PM: Judging & Award Ceremony"
+        ],
+        judging: [
+          "Innovation & Originality (25%)",
+          "Technical Implementation (25%)",
+          "Problem Solving Impact (20%)",
+          "Presentation Quality (15%)",
+          "Commercial Viability (15%)"
+        ],
+        prizes: [
+          "🏆 Grand Prize Winner: ₹25,000 + Internship Opportunity + IEEE Membership",
+          "🥈 Category Winners (5): ₹10,000 each + Recognition Certificate",
+          "🥉 Runner-up Awards (5): ₹5,000 each + Participation Certificate",
+          "🎯 Best Innovation: ₹15,000 + Patent Filing Support",
+          "👥 People's Choice: ₹8,000 + Public Recognition Award"
+        ],
+        requirements: [
+          "Original project developed by student team (max 4 members)",
+          "Working prototype or demo ready for presentation",
+          "Project documentation and source code",
+          "15-minute presentation + 10-minute Q&A session"
+        ],
+        benefits: [
+          "Industry exposure and networking opportunities",
+          "Feedback from experienced engineers and researchers",
+          "Potential for project commercialization and startup funding",
+          "Portfolio enhancement for academic and career growth",
+          "Publication opportunities in IEEE conferences"
+        ],
+        judges: [
+          {
+            name: "Dr. Anil Sharma",
+            designation: "Chief Technology Officer, Tech Mahindra",
+            expertise: "Emerging Technologies & Innovation"
+          },
+          {
+            name: "Prof. Meera Patel",
+            designation: "IEEE Senior Member & Research Director",
+            expertise: "Academic Research & Technology Transfer"
+          },
+          {
+            name: "Rajesh Gupta",
+            designation: "Startup Founder & Angel Investor",
+            expertise: "Product Development & Entrepreneurship"
+          }
+        ]
+      }
     },
     {
       id: 10,
@@ -151,6 +829,111 @@ export default function Events() {
       category: "workshop",
       image: "/images/events/prompt.jpg",
       description: "Building dreams, one blueprint at a time at Graphic Era Deemed to be University.",
+      detailedContent: {
+        overview: "Prompt Engineering workshop is designed to master the art and science of communicating effectively with AI systems. As AI becomes increasingly integrated into our daily workflows, the ability to craft precise, effective prompts has become a crucial skill for maximizing AI productivity and achieving desired outcomes.",
+        objectives: [
+          "Master the fundamentals of prompt design and optimization",
+          "Learn advanced prompting techniques for different AI models",
+          "Understand the psychology and mechanics behind AI responses",
+          "Develop systematic approaches for prompt iteration and refinement",
+          "Build practical skills for real-world AI applications"
+        ],
+        curriculum: [
+          "10:00 AM - 10:30 AM: Welcome & AI Communication Fundamentals",
+          "10:30 AM - 11:30 AM: Anatomy of Effective Prompts",
+          "11:30 AM - 12:30 PM: Advanced Prompting Techniques & Strategies",
+          "12:30 PM - 1:30 PM: Lunch Break & Networking",
+          "1:30 PM - 2:30 PM: Hands-on Practice with Different AI Models",
+          "2:30 PM - 3:30 PM: Domain-Specific Applications & Use Cases",
+          "3:30 PM - 4:30 PM: Prompt Optimization & Testing Methods",
+          "4:30 PM - 5:00 PM: Future Trends & Career Opportunities"
+        ],
+        techniques: [
+          {
+            method: "Zero-Shot Prompting",
+            description: "Getting results without providing examples",
+            useCase: "Quick queries and general information requests"
+          },
+          {
+            method: "Few-Shot Learning",
+            description: "Providing examples to guide AI behavior",
+            useCase: "Pattern recognition and consistent formatting"
+          },
+          {
+            method: "Chain-of-Thought",
+            description: "Breaking down complex problems step-by-step",
+            useCase: "Mathematical problems and logical reasoning"
+          },
+          {
+            method: "Role-Based Prompting",
+            description: "Assigning specific roles or personas to AI",
+            useCase: "Creative writing and specialized expertise"
+          },
+          {
+            method: "Template Engineering",
+            description: "Creating reusable prompt frameworks",
+            useCase: "Consistent workflows and batch processing"
+          }
+        ],
+        applications: [
+          "💼 Business & Productivity: Email drafting, report generation, meeting summaries",
+          "🎨 Creative Work: Content creation, brainstorming, creative writing assistance",
+          "🔬 Research & Analysis: Data interpretation, literature reviews, hypothesis generation",
+          "📚 Education & Learning: Personalized tutoring, curriculum development, assessment creation",
+          "💻 Software Development: Code generation, debugging assistance, documentation",
+          "🎯 Marketing & Sales: Ad copy creation, customer persona development, campaign strategies"
+        ],
+        tools: [
+          "ChatGPT (GPT-3.5/4) for conversational AI",
+          "Claude for analytical and creative tasks",
+          "Bard for research and information synthesis",
+          "Midjourney for image generation prompting",
+          "GitHub Copilot for code-specific prompting",
+          "Custom API integrations and workflow automation"
+        ],
+        skills: [
+          "Prompt structure and syntax optimization",
+          "Context window management and information organization", 
+          "Bias detection and mitigation in AI responses",
+          "Multi-modal prompting for text, image, and code generation",
+          "Prompt chaining for complex multi-step tasks",
+          "Performance measurement and prompt A/B testing"
+        ],
+        projects: [
+          "Personal AI Assistant with custom prompt library",
+          "Automated content generation workflow",
+          "Customer service chatbot with optimized responses",
+          "Research assistant for academic paper analysis",
+          "Creative writing companion with style adaptation"
+        ],
+        career: [
+          "🤖 AI Prompt Engineer",
+          "💼 AI Product Manager",
+          "✍️ AI Content Strategist",
+          "🔧 AI Workflow Consultant",
+          "📊 AI Training Data Specialist",
+          "🎯 Conversational AI Designer"
+        ],
+        deliverables: [
+          "Comprehensive prompt engineering toolkit and templates",
+          "Personal prompt library with 50+ tested prompts",
+          "Best practices guide for different AI platforms",
+          "Certificate of completion from IEEE GEU",
+          "Access to ongoing AI community and resources"
+        ],
+        instructors: [
+          {
+            name: "Dr. Priya Malhotra",
+            designation: "AI Research Scientist, OpenAI",
+            expertise: "Large Language Models & Natural Language Processing"
+          },
+          {
+            name: "Arjun Kapoor",
+            designation: "Senior AI Engineer, Microsoft",
+            expertise: "Conversational AI & Prompt Optimization"
+          }
+        ]
+      }
     },
     {
       id: 11,
@@ -161,6 +944,93 @@ export default function Events() {
       category: "workshop",
       image: "/images/events/cyber.jpg",
       description: "Ready to dive into the world of cybersecurity? Join us at Cryptic: A Cybersecurity Workshop where we'll explore the essentials of protecting your digital life.",
+      detailedContent: {
+        overview: "Cryptic: A Cybersecurity Workshop is designed to equip participants with essential cybersecurity knowledge and practical skills to protect digital assets in an increasingly connected world. This hands-on workshop covers everything from basic security principles to advanced threat detection and incident response.",
+        objectives: [
+          "Understand fundamental cybersecurity principles and threat landscape",
+          "Learn to identify and mitigate common security vulnerabilities",
+          "Master essential security tools and techniques",
+          "Develop incident response and forensic analysis skills",
+          "Build a comprehensive security mindset for digital protection"
+        ],
+        curriculum: [
+          "2:00 PM - 2:20 PM: Welcome & Cybersecurity Threat Landscape",
+          "2:20 PM - 2:50 PM: Network Security & Firewall Configuration",
+          "2:50 PM - 3:20 PM: Web Application Security & Penetration Testing",
+          "3:20 PM - 3:50 PM: Cryptography & Secure Communication",
+          "3:50 PM - 4:00 PM: Career Paths & Certification Guidance"
+        ],
+        topics: [
+          {
+            module: "🔒 Network Security",
+            description: "Firewall configuration, intrusion detection, and network monitoring",
+            tools: ["Wireshark", "Nmap", "pfSense", "Snort"]
+          },
+          {
+            module: "🌐 Web Application Security", 
+            description: "OWASP Top 10, SQL injection, XSS, and secure coding practices",
+            tools: ["Burp Suite", "OWASP ZAP", "Metasploit", "SQLmap"]
+          },
+          {
+            module: "🔐 Cryptography",
+            description: "Encryption algorithms, digital signatures, and PKI",
+            tools: ["OpenSSL", "GPG", "Hashcat", "John the Ripper"]
+          },
+          {
+            module: "🚨 Incident Response",
+            description: "Digital forensics, malware analysis, and threat hunting",
+            tools: ["Autopsy", "Volatility", "YARA", "Splunk"]
+          }
+        ],
+        practicals: [
+          "Setting up a secure network with proper firewall rules",
+          "Conducting penetration testing on vulnerable web applications",
+          "Implementing encryption for secure data transmission",
+          "Analyzing suspicious network traffic and malware samples",
+          "Creating an incident response plan for organization"
+        ],
+        skills: [
+          "Vulnerability Assessment & Penetration Testing",
+          "Security Information and Event Management (SIEM)",
+          "Digital Forensics & Incident Response",
+          "Cryptographic Implementation & Key Management",
+          "Security Policy Development & Risk Assessment"
+        ],
+        certifications: [
+          "CompTIA Security+ (Entry Level)",
+          "Certified Ethical Hacker (CEH)", 
+          "CISSP (Advanced Security Professional)",
+          "GCIH (GIAC Certified Incident Handler)",
+          "OSCP (Offensive Security Certified Professional)"
+        ],
+        career: [
+          "🛡️ Cybersecurity Analyst",
+          "🔍 Penetration Tester",
+          "🚨 Incident Response Specialist",
+          "🔒 Security Architect",
+          "📋 Compliance & Risk Manager",
+          "🕵️ Digital Forensics Investigator"
+        ],
+        deliverables: [
+          "Comprehensive cybersecurity toolkit and resources",
+          "Hands-on lab exercises and case studies",
+          "Certificate of completion from IEEE GEU",
+          "Career guidance and certification roadmap",
+          "Access to cybersecurity community and job portal"
+        ],
+        instructors: [
+          {
+            name: "Col. Amit Verma (Retd.)",
+            designation: "Cybersecurity Consultant & Former Army Cyber Ops",
+            expertise: "Network Security & Incident Response"
+          },
+          {
+            name: "Sneha Agarwal",
+            designation: "Senior Security Analyst, Deloitte",
+            expertise: "Web Application Security & Penetration Testing"
+          }
+        ]
+      }
     },
     {
       id: 12,
@@ -171,6 +1041,105 @@ export default function Events() {
       category: "workshop",
       image: "/images/events/webdev.jpg",
       description: "Learn modern web development techniques and frameworks from industry experts.",
+      detailedContent: {
+        overview: "Web Development Bootcamp is an intensive hands-on workshop designed to take participants from basic web concepts to building full-stack applications. This comprehensive bootcamp covers modern web technologies, frameworks, and best practices used in the industry today.",
+        objectives: [
+          "Master HTML5, CSS3, and modern JavaScript (ES6+)",
+          "Build responsive and interactive web applications",
+          "Learn popular frameworks like React.js and Node.js",
+          "Understand backend development and database integration",
+          "Deploy applications to cloud platforms and implement DevOps practices"
+        ],
+        curriculum: [
+          "10:00 AM - 10:30 AM: Registration & Setup Development Environment",
+          "10:30 AM - 11:30 AM: HTML5 & CSS3 Fundamentals + Responsive Design",
+          "11:30 AM - 12:30 PM: JavaScript ES6+ & DOM Manipulation",
+          "12:30 PM - 1:00 PM: Lunch Break",
+          "1:00 PM - 2:00 PM: React.js Components & State Management",
+          "2:00 PM - 2:45 PM: Backend with Node.js & API Development",
+          "2:45 PM - 3:00 PM: Deployment & Portfolio Showcase"
+        ],
+        technologies: [
+          {
+            category: "Frontend Technologies",
+            skills: ["HTML5 Semantic Elements", "CSS3 Grid & Flexbox", "JavaScript ES6+", "React.js", "Responsive Design"],
+            tools: ["VS Code", "Chrome DevTools", "Figma", "Bootstrap"]
+          },
+          {
+            category: "Backend Technologies", 
+            skills: ["Node.js", "Express.js", "RESTful APIs", "MongoDB", "Authentication"],
+            tools: ["Postman", "MongoDB Compass", "JWT", "bcrypt"]
+          },
+          {
+            category: "Development Tools",
+            skills: ["Git Version Control", "Package Management", "Build Tools", "Deployment"],
+            tools: ["npm/yarn", "Webpack", "Netlify", "Vercel", "Heroku"]
+          }
+        ],
+        projects: [
+          {
+            project: "Portfolio Website",
+            description: "Personal portfolio with responsive design and animations",
+            tech: ["HTML5", "CSS3", "JavaScript"]
+          },
+          {
+            project: "Todo Application",
+            description: "Interactive task management app with local storage",
+            tech: ["React.js", "Local Storage", "CSS Modules"]
+          },
+          {
+            project: "Full-Stack Blog",
+            description: "Complete blogging platform with user authentication",
+            tech: ["React.js", "Node.js", "MongoDB", "JWT"]
+          }
+        ],
+        skills: [
+          "Frontend development with modern frameworks",
+          "Backend API development and database design",
+          "Responsive web design and mobile-first approach",
+          "Version control with Git and collaborative development",
+          "Web performance optimization and SEO best practices",
+          "Cloud deployment and CI/CD pipeline setup"
+        ],
+        career: [
+          "💻 Frontend Developer",
+          "🔧 Backend Developer", 
+          "🌐 Full-Stack Developer",
+          "📱 Mobile App Developer (React Native)",
+          "🎨 UI/UX Developer",
+          "☁️ DevOps Engineer"
+        ],
+        deliverables: [
+          "3 complete web projects in your portfolio",
+          "Source code repositories on GitHub",
+          "Certificate of completion from IEEE GEU",
+          "Industry-standard development setup guide",
+          "Continued mentorship and job placement assistance"
+        ],
+        prerequisites: [
+          "Basic computer skills and familiarity with internet",
+          "Laptop with internet connection",
+          "Willingness to learn and practice coding",
+          "No prior programming experience required"
+        ],
+        instructors: [
+          {
+            name: "Karan Singh",
+            designation: "Senior Full-Stack Developer, Flipkart",
+            expertise: "React.js, Node.js & System Design"
+          },
+          {
+            name: "Pooja Sharma",
+            designation: "Frontend Lead, Paytm",
+            expertise: "Modern Frontend Technologies & UX"
+          },
+          {
+            name: "Rahul Gupta",
+            designation: "DevOps Engineer, Amazon",
+            expertise: "Cloud Deployment & CI/CD"
+          }
+        ]
+      }
     },
 
   ];

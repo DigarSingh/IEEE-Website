@@ -6,6 +6,7 @@ import { useState, useEffect, useRef } from 'react';
 import Layout from '@/components/Layout';
 import dynamic from 'next/dynamic';
 const ParticleBackground = dynamic(() => import('@/components/ParticleBackground'), { ssr: false, loading: () => null });
+const AnnouncementPopup = dynamic(() => import('@/components/AnnouncementPopup'), { ssr: false });
 import { useIntersectionObserver } from '@/hooks/useEnhancedScroll';
 
 export default function Home() {
@@ -806,6 +807,9 @@ export default function Home() {
           </div>
         </section>
       </div>
+      
+      {/* Announcement Popup */}
+      <AnnouncementPopup />
     </Layout>
   );
 }
