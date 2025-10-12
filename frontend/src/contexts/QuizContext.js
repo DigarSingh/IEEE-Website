@@ -72,9 +72,9 @@ export function QuizProvider({ children }) {
           if (data.isActive) {
             isQuizActive = data.isActive;
             console.log('Quiz active via isActive flag:', isQuizActive);
-          } else if (data.round1?.isActive || data.round2?.isActive) {
+          } else if (data.round1?.isActive) {
             isQuizActive = true;
-            console.log('Quiz active via round flags');
+            console.log('Quiz active via round 1 flag');
           }
           
           console.log('Final quiz active state:', isQuizActive);

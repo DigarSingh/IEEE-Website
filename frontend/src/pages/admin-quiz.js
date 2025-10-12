@@ -26,13 +26,6 @@ export default function AdminQuizDashboard() {
       duration: 30 * 60,
       globalTimer: 0,
     },
-    round2: {
-      isActive: false,
-      startTime: null,
-      endTime: null,
-      duration: 45 * 60,
-      globalTimer: 0,
-    },
   });
 
   // Quiz Settings
@@ -42,15 +35,10 @@ export default function AdminQuizDashboard() {
       questionsCount: 25,
       password: "ieee@321",
     },
-    round2: {
-      duration: 45,
-      questionsCount: 25,
-      password: "ieeegg@321",
-    },
   });
 
-  // Current round selector
-  const [selectedRound, setSelectedRound] = useState(1);
+  // Fixed to Round 1 only
+  const selectedRound = 1;
 
   // Statistics
   const [stats, setStats] = useState({
@@ -311,35 +299,13 @@ export default function AdminQuizDashboard() {
       }));
     }
 
-    // Round 2 timer
-    if (quizState.round2.isActive && quizState.round2.globalTimer > 0) {
-      interval2 = setInterval(() => {
-        setQuizState((prev) => ({
-          ...prev,
-          round2: {
-            ...prev.round2,
-            globalTimer: Math.max(0, prev.round2.globalTimer - 1),
-          },
-        }));
-      }, 1000);
-    } else if (quizState.round2.isActive && quizState.round2.globalTimer === 0) {
-      // Auto-stop Round 2 when timer reaches 0
-      updateQuizState("STOP_ROUND", 2);
-      setQuizState((prev) => ({
-        ...prev,
-        round2: { ...prev.round2, isActive: false, globalTimer: 0 },
-      }));
-    }
 
     return () => {
       clearInterval(interval1);
-      clearInterval(interval2);
     };
   }, [
     quizState.round1.isActive,
     quizState.round1.globalTimer,
-    quizState.round2.isActive,
-    quizState.round2.globalTimer,
     quizState.currentRound,
   ]);
 
@@ -392,13 +358,6 @@ export default function AdminQuizDashboard() {
             duration: 30 * 60,
             globalTimer: 0,
           },
-          round2: {
-            isActive: false,
-            startTime: null,
-            endTime: null,
-            duration: 45 * 60,
-            globalTimer: 0,
-          },
         };
 
         // Update round data if exists
@@ -419,22 +378,6 @@ export default function AdminQuizDashboard() {
           }
         }
 
-        if (data.round2) {
-          newQuizState.round2 = { ...newQuizState.round2, ...data.round2 };
-          if (
-            data.round2.isActive &&
-            data.round2.startTime &&
-            data.round2.duration
-          ) {
-            const now = new Date();
-            const startTime = new Date(data.round2.startTime);
-            const elapsed = Math.floor((now - startTime) / 1000);
-            newQuizState.round2.globalTimer = Math.max(
-              0,
-              data.round2.duration - elapsed
-            );
-          }
-        }
 
         setQuizState(newQuizState);
 
@@ -444,11 +387,6 @@ export default function AdminQuizDashboard() {
             duration: 30,
             questionsCount: 25,
             password: "ieee@321",
-          },
-          round2: {
-            duration: 45,
-            questionsCount: 25,
-            password: "ieeegg@321",
           },
         };
 
@@ -461,13 +399,6 @@ export default function AdminQuizDashboard() {
           };
         }
         
-        if (data.round2) {
-          newSettings.round2 = {
-            duration: Math.floor((data.round2.duration || 45 * 60) / 60), // Convert seconds to minutes
-            questionsCount: data.round2.questionsCount || 25,
-            password: data.round2.password || "ieeegg@321",
-          };
-        }
 
         // Fallback to old settings structure if available
         if (data.settings) {
@@ -478,15 +409,6 @@ export default function AdminQuizDashboard() {
               ),
               questionsCount: data.settings.round1.questionsCount || 25,
               password: data.settings.round1.password || "ieee@321",
-            };
-          }
-          if (data.settings.round2) {
-            newSettings.round2 = {
-              duration: Math.floor(
-                (data.settings.round2.duration || 45 * 60) / 60
-              ),
-              questionsCount: data.settings.round2.questionsCount || 25,
-              password: data.settings.round2.password || "ieeegg@321",
             };
           }
         }
@@ -678,9 +600,9 @@ export default function AdminQuizDashboard() {
 
       setQuizState((prev) => ({
         ...prev,
-        isActive: prev.round1.isActive || prev.round2.isActive ? true : false, // Keep global active if any round is still active
-        [`round${selectedRound}`]: {
-          ...prev[`round${selectedRound}`],
+        isActive: prev.round1.isActive ? true : false, // Keep global active if round 1 is still active
+        round1: {
+          ...prev.round1,
           isActive: false,
           globalTimer: 0,
         },
@@ -704,10 +626,6 @@ export default function AdminQuizDashboard() {
           duration: settings.round1.duration, // Already in minutes
           password: settings.round1.password,
         },
-        round2: {
-          duration: settings.round2.duration, // Already in minutes
-          password: settings.round2.password,
-        }
       };
 
       console.log('🔄 Updating settings:', settingsData);
@@ -896,31 +814,14 @@ export default function AdminQuizDashboard() {
                   Select Round:
                 </span>
                 <div className="flex space-x-2">
-                  <button
-                    onClick={() => setSelectedRound(1)}
-                    className={`px-4 py-2 rounded-lg font-medium transition-colors ${
-                      selectedRound === 1
-                        ? "bg-blue-500 text-white"
-                        : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                    }`}
-                  >
+                  <div className="px-4 py-2 rounded-lg font-medium bg-blue-500 text-white">
                     Round 1 (MCQ)
-                  </button>
-                  <button
-                    onClick={() => setSelectedRound(2)}
-                    className={`px-4 py-2 rounded-lg font-medium transition-colors ${
-                      selectedRound === 2
-                        ? "bg-purple-500 text-white"
-                        : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                    }`}
-                  >
-                    Round 2 (Advanced)
-                  </button>
+                  </div>
                 </div>
                 <div className="ml-auto">
                   <span className="text-sm text-gray-500">
                     Managing:{" "}
-                    <span className="font-semibold">Round {selectedRound}</span>
+                    <span className="font-semibold">Round 1</span>
                   </span>
                 </div>
               </div>
@@ -978,27 +879,27 @@ export default function AdminQuizDashboard() {
                 <div className="p-6 border-2 border-blue-200 rounded-xl bg-blue-50">
                   <div className="flex items-center justify-between mb-4">
                     <h3 className="font-semibold text-gray-900">
-                      Round {selectedRound} Timer
+                      Round 1 Timer
                     </h3>
                     <div className="text-xl text-blue-500">⏰</div>
                   </div>
 
                   <div
                     className={`text-3xl font-bold mb-2 ${
-                      (quizState[`round${selectedRound}`]?.globalTimer || 0) <=
+                      (quizState.round1?.globalTimer || 0) <=
                       300
                         ? "text-red-600"
                         : "text-blue-600"
                     }`}
                   >
                     {formatTime(
-                      quizState[`round${selectedRound}`]?.globalTimer || 0
+                      quizState.round1?.globalTimer || 0
                     )}
                   </div>
 
                   <div className="text-sm text-gray-600">
-                    {quizState.isActive
-                      ? quizState.globalTimer <= 300
+                    {quizState.round1?.isActive
+                      ? quizState.round1.globalTimer <= 300
                         ? "⚠️ Less than 5 minutes left"
                         : "Time Remaining"
                       : "Not Started"}
@@ -1008,7 +909,7 @@ export default function AdminQuizDashboard() {
 
               {/* Control Buttons */}
               <div className="flex mt-6 space-x-4">
-                {!quizState[`round${selectedRound}`]?.isActive ? (
+                {!quizState.round1?.isActive ? (
                   <button
                     onClick={handleStartQuiz}
                     disabled={loading}
@@ -1136,16 +1037,6 @@ export default function AdminQuizDashboard() {
                       }`}
                     >
                       Round 1
-                    </button>
-                    <button
-                      onClick={() => setSelectedRound(2)}
-                      className={`px-3 py-1 text-xs font-medium rounded transition-colors ${
-                        selectedRound === 2
-                          ? 'bg-purple-500 text-white'
-                          : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-                      }`}
-                    >
-                      Round 2
                     </button>
                   </div>
                 )}
@@ -1526,7 +1417,6 @@ export default function AdminQuizDashboard() {
                     <div>Current Round: <span className="font-mono">{quizState.currentRound}</span></div>
                     <div>Global Active: <span className={`font-mono ${quizState.isActive ? 'text-green-600' : 'text-red-600'}`}>{quizState.isActive ? 'true' : 'false'}</span></div>
                     <div>Round 1: <span className={`font-mono ${quizState.round1?.isActive ? 'text-green-600' : 'text-red-600'}`}>{quizState.round1?.isActive ? 'true' : 'false'}</span></div>
-                    <div>Round 2: <span className={`font-mono ${quizState.round2?.isActive ? 'text-green-600' : 'text-red-600'}`}>{quizState.round2?.isActive ? 'true' : 'false'}</span></div>
                   </div>
                 </div>
                 <div className="p-4 rounded-lg bg-gray-50">
@@ -1599,56 +1489,6 @@ export default function AdminQuizDashboard() {
                     </div>
                   </div>
 
-                  {/* Round 2 Settings */}
-                  <div className="p-4 border border-green-200 rounded-lg bg-green-50">
-                    <h4 className="mb-4 text-lg font-semibold text-green-900">
-                      Round 2 Settings
-                    </h4>
-                    
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <div>
-                        <label className="block mb-2 text-sm font-medium text-gray-700">
-                          Duration (minutes)
-                        </label>
-                        <input
-                          type="number"
-                          min="5"
-                          max="120"
-                          value={settings.round2.duration}
-                          onChange={(e) =>
-                            setSettings({
-                              ...settings,
-                              round2: {
-                                ...settings.round2,
-                                duration: parseInt(e.target.value) || 45,
-                              }
-                            })
-                          }
-                          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-400"
-                        />
-                      </div>
-
-                      <div>
-                        <label className="block mb-2 text-sm font-medium text-gray-700">
-                          Quiz Password
-                        </label>
-                        <input
-                          type="text"
-                          value={settings.round2.password}
-                          onChange={(e) =>
-                            setSettings({
-                              ...settings,
-                              round2: {
-                                ...settings.round2,
-                                password: e.target.value
-                              }
-                            })
-                          }
-                          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-400"
-                        />
-                      </div>
-                    </div>
-                  </div>
 
                   {/* Current Settings Display */}
                   <div className="p-4 border border-gray-200 rounded-lg bg-gray-50">
@@ -1658,9 +1498,6 @@ export default function AdminQuizDashboard() {
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
                       <div>
                         <p><strong>Round 1:</strong> {settings.round1.duration} min, Password: {settings.round1.password}</p>
-                      </div>
-                      <div>
-                        <p><strong>Round 2:</strong> {settings.round2.duration} min, Password: {settings.round2.password}</p>
                       </div>
                     </div>
                   </div>

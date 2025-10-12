@@ -16,8 +16,7 @@ export default function Instructions() {
   const [quizState, setQuizState] = useState({
     isActive: false,
     currentRound: 1,
-    round1: { isActive: false, globalTimer: 0 },
-    round2: { isActive: false, globalTimer: 0 }
+    round1: { isActive: false, globalTimer: 0 }
   });
   const [loadingQuizState, setLoadingQuizState] = useState(true);
 
@@ -89,7 +88,7 @@ export default function Instructions() {
 
   const startQuiz = async () => {
     // Check if quiz is active using MongoDB state
-    const isQuizActive = quizState.isActive || quizState[`round${user?.selectedRound || 1}`]?.isActive;
+    const isQuizActive = quizState.isActive || quizState.round1?.isActive;
     
     if (!isQuizActive) {
       alert('Quiz is not currently active. Please wait for the admin to start the quiz session.');
@@ -115,12 +114,8 @@ export default function Instructions() {
     dispatch({ type: 'SET_QUESTIONS', payload: selectedQuestions });
     dispatch({ type: 'START_QUIZ' });
     
-    // Redirect based on selected round
-    if (user?.selectedRound === 2) {
-      router.push('/round2-quiz');
-    } else {
-      router.push('/round1-quiz');
-    }
+    // Redirect to Round 1 quiz
+    router.push('/round1-quiz');
   };
 
   if (!user) {
@@ -200,9 +195,9 @@ export default function Instructions() {
                   
                   <div className="text-xs space-y-1">
                     <p>Selected Round: {user?.selectedRound || 1}</p>
-                    <p>Round Status: {quizState[`round${user?.selectedRound || 1}`]?.isActive ? 'Active' : 'Inactive'}</p>
-                    {quizState[`round${user?.selectedRound || 1}`]?.globalTimer > 0 && (
-                      <p>Time Remaining: {Math.floor(quizState[`round${user?.selectedRound || 1}`].globalTimer / 60)}:{(quizState[`round${user?.selectedRound || 1}`].globalTimer % 60).toString().padStart(2, '0')}</p>
+                    <p>Round Status: {quizState.round1?.isActive ? 'Active' : 'Inactive'}</p>
+                    {quizState.round1?.globalTimer > 0 && (
+                      <p>Time Remaining: {Math.floor(quizState.round1.globalTimer / 60)}:{(quizState.round1.globalTimer % 60).toString().padStart(2, '0')}</p>
                     )}
                   </div>
                 </div>
@@ -286,19 +281,19 @@ export default function Instructions() {
                   <div className="flex items-center justify-between">
                     <span className="text-gray-300">Quiz Status:</span>
                     <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                      quizState.isActive || quizState[`round${user?.selectedRound || 1}`]?.isActive
+                      quizState.isActive || quizState.round1?.isActive
                         ? 'bg-green-500/20 text-green-300'
                         : 'bg-blue-500/20 text-blue-300'
                     }`}>
-                      {quizState.isActive || quizState[`round${user?.selectedRound || 1}`]?.isActive ? 'ACTIVE' : 'WAITING'}
+                      {quizState.isActive || quizState.round1?.isActive ? 'ACTIVE' : 'WAITING'}
                     </span>
                   </div>
                   
-                  {quizState[`round${user?.selectedRound || 1}`]?.globalTimer > 0 && (
+                  {quizState.round1?.globalTimer > 0 && (
                     <div className="flex items-center justify-between">
                       <span className="text-gray-300">Time Remaining:</span>
                       <span className="text-yellow-300 font-mono">
-                        {Math.floor(quizState[`round${user?.selectedRound || 1}`].globalTimer / 60)}:{(quizState[`round${user?.selectedRound || 1}`].globalTimer % 60).toString().padStart(2, '0')}
+                        {Math.floor(quizState.round1.globalTimer / 60)}:{(quizState.round1.globalTimer % 60).toString().padStart(2, '0')}
                       </span>
                     </div>
                   )}

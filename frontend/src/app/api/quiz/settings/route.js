@@ -17,26 +17,18 @@ export async function GET() {
           round1: {
             duration: 30 * 60,
             password: "ieee@321"
-          },
-          round2: {
-            duration: 45 * 60,
-            password: "ieeegg@321"
           }
         }
       });
     }
     
-    // Return only the necessary settings (duration and password for each round)
+    // Return only the necessary settings (duration and password for round 1)
     return NextResponse.json({ 
       success: true, 
       data: {
         round1: {
           duration: quizState.round1?.duration || 30 * 60,
           password: quizState.round1?.password || "ieee@321"
-        },
-        round2: {
-          duration: quizState.round2?.duration || 45 * 60,
-          password: quizState.round2?.password || "ieeegg@321"
         }
       }
     });

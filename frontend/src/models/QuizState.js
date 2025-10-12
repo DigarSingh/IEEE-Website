@@ -8,7 +8,7 @@ const QuizStateSchema = new mongoose.Schema({
   currentRound: {
     type: Number,
     default: 1,
-    enum: [1, 2]
+    enum: [1]
   },
   globalTimer: {
     type: Number,
@@ -38,32 +38,6 @@ const QuizStateSchema = new mongoose.Schema({
     password: {
       type: String,
       default: "ieee@321"
-    }
-  },
-  round2: {
-    isActive: {
-      type: Boolean,
-      default: false
-    },
-    globalTimer: {
-      type: Number,
-      default: 0
-    },
-    startTime: {
-      type: Date,
-      default: null
-    },
-    endTime: {
-      type: Date,
-      default: null
-    },
-    duration: {
-      type: Number,
-      default: 45 * 60 // 45 minutes in seconds
-    },
-    password: {
-      type: String,
-      default: "ieeegg@321"
     }
   },
   quizSettings: {

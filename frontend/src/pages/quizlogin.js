@@ -12,7 +12,6 @@ import {
   FaEye,
   FaEyeSlash,
   FaTrophy,
-  FaCode,
   FaSpinner,
   FaClock,
 } from "react-icons/fa";
@@ -30,7 +29,6 @@ export default function QuizLogin() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const [selectedRound, setSelectedRound] = useState(1);
   // Removed quiz state checking - no longer needed
 
   // Redirect if already logged in
@@ -54,28 +52,22 @@ export default function QuizLogin() {
     setError("");
   };
 
-  const validateCredentials = async (name, rollNo, password, selectedRound) => {
+  const validateCredentials = async (name, rollNo, password) => {
     try {
-      // Fetch current quiz settings to get the correct password for the selected round
+      // Fetch current quiz settings to get the correct password for Round 1
       const response = await fetch('/api/quiz/settings');
       const result = await response.json();
       
       if (!result.success) {
         console.error('Failed to fetch quiz settings:', result.error);
-        // Fallback to default passwords
-        const fallbackPasswords = {
-          1: "ieee@321",
-          2: "ieeegg@321"
-        };
-        const validPassword = fallbackPasswords[selectedRound];
+        // Fallback to default password for Round 1
+        const validPassword = "ieee@321";
         return validPassword === password && name.length >= 2 && rollNo.match(/^\d{8}$/);
       }
       
-      const validPassword = selectedRound === 1 
-        ? result.data.round1.password 
-        : result.data.round2.password;
+      const validPassword = result.data.round1.password;
       
-      console.log(`🔑 Validating Round ${selectedRound} password`);
+      console.log(`🔑 Validating Round 1 password`);
       
       return (
         validPassword === password &&
@@ -85,11 +77,7 @@ export default function QuizLogin() {
     } catch (error) {
       console.error('Error validating credentials:', error);
       // Fallback validation in case of API error
-      const fallbackPasswords = {
-        1: "ieee@321",
-        2: "ieeegg@321"
-      };
-      const validPassword = fallbackPasswords[selectedRound];
+      const validPassword = "ieee@321";
       return validPassword === password && name.length >= 2 && rollNo.match(/^\d{8}$/);
     }
   };
@@ -106,7 +94,7 @@ export default function QuizLogin() {
         throw new Error("All fields are required");
       }
 
-      const isValid = await validateCredentials(name, rollNo, password, selectedRound);
+      const isValid = await validateCredentials(name, rollNo, password);
       if (!isValid) {
         throw new Error(
           "Invalid credentials. Please check your details and password."
@@ -116,18 +104,18 @@ export default function QuizLogin() {
       // Check if student already exists and has completed the quiz
       const existingStudent = await getStudentByRollNo(rollNo.trim());
       
-      // If student exists and has completed the quiz for this round, prevent retaking
-      if (existingStudent && existingStudent.selectedRound === selectedRound && existingStudent.quizCompleted) {
+      // If student exists and has completed the quiz for Round 1, prevent retaking
+      if (existingStudent && existingStudent.selectedRound === 1 && existingStudent.quizCompleted) {
         throw new Error(
-          `You have already completed Round ${selectedRound} quiz. You cannot retake the quiz.`
+          "You have already completed Round 1 quiz. You cannot retake the quiz."
         );
       }
 
-      // Store user data with selected round
+      // Store user data with Round 1
       const userData = {
         name: name.trim(),
         rollNo: rollNo.trim(),
-        selectedRound: selectedRound,
+        selectedRound: 1,
         loginTime: new Date().toISOString(),
       };
 
@@ -150,12 +138,8 @@ export default function QuizLogin() {
 
       console.log("✅ Student data stored in MongoDB:", mongoResult.id);
 
-      // Redirect based on selected round
-      if (selectedRound === 1) {
-        router.push("/round1-quiz");
-      } else {
-        router.push("/instructions");
-      }
+      // Redirect to Round 1 quiz
+      router.push("/round1-quiz");
     } catch (err) {
       setError(err.message);
     } finally {
@@ -209,7 +193,7 @@ export default function QuizLogin() {
             <p className="text-blue-200">IEEE GEU Student Branch Quiz Portal</p>
           </div>
 
-          {/* Round Selection */}
+          {/* Quiz Info */}
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -218,7 +202,7 @@ export default function QuizLogin() {
           >
             <div className="flex justify-between items-center mb-4">
               <h2 className="text-lg font-semibold text-white">
-                Select Quiz Round
+                Quiz Information
               </h2>
               <button
                 onClick={() => window.location.reload()}
@@ -228,40 +212,14 @@ export default function QuizLogin() {
                 🔄 Refresh
               </button>
             </div>
-            <div className="grid grid-cols-2 gap-4">
-              <motion.button
-                type="button"
-                onClick={() => setSelectedRound(1)}
-                className={`p-4 rounded-lg border-2 transition-all ${
-                  selectedRound === 1
-                    ? "border-blue-400 bg-blue-500/20 text-white"
-                    : "border-white/20 bg-white/5 text-gray-300 hover:border-white/40"
-                }`}
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-              >
-                <FaTrophy className="mx-auto mb-2 text-2xl" />
-                <div className="font-semibold">Round 1</div>
-                <div className="text-sm opacity-80">MCQ Based</div>
-                <div className="text-xs mt-1">20 Questions • 30 mins</div>
-              </motion.button>
-
-              <motion.button
-                type="button"
-                onClick={() => setSelectedRound(2)}
-                className={`p-4 rounded-lg border-2 transition-all ${
-                  selectedRound === 2
-                    ? "border-purple-400 bg-purple-500/20 text-white"
-                    : "border-white/20 bg-white/5 text-gray-300 hover:border-white/40"
-                }`}
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-              >
-                <FaCode className="mx-auto mb-2 text-2xl" />
-                <div className="font-semibold">Round 2</div>
-                <div className="text-sm opacity-80">MCQ + Code + One Word</div>
-                <div className="text-xs mt-1">20 Questions • 45 mins</div>
-              </motion.button>
+            <div className="p-4 rounded-lg border-2 border-blue-400 bg-blue-500/20 text-white">
+              <div className="flex items-center justify-center mb-2">
+                <FaTrophy className="mr-2 text-2xl" />
+                <div className="font-semibold text-lg">Round 1 - MCQ Based</div>
+              </div>
+              <div className="text-center text-sm opacity-80">
+                20 Questions • 30 minutes
+              </div>
             </div>
           </motion.div>
 

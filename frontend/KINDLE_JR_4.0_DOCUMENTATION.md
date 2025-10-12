@@ -1,49 +1,35 @@
-# Kindle Jr 4.0 - Two Round Quiz System
+# Kindle Jr 4.0 - Single Round Quiz System
 
 ## Overview
-Successfully implemented a comprehensive two-round quiz system for Kindle Jr 4.0 with different question types and difficulty levels.
+Successfully implemented a comprehensive single-round quiz system for Kindle Jr 4.0 with MCQ-based questions.
 
 ## System Architecture
 
-### Round 1 (Existing)
+### Round 1 (MCQ Based)
 - **Format**: Multiple Choice Questions (MCQ)
 - **Duration**: 30 minutes
 - **Questions**: 20 questions
 - **Points**: Standard scoring
-- **File**: `/src/pages/quiz.js`
+- **File**: `/src/pages/round1-quiz.js`
 
-### Round 2 (Newly Created)
-- **Format**: Mixed question types
-  - 5 MCQ questions (2-3 points each)
-  - 5 One Word questions (3 points each)
-  - 10 Code Snippet questions (4-6 points each)
-- **Duration**: 45 minutes
-- **Total Points**: 85 points maximum
-- **Passing Score**: 50 points
-- **File**: `/src/pages/round2-quiz.js`
+## System Components
 
-## New Files Created
-
-### 1. Round 2 Questions Database
-**File**: `/src/data/round2Questions.js`
-- 20 carefully crafted questions
-- Three different question types
+### 1. Quiz Questions Database
+**File**: `/src/data/questions.json`
+- 20 carefully crafted MCQ questions
 - Progressive difficulty levels
-- Code snippets in Python, JavaScript, C++, Java
 - Comprehensive coverage of programming concepts
 
-### 2. Round 2 Quiz Interface
-**File**: `/src/pages/round2-quiz.js`
-- Advanced quiz interface supporting multiple question types
-- Syntax-highlighted code blocks
-- Hint system for complex questions
+### 2. Quiz Interface
+**File**: `/src/pages/round1-quiz.js`
+- MCQ-based quiz interface
 - Real-time timer and progress tracking
 - Fullscreen enforcement
 - Anti-cheating measures
 
-### 3. Round 2 Results Page
-**File**: `/src/pages/round2-result.js`
-- Detailed performance breakdown by question type
+### 3. Results Page
+**File**: `/src/pages/round1-result.js`
+- Detailed performance breakdown
 - Visual analytics and charts
 - Downloadable results in JSON format
 - Social sharing capabilities
@@ -53,18 +39,17 @@ Successfully implemented a comprehensive two-round quiz system for Kindle Jr 4.0
 
 ### 1. Quiz Login Portal
 **File**: `/src/pages/quizlogin.js`
-- Added round selection interface
-- Visual round cards with descriptions
-- Automatic routing based on selected round
-- Enhanced UI with round-specific styling
+- Simplified login interface for Round 1 only
+- Enhanced UI with quiz information display
+- Automatic routing to Round 1 quiz
 
 ### 2. Admin Dashboard
 **File**: `/src/pages/admin-quiz.js`
-- Round management system
-- Separate controls for each round
-- Round-specific timer displays
+- Round 1 management system
+- Timer controls and settings
+- Real-time quiz monitoring
 - Independent start/stop controls
-- Firebase integration for both rounds
+- MongoDB integration for data storage
 
 ## Question Types Implementation
 
@@ -80,51 +65,19 @@ Successfully implemented a comprehensive two-round quiz system for Kindle Jr 4.0
 }
 ```
 
-### One Word Questions
-```javascript
-{
-  id: 6,
-  type: "oneword",
-  question: "What keyword is used to create a function in Python?",
-  correctAnswer: "def",
-  points: 3,
-  hint: "It's a 3-letter keyword"
-}
-```
-
-### Code Snippet Questions
-```javascript
-{
-  id: 11,
-  type: "code",
-  question: "What will be the output of this Python code?",
-  code: `
-x = 5
-y = 2
-print(x // y)
-  `,
-  correctAnswer: "2",
-  points: 5,
-  hint: "Floor division operator"
-}
-```
-
 ## Features Implemented
 
-### Round 2 Specific Features
-1. **Multi-Type Question Support**: Handles MCQ, one-word, and code questions
-2. **Syntax Highlighting**: Code blocks with proper syntax highlighting
-3. **Hint System**: Optional hints for complex questions
-4. **Dynamic Scoring**: Variable points based on question difficulty
-5. **Enhanced Timer**: 45-minute duration with visual warnings
-6. **Performance Analytics**: Detailed breakdown by question type
+### Quiz Features
+1. **MCQ Support**: Handles multiple choice questions
+2. **Dynamic Scoring**: Variable points based on question difficulty
+3. **Enhanced Timer**: 30-minute duration with visual warnings
+4. **Performance Analytics**: Detailed breakdown and scoring
 
 ### Admin Features
-1. **Round Selector**: Toggle between Round 1 and Round 2 management
-2. **Independent Controls**: Start/stop each round separately
-3. **Round-Specific Stats**: Separate analytics for each round
-4. **Firebase Integration**: Cloud-based state management
-5. **Real-time Monitoring**: Live participant tracking
+1. **Round 1 Management**: Start/stop Round 1 quiz
+2. **Real-time Monitoring**: Live participant tracking
+3. **MongoDB Integration**: Cloud-based state management
+4. **Timer Controls**: Real-time timer management
 
 ### Security Features
 1. **Fullscreen Enforcement**: Prevents tab switching
@@ -137,17 +90,15 @@ print(x // y)
 
 ```
 Quiz Login Page
-├── Select Round 1 → Instructions → Round 1 Quiz → Results
-└── Select Round 2 → Round 2 Quiz → Round 2 Results
+└── Round 1 → Instructions → Round 1 Quiz → Results
 
 Admin Dashboard
-├── Round Selector
 ├── Round 1 Controls
-├── Round 2 Controls
-└── Combined Analytics
+├── Timer Management
+└── Analytics
 ```
 
-## Database Structure (Firebase)
+## Database Structure (MongoDB)
 
 ### Quiz State Document
 ```javascript
@@ -161,16 +112,8 @@ Admin Dashboard
     duration: number,
     globalTimer: number
   },
-  round2: {
-    isActive: boolean,
-    startTime: string,
-    endTime: string,
-    duration: number,
-    globalTimer: number
-  },
   settings: {
-    round1: { duration: 30, questionsCount: 20, password: "ieee@321" },
-    round2: { duration: 45, questionsCount: 20, password: "ieee@321" }
+    round1: { duration: 30, questionsCount: 20, password: "ieee@321" }
   }
 }
 ```
@@ -193,11 +136,10 @@ Admin Dashboard
 
 ## URLs and Routes
 
-- `/quizlogin` - Main quiz login with round selection
-- `/quiz` - Round 1 quiz interface (existing)
-- `/round2-quiz` - Round 2 quiz interface (new)
-- `/round2-result` - Round 2 results page (new)
-- `/admin-quiz` - Admin dashboard with round management
+- `/quizlogin` - Main quiz login for Round 1
+- `/round1-quiz` - Round 1 quiz interface
+- `/round1-result` - Round 1 results page
+- `/admin-quiz` - Admin dashboard with Round 1 management
 - `/instructions` - Quiz instructions (Round 1)
 
 ## Technology Stack

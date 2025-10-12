@@ -23,14 +23,6 @@ export async function GET() {
           duration: 30 * 60, // 30 minutes in seconds
           password: "ieee@321"
         },
-        round2: {
-          isActive: false,
-          globalTimer: 0,
-          startTime: null,
-          endTime: null,
-          duration: 45 * 60, // 45 minutes in seconds
-          password: "ieeegg@321"
-        },
         quizSettings: {
           duration: 30,
           questionsPerRound: 25,
@@ -81,9 +73,7 @@ export async function POST(request) {
         quizState.isActive = false;
         quizState.globalTimer = 0;
         quizState.round1.isActive = false;
-        quizState.round2.isActive = false;
         quizState.round1.endTime = new Date();
-        quizState.round2.endTime = new Date();
         break;
         
       case 'START_ROUND':
@@ -105,9 +95,6 @@ export async function POST(request) {
           if (quizState.round1.isActive) {
             quizState.round1.globalTimer = Math.max(0, quizState.round1.globalTimer - 1);
           }
-          if (quizState.round2.isActive) {
-            quizState.round2.globalTimer = Math.max(0, quizState.round2.globalTimer - 1);
-          }
         }
         break;
         
@@ -124,10 +111,6 @@ export async function POST(request) {
             quizState.round1.password = settings.round1.password;
           }
           
-          if (settings.round2) {
-            quizState.round2.duration = settings.round2.duration * 60; // Convert minutes to seconds
-            quizState.round2.password = settings.round2.password;
-          }
         }
         break;
         
