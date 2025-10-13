@@ -14,7 +14,7 @@ export async function GET() {
       quizState = new QuizState({
         isActive: false,//asdfa
         currentRound: 1,//asdfasd
-        globalTimer: 0,
+        globalTimer: 0,//asdfas
         round1: {
           isActive: false,
           globalTimer: 0,
