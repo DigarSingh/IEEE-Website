@@ -13,7 +13,7 @@ export async function GET() {
       // Create default quiz state if none exists
       quizState = new QuizState({
         isActive: false,//asdfa
-        currentRound: 1,
+        currentRound: 1,//asdfasd
         globalTimer: 0,
         round1: {
           isActive: false,
