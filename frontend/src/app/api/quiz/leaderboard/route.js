@@ -63,9 +63,9 @@ export async function GET(request) {
         break;
         
       case 'recent':
-        const thirtyMinutesAgo = new Date(Date.now() - 30 * 60 * 1000);
+        const fortyFiveMinutesAgo = new Date(Date.now() - 45 * 60 * 1000);
         leaderboardData = leaderboardData
-          .filter(item => new Date(item.completedAt) > thirtyMinutesAgo)
+          .filter(item => new Date(item.completedAt) > fortyFiveMinutesAgo)
           .sort((a, b) => new Date(b.completedAt) - new Date(a.completedAt))
           .slice(0, limitCount);
         break;

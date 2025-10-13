@@ -10,7 +10,7 @@ const initialState = {
   questions: [],
   currentQuestion: 0,
   answers: {},
-  timeRemaining: 30 * 60, // 30 minutes in seconds
+  timeRemaining: 45 * 60, // 45 minutes in seconds
   quizStarted: false,
   quizCompleted: false,
   fullscreenWarnings: 0,

@@ -14,7 +14,7 @@ const initialState = {
   results: [],
   leaderboard: [],
   quizSettings: {
-    duration: 30 * 60, // 30 minutes
+    duration: 45 * 60, // 45 minutes
     questionsCount: 25,
     password: 'ieee@321'
   },
@@ -137,7 +137,7 @@ export function AdminProvider({ children }) {
             payload: {
               total: resultsResult.data.length,
               active: resultsResult.data.filter(r => 
-                new Date(r.completedAt) > new Date(Date.now() - 30 * 60 * 1000)
+                new Date(r.completedAt) > new Date(Date.now() - 45 * 60 * 1000)
               ).length
             }
           });

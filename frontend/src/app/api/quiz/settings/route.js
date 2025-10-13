@@ -15,7 +15,7 @@ export async function GET() {
         success: true, 
         data: {
           round1: {
-            duration: 30 * 60,
+            duration: 45 * 60,
             password: "ieee@321"
           }
         }
@@ -27,7 +27,7 @@ export async function GET() {
       success: true, 
       data: {
         round1: {
-          duration: quizState.round1?.duration || 30 * 60,
+          duration: quizState.round1?.duration || 45 * 60,
           password: quizState.round1?.password || "ieee@321"
         }
       }

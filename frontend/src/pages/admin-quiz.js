@@ -23,7 +23,7 @@ export default function AdminQuizDashboard() {
       isActive: false,
       startTime: null,
       endTime: null,
-      duration: 30 * 60,
+      duration: 45 * 60,
       globalTimer: 0,
     },
   });
@@ -31,7 +31,7 @@ export default function AdminQuizDashboard() {
   // Quiz Settings
   const [settings, setSettings] = useState({
     round1: {
-      duration: 30,
+      duration: 45,
       questionsCount: 25,
       password: "ieee@321",
     },
@@ -97,9 +97,9 @@ export default function AdminQuizDashboard() {
             filteredResults.length
           );
         } else if (type === "recent") {
-          const thirtyMinutesAgo = new Date(Date.now() - 30 * 60 * 1000);
+          const fortyFiveMinutesAgo = new Date(Date.now() - 45 * 60 * 1000);
           filteredResults = result.data.filter(
-            (r) => new Date(r.completedAt) > thirtyMinutesAgo
+            (r) => new Date(r.completedAt) > fortyFiveMinutesAgo
           );
           console.log("🔍 Filtered for recent:", filteredResults.length);
         }
@@ -355,7 +355,7 @@ export default function AdminQuizDashboard() {
             isActive: false,
             startTime: null,
             endTime: null,
-            duration: 30 * 60,
+            duration: 45 * 60,
             globalTimer: 0,
           },
         };
@@ -384,7 +384,7 @@ export default function AdminQuizDashboard() {
         // Update settings from loaded data
         const newSettings = {
           round1: {
-            duration: 30,
+            duration: 45,
             questionsCount: 25,
             password: "ieee@321",
           },
@@ -393,7 +393,7 @@ export default function AdminQuizDashboard() {
         // Load round-specific settings from database
         if (data.round1) {
           newSettings.round1 = {
-            duration: Math.floor((data.round1.duration || 30 * 60) / 60), // Convert seconds to minutes
+            duration: Math.floor((data.round1.duration || 45 * 60) / 60), // Convert seconds to minutes
             questionsCount: data.round1.questionsCount || 25,
             password: data.round1.password || "ieee@321",
           };
@@ -405,7 +405,7 @@ export default function AdminQuizDashboard() {
           if (data.settings.round1) {
             newSettings.round1 = {
               duration: Math.floor(
-                (data.settings.round1.duration || 30 * 60) / 60
+                (data.settings.round1.duration || 45 * 60) / 60
               ),
               questionsCount: data.settings.round1.questionsCount || 25,
               password: data.settings.round1.password || "ieee@321",
@@ -457,10 +457,10 @@ export default function AdminQuizDashboard() {
 
           // Calculate statistics
           const now = new Date();
-          const thirtyMinutesAgo = new Date(now.getTime() - 30 * 60 * 1000);
+          const fortyFiveMinutesAgo = new Date(now.getTime() - 45 * 60 * 1000);
 
           const recentResults = mappedResults.filter(
-            (r) => new Date(r.completedAt) > thirtyMinutesAgo
+            (r) => new Date(r.completedAt) > fortyFiveMinutesAgo
           );
 
           const totalScore = mappedResults.reduce(

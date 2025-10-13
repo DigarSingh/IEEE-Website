@@ -9,7 +9,8 @@ const StudentSchema = new mongoose.Schema({
   rollNo: {
     type: String,
     required: true,
-    trim: true
+    trim: true,
+    match: [/^\d{8,10}$/, "Roll number must be 8-10 digits"]
   },
   selectedRound: {
     type: Number,

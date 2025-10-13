@@ -62,7 +62,7 @@ export default function QuizLogin() {
         console.error('Failed to fetch quiz settings:', result.error);
         // Fallback to default password for Round 1
         const validPassword = "ieee@321";
-        return validPassword === password && name.length >= 2 && rollNo.match(/^\d{8}$/);
+        return validPassword === password && name.length >= 2 && rollNo.match(/^\d{8,10}$/);
       }
       
       const validPassword = result.data.round1.password;
@@ -78,7 +78,7 @@ export default function QuizLogin() {
       console.error('Error validating credentials:', error);
       // Fallback validation in case of API error
       const validPassword = "ieee@321";
-      return validPassword === password && name.length >= 2 && rollNo.match(/^\d{8}$/);
+      return validPassword === password && name.length >= 2 && rollNo.match(/^\d{8,10}$/);
     }
   };
 
@@ -218,7 +218,7 @@ export default function QuizLogin() {
                 <div className="font-semibold text-lg">Round 1 - MCQ Based</div>
               </div>
               <div className="text-center text-sm opacity-80">
-                20 Questions • 30 minutes
+                25 Questions • 45 minutes
               </div>
             </div>
           </motion.div>

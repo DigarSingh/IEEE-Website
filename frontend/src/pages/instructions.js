@@ -223,7 +223,7 @@ export default function Instructions() {
                   <FaClock className="flex-shrink-0 mt-1 text-yellow-400" />
                   <div>
                     <h3 className="font-semibold text-white">Time Limit</h3>
-                    <p className="text-sm text-gray-300">You have exactly <strong>30 minutes</strong> to complete all 25 questions.</p>
+                    <p className="text-sm text-gray-300">You have exactly <strong>45 minutes</strong> to complete all 25 questions.</p>
                   </div>
                 </div>
 
@@ -314,11 +314,11 @@ export default function Instructions() {
                 <h3 className="mb-4 text-xl font-bold text-white">Quiz Overview</h3>
                 <div className="grid grid-cols-2 gap-4">
                   <div className="p-4 text-center rounded-lg bg-blue-500/20">
-                    <div className="text-2xl font-bold text-blue-400">20</div>
+                    <div className="text-2xl font-bold text-blue-400">25</div>
                     <div className="text-sm text-blue-200">Questions</div>
                   </div>
                   <div className="p-4 text-center rounded-lg bg-yellow-500/20">
-                    <div className="text-2xl font-bold text-yellow-400">30</div>
+                    <div className="text-2xl font-bold text-yellow-400">45</div>
                     <div className="text-sm text-yellow-200">Minutes</div>
                   </div>
                   <div className="p-4 text-center rounded-lg bg-green-500/20">
