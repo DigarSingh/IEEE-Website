@@ -398,7 +398,7 @@ export default function Round1Quiz() {
                     onClick={() => {
                       document.documentElement.requestFullscreen();
                       setShowWarning(false);//asdfas
-                    }}
+                    }}//asdfasd
                     className="px-6 py-2 ml-2 font-semibold text-white transition-colors bg-red-800 rounded-lg hover:bg-red-700"
                   >
                     <FaExpand className="inline mr-2" />
