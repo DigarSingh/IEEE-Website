@@ -219,14 +219,14 @@ export default function Login() {
               {/* Header Section */}
               <motion.div variants={fadeIn} className="mb-8 text-center">
                 <motion.div
-                  className="inline-flex items-center justify-center w-20 h-20 mb-6 overflow-hidden shadow-lg bg-white rounded-2xl"
+                  className="inline-flex items-center justify-center w-20 h-20 mb-6 overflow-hidden bg-white shadow-lg rounded-2xl"
                   whileHover={{ rotate: 360 }}
                   transition={{ duration: 0.8 }}
                 >
                   <img
                     src="/images/logo.png"
                     alt="IEEE Logo"
-                    className="w-16 h-16 object-contain"
+                    className="object-contain w-16 h-16"
                   />
                 </motion.div>
 
