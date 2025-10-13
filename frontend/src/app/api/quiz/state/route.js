@@ -21,7 +21,7 @@ export async function GET() {
           startTime: null,
           endTime: null,
           duration: 45 * 60, // 45 minutes in seconds
-          password: "ieee@321"
+          password: "ieee@kindlejr4.0"
         },
         quizSettings: {
           duration: 45,

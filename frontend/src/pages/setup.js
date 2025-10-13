@@ -113,7 +113,7 @@ export default function DatabaseSetup() {
                   <li>✅ Quiz interface at /quiz</li>
                   <li>🔲 Database initialization (click button above)</li>
                   <li>🔲 Test admin login (password: admin@ieee2025)</li>
-                  <li>🔲 Test quiz with password: ieee@321</li>
+                  <li>🔲 Test quiz with password: ieee@kindlejr4.0</li>
                 </ul>
               </div>
             </div>

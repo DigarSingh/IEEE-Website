@@ -53,33 +53,20 @@ export default function QuizLogin() {
   };
 
   const validateCredentials = async (name, rollNo, password) => {
-    try {
-      // Fetch current quiz settings to get the correct password for Round 1
-      const response = await fetch('/api/quiz/settings');
-      const result = await response.json();
-      
-      if (!result.success) {
-        console.error('Failed to fetch quiz settings:', result.error);
-        // Fallback to default password for Round 1
-        const validPassword = "ieee@321";
-        return validPassword === password && name.length >= 2 && rollNo.match(/^\d{8,10}$/);
-      }
-      
-      const validPassword = result.data.round1.password;
-      
-      console.log(`🔑 Validating Round 1 password`);
-      
-      return (
-        validPassword === password &&
-        name.length >= 2 &&
-        rollNo.match(/^\d{8}$/)
-      );
-    } catch (error) {
-      console.error('Error validating credentials:', error);
-      // Fallback validation in case of API error
-      const validPassword = "ieee@321";
-      return validPassword === password && name.length >= 2 && rollNo.match(/^\d{8,10}$/);
-    }
+    // Direct frontend validation - no database dependency
+    const validPassword = "ieee@kindlejr4.0";
+    
+    console.log(`🔑 Validating Round 1 password (Frontend only)`);
+    
+    const isValid = (
+      validPassword === password &&
+      name.length >= 2 &&
+      /^\d{8,10}$/.test(rollNo)
+    );
+    
+    console.log(`🔑 Password validation result:`, isValid);
+    
+    return isValid;
   };
 
   const handleSubmit = async (e) => {

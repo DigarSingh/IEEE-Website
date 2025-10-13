@@ -16,7 +16,7 @@ const initialState = {
   quizSettings: {
     duration: 45 * 60, // 45 minutes
     questionsCount: 25,
-    password: 'ieee@321'
+    password: 'ieee@kindlejr4.0'
   },
   loading: false,
   error: null

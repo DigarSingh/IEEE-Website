@@ -33,7 +33,7 @@ export default function AdminQuizDashboard() {
     round1: {
       duration: 45,
       questionsCount: 25,
-      password: "ieee@321",
+      password: "ieee@kindlejr4.0",
     },
   });
 
@@ -386,7 +386,7 @@ export default function AdminQuizDashboard() {
           round1: {
             duration: 45,
             questionsCount: 25,
-            password: "ieee@321",
+            password: "ieee@kindlejr4.0",
           },
         };
 
@@ -395,7 +395,7 @@ export default function AdminQuizDashboard() {
           newSettings.round1 = {
             duration: Math.floor((data.round1.duration || 45 * 60) / 60), // Convert seconds to minutes
             questionsCount: data.round1.questionsCount || 25,
-            password: data.round1.password || "ieee@321",
+            password: data.round1.password || "ieee@kindlejr4.0",
           };
         }
         
@@ -408,7 +408,7 @@ export default function AdminQuizDashboard() {
                 (data.settings.round1.duration || 45 * 60) / 60
               ),
               questionsCount: data.settings.round1.questionsCount || 25,
-              password: data.settings.round1.password || "ieee@321",
+              password: data.settings.round1.password || "ieee@kindlejr4.0",
             };
           }
         }

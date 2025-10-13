@@ -16,7 +16,7 @@ export async function GET() {
         data: {
           round1: {
             duration: 45 * 60,
-            password: "ieee@321"
+            password: "ieee@kindlejr4.0"
           }
         }
       });
@@ -28,7 +28,7 @@ export async function GET() {
       data: {
         round1: {
           duration: quizState.round1?.duration || 45 * 60,
-          password: quizState.round1?.password || "ieee@321"
+          password: quizState.round1?.password || "ieee@kindlejr4.0"
         }
       }
     });

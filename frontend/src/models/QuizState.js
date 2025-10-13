@@ -37,7 +37,7 @@ const QuizStateSchema = new mongoose.Schema({
     },
     password: {
       type: String,
-      default: "ieee@321"
+      default: "ieee@kindlejr4.0"
     }
   },
   quizSettings: {
