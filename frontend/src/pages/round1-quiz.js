@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/router";
 import Head from "next/head";
 import { motion, AnimatePresence } from "framer-motion";
@@ -28,10 +28,15 @@ export default function Round1Quiz() {
   const [showWarning, setShowWarning] = useState(false);
   const [warningMessage, setWarningMessage] = useState("");
   const [showSubmitModal, setShowSubmitModal] = useState(false);
+  const [completionCheckDone, setCompletionCheckDone] = useState(false);
+  const alertShown = useRef(false);
 
   // Check authentication and Round 1 quiz state
   useEffect(() => {
     const checkQuizCompletion = async () => {
+      // Prevent multiple completion checks
+      if (completionCheckDone) return;
+      
       const savedUser = localStorage.getItem("quizUser");
       if (!savedUser) {
         router.push("/quizlogin");
@@ -47,10 +52,14 @@ export default function Round1Quiz() {
           existingStudent.selectedRound === 1 &&
           existingStudent.quizCompleted
         ) {
-          alert(
-            "You have already completed Round 1 quiz. You cannot retake the quiz."
-          );
-          router.push("/round1-result");
+          setCompletionCheckDone(true);
+          if (!alertShown.current) {
+            alertShown.current = true;
+            alert(
+              "You have already completed Round 1 quiz. You cannot retake the quiz."
+            );
+            router.push("/round1-result");
+          }
           return;
         }
       } catch (error) {
@@ -67,10 +76,12 @@ export default function Round1Quiz() {
         router.push("/round1-result");
         return;
       }
+      
+      setCompletionCheckDone(true);
     };
 
     checkQuizCompletion();
-  }, [router, state]);
+  }, [router, state, completionCheckDone]);
 
   // Fullscreen monitoring
   useEffect(() => {
