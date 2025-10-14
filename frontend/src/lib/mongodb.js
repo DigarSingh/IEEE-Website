@@ -73,15 +73,15 @@ async function dbConnect() {
     const opts = {
       bufferCommands: false,
       serverSelectionTimeoutMS: 10000,
-      maxPoolSize: 1,
-      minPoolSize: 0,
+      // Increase pool to handle concurrent requests (tune per deployment)
+      maxPoolSize: 30,
+      minPoolSize: 5,
       maxIdleTimeMS: 30000,
       connectTimeoutMS: 10000,
       socketTimeoutMS: 45000,
       family: 4,
       retryWrites: true,
       w: "majority",
-      // Add these options for better serverless compatibility
       keepAlive: true,
       keepAliveInitialDelay: 300000,
     };

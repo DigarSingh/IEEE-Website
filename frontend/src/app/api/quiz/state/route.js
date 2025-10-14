@@ -2,6 +2,9 @@ import { NextResponse } from 'next/server';
 import dbConnect from '@/lib/mongodb';
 import QuizState from '@/models/QuizState';
 
+// Force dynamic to avoid caching on serverless
+export const dynamic = 'force-dynamic';
+
 // GET - Get current quiz state
 export async function GET() {
   try {
