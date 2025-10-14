@@ -7,8 +7,8 @@ Successfully implemented a comprehensive single-round quiz system for Kindle Jr 
 
 ### Round 1 (MCQ Based)
 - **Format**: Multiple Choice Questions (MCQ)
-- **Duration**: 30 minutes
-- **Questions**: 20 questions
+- **Duration**: 40 minutes
+- **Questions**: 30 questions (randomly selected and shuffled for each user)
 - **Points**: Standard scoring
 - **File**: `/src/pages/round1-quiz.js`
 
@@ -16,9 +16,10 @@ Successfully implemented a comprehensive single-round quiz system for Kindle Jr 
 
 ### 1. Quiz Questions Database
 **File**: `/src/data/questions.json`
-- 20 carefully crafted MCQ questions
+- 46 carefully crafted MCQ questions
 - Progressive difficulty levels
 - Comprehensive coverage of programming concepts
+- **API Endpoint**: `/api/quiz/questions` - Returns 30 random questions per user
 
 ### 2. Quiz Interface
 **File**: `/src/pages/round1-quiz.js`
@@ -70,7 +71,7 @@ Successfully implemented a comprehensive single-round quiz system for Kindle Jr 
 ### Quiz Features
 1. **MCQ Support**: Handles multiple choice questions
 2. **Dynamic Scoring**: Variable points based on question difficulty
-3. **Enhanced Timer**: 30-minute duration with visual warnings
+3. **Enhanced Timer**: 40-minute duration with visual warnings
 4. **Performance Analytics**: Detailed breakdown and scoring
 
 ### Admin Features

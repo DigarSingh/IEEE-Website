@@ -264,7 +264,7 @@ export default function Round1Quiz() {
 
       const percentage = Math.round((score / state.questions.length) * 100);
       const grade = getGrade(percentage);
-      const timeSpentInSeconds = 45 * 60 - state.timeRemaining; // Time in seconds
+      const timeSpentInSeconds = 40 * 60 - state.timeRemaining; // Time in seconds
       const completedAt = new Date().toISOString();
 
       console.log("📊 Calculated:", { score, percentage, grade });

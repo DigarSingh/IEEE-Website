@@ -10,7 +10,7 @@ const initialState = {
   questions: [],
   currentQuestion: 0,
   answers: {},
-  timeRemaining: 45 * 60, // 45 minutes in seconds
+  timeRemaining: 40 * 60, // 40 minutes in seconds
   quizStarted: false,
   quizCompleted: false,
   fullscreenWarnings: 0,
@@ -90,8 +90,8 @@ export function QuizProvider({ children }) {
 
     checkQuizState();
     
-    // Check every 10 seconds for more responsive updates
-    const interval = setInterval(checkQuizState, 10000);
+    // Check every 30 seconds to reduce API calls
+    const interval = setInterval(checkQuizState, 30000);
     return () => clearInterval(interval);
   }, []);
 

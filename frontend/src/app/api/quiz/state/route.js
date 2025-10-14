@@ -20,12 +20,12 @@ export async function GET() {
           globalTimer: 0,
           startTime: null,
           endTime: null,
-          duration: 45 * 60, // 45 minutes in seconds
+          duration: 40 * 60, // 40 minutes in seconds
           password: "ieee@kindlejr4.0"
         },
         quizSettings: {
-          duration: 45,
-          questionsPerRound: 25,
+          duration: 40,
+          questionsPerRound: 30,
           allowMultipleAttempts: false
         }
       });
@@ -63,7 +63,7 @@ export async function POST(request) {
       case 'START_QUIZ':
         quizState.isActive = true;
         quizState.currentRound = round || 1;
-        quizState.globalTimer = (settings?.duration || 45) * 60; // Convert minutes to seconds
+        quizState.globalTimer = (settings?.duration || 40) * 60; // Convert minutes to seconds
         quizState[`round${round || 1}`].isActive = true;
         quizState[`round${round || 1}`].startTime = new Date();
         quizState[`round${round || 1}`].globalTimer = quizState.globalTimer;
@@ -80,7 +80,7 @@ export async function POST(request) {
         quizState.currentRound = round;
         quizState[`round${round}`].isActive = true;
         quizState[`round${round}`].startTime = new Date();
-        quizState[`round${round}`].globalTimer = (settings?.duration || 45) * 60;
+        quizState[`round${round}`].globalTimer = (settings?.duration || 40) * 60;
         break;
         
       case 'STOP_ROUND':

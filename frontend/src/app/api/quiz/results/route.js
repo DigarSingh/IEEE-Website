@@ -41,7 +41,7 @@ export async function GET(request) {
       name: student.name,
       rollNo: student.rollNo,
       score: student.score || 0,
-      totalQuestions: 25, // Assuming 25 questions per quiz
+      totalQuestions: 30, // Assuming 30 questions per quiz
       percentage: student.percentage || 0,
       grade: student.grade || "N/A",
       timeTaken: student.timeSpent || 0,
@@ -104,7 +104,7 @@ export async function POST(request) {
     // Calculate additional fields
     const completedAt = new Date();
     const percentage = Math.round(
-      (resultData.score / (resultData.totalQuestions || 20)) * 100
+      (resultData.score / (resultData.totalQuestions || 30)) * 100
     );
     const grade = getGrade(percentage);
 

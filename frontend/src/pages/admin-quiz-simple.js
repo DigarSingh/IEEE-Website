@@ -7,7 +7,7 @@ export default function AdminQuizDashboard() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [adminPassword, setAdminPassword] = useState('');
   const [quizActive, setQuizActive] = useState(false);
-  const [timer, setTimer] = useState(2700); // 45 minutes
+  const [timer, setTimer] = useState(2400); // 40 minutes
 
   const handleAdminLogin = () => {
     if (adminPassword === 'admin@ieee2025') {

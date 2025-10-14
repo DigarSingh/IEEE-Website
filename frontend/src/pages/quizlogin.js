@@ -205,7 +205,7 @@ export default function QuizLogin() {
                 <div className="font-semibold text-lg">Round 1 - MCQ Based</div>
               </div>
               <div className="text-center text-sm opacity-80">
-                25 Questions • 45 minutes
+                30 Questions • 40 minutes
               </div>
             </div>
           </motion.div>

@@ -23,7 +23,7 @@ export default function AdminQuizDashboard() {
       isActive: false,
       startTime: null,
       endTime: null,
-      duration: 45 * 60,
+      duration: 40 * 60,
       globalTimer: 0,
     },
   });
@@ -31,8 +31,8 @@ export default function AdminQuizDashboard() {
   // Quiz Settings
   const [settings, setSettings] = useState({
     round1: {
-      duration: 45,
-      questionsCount: 25,
+      duration: 40,
+      questionsCount: 30,
       password: "ieee@kindlejr4.0",
     },
   });
@@ -97,9 +97,9 @@ export default function AdminQuizDashboard() {
             filteredResults.length
           );
         } else if (type === "recent") {
-          const fortyFiveMinutesAgo = new Date(Date.now() - 45 * 60 * 1000);
+          const fortyMinutesAgo = new Date(Date.now() - 40 * 60 * 1000);
           filteredResults = result.data.filter(
-            (r) => new Date(r.completedAt) > fortyFiveMinutesAgo
+            (r) => new Date(r.completedAt) > fortyMinutesAgo
           );
           console.log("🔍 Filtered for recent:", filteredResults.length);
         }
@@ -118,7 +118,7 @@ export default function AdminQuizDashboard() {
               name: r.name || r.userName || "N/A",
               rollNo: r.rollNo || "N/A",
               score: r.score || 0,
-              totalQuestions: r.totalQuestions || 20,
+              totalQuestions: r.totalQuestions || 30,
               percentage: Math.round(r.percentage || 0),
               grade: r.grade || calculateGrade(r.percentage || 0),
               timeTaken: r.timeTaken
@@ -235,14 +235,14 @@ export default function AdminQuizDashboard() {
         `"${participant.name}"`,
         `"${participant.rollNo}"`,
         participant.score || 0,
-        participant.totalQuestions || 20,
+        participant.totalQuestions || 30,
         participant.percentage || 0,
         `"${participant.grade || "N/A"}"`,
         `"${participant.timeTaken || "N/A"}"`,
         participant.round || 1,
         participant.completed ? "Completed" : "In Progress",
         participant.warnings || 0,
-        `"${new Date(participant.completedAt).toLocaleString()}"`,
+        `"${new Date(participant.completedAt).toISOString().replace('T', ' ').slice(0, 19)}"`,
       ];
       csvRows.push(row.join(","));
     });
@@ -355,7 +355,7 @@ export default function AdminQuizDashboard() {
             isActive: false,
             startTime: null,
             endTime: null,
-            duration: 45 * 60,
+            duration: 40 * 60,
             globalTimer: 0,
           },
         };
@@ -384,8 +384,8 @@ export default function AdminQuizDashboard() {
         // Update settings from loaded data
         const newSettings = {
           round1: {
-            duration: 45,
-            questionsCount: 25,
+            duration: 40,
+            questionsCount: 30,
             password: "ieee@kindlejr4.0",
           },
         };
@@ -393,8 +393,8 @@ export default function AdminQuizDashboard() {
         // Load round-specific settings from database
         if (data.round1) {
           newSettings.round1 = {
-            duration: Math.floor((data.round1.duration || 45 * 60) / 60), // Convert seconds to minutes
-            questionsCount: data.round1.questionsCount || 25,
+            duration: Math.floor((data.round1.duration || 40 * 60) / 60), // Convert seconds to minutes
+            questionsCount: data.round1.questionsCount || 30,
             password: data.round1.password || "ieee@kindlejr4.0",
           };
         }
@@ -405,9 +405,9 @@ export default function AdminQuizDashboard() {
           if (data.settings.round1) {
             newSettings.round1 = {
               duration: Math.floor(
-                (data.settings.round1.duration || 45 * 60) / 60
+                (data.settings.round1.duration || 40 * 60) / 60
               ),
-              questionsCount: data.settings.round1.questionsCount || 25,
+              questionsCount: data.settings.round1.questionsCount || 30,
               password: data.settings.round1.password || "ieee@kindlejr4.0",
             };
           }
@@ -436,7 +436,7 @@ export default function AdminQuizDashboard() {
             name: r.name || r.userName || "N/A",
             rollNo: r.rollNo || "N/A",
             score: r.score || 0,
-            totalQuestions: r.totalQuestions || 20,
+            totalQuestions: r.totalQuestions || 30,
             percentage: Math.round(r.percentage || 0),
             grade: r.grade || calculateGrade(r.percentage || 0),
             timeSpent: r.timeTaken || r.timeSpent || 0,
@@ -457,10 +457,10 @@ export default function AdminQuizDashboard() {
 
           // Calculate statistics
           const now = new Date();
-          const fortyFiveMinutesAgo = new Date(now.getTime() - 45 * 60 * 1000);
+          const fortyMinutesAgo = new Date(now.getTime() - 40 * 60 * 1000);
 
           const recentResults = mappedResults.filter(
-            (r) => new Date(r.completedAt) > fortyFiveMinutesAgo
+            (r) => new Date(r.completedAt) > fortyMinutesAgo
           );
 
           const totalScore = mappedResults.reduce(
@@ -489,7 +489,7 @@ export default function AdminQuizDashboard() {
     };
 
     // Poll every 5 seconds
-    const interval = setInterval(pollResults, 5000);
+    const interval = setInterval(pollResults, 30000);
 
     // Initial poll
     pollResults();
@@ -665,18 +665,18 @@ export default function AdminQuizDashboard() {
         "Roll No",
         "Score",
         "Percentage",
-        "Time Spent (min)",
+        "Time Spent",
         "Warnings",
         "Completed At",
       ],
       ...results.map((result) => [
         result.userName || "N/A",
         result.rollNo || "N/A",
-        `${result.score || 0}/${result.totalQuestions || 20}`,
+        `${result.score || 0}/${result.totalQuestions || 30}`,
         `${result.percentage || 0}%`,
-        Math.round((result.timeSpent || 0) / 60),
+        formatTimeTaken(result.timeSpent || 0),
         result.warnings || 0,
-        new Date(result.completedAt).toLocaleString(),
+        new Date(result.completedAt).toISOString().replace('T', ' ').slice(0, 19),
       ]),
     ]
       .map((row) => row.join(","))
@@ -1177,7 +1177,7 @@ export default function AdminQuizDashboard() {
                           <td className="px-4 py-3">
                             <div className="text-lg font-bold text-blue-600">
                               {participant.score || 0}/
-                              {participant.totalQuestions || 20}
+                              {participant.totalQuestions || 30}
                             </div>
                           </td>
                           <td className="px-4 py-3">
@@ -1372,7 +1372,7 @@ export default function AdminQuizDashboard() {
                               : "text-red-600"
                           }`}
                         >
-                          {result.score || 0}/{result.totalQuestions || 20}
+                          {result.score || 0}/{result.totalQuestions || 30}
                         </div>
                         <div className="text-sm text-gray-500">
                           {result.percentage || 0}%
@@ -1459,7 +1459,7 @@ export default function AdminQuizDashboard() {
                               ...settings,
                               round1: {
                                 ...settings.round1,
-                                duration: parseInt(e.target.value) || 30,
+                                duration: parseInt(e.target.value) || 40,
                               }
                             })
                           }

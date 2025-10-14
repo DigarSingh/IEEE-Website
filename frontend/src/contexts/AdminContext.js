@@ -14,8 +14,8 @@ const initialState = {
   results: [],
   leaderboard: [],
   quizSettings: {
-    duration: 45 * 60, // 45 minutes
-    questionsCount: 25,
+    duration: 40 * 60, // 40 minutes
+    questionsCount: 30,
     password: 'ieee@kindlejr4.0'
   },
   loading: false,
@@ -111,7 +111,7 @@ export function AdminProvider({ children }) {
   };
 
   const setupRealtimeListeners = () => {
-    // Poll MongoDB for updates every 5 seconds
+    // Poll MongoDB for updates every 30 seconds to reduce API load
     const interval = setInterval(async () => {
       try {
         // Update quiz results/leaderboard
@@ -137,7 +137,7 @@ export function AdminProvider({ children }) {
             payload: {
               total: resultsResult.data.length,
               active: resultsResult.data.filter(r => 
-                new Date(r.completedAt) > new Date(Date.now() - 45 * 60 * 1000)
+                new Date(r.completedAt) > new Date(Date.now() - 40 * 60 * 1000)
               ).length
             }
           });
@@ -145,7 +145,7 @@ export function AdminProvider({ children }) {
       } catch (error) {
         console.error('Error updating realtime data:', error);
       }
-    }, 5000);
+    }, 30000);
 
     return () => clearInterval(interval);
   };

@@ -33,7 +33,7 @@ const QuizStateSchema = new mongoose.Schema({
     },
     duration: {
       type: Number,
-      default: 45 * 60 // 45 minutes in seconds
+      default: 40 * 60 // 40 minutes in seconds
     },
     password: {
       type: String,
@@ -43,11 +43,11 @@ const QuizStateSchema = new mongoose.Schema({
   quizSettings: {
     duration: {
       type: Number,
-      default: 45 // minutes
+      default: 40 // minutes
     },
     questionsPerRound: {
       type: Number,
-      default: 25
+      default: 30
     },
     allowMultipleAttempts: {
       type: Boolean,

@@ -33,7 +33,7 @@ export default function Instructions() {
     dispatch({ type: 'SET_USER', payload: userData });
   }, [router, dispatch]);
 
-  // Fetch quiz state from MongoDB
+  // Fetch quiz state from MongoDB (only once, no polling)
   useEffect(() => {
     const fetchQuizState = async () => {
       try {
@@ -57,10 +57,7 @@ export default function Instructions() {
 
     if (user) {
       fetchQuizState();
-      
-      // Poll for quiz state updates every 5 seconds
-      const interval = setInterval(fetchQuizState, 5000);
-      return () => clearInterval(interval);
+      // Removed polling - QuizContext will handle real-time updates
     }
   }, [user, dispatch]);
 
@@ -107,11 +104,26 @@ export default function Instructions() {
       // Continue with quiz start if check fails
     }
 
-    // Randomly select 25 questions
-    const shuffledQuestions = shuffleArray(questionsData);
-    const selectedQuestions = shuffledQuestions.slice(0, 25);
-    
-    dispatch({ type: 'SET_QUESTIONS', payload: selectedQuestions });
+    // Load 30 random questions from API
+    try {
+      const response = await fetch('/api/quiz/questions');
+      const result = await response.json();
+      
+      if (result.success) {
+        dispatch({ type: 'SET_QUESTIONS', payload: result.data });
+      } else {
+        // Fallback to local questions if API fails
+        const shuffledQuestions = shuffleArray(questionsData);
+        const selectedQuestions = shuffledQuestions.slice(0, 30);
+        dispatch({ type: 'SET_QUESTIONS', payload: selectedQuestions });
+      }
+    } catch (error) {
+      console.error('Error loading questions from API:', error);
+      // Fallback to local questions
+      const shuffledQuestions = shuffleArray(questionsData);
+      const selectedQuestions = shuffledQuestions.slice(0, 30);
+      dispatch({ type: 'SET_QUESTIONS', payload: selectedQuestions });
+    }
     dispatch({ type: 'START_QUIZ' });
     
     // Redirect to Round 1 quiz
@@ -223,7 +235,7 @@ export default function Instructions() {
                   <FaClock className="flex-shrink-0 mt-1 text-yellow-400" />
                   <div>
                     <h3 className="font-semibold text-white">Time Limit</h3>
-                    <p className="text-sm text-gray-300">You have exactly <strong>45 minutes</strong> to complete all 25 questions.</p>
+                    <p className="text-sm text-gray-300">You have exactly <strong>40 minutes</strong> to complete all 30 questions.</p>
                   </div>
                 </div>
 
@@ -314,11 +326,11 @@ export default function Instructions() {
                 <h3 className="mb-4 text-xl font-bold text-white">Quiz Overview</h3>
                 <div className="grid grid-cols-2 gap-4">
                   <div className="p-4 text-center rounded-lg bg-blue-500/20">
-                    <div className="text-2xl font-bold text-blue-400">25</div>
+                    <div className="text-2xl font-bold text-blue-400">30</div>
                     <div className="text-sm text-blue-200">Questions</div>
                   </div>
                   <div className="p-4 text-center rounded-lg bg-yellow-500/20">
-                    <div className="text-2xl font-bold text-yellow-400">45</div>
+                    <div className="text-2xl font-bold text-yellow-400">40</div>
                     <div className="text-sm text-yellow-200">Minutes</div>
                   </div>
                   <div className="p-4 text-center rounded-lg bg-green-500/20">

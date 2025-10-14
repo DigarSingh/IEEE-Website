@@ -40,7 +40,7 @@ export default function Leaderboard() {
           name: item.userName || item.name || "N/A",
           rollNo: item.rollNo || "N/A",
           score: item.score || 0,
-          totalQuestions: item.totalQuestions || 20,
+          totalQuestions: item.totalQuestions || 30,
           percentage: Math.round(item.percentage || 0),
           grade: item.grade || calculateGrade(item.percentage || 0),
           timeTaken: formatTimeTaken(item.timeSpent),
@@ -330,7 +330,7 @@ export default function Leaderboard() {
                         </td>
                         <td className="px-6 py-4">
                           <div className="font-bold text-lg text-blue-600">
-                            {participant.score || 0}/{participant.totalQuestions || 20}
+                            {participant.score || 0}/{participant.totalQuestions || 30}
                           </div>
                         </td>
                         <td className="px-6 py-4">
