@@ -277,7 +277,7 @@ export default function Home() {
   <link rel="preload" as="image" href="/images/hero/IEEE_hero.jpg" />
 
         {/* Announcement Bar */}
-        <div className="relative overflow-hidden bg-gradient-to-r from-green-600 via-teal-600 to-green-600">
+        <div className="relative overflow-hidden bg-gradient-to-r from-purple-600 via-pink-600 to-purple-600">
           <div className="announcement-scroll">
             <div className="flex items-center justify-center py-3 text-sm font-medium text-white md:text-base whitespace-nowrap">
               <span className="mr-4">🙏</span>
