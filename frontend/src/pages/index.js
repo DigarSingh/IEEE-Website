@@ -6,7 +6,6 @@ import { useState, useEffect, useRef } from 'react';
 import Layout from '@/components/Layout';
 import dynamic from 'next/dynamic';
 const ParticleBackground = dynamic(() => import('@/components/ParticleBackground'), { ssr: false, loading: () => null });
-const AnnouncementPopup = dynamic(() => import('@/components/AnnouncementPopup'), { ssr: false });
 import { useIntersectionObserver } from '@/hooks/useEnhancedScroll';
 
 export default function Home() {
@@ -278,30 +277,22 @@ export default function Home() {
   <link rel="preload" as="image" href="/images/hero/IEEE_hero.jpg" />
 
         {/* Announcement Bar */}
-        <div className="relative overflow-hidden bg-gradient-to-r from-purple-600 via-pink-600 to-purple-600">
+        <div className="relative overflow-hidden bg-gradient-to-r from-green-600 via-teal-600 to-green-600">
           <div className="announcement-scroll">
             <div className="flex items-center justify-center py-3 text-sm font-medium text-white md:text-base whitespace-nowrap">
-              <span className="mr-4">🎉</span>
-              <span className="mr-2">Upcoming Event: Kindle Jr 4.0!</span>
-              <span className="mr-4">Get ready for the ultimate competition.</span>
-              <a href="https://forms.gle/5oYNMu5d6irHVDBH6" target="_blank" rel="noopener noreferrer" className="inline-flex items-center px-3 py-1 text-xs font-semibold text-purple-600 transition-colors duration-200 bg-white rounded-full hover:bg-gray-100">
-                Register Now
-                <FaArrowRight className="ml-1 text-xs" />
-              </a>
+              <span className="mr-4">🙏</span>
+              <span className="mr-2">Thank you to all participants for making Kindle Jr 4.0 a wonderful event!</span>
+              <span className="mr-4">✨</span>
+              <span className="ml-2">Your enthusiasm and participation made it a huge success!</span>
               <span className="ml-4">🎉</span>
-              <span className="ml-2">Upcoming Event: Kindle Jr 4.0!</span>
-              <span className="ml-4">Get ready for the ultimate competition.</span>
-              <a href="https://forms.gle/5oYNMu5d6irHVDBH6" target="_blank" rel="noopener noreferrer" className="inline-flex items-center px-3 py-1 text-xs font-semibold text-purple-600 transition-colors duration-200 bg-white rounded-full hover:bg-gray-100">
-                Register Now
-                <FaArrowRight className="ml-1 text-xs" />
-              </a>
+              <span className="ml-2">Thank you to all participants for making Kindle Jr 4.0 a wonderful event!</span>
+              <span className="ml-4">✨</span>
+              <span className="ml-2">Your enthusiasm and participation made it a huge success!</span>
+              <span className="ml-4">🙏</span>
+              <span className="ml-2">Thank you to all participants for making Kindle Jr 4.0 a wonderful event!</span>
+              <span className="ml-4">✨</span>
+              <span className="ml-2">Your enthusiasm and participation made it a huge success!</span>
               <span className="ml-4">🎉</span>
-              <span className="ml-2">Upcoming Event: Kindle Jr 4.0!</span>
-              <span className="ml-4">Get ready for the ultimate competition.</span>
-              <a href="https://forms.gle/5oYNMu5d6irHVDBH6" target="_blank" rel="noopener noreferrer" className="inline-flex items-center px-3 py-1 text-xs font-semibold text-purple-600 transition-colors duration-200 bg-white rounded-full hover:bg-gray-100">
-                Register Now
-                <FaArrowRight className="ml-1 text-xs" />
-              </a>
             </div>
           </div>
         </div>
@@ -807,9 +798,6 @@ export default function Home() {
           </div>
         </section>
       </div>
-      
-      {/* Announcement Popup */}
-      <AnnouncementPopup />
-    </Layout>
+      </Layout>
   );
 }
