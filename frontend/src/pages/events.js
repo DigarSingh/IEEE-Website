@@ -30,7 +30,7 @@ export default function Events() {
     {
       id: 13,
       title: "Kindle Jr 4.0",
-      date: "October 14, 2025",
+      date: "October 14, 2024",
       time: "10:00 AM - 4:00 PM",
       location: "CSIT Labs",
       category: "competition",
@@ -40,8 +40,7 @@ export default function Events() {
       attendees: 150,
       difficulty: "All Levels",
       tags: ["Coding", "Quiz", "Programming"],
-      upcoming: true,
-      registrationLink: "/quizlogin",
+      upcoming: false,
       detailedContent: {
         overview: "Kindle Jr 4.0 is the flagship coding competition that brings together programming enthusiasts from across the university. This multi-round quiz challenge tests participants' knowledge in algorithms, data structures, programming languages, and problem-solving techniques.",
         objectives: [
@@ -88,7 +87,7 @@ export default function Events() {
         ],
         registration: {
           process: "Register through the quiz portal",
-          deadline: "October 13, 2025",
+          deadline: "October 13, 2024",
           fee: "Entry Fee: ₹99 / per person (₹49 for first 50 IEEE members)",
           requirements: ["Valid student ID", "Basic programming knowledge"]
         }
@@ -97,7 +96,7 @@ export default function Events() {
     {
       id: 1,
       title: "Machine Learning Workshop",
-      date: "May 23, 2025",
+      date: "May 23, 2024",
       time: "11:30 Am Onwards",
       location: "Main Campus Auditorium",
       category: "workshop",
@@ -160,7 +159,7 @@ export default function Events() {
     {
       id: 2,
       title: "AWS Jam Skill Builder Program",
-      date: "May 29, 2025",
+      date: "May 29, 2024",
       time: "8:00 AM",
       location: "Silver Convention Center",
       category: "conference",
@@ -230,8 +229,8 @@ export default function Events() {
     },
     {
       id: 3,
-      title: "Hackathon 2025",
-      date: "May 01, 2025",
+      title: "Hackathon 2024",
+      date: "May 01, 2024",
       time: "9:00 AM",
       location: "Innovation Hub",
       category: "hackathon",
@@ -239,7 +238,7 @@ export default function Events() {
       description: "48-hour coding challenge with exciting prizes and opportunities.",
       featured: true,
       detailedContent: {
-        overview: "Hackathon 2025 is the premier 48-hour coding marathon where innovation meets technology. Teams will collaborate to build groundbreaking solutions addressing real-world challenges across multiple domains including FinTech, HealthTech, EdTech, and Sustainability.",
+        overview: "Hackathon 2024 is the premier 48-hour coding marathon where innovation meets technology. Teams will collaborate to build groundbreaking solutions addressing real-world challenges across multiple domains including FinTech, HealthTech, EdTech, and Sustainability.",
         objectives: [
           "Foster innovation and creative problem-solving skills",
           "Encourage collaboration between diverse skill sets",
@@ -306,14 +305,14 @@ export default function Events() {
     {
       id: 4,
       title: "Accollade Code Hunt",
-      date: "April 17, 2025",
+      date: "April 17, 2024",
       time: "9:00 AM - 4:00 PM",
       location: "Param Lab",
       category: "competition",
       image: "/images/events/accollade.jpg",
-      description: "Code Hunt 2025 is here - an intense online treasure hunt crafted year-wise for 1st, 2nd & 3rd-year warriors!",
+      description: "Code Hunt 2024 is here - an intense online treasure hunt crafted year-wise for 1st, 2nd & 3rd-year warriors!",
       detailedContent: {
-        overview: "Accollade Code Hunt 2025 is an innovative online treasure hunt competition that combines coding challenges with problem-solving adventures. Designed with year-specific tracks, this competition tests participants' programming skills, logical thinking, and ability to decode clues through an engaging gamified experience.",
+        overview: "Accollade Code Hunt 2024 is an innovative online treasure hunt competition that combines coding challenges with problem-solving adventures. Designed with year-specific tracks, this competition tests participants' programming skills, logical thinking, and ability to decode clues through an engaging gamified experience.",
         objectives: [
           "Develop problem-solving skills through gamified coding challenges",
           "Foster healthy competition among different academic years",
@@ -1156,7 +1155,7 @@ export default function Events() {
   // Featured events
   const featuredEvents = allEvents.filter(event => event.featured);
   
-  // Upcoming events
+  // Our events
   const upcomingEvents = allEvents.filter(event => event.upcoming);
 
   const fadeIn = {
@@ -1403,7 +1402,7 @@ export default function Events() {
             </motion.div>
           </div>
           
-          {/* Upcoming Events Section */}
+          {/* Our Events Section */}
           {upcomingEvents.length > 0 && filter === 'all' && searchQuery === '' && (
             <div className="mb-20">
               <motion.div
@@ -1413,9 +1412,9 @@ export default function Events() {
                 transition={{ duration: 0.5 }}
                 className="mb-10"
               >
-                <h2 className="mb-2 text-3xl font-bold text-gray-900">🚀 Upcoming Events</h2>
-                <div className="w-20 h-1.5 bg-gradient-to-r from-green-500 to-blue-500 rounded-full"></div>
-                <p className="mt-4 text-gray-600">Don't miss out on these exciting upcoming events!</p>
+                <h2 className="mb-2 text-3xl font-bold text-gray-900">🎉 Our Events</h2>
+                <div className="w-20 h-1.5 bg-gradient-to-r from-purple-500 to-blue-500 rounded-full"></div>
+                <p className="mt-4 text-gray-600">Check out our amazing events and what we've accomplished!</p>
               </motion.div>
               
               <motion.div
@@ -1431,12 +1430,12 @@ export default function Events() {
                     variants={fadeIn}
                     className="relative group"
                   >
-                    <div className="absolute inset-0 transition-opacity bg-gradient-to-br from-green-400/20 to-blue-600/20 rounded-2xl blur-xl opacity-60 group-hover:opacity-80"></div>
-                    <div className="relative overflow-hidden transition-all duration-500 bg-white border-2 border-green-100 shadow-lg rounded-2xl hover:shadow-2xl group-hover:-translate-y-2">
+                    <div className="absolute inset-0 transition-opacity bg-gradient-to-br from-purple-400/20 to-blue-600/20 rounded-2xl blur-xl opacity-60 group-hover:opacity-80"></div>
+                    <div className="relative overflow-hidden transition-all duration-500 bg-white border-2 border-purple-100 shadow-lg rounded-2xl hover:shadow-2xl group-hover:-translate-y-2">
                       {/* Event Badge */}
                       <div className="absolute z-10 top-4 right-4">
-                        <span className="px-3 py-1 text-xs font-semibold text-white rounded-full bg-gradient-to-r from-green-500 to-blue-600 animate-pulse">
-                          ✨ UPCOMING
+                        <span className="px-3 py-1 text-xs font-semibold text-white rounded-full bg-gradient-to-r from-purple-500 to-blue-600">
+                          🎉 EVENT
                         </span>
                       </div>
                       
@@ -1477,9 +1476,9 @@ export default function Events() {
                           <div className="flex gap-2">
                             <a 
                               href={event.registrationLink}
-                              className="flex items-center justify-center flex-1 px-4 py-3 font-semibold text-center text-white transition-all duration-300 rounded-lg bg-gradient-to-r from-green-500 to-blue-600 hover:shadow-lg group-hover:shadow-2xl"
+                              className="flex items-center justify-center flex-1 px-4 py-3 font-semibold text-center text-white transition-all duration-300 rounded-lg bg-gradient-to-r from-purple-500 to-blue-600 hover:shadow-lg group-hover:shadow-2xl"
                             >
-                              <span>Join Quiz</span>
+                              <span>View Event</span>
                               <FaArrowRight className="ml-2 transition-transform group-hover:translate-x-1" />
                             </a>
                           </div>
