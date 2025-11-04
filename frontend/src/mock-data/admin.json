@@ -1,0 +1,15 @@
+{
+  "_id": "mock-admin-id",
+  "name": "Mock Admin",
+  "email": "admin@example.com",
+  "role": "admin",
+  "profileImage": "/images/testimonials/member2.jpg",
+  "membershipType": "faculty",
+<<<<<<< HEAD
+  "createdAt": "2025-07-27T08:47:39.727Z",
+  "updatedAt": "2025-07-27T08:47:39.727Z"
+=======
+  "createdAt": "2025-07-31T02:49:55.835Z",
+  "updatedAt": "2025-07-31T02:49:55.835Z"
+>>>>>>> 7f4e11f29815578104edf3a60d59b44885b312c4
+}

@@ -1,0 +1,15 @@
+# Ignore everything except what's needed for deployment
+node_modules
+.git
+.vscode
+*.log
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Keep only the frontend directory and necessary files
+!frontend/
+!package.json
+!package-lock.json
+!vercel.json 

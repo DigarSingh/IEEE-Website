@@ -1,0 +1,44 @@
+[
+  {
+    "_id": "event-1",
+    "title": "AI Workshop",
+    "description": "Learn about artificial intelligence and machine learning fundamentals",
+<<<<<<< HEAD
+    "date": "2025-07-27T08:47:39.727Z",
+=======
+    "date": "2025-07-31T02:49:55.835Z",
+>>>>>>> 7f4e11f29815578104edf3a60d59b44885b312c4
+    "location": "Online",
+    "image": "/images/events/ai-workshop.jpg",
+    "category": "workshop",
+    "isRegistrationOpen": true,
+<<<<<<< HEAD
+    "createdAt": "2025-07-27T08:47:39.727Z",
+    "updatedAt": "2025-07-27T08:47:39.727Z"
+=======
+    "createdAt": "2025-07-31T02:49:55.835Z",
+    "updatedAt": "2025-07-31T02:49:55.835Z"
+>>>>>>> 7f4e11f29815578104edf3a60d59b44885b312c4
+  },
+  {
+    "_id": "event-2",
+    "title": "Web Development Bootcamp",
+    "description": "Master modern web development technologies",
+<<<<<<< HEAD
+    "date": "2025-07-27T08:47:39.727Z",
+=======
+    "date": "2025-07-31T02:49:55.835Z",
+>>>>>>> 7f4e11f29815578104edf3a60d59b44885b312c4
+    "location": "Room 101",
+    "image": "/images/events/webdev.jpg",
+    "category": "bootcamp",
+    "isRegistrationOpen": true,
+<<<<<<< HEAD
+    "createdAt": "2025-07-27T08:47:39.727Z",
+    "updatedAt": "2025-07-27T08:47:39.727Z"
+=======
+    "createdAt": "2025-07-31T02:49:55.835Z",
+    "updatedAt": "2025-07-31T02:49:55.835Z"
+>>>>>>> 7f4e11f29815578104edf3a60d59b44885b312c4
+  }
+]

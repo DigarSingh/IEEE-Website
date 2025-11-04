@@ -1,0 +1,27 @@
+{
+  "name": "ieee-website-monorepo",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": [
+    "frontend"
+  ],
+  "scripts": {
+    "dev": "npm run dev --workspace=frontend",
+    "start": "npm run start --workspace=frontend",
+    "build": "npm run build:vercel",
+    "build:vercel": "cd frontend && npm run build"
+  },
+  "dependencies": {
+    "concurrently": "^8.2.2",
+    "dotenv": "^17.2.0",
+    "mongodb": "^6.16.0",
+    "nodemailer": "^7.0.5",
+    "react-tsparticles": "^2.9.3",
+    "tsparticles": "^2.9.3"
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.4.21",
+    "postcss": "^8.5.3",
+    "tailwindcss": "^4.1.6"
+  }
+}

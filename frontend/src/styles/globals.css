@@ -1,0 +1,245 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --foreground-rgb: 0, 0, 0;
+  --background-start-rgb: 245, 245, 250;
+  --background-end-rgb: 255, 255, 255;
+  --ieee-blue: #006699;
+  --ieee-dark: #00426B;
+  --ieee-light: #E5F1F8;
+}
+
+body {
+  color: rgb(var(--foreground-rgb));
+  background: linear-gradient(
+      to bottom,
+      transparent,
+      rgb(var(--background-end-rgb))
+    )
+    rgb(var(--background-start-rgb));
+}
+
+.card-shadow {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.transition-all {
+  transition: all 0.3s ease;
+}
+
+/* Enhanced animations for contact page */
+@keyframes blob {
+  0% {
+    transform: translate(0px, 0px) scale(1);
+  }
+  33% {
+    transform: translate(30px, -50px) scale(1.1);
+  }
+  66% {
+    transform: translate(-20px, 20px) scale(0.9);
+  }
+  100% {
+    transform: translate(0px, 0px) scale(1);
+  }
+}
+
+.animate-blob {
+  animation: blob 7s infinite;
+}
+
+.animation-delay-2000 {
+  animation-delay: 2s;
+}
+
+.animation-delay-4000 {
+  animation-delay: 4s;
+}
+
+/* Dashboard specific animations */
+@keyframes pulse-highlight {
+  0%,
+  100% {
+    background-color: rgba(37, 99, 235, 0.1);
+  }
+  50% {
+    background-color: rgba(37, 99, 235, 0.3);
+  }
+}
+
+.pulse-highlight {
+  animation: pulse-highlight 2s infinite;
+}
+
+/* Shimmering effect for loading skeletons */
+.shimmer {
+  background: linear-gradient(
+      to right,
+      rgba(255, 255, 255, 0.1) 0%,
+      rgba(255, 255, 255, 0.2) 20%,
+      rgba(255, 255, 255, 0.1) 40%,
+      rgba(255, 255, 255, 0.1) 100%
+    );
+  background-size: 800px 100%;
+  animation: shimmer 2s infinite linear;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -468px 0;
+  }
+  100% {
+    background-position: 468px 0;
+  }
+}
+
+/* Dashboard card hover animations */
+.dashboard-card {
+  transition: all 0.3s ease;
+}
+
+.dashboard-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+/* Announcement bar scrolling animation */
+@keyframes scroll-left {
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+.announcement-scroll {
+  animation: scroll-left 30s linear infinite;
+}
+
+.announcement-scroll:hover {
+  animation-play-state: paused;
+}
+
+/* Text shadow effects for better contrast against animations */
+.text-shadow {
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+}
+
+.text-shadow-lg {
+  text-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+}
+
+/* Profile page specific styles */
+.profile-avatar {
+  object-fit: cover;
+  object-position: center;
+}
+
+.profile-avatar-placeholder {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+/* Custom focus states for better accessibility */
+.focus-ring:focus {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}
+
+/* Smooth transitions for form elements */
+.form-input {
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.form-input:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+/* Profile form animations */
+.profile-form-enter {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.profile-form-enter-active {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+/* Quiz specific styles */
+.quiz-container {
+  @apply min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900;
+}
+
+.quiz-card {
+  @apply bg-white/10 backdrop-blur-md border border-white/20 rounded-xl;
+}
+
+.quiz-timer {
+  @apply bg-orange-500/20 border border-orange-500 rounded-lg px-4 py-2 flex items-center space-x-2;
+}
+
+.quiz-question-nav {
+  @apply w-10 h-10 rounded-lg text-sm font-semibold transition-all;
+}
+
+.quiz-option {
+  @apply w-full p-4 rounded-lg text-left transition-all border-2;
+}
+
+.quiz-option-selected {
+  @apply bg-blue-500/30 border-blue-400 text-white;
+}
+
+.quiz-option-default {
+  @apply bg-white/5 border-white/20 text-gray-300 hover:bg-white/10 hover:border-white/30;
+}
+
+.quiz-warning-modal {
+  @apply fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4;
+}
+
+.leaderboard-podium {
+  @apply bg-white/10 backdrop-blur-md border border-white/20 rounded-xl p-6;
+}
+
+.leaderboard-winner {
+  @apply bg-gradient-to-br from-yellow-500/20 to-yellow-600/20 border border-yellow-500/50;
+}
+
+/* Quiz animations */
+@keyframes quiz-pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.quiz-timer-warning {
+  animation: quiz-pulse 1s infinite;
+}
+
+/* Fullscreen styles */
+.quiz-fullscreen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 9999;
+}
+
+/* Hide scrollbars in quiz fullscreen mode */
+.quiz-fullscreen::-webkit-scrollbar {
+  display: none;
+}
+
+.quiz-fullscreen {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
