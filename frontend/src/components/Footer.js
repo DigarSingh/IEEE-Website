@@ -20,7 +20,7 @@ export default function Footer() {
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
-  
+
   return (
     <footer className="relative overflow-hidden">
       {/* Enhanced Background with Gradient */}
@@ -38,9 +38,8 @@ export default function Footer() {
 
       {/* Scroll to Top Button */}
       <motion.button
-        className={`fixed bottom-8 right-8 z-50 p-3 text-white rounded-full shadow-lg bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 transition-all ${
-          showScrollTop ? 'opacity-100' : 'opacity-0 pointer-events-none'
-        }`}
+        className={`fixed bottom-8 right-8 z-50 p-3 text-white rounded-full shadow-lg bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 transition-all ${showScrollTop ? 'opacity-100' : 'opacity-0 pointer-events-none'
+          }`}
         onClick={scrollToTop}
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.9 }}
@@ -80,20 +79,20 @@ export default function Footer() {
                   transition={{ duration: 0.3 }}
                 >
                   <div className="relative">
-                    <img 
-                      src="/images/logo.png" 
-                      alt="IEEE Logo" 
-                      className="h-22 w-22" 
+                    <img
+                      src="/images/logo.png"
+                      alt="IEEE Logo"
+                      className="h-22 w-22"
                     />
-                    
+
                   </div>
-                  
+
                 </motion.div>
                 <p className="mb-6 leading-relaxed text-gray-300">
-                  Empowering students through technology, innovation, and professional development. 
+                  Empowering students through technology, innovation, and professional development.
                   Join us in shaping the future of engineering and technology.
                 </p>
-                
+
                 {/*Social Links */}
                 <div className="flex space-x-4">
                   {[
@@ -117,7 +116,7 @@ export default function Footer() {
                 </div>
               </div>
             </motion.div>
-            
+
             {/* Enhanced Quick Links */}
             <motion.div
               variants={{
@@ -180,9 +179,9 @@ export default function Footer() {
                     transition={{ duration: 0.2 }}
                   >
                     {link.external ? (
-                      <a 
-                        href={link.href} 
-                        target="_blank" 
+                      <a
+                        href={link.href}
+                        target="_blank"
                         rel="noopener noreferrer"
                         className="relative cursor-pointer group"
                       >
@@ -217,9 +216,9 @@ export default function Footer() {
               viewport={{ once: true }}
             >
               <h3 className="mb-8 text-xl font-bold text-white">Contact Us</h3>
-              
+
               <ul className="space-y-4">
-                <motion.li 
+                <motion.li
                   className="flex items-start group"
                   whileHover={{ x: 5 }}
                   transition={{ duration: 0.2 }}
@@ -233,8 +232,8 @@ export default function Footer() {
                     Dehradun, Uttarakhand, PIN: 248002
                   </span>
                 </motion.li>
-                
-                <motion.li 
+
+                <motion.li
                   className="flex items-center group"
                   whileHover={{ x: 5 }}
                   transition={{ duration: 0.2 }}
@@ -242,15 +241,15 @@ export default function Footer() {
                   <div className="flex items-center justify-center flex-shrink-0 w-10 h-10 mr-4 transition-all rounded-lg bg-gradient-to-r from-green-500 to-green-600 group-hover:from-green-600 group-hover:to-green-700">
                     <FaEnvelope className="w-4 h-4 text-white" />
                   </div>
-                  <a 
-                    href="mailto:geu.ieee.studentbranch@gmail.com" 
+                  <a
+                    href="mailto:geu.ieee.studentbranch@gmail.com"
                     className="text-gray-300 break-all transition-colors group-hover:text-white"
                   >
                     geu.ieee.studentbranch@gmail.com
                   </a>
                 </motion.li>
-                
-                <motion.li 
+
+                <motion.li
                   className="flex items-center group"
                   whileHover={{ x: 5 }}
                   transition={{ duration: 0.2 }}
@@ -258,8 +257,8 @@ export default function Footer() {
                   <div className="flex items-center justify-center flex-shrink-0 w-10 h-10 mr-4 transition-all rounded-lg bg-gradient-to-r from-purple-500 to-purple-600 group-hover:from-purple-600 group-hover:to-purple-700">
                     <FaPhone className="w-4 h-4 text-white" />
                   </div>
-                  <a 
-                    href="tel:+917668410473" 
+                  <a
+                    href="tel:+917668410473"
                     className="text-gray-300 transition-colors group-hover:text-white"
                   >
                     +91 7668410473
@@ -272,7 +271,7 @@ export default function Footer() {
 
         {/*Bottom Section */}
         <motion.div
-          className="pt-8 mt-12 border-t border-white/10"
+          className="pt-4 mt-6 border-t border-white/10"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           transition={{ duration: 0.6 }}
@@ -286,22 +285,22 @@ export default function Footer() {
             >
               <span>© {currentYear} IEEE GEU Student Branch. All rights reserved.</span>
             </motion.div>
-            
+
             <motion.div
-              className="flex items-center space-x-2 text-sm text-gray-400"
-              whileHover={{ scale: 1.02 }}
+              className="flex items-center space-x-2 text-base text-gray-300"
+              whileHover={{ scale: 1.05 }}
               transition={{ duration: 0.2 }}
             >
-              <span>Developed with</span>
+              <span className="font-medium">Developed with</span>
               <motion.div
                 animate={{ scale: [1, 1.2, 1] }}
                 transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
               >
                 <FaHeart className="text-red-500" />
               </motion.div>
-              <span>by <span className="font-semibold text-blue-400">Digar</span></span>
+              <span className="font-medium">by <span className="font-bold text-blue-400 text-lg">Digar</span></span>
             </motion.div>
-            
+
             <div className="flex space-x-6">
               <motion.div whileHover={{ y: -2 }} transition={{ duration: 0.2 }}>
                 <Link href="/privacy">

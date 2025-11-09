@@ -12,15 +12,15 @@ export default function Events() {
   const [filter, setFilter] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
   const heroRef = useRef(null);
-  
+
   // Temporarily disable parallax effects to fix the error
   // const { scrollY } = useScroll();
   // const { isVisible: sectionsVisible, observeElement } = useIntersectionObserver();
-  
+
   // Parallax effects - temporarily disabled
   // const y = useTransform(scrollY, [0, 500], [0, 150]);
   // const opacity = useTransform(scrollY, [0, 300], [1, 0]);
-  
+
   useEffect(() => {
     setIsVisible(true);
   }, []);
@@ -30,19 +30,19 @@ export default function Events() {
     {
       id: 13,
       title: "Kindle Jr 4.0",
-      date: "October 14, 2024",
+      date: "October 14, 2025",
       time: "10:00 AM - 4:00 PM",
       location: "CSIT Labs",
       category: "competition",
       image: "/images/events/kindlejunior4.0.png",
-      description: "The ultimate coding quiz competition is back! Test your programming knowledge, algorithms, and problem-solving skills in this exciting multi-round quiz challenge.",
+      description: "The ultimate coding competition is back! Test your programming knowledge, algorithms, and problem-solving skills in this exciting multi-round challenge.",
       featured: true,
       attendees: 150,
       difficulty: "All Levels",
-      tags: ["Coding", "Quiz", "Programming"],
+      tags: ["Coding", "Competition", "Programming"],
       upcoming: false,
       detailedContent: {
-        overview: "Kindle Jr 4.0 is the flagship coding competition that brings together programming enthusiasts from across the university. This multi-round quiz challenge tests participants' knowledge in algorithms, data structures, programming languages, and problem-solving techniques.",
+        overview: "Kindle Jr 4.0 is the flagship coding competition that brings together programming enthusiasts from across the university. This multi-round challenge tests participants' knowledge in algorithms, data structures, programming languages, and problem-solving techniques.",
         objectives: [
           "Test comprehensive programming knowledge across multiple languages",
           "Challenge problem-solving and algorithmic thinking skills",
@@ -60,7 +60,7 @@ export default function Events() {
           {
             round: "Round 2: Code Analysis",
             description: "Analyze code snippets and predict outputs",
-            duration: "60 minutes", 
+            duration: "60 minutes",
             topics: ["Code debugging", "Logic analysis", "Output prediction", "Error identification"]
           },
           {
@@ -86,8 +86,8 @@ export default function Events() {
           "Understand time and space complexity concepts"
         ],
         registration: {
-          process: "Register through the quiz portal",
-          deadline: "October 13, 2024",
+          process: "Register through the competition portal",
+          deadline: "October 13, 2025",
           fee: "Entry Fee: ₹99 / per person (₹49 for first 50 IEEE members)",
           requirements: ["Valid student ID", "Basic programming knowledge"]
         }
@@ -180,7 +180,7 @@ export default function Events() {
         ],
         program: [
           "8:00 AM - 9:00 AM: Registration & AWS Account Setup",
-          "9:00 AM - 10:30 AM: AWS Fundamentals & Cloud Quest Introduction", 
+          "9:00 AM - 10:30 AM: AWS Fundamentals & Cloud Quest Introduction",
           "10:30 AM - 12:00 PM: Hands-on Lab Session 1: EC2 & S3",
           "12:00 PM - 1:00 PM: Lunch & Networking",
           "1:00 PM - 2:30 PM: Hands-on Lab Session 2: RDS & Lambda",
@@ -243,7 +243,7 @@ export default function Events() {
           "Foster innovation and creative problem-solving skills",
           "Encourage collaboration between diverse skill sets",
           "Build functional prototypes addressing real-world problems",
-          "Network with industry professionals and potential employers", 
+          "Network with industry professionals and potential employers",
           "Showcase technical skills to judges and sponsors"
         ],
         timeline: [
@@ -328,7 +328,7 @@ export default function Events() {
             difficulty: "Beginner"
           },
           {
-            year: "2nd Year Challengers", 
+            year: "2nd Year Challengers",
             description: "Intermediate challenges involving data structures and algorithms",
             topics: ["Data Structures", "Sorting & Searching", "Dynamic Programming Basics", "Graph Theory"],
             difficulty: "Intermediate"
@@ -370,7 +370,7 @@ export default function Events() {
         ],
         platform: [
           "Custom-built online treasure hunt portal",
-          "Real-time progress tracking and hints system", 
+          "Real-time progress tracking and hints system",
           "Interactive coding environment with multiple language support",
           "Automated testing and instant feedback",
           "Live chat support during competition"
@@ -417,7 +417,7 @@ export default function Events() {
             format: "30 multiple choice questions with negative marking"
           },
           {
-            round: "Round 2: Output Battle", 
+            round: "Round 2: Output Battle",
             description: "Predict the output of given code snippets accurately",
             duration: "60 minutes",
             topics: ["Code Tracing", "Logic Analysis", "Memory Management", "Loop Execution", "Function Calls"],
@@ -426,7 +426,7 @@ export default function Events() {
           {
             round: "Round 3: Test Case Frenzy",
             description: "Write optimized code solutions for algorithmic problems",
-            duration: "90 minutes", 
+            duration: "90 minutes",
             topics: ["Data Structures Implementation", "Algorithm Design", "Optimization Techniques", "Edge Case Handling"],
             format: "5 coding problems with multiple test cases"
           }
@@ -464,7 +464,7 @@ export default function Events() {
         ],
         judging: [
           "Round 1: Automated scoring based on correct answers",
-          "Round 2: Manual verification of output predictions", 
+          "Round 2: Manual verification of output predictions",
           "Round 3: Automated testing with comprehensive test cases",
           "Final ranking based on cumulative performance across all rounds"
         ],
@@ -557,7 +557,7 @@ export default function Events() {
         mentors: [
           {
             name: "Dr. Rajesh Kumar",
-            designation: "IoT Research Head, IIT Delhi", 
+            designation: "IoT Research Head, IIT Delhi",
             expertise: "Internet of Things & Embedded Systems"
           },
           {
@@ -593,7 +593,7 @@ export default function Events() {
         ],
         curriculum: [
           "10:00 AM - 10:30 AM: Welcome & Introduction to Drone Technology",
-          "10:30 AM - 11:30 AM: Aerodynamics & Flight Principles", 
+          "10:30 AM - 11:30 AM: Aerodynamics & Flight Principles",
           "11:30 AM - 12:30 PM: Drone Components & Hardware Assembly",
           "12:30 PM - 1:30 PM: Lunch & Networking Break",
           "1:30 PM - 2:30 PM: Flight Controller Programming",
@@ -612,7 +612,7 @@ export default function Events() {
         ],
         skills: [
           "Electronics assembly and soldering",
-          "Arduino programming and sensor integration", 
+          "Arduino programming and sensor integration",
           "Flight dynamics and control systems",
           "Troubleshooting and debugging techniques",
           "Safety protocols and regulations"
@@ -686,7 +686,7 @@ export default function Events() {
             tools: ["Git", "GitHub Actions", "Jenkins", "GitLab CI"]
           },
           {
-            category: "Containerization & Orchestration", 
+            category: "Containerization & Orchestration",
             tools: ["Docker", "Kubernetes", "Docker Compose", "Helm"]
           },
           {
@@ -892,7 +892,7 @@ export default function Events() {
         ],
         skills: [
           "Prompt structure and syntax optimization",
-          "Context window management and information organization", 
+          "Context window management and information organization",
           "Bias detection and mitigation in AI responses",
           "Multi-modal prompting for text, image, and code generation",
           "Prompt chaining for complex multi-step tasks",
@@ -966,7 +966,7 @@ export default function Events() {
             tools: ["Wireshark", "Nmap", "pfSense", "Snort"]
           },
           {
-            module: "🌐 Web Application Security", 
+            module: "🌐 Web Application Security",
             description: "OWASP Top 10, SQL injection, XSS, and secure coding practices",
             tools: ["Burp Suite", "OWASP ZAP", "Metasploit", "SQLmap"]
           },
@@ -997,7 +997,7 @@ export default function Events() {
         ],
         certifications: [
           "CompTIA Security+ (Entry Level)",
-          "Certified Ethical Hacker (CEH)", 
+          "Certified Ethical Hacker (CEH)",
           "CISSP (Advanced Security Professional)",
           "GCIH (GIAC Certified Incident Handler)",
           "OSCP (Offensive Security Certified Professional)"
@@ -1065,7 +1065,7 @@ export default function Events() {
             tools: ["VS Code", "Chrome DevTools", "Figma", "Bootstrap"]
           },
           {
-            category: "Backend Technologies", 
+            category: "Backend Technologies",
             skills: ["Node.js", "Express.js", "RESTful APIs", "MongoDB", "Authentication"],
             tools: ["Postman", "MongoDB Compass", "JWT", "bcrypt"]
           },
@@ -1102,7 +1102,7 @@ export default function Events() {
         ],
         career: [
           "💻 Frontend Developer",
-          "🔧 Backend Developer", 
+          "🔧 Backend Developer",
           "🌐 Full-Stack Developer",
           "📱 Mobile App Developer (React Native)",
           "🎨 UI/UX Developer",
@@ -1146,7 +1146,7 @@ export default function Events() {
   // Filter events based on category and search query
   const filteredEvents = allEvents.filter(event => {
     const matchesCategory = filter === 'all' || event.category === filter;
-    const matchesSearch = searchQuery === '' || 
+    const matchesSearch = searchQuery === '' ||
       event.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       event.description.toLowerCase().includes(searchQuery.toLowerCase());
     return matchesCategory && matchesSearch;
@@ -1154,7 +1154,7 @@ export default function Events() {
 
   // Featured events
   const featuredEvents = allEvents.filter(event => event.featured);
-  
+
   // Our events
   const upcomingEvents = allEvents.filter(event => event.upcoming);
 
@@ -1162,7 +1162,7 @@ export default function Events() {
     hidden: { opacity: 0, y: 20 },
     visible: { opacity: 1, y: 0 }
   };
-  
+
   // Add stagger animation for card groups
   const staggerContainer = {
     hidden: { opacity: 0 },
@@ -1180,21 +1180,21 @@ export default function Events() {
           <meta name="description" content="Discover IEEE events at GEU - technical workshops, hackathons, conferences, and networking opportunities. Join cutting-edge technology events hosted by IEEE Club at Graphic Era University." />
           <meta name="keywords" content="IEEE Events GEU, IEEE Workshops GEU, IEEE Hackathons, IEEE Conferences GEU, Technical Events GEU, IEEE Club Events, Graphic Era University IEEE Events, IEEE Competitions GEU, Technology Workshops GEU" />
           <meta name="author" content="IEEE Club - Graphic Era University" />
-          
+
           {/* Open Graph Meta Tags */}
           <meta property="og:title" content="IEEE Events GEU - Technical Workshops, Hackathons & Conferences" />
           <meta property="og:description" content="Discover IEEE events at GEU - technical workshops, hackathons, conferences, and networking opportunities. Join cutting-edge technology events hosted by IEEE Club at Graphic Era University." />
           <meta property="og:image" content="https://your-domain.com/images/hero/IEEE_hero.jpg" />
           <meta property="og:url" content="https://your-domain.com/events" />
-          
+
           {/* Twitter Meta Tags */}
           <meta name="twitter:title" content="IEEE Events GEU - Technical Workshops, Hackathons & Conferences" />
           <meta name="twitter:description" content="Discover IEEE events at GEU - technical workshops, hackathons, conferences, and networking opportunities." />
           <meta name="twitter:image" content="https://your-domain.com/images/hero/IEEE_hero.jpg" />
-          
+
           {/* Canonical URL */}
           <link rel="canonical" href="https://your-domain.com/events" />
-          
+
           {/* Structured Data for Events */}
           <script
             type="application/ld+json"
@@ -1232,21 +1232,21 @@ export default function Events() {
           {/* Multi-layer Background */}
           <div className="absolute inset-0 bg-gradient-to-br from-blue-900 via-indigo-900 to-purple-900"></div>
           <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-blue-900/30"></div>
-          
+
           {/* Animated Background Elements */}
-          <motion.div 
+          <motion.div
             className="absolute inset-0"
           >
             <div className="absolute w-32 h-32 rounded-full top-20 left-10 bg-blue-500/10 blur-xl animate-pulse"></div>
             <div className="absolute w-48 h-48 delay-1000 rounded-full top-40 right-20 bg-purple-500/10 blur-2xl animate-pulse"></div>
             <div className="absolute w-40 h-40 rounded-full bottom-40 left-20 bg-cyan-500/10 blur-xl animate-pulse delay-2000"></div>
           </motion.div>
-          
+
           {/* Circuit Pattern Overlay */}
           {/* <div className="absolute inset-0 bg-[url('/images/hero/circuit-pattern.png')] opacity-5"></div> */}
-          
+
           <div className="container relative z-10 px-6 mx-auto">
-            <motion.div 
+            <motion.div
               className="max-w-5xl mx-auto space-y-8 text-center text-white"
               initial="hidden"
               animate={isVisible ? "visible" : "hidden"}
@@ -1272,9 +1272,9 @@ export default function Events() {
                 <FaRocket className="mr-2 text-yellow-400" />
                 <span className="text-sm font-medium">• Join the Innovation</span>
               </motion.div>
-              
+
               {/* Main Title */}
-              <motion.h1 
+              <motion.h1
                 className="text-5xl font-bold leading-tight md:text-6xl lg:text-7xl"
                 variants={{
                   hidden: { opacity: 0, y: 20 },
@@ -1291,9 +1291,9 @@ export default function Events() {
                   & Workshops
                 </span>
               </motion.h1>
-              
+
               {/* Subtitle */}
-              <motion.p 
+              <motion.p
                 className="max-w-3xl mx-auto text-xl leading-relaxed text-gray-300 md:text-2xl"
                 variants={{
                   hidden: { opacity: 0, y: 20 },
@@ -1302,9 +1302,9 @@ export default function Events() {
               >
                 Discover cutting-edge workshops, conferences, hackathons, and networking opportunities. Join us in shaping the future of technology.
               </motion.p>
-              
+
               {/* Enhanced Search Bar */}
-              <motion.div 
+              <motion.div
                 className="max-w-2xl mx-auto"
                 variants={{
                   hidden: { opacity: 0, y: 20 },
@@ -1335,7 +1335,7 @@ export default function Events() {
               </motion.div>
 
               {/* Stats Grid */}
-              <motion.div 
+              <motion.div
                 className="grid max-w-2xl grid-cols-3 gap-6 pt-8 mx-auto"
                 variants={{
                   hidden: { opacity: 0, y: 20 },
@@ -1360,7 +1360,7 @@ export default function Events() {
           </div>
 
           {/*Scroll Indicator */}
-          <motion.div 
+          <motion.div
             className="absolute flex flex-col items-center transform -translate-x-1/2 bottom-1 left-1/2 text-white/70"
             animate={{ y: [0, 10, 0] }}
             transition={{ repeat: Infinity, duration: 2 }}
@@ -1376,247 +1376,246 @@ export default function Events() {
           </motion.div>
         </section>
 
-      <section className="py-14 bg-gradient-to-b from-gray-50 to-white">
-        <div className="container px-6 mx-auto">
-          {/* Event Filters - Enhanced UI */}
-          <div className="mb-12">
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 }}
-              className="flex flex-wrap justify-center gap-3 mb-8"
-            >
-              {['all', 'workshop', 'conference', 'hackathon', 'webinar', 'competition'].map((category) => (
-                <button
-                  key={category}
-                  onClick={() => setFilter(category)}
-                  className={`px-6 py-3 rounded-full font-medium transition-all duration-300 ${
-                    filter === category 
-                      ? 'bg-ieee-blue text-white shadow-lg shadow-blue-500/20 scale-105' 
+        <section className="py-14 bg-gradient-to-b from-gray-50 to-white">
+          <div className="container px-6 mx-auto">
+            {/* Event Filters - Enhanced UI */}
+            <div className="mb-12">
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.2 }}
+                className="flex flex-wrap justify-center gap-3 mb-8"
+              >
+                {['all', 'workshop', 'conference', 'hackathon', 'webinar', 'competition'].map((category) => (
+                  <button
+                    key={category}
+                    onClick={() => setFilter(category)}
+                    className={`px-6 py-3 rounded-full font-medium transition-all duration-300 ${filter === category
+                      ? 'bg-ieee-blue text-white shadow-lg shadow-blue-500/20 scale-105'
                       : 'bg-white text-gray-700 hover:bg-gray-100 shadow-md'
-                  }`}
-                >
-                  {category === 'all' ? 'All Events' : category.charAt(0).toUpperCase() + category.slice(1)}
-                </button>
-              ))}
-            </motion.div>
-          </div>
-          
-          {/* Our Events Section */}
-          {upcomingEvents.length > 0 && filter === 'all' && searchQuery === '' && (
-            <div className="mb-20">
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5 }}
-                className="mb-10"
-              >
-                <h2 className="mb-2 text-3xl font-bold text-gray-900">🎉 Our Events</h2>
-                <div className="w-20 h-1.5 bg-gradient-to-r from-purple-500 to-blue-500 rounded-full"></div>
-                <p className="mt-4 text-gray-600">Check out our amazing events and what we've accomplished!</p>
-              </motion.div>
-              
-              <motion.div
-                className="grid gap-8 md:grid-cols-2 lg:grid-cols-3"
-                variants={staggerContainer}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true }}
-              >
-                {upcomingEvents.map((event, index) => (
-                  <motion.div
-                    key={event.id}
-                    variants={fadeIn}
-                    className="relative group"
+                      }`}
                   >
-                    <div className="absolute inset-0 transition-opacity bg-gradient-to-br from-purple-400/20 to-blue-600/20 rounded-2xl blur-xl opacity-60 group-hover:opacity-80"></div>
-                    <div className="relative overflow-hidden transition-all duration-500 bg-white border-2 border-purple-100 shadow-lg rounded-2xl hover:shadow-2xl group-hover:-translate-y-2">
-                      {/* Event Badge */}
-                      <div className="absolute z-10 top-4 right-4">
-                        <span className="px-3 py-1 text-xs font-semibold text-white rounded-full bg-gradient-to-r from-purple-500 to-blue-600">
-                          🎉 EVENT
-                        </span>
-                      </div>
-                      
-                      <div className="relative h-48 overflow-hidden">
-                        <img 
-                          src={event.image} 
-                          alt={event.title}
-                          className="object-cover w-full h-full transition-transform duration-700 group-hover:scale-110"
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
-                      </div>
-                      
-                      <div className="p-6">
-                        <h3 className="mb-3 text-xl font-bold text-gray-900 transition-colors group-hover:text-blue-600">
-                          {event.title}
-                        </h3>
-                        
-                        <div className="mb-4 space-y-2">
-                          <div className="flex items-center text-gray-600">
-                            <FaCalendar className="mr-2 text-green-500" />
-                            <span className="text-sm">{event.date}</span>
-                          </div>
-                          <div className="flex items-center text-gray-600">
-                            <FaClock className="mr-2 text-blue-500" />
-                            <span className="text-sm">{event.time}</span>
-                          </div>
-                          <div className="flex items-center text-gray-600">
-                            <FaMapMarkerAlt className="mr-2 text-red-500" />
-                            <span className="text-sm">{event.location}</span>
-                          </div>
-                        </div>
-                        
-                        <p className="mb-4 text-sm text-gray-600 line-clamp-3">
-                          {event.description}
-                        </p>
-                        
-                        {event.registrationLink && (
-                          <div className="flex gap-2">
-                            <a 
-                              href={event.registrationLink}
-                              className="flex items-center justify-center flex-1 px-4 py-3 font-semibold text-center text-white transition-all duration-300 rounded-lg bg-gradient-to-r from-purple-500 to-blue-600 hover:shadow-lg group-hover:shadow-2xl"
-                            >
-                              <span>View Event</span>
-                              <FaArrowRight className="ml-2 transition-transform group-hover:translate-x-1" />
-                            </a>
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  </motion.div>
+                    {category === 'all' ? 'All Events' : category.charAt(0).toUpperCase() + category.slice(1)}
+                  </button>
                 ))}
               </motion.div>
             </div>
-          )}
 
-          {/* Featured Events Section */}
-          {featuredEvents.length > 0 && filter === 'all' && searchQuery === '' && (
-            <div className="mb-20">
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5 }}
-                className="mb-10"
-              >
-                <h2 className="mb-2 text-3xl font-bold text-gray-900">Featured Events</h2>
-                <div className="w-20 h-1.5 bg-ieee-blue rounded-full"></div>
-              </motion.div>
-              
-              <motion.div 
-                variants={staggerContainer}
-                initial="hidden"
-                animate="visible"
-                className="grid grid-cols-1 gap-8 md:grid-cols-3"
-              >
-                {featuredEvents.map((event, index) => (
-                  <EventCard 
-                    key={event.id} 
-                    event={event} 
-                    index={index} 
-                    featured={true}
-                  />
-                ))}
-              </motion.div>
-            </div>
-          )}
-          
-          {/* All Events Section */}
-          <div>
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5 }}
-              className="flex items-center justify-between mb-10"
-            >
-              <div>
-                <h2 className="mb-2 text-3xl font-bold text-gray-900">
-                  {filter === 'all' ? 'All Events' : `${filter.charAt(0).toUpperCase() + filter.slice(1)} Events`}
-                </h2>
-                <div className="w-20 h-1.5 bg-ieee-blue rounded-full"></div>
+            {/* Our Events Section */}
+            {upcomingEvents.length > 0 && filter === 'all' && searchQuery === '' && (
+              <div className="mb-20">
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5 }}
+                  className="mb-10"
+                >
+                  <h2 className="mb-2 text-3xl font-bold text-gray-900">🎉 Our Events</h2>
+                  <div className="w-20 h-1.5 bg-gradient-to-r from-purple-500 to-blue-500 rounded-full"></div>
+                  <p className="mt-4 text-gray-600">Check out our amazing events and what we've accomplished!</p>
+                </motion.div>
+
+                <motion.div
+                  className="grid gap-8 md:grid-cols-2 lg:grid-cols-3"
+                  variants={staggerContainer}
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={{ once: true }}
+                >
+                  {upcomingEvents.map((event, index) => (
+                    <motion.div
+                      key={event.id}
+                      variants={fadeIn}
+                      className="relative group"
+                    >
+                      <div className="absolute inset-0 transition-opacity bg-gradient-to-br from-purple-400/20 to-blue-600/20 rounded-2xl blur-xl opacity-60 group-hover:opacity-80"></div>
+                      <div className="relative overflow-hidden transition-all duration-500 bg-white border-2 border-purple-100 shadow-lg rounded-2xl hover:shadow-2xl group-hover:-translate-y-2">
+                        {/* Event Badge */}
+                        <div className="absolute z-10 top-4 right-4">
+                          <span className="px-3 py-1 text-xs font-semibold text-white rounded-full bg-gradient-to-r from-purple-500 to-blue-600">
+                            🎉 EVENT
+                          </span>
+                        </div>
+
+                        <div className="relative h-48 overflow-hidden">
+                          <img
+                            src={event.image}
+                            alt={event.title}
+                            className="object-cover w-full h-full transition-transform duration-700 group-hover:scale-110"
+                          />
+                          <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+                        </div>
+
+                        <div className="p-6">
+                          <h3 className="mb-3 text-xl font-bold text-gray-900 transition-colors group-hover:text-blue-600">
+                            {event.title}
+                          </h3>
+
+                          <div className="mb-4 space-y-2">
+                            <div className="flex items-center text-gray-600">
+                              <FaCalendar className="mr-2 text-green-500" />
+                              <span className="text-sm">{event.date}</span>
+                            </div>
+                            <div className="flex items-center text-gray-600">
+                              <FaClock className="mr-2 text-blue-500" />
+                              <span className="text-sm">{event.time}</span>
+                            </div>
+                            <div className="flex items-center text-gray-600">
+                              <FaMapMarkerAlt className="mr-2 text-red-500" />
+                              <span className="text-sm">{event.location}</span>
+                            </div>
+                          </div>
+
+                          <p className="mb-4 text-sm text-gray-600 line-clamp-3">
+                            {event.description}
+                          </p>
+
+                          {event.registrationLink && (
+                            <div className="flex gap-2">
+                              <a
+                                href={event.registrationLink}
+                                className="flex items-center justify-center flex-1 px-4 py-3 font-semibold text-center text-white transition-all duration-300 rounded-lg bg-gradient-to-r from-purple-500 to-blue-600 hover:shadow-lg group-hover:shadow-2xl"
+                              >
+                                <span>View Event</span>
+                                <FaArrowRight className="ml-2 transition-transform group-hover:translate-x-1" />
+                              </a>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    </motion.div>
+                  ))}
+                </motion.div>
               </div>
-              
-              {filteredEvents.length > 0 && (
-                <p className="font-medium text-gray-500">
-                  {filteredEvents.length} {filteredEvents.length === 1 ? 'Event' : 'Events'} Found
-                </p>
-              )}
-            </motion.div>
-            
-            {filteredEvents.length > 0 ? (
-              <AnimatePresence mode="wait">
-                <motion.div 
-                  key={filter + searchQuery}
+            )}
+
+            {/* Featured Events Section */}
+            {featuredEvents.length > 0 && filter === 'all' && searchQuery === '' && (
+              <div className="mb-20">
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5 }}
+                  className="mb-10"
+                >
+                  <h2 className="mb-2 text-3xl font-bold text-gray-900">Featured Events</h2>
+                  <div className="w-20 h-1.5 bg-ieee-blue rounded-full"></div>
+                </motion.div>
+
+                <motion.div
                   variants={staggerContainer}
                   initial="hidden"
                   animate="visible"
-                  exit={{ opacity: 0 }}
-                  className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3"
+                  className="grid grid-cols-1 gap-8 md:grid-cols-3"
                 >
-                  {filteredEvents.map((event, index) => (
-                    <EventCard 
-                      key={event.id} 
-                      event={event} 
+                  {featuredEvents.map((event, index) => (
+                    <EventCard
+                      key={event.id}
+                      event={event}
                       index={index}
+                      featured={true}
                     />
                   ))}
                 </motion.div>
-              </AnimatePresence>
-            ) : (
-              <motion.div 
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                className="py-20 text-center bg-white shadow-lg rounded-2xl"
-              >
-                <div className="mb-6">
-                  <svg className="w-20 h-20 mx-auto text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-                  </svg>
-                </div>
-                <h3 className="mb-2 text-2xl font-semibold text-gray-700">No events found</h3>
-                <p className="mb-8 text-gray-500">Try adjusting your search or filter criteria</p>
-                <button 
-                  onClick={() => {
-                    setFilter('all');
-                    setSearchQuery('');
-                  }}
-                  className="px-8 py-3 text-white transition-colors rounded-full shadow-lg bg-ieee-blue hover:bg-blue-700 hover:shadow-blue-500/30"
-                >
-                  Reset Filters
-                </button>
-              </motion.div>
-            )}
-          </div>
-          
-          {/* Newsletter signup - New section */}
-          <motion.div 
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            className="p-10 mt-24 shadow-sm bg-gradient-to-r from-blue-50 to-indigo-50 rounded-2xl"
-          >
-            <div className="max-w-3xl mx-auto text-center">
-              <h2 className="mb-4 text-2xl font-bold text-gray-900">Stay Updated on Future Events</h2>
-              <p className="mb-6 text-gray-600">
-                Subscribe to our newsletter and never miss an upcoming workshop, conference or tech talk.
-              </p>
-              <div className="flex flex-col max-w-lg gap-3 mx-auto sm:flex-row">
-                <input 
-                  type="email" 
-                  placeholder="Your email address" 
-                  className="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
-                <button className="px-6 py-3 font-medium text-white transition-colors rounded-lg shadow-md bg-ieee-blue hover:bg-blue-700 hover:shadow-blue-500/30">
-                  Subscribe
-                </button>
               </div>
+            )}
+
+            {/* All Events Section */}
+            <div>
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5 }}
+                className="flex items-center justify-between mb-10"
+              >
+                <div>
+                  <h2 className="mb-2 text-3xl font-bold text-gray-900">
+                    {filter === 'all' ? 'All Events' : `${filter.charAt(0).toUpperCase() + filter.slice(1)} Events`}
+                  </h2>
+                  <div className="w-20 h-1.5 bg-ieee-blue rounded-full"></div>
+                </div>
+
+                {filteredEvents.length > 0 && (
+                  <p className="font-medium text-gray-500">
+                    {filteredEvents.length} {filteredEvents.length === 1 ? 'Event' : 'Events'} Found
+                  </p>
+                )}
+              </motion.div>
+
+              {filteredEvents.length > 0 ? (
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={filter + searchQuery}
+                    variants={staggerContainer}
+                    initial="hidden"
+                    animate="visible"
+                    exit={{ opacity: 0 }}
+                    className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3"
+                  >
+                    {filteredEvents.map((event, index) => (
+                      <EventCard
+                        key={event.id}
+                        event={event}
+                        index={index}
+                      />
+                    ))}
+                  </motion.div>
+                </AnimatePresence>
+              ) : (
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  className="py-20 text-center bg-white shadow-lg rounded-2xl"
+                >
+                  <div className="mb-6">
+                    <svg className="w-20 h-20 mx-auto text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                    </svg>
+                  </div>
+                  <h3 className="mb-2 text-2xl font-semibold text-gray-700">No events found</h3>
+                  <p className="mb-8 text-gray-500">Try adjusting your search or filter criteria</p>
+                  <button
+                    onClick={() => {
+                      setFilter('all');
+                      setSearchQuery('');
+                    }}
+                    className="px-8 py-3 text-white transition-colors rounded-full shadow-lg bg-ieee-blue hover:bg-blue-700 hover:shadow-blue-500/30"
+                  >
+                    Reset Filters
+                  </button>
+                </motion.div>
+              )}
             </div>
-          </motion.div>
-        </div>
-      </section>
+
+            {/* Newsletter signup - New section */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true }}
+              className="p-10 mt-24 shadow-sm bg-gradient-to-r from-blue-50 to-indigo-50 rounded-2xl"
+            >
+              <div className="max-w-3xl mx-auto text-center">
+                <h2 className="mb-4 text-2xl font-bold text-gray-900">Stay Updated on Future Events</h2>
+                <p className="mb-6 text-gray-600">
+                  Subscribe to our newsletter and never miss an upcoming workshop, conference or tech talk.
+                </p>
+                <div className="flex flex-col max-w-lg gap-3 mx-auto sm:flex-row">
+                  <input
+                    type="email"
+                    placeholder="Your email address"
+                    className="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  />
+                  <button className="px-6 py-3 font-medium text-white transition-colors rounded-lg shadow-md bg-ieee-blue hover:bg-blue-700 hover:shadow-blue-500/30">
+                    Subscribe
+                  </button>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+        </section>
       </div>
     </Layout>
   );

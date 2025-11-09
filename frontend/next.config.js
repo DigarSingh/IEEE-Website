@@ -101,6 +101,14 @@ const nextConfig = {
       ...config.resolve.alias,
       "@": require("path").resolve(__dirname, "src/"),
     };
+    
+    // Add module resolution for monorepo setup
+    config.resolve.modules = [
+      require("path").resolve(__dirname, "node_modules"),
+      require("path").resolve(__dirname, "../node_modules"),
+      "node_modules"
+    ];
+    
     return config;
   },
 

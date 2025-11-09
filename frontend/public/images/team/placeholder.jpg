@@ -1,0 +1,10 @@
+<!-- This is a placeholder for team members without photos -->
+<!-- The actual image should be replaced when available -->
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="400" viewBox="0 0 400 400">
+  <rect width="400" height="400" fill="#f3f4f6"/>
+  <circle cx="200" cy="150" r="60" fill="#d1d5db"/>
+  <path d="M120 300 Q120 250 200 250 Q280 250 280 300 L280 400 L120 400 Z" fill="#d1d5db"/>
+  <text x="200" y="350" text-anchor="middle" font-family="Arial, sans-serif" font-size="24" fill="#6b7280">
+    IEEE Member
+  </text>
+</svg>

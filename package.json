@@ -12,6 +12,7 @@
     "build:vercel": "cd frontend && npm run build"
   },
   "dependencies": {
+    "client-only": "^0.0.1",
     "concurrently": "^8.2.2",
     "dotenv": "^17.2.0",
     "mongodb": "^6.16.0",
