@@ -125,7 +125,7 @@ export default function About() {
     {
       name: 'Digar Singh',
       role: 'Web Master',
-      image: '/images/Team 2/web-master2.jpg',
+      image: '/images/Team 2/web-master2(HERO).jpg',
       bio: 'Full-stack developer and AI/ML enthusiast passionate about building smart, scalable, and user-focused digital platforms. Blending creativity with data-driven intelligence, he transforms ideas into innovative web and AI solutions.',
       expertise: ['Full-Stack Development', 'Web Technologies', 'AI/ML'],
       socialLinks: [
