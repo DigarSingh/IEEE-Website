@@ -81,7 +81,7 @@ export default function About() {
     {
       name: 'Pranav Maheshwari',
       role: 'Secretary',
-      image: '/images/team 2/Secretary.jpg',
+      image: '/images/Team 2/Secretary.jpg',
       bio: 'Secretary of the IEEE Student Branch, responsible for maintaining official records, documentation, and coordinating communications between members and executive committee. Ensuring smooth administrative operations and organizational efficiency.',
       expertise: ['Administrative Management', 'Documentation', 'Communication', 'Record Keeping'],
       socialLinks: [
