@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
+import { Analytics } from "@vercel/analytics/next";
 import { AuthProvider } from "../contexts/AuthContext";
 import { ThemeProvider } from "../contexts/ThemeContext";
 import { AdminProvider } from "../contexts/AdminContext";
@@ -42,6 +43,7 @@ function MyApp({ Component, pageProps }) {
         <AdminProvider>
           <GoogleAnalytics />
           <Component {...pageProps} />
+          <Analytics />
         </AdminProvider>
       </AuthProvider>
     </ThemeProvider>
