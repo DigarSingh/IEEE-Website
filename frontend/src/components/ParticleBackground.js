@@ -1,6 +1,6 @@
 import React, { useCallback, useMemo } from "react";
-import { loadSlim } from "tsparticles-slim";
-import Particles from "react-tsparticles";
+import Particles from "@tsparticles/react";
+import { loadSlim } from "@tsparticles/slim";
 import usePerformanceMode from "@/hooks/usePerformanceMode";
 
 const ParticleBackground = () => {

@@ -1,6 +1,6 @@
 import React, { useCallback } from "react";
-import { loadSlim } from "tsparticles-slim";
-import Particles from "react-tsparticles";
+import Particles from "@tsparticles/react";
+import { loadSlim } from "@tsparticles/slim";
 
 const AuthParticleBackground = () => {
   const particlesInit = useCallback(async (engine) => {
