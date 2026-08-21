@@ -258,10 +258,10 @@ export default function Footer() {
                     <FaPhone className="w-4 h-4 text-white" />
                   </div>
                   <a
-                    href="tel:+917668410473"
+                    href="tel:+916396273640"
                     className="text-gray-300 transition-colors group-hover:text-white"
                   >
-                    +91 7668410473
+                    +91 63962 73640
                   </a>
                 </motion.li>
               </ul>
@@ -298,7 +298,7 @@ export default function Footer() {
               >
                 <FaHeart className="text-red-500" />
               </motion.div>
-              <span className="font-medium">by <span className="font-bold text-blue-400 text-lg">Digar</span></span>
+              <span className="font-medium">by <span className="text-lg font-bold text-blue-400">Digar</span></span>
             </motion.div>
 
             <div className="flex space-x-6">

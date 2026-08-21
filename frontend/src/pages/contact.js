@@ -41,7 +41,7 @@ export default function Contact() {
           {/* Multi-layer Background */}
           <div className="absolute inset-0 bg-gradient-to-br from-blue-900 via-purple-900 to-indigo-900"></div>
           <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-blue-900/30"></div>
-          
+
           {/* Particle Background */}
           <ParticleBackground />
 
@@ -87,7 +87,7 @@ export default function Contact() {
                   <FaEnvelope className="mr-2" />
                   Get In Touch
                 </motion.div>
-                
+
                 <motion.h1
                   initial={{ opacity: 0, y: 30 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -104,18 +104,18 @@ export default function Contact() {
                     Collaborate
                   </span>
                 </motion.h1>
-                
+
                 <motion.p
                   initial={{ opacity: 0, y: 30 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6, delay: 0.4 }}
                   className="max-w-lg mb-8 text-xl leading-relaxed text-blue-100"
                 >
-                  Have questions about IEEE membership? Want to collaborate on innovative projects? 
+                  Have questions about IEEE membership? Want to collaborate on innovative projects?
                   We're here to help you advance your engineering career and make meaningful connections.
                 </motion.p>
 
-                
+
 
                 <motion.div
                   initial={{ opacity: 0, y: 30 }}
@@ -133,7 +133,7 @@ export default function Contact() {
                     <FaArrowRight className="text-sm" />
                   </motion.a>
                   <motion.a
-                    href="tel:+917668410473"
+                    href="tel:+916396273640"
                     whileHover={{ scale: 1.05, y: -2 }}
                     whileTap={{ scale: 0.95 }}
                     className="flex items-center gap-2 px-8 py-4 font-semibold transition-all border bg-white/10 backdrop-blur-sm border-white/20 rounded-xl hover:bg-white/20"
@@ -154,7 +154,7 @@ export default function Contact() {
                 <div className="p-8 border shadow-2xl bg-white/10 backdrop-blur-xl rounded-2xl border-white/20">
                   <h3 className="mb-6 text-2xl font-bold text-white">Quick Contact</h3>
                   <div className="space-y-4">
-                    <motion.div 
+                    <motion.div
                       className="flex items-center gap-4 p-4 cursor-pointer bg-white/10 rounded-xl"
                       whileHover={{ scale: 1.02, backgroundColor: "rgba(255,255,255,0.15)" }}
                       transition={{ duration: 0.2 }}
@@ -167,7 +167,7 @@ export default function Contact() {
                         <p className="font-medium text-white">geu.ieee.studentbranch@gmail.com</p>
                       </div>
                     </motion.div>
-                    <motion.div 
+                    <motion.div
                       className="flex items-center gap-4 p-4 cursor-pointer bg-white/10 rounded-xl"
                       whileHover={{ scale: 1.02, backgroundColor: "rgba(255,255,255,0.15)" }}
                       transition={{ duration: 0.2 }}
@@ -177,10 +177,10 @@ export default function Contact() {
                       </div>
                       <div>
                         <p className="text-sm text-blue-100">Call Us</p>
-                        <p className="font-medium text-white">+91 7668410473</p>
+                        <p className="font-medium text-white">+91 63962 73640</p>
                       </div>
                     </motion.div>
-                    <motion.a 
+                    <motion.a
                       href="https://www.instagram.com/ieee.geu/"
                       target="_blank"
                       rel="noopener noreferrer"
@@ -196,7 +196,7 @@ export default function Contact() {
                         <p className="font-medium text-white">@ieee.geu</p>
                       </div>
                     </motion.a>
-                    <motion.div 
+                    <motion.div
                       className="flex items-center gap-4 p-4 cursor-pointer bg-white/10 rounded-xl"
                       whileHover={{ scale: 1.02, backgroundColor: "rgba(255,255,255,0.15)" }}
                       transition={{ duration: 0.2 }}
@@ -248,7 +248,7 @@ export default function Contact() {
             <div className="absolute top-0 right-0 bg-purple-200 rounded-full w-72 h-72 mix-blend-multiply filter blur-xl opacity-30 animate-blob animation-delay-2000"></div>
             <div className="absolute bg-pink-200 rounded-full -bottom-32 left-20 w-72 h-72 mix-blend-multiply filter blur-xl opacity-30 animate-blob animation-delay-4000"></div>
           </div>
-          
+
           <div className="container relative z-10 px-6 mx-auto max-w-7xl">
             <motion.div
               initial={{ opacity: 0, y: 30 }}
@@ -268,7 +268,7 @@ export default function Contact() {
                 </span>
               </h2>
               <p className="max-w-3xl mx-auto text-xl text-gray-600">
-                Fill out the form below and we'll get back to you within 24 hours. 
+                Fill out the form below and we'll get back to you within 24 hours.
                 Our team is here to help with any questions or collaboration opportunities.
               </p>
             </motion.div>
@@ -300,9 +300,9 @@ export default function Contact() {
                         <p className="text-blue-100">Let's start a conversation</p>
                       </div>
                     </div>
-                    
+
                     <p className="mb-8 leading-relaxed text-blue-100">
-                      Fill out the form and our team will get back to you within 24 hours. 
+                      Fill out the form and our team will get back to you within 24 hours.
                       We're here to help you with any questions about IEEE membership, events, or collaboration opportunities.
                     </p>
 
@@ -355,10 +355,10 @@ export default function Contact() {
                         <div>
                           <h3 className="mb-2 text-lg font-semibold">Phone Number</h3>
                           <a
-                            href="tel:+917668410473"
+                            href="tel:+916396273640"
                             className="text-blue-100 transition-colors hover:text-white hover:underline"
                           >
-                            +91 7668410473
+                            +91 63962 73640
                           </a>
                         </div>
                       </motion.div>
@@ -418,7 +418,7 @@ export default function Contact() {
                 <div className="relative p-8 overflow-hidden border shadow-2xl bg-white/80 backdrop-blur-xl border-white/20 rounded-3xl">
                   {/* Background Gradient */}
                   <div className="absolute inset-0 bg-gradient-to-br from-white via-blue-50/30 to-purple-50/30 rounded-3xl"></div>
-                  
+
                   {/* Decorative Elements */}
                   <div className="absolute top-0 right-0 w-32 h-32 -mt-16 -mr-16 rounded-full bg-gradient-to-br from-blue-400/10 to-purple-400/10"></div>
                   <div className="absolute bottom-0 left-0 w-24 h-24 -mb-12 -ml-12 rounded-full bg-gradient-to-br from-pink-400/10 to-yellow-400/10"></div>
@@ -447,7 +447,7 @@ export default function Contact() {
                           className="mb-8 overflow-hidden"
                         >
                           <div className="flex items-center p-6 border-l-4 border-green-500 shadow-lg rounded-xl bg-gradient-to-r from-green-50 to-emerald-50">
-                            <motion.div 
+                            <motion.div
                               className="flex-shrink-0 mr-4"
                               initial={{ rotate: 0 }}
                               animate={{ rotate: 360 }}
@@ -554,25 +554,25 @@ export default function Contact() {
                         try {
                           // Clear any previous errors
                           setFormError("");
-                          
+
                           console.log("Submitting form with values:", values);
-                          
+
                           const response = await fetch("/api/contact", {
                             method: "POST",
-                            headers: { 
+                            headers: {
                               "Content-Type": "application/json",
                             },
                             body: JSON.stringify(values),
                           });
-                          
+
                           console.log("Response status:", response.status);
                           const data = await response.json();
                           console.log("Response data:", data);
-                          
+
                           if (!response.ok || !data.success) {
                             throw new Error(data.message || "Failed to send message.");
                           }
-                          
+
                           setFormSuccess(true);
                           resetForm();
                           setTimeout(() => setFormSuccess(false), 5000);
@@ -605,15 +605,14 @@ export default function Contact() {
                                   id="name"
                                   name="name"
                                   type="text"
-                                  className={`appearance-none block w-full px-5 py-4 border-2 ${
-                                    errors.name && touched.name
+                                  className={`appearance-none block w-full px-5 py-4 border-2 ${errors.name && touched.name
                                       ? "border-red-300 focus:ring-red-500 focus:border-red-500"
                                       : "border-gray-200 focus:ring-blue-500 focus:border-blue-500 group-hover:border-gray-300"
-                                  } rounded-xl shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-opacity-50 text-sm transition-all duration-200 bg-white/50 backdrop-blur-sm`}
+                                    } rounded-xl shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-opacity-50 text-sm transition-all duration-200 bg-white/50 backdrop-blur-sm`}
                                   placeholder="Enter your full name"
                                 />
                                 {errors.name && touched.name ? (
-                                  <motion.div 
+                                  <motion.div
                                     className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none"
                                     initial={{ scale: 0 }}
                                     animate={{ scale: 1 }}
@@ -646,15 +645,14 @@ export default function Contact() {
                                   id="email"
                                   name="email"
                                   type="email"
-                                  className={`appearance-none block w-full px-5 py-4 border-2 ${
-                                    errors.email && touched.email
+                                  className={`appearance-none block w-full px-5 py-4 border-2 ${errors.email && touched.email
                                       ? "border-red-300 focus:ring-red-500 focus:border-red-500"
                                       : "border-gray-200 focus:ring-blue-500 focus:border-blue-500 group-hover:border-gray-300"
-                                  } rounded-xl shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-opacity-50 text-sm transition-all duration-200 bg-white/50 backdrop-blur-sm`}
+                                    } rounded-xl shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-opacity-50 text-sm transition-all duration-200 bg-white/50 backdrop-blur-sm`}
                                   placeholder="your.email@example.com"
                                 />
                                 {errors.email && touched.email ? (
-                                  <motion.div 
+                                  <motion.div
                                     className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none"
                                     initial={{ scale: 0 }}
                                     animate={{ scale: 1 }}
@@ -687,11 +685,10 @@ export default function Contact() {
                               id="subject"
                               name="subject"
                               type="text"
-                              className={`appearance-none block w-full px-5 py-4 border-2 ${
-                                errors.subject && touched.subject
+                              className={`appearance-none block w-full px-5 py-4 border-2 ${errors.subject && touched.subject
                                   ? "border-red-300 focus:ring-red-500 focus:border-red-500"
                                   : "border-gray-200 focus:ring-blue-500 focus:border-blue-500 hover:border-gray-300"
-                              } rounded-xl shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-opacity-50 text-sm transition-all duration-200 bg-white/50 backdrop-blur-sm`}
+                                } rounded-xl shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-opacity-50 text-sm transition-all duration-200 bg-white/50 backdrop-blur-sm`}
                               placeholder="What's this about?"
                             />
                             <ErrorMessage name="subject" component="p" className="mt-2 text-sm font-medium text-red-600" />
@@ -715,11 +712,10 @@ export default function Contact() {
                               id="message"
                               name="message"
                               rows={6}
-                              className={`appearance-none block w-full px-5 py-4 border-2 ${
-                                errors.message && touched.message
+                              className={`appearance-none block w-full px-5 py-4 border-2 ${errors.message && touched.message
                                   ? "border-red-300 focus:ring-red-500 focus:border-red-500"
                                   : "border-gray-200 focus:ring-blue-500 focus:border-blue-500 hover:border-gray-300"
-                              } rounded-xl shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-opacity-50 text-sm transition-all duration-200 resize-none bg-white/50 backdrop-blur-sm`}
+                                } rounded-xl shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-opacity-50 text-sm transition-all duration-200 resize-none bg-white/50 backdrop-blur-sm`}
                               placeholder="Tell us more about your inquiry..."
                             />
                             <ErrorMessage name="message" component="p" className="mt-2 text-sm font-medium text-red-600" />
@@ -737,15 +733,14 @@ export default function Contact() {
                               disabled={isSubmitting}
                               whileHover={{ scale: 1.02, y: -2 }}
                               whileTap={{ scale: 0.98 }}
-                              className={`relative w-full flex justify-center items-center py-4 px-6 border border-transparent rounded-xl shadow-lg text-white bg-gradient-to-r from-blue-600 via-blue-700 to-purple-700 hover:from-blue-700 hover:via-blue-800 hover:to-purple-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-300 font-semibold text-lg ${
-                                isSubmitting
+                              className={`relative w-full flex justify-center items-center py-4 px-6 border border-transparent rounded-xl shadow-lg text-white bg-gradient-to-r from-blue-600 via-blue-700 to-purple-700 hover:from-blue-700 hover:via-blue-800 hover:to-purple-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-300 font-semibold text-lg ${isSubmitting
                                   ? "opacity-70 cursor-not-allowed"
                                   : "hover:shadow-blue-500/25"
-                              }`}
+                                }`}
                             >
                               {/* Background shine effect */}
                               <div className="absolute inset-0 transition-transform duration-1000 transform -translate-x-full -skew-x-12 rounded-xl bg-gradient-to-r from-transparent via-white/10 to-transparent group-hover:translate-x-full"></div>
-                              
+
                               {isSubmitting ? (
                                 <>
                                   <svg className="w-5 h-5 mr-3 -ml-1 text-white animate-spin" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
@@ -827,7 +822,7 @@ export default function Contact() {
             <div className="absolute w-64 h-64 bg-blue-200 rounded-full top-20 right-10 mix-blend-multiply filter blur-xl opacity-20 animate-blob animation-delay-2000"></div>
             <div className="absolute bg-purple-200 rounded-full bottom-20 left-10 w-80 h-80 mix-blend-multiply filter blur-xl opacity-20 animate-blob animation-delay-4000"></div>
           </div>
-          
+
           <div className="container relative z-10 max-w-5xl px-6 mx-auto">
             <motion.div
               initial={{ opacity: 0, y: 30 }}
@@ -857,7 +852,7 @@ export default function Contact() {
               {[
                 {
                   question: "How quickly will you respond to my inquiry?",
-                  answer: "We aim to respond to all inquiries within 24-48 hours during business days. For urgent matters, please contact us directly by phone at +91 7668410473.",
+                  answer: "We aim to respond to all inquiries within 24-48 hours during business days. For urgent matters, please contact us directly by phone at +91 63962 73640.",
                   icon: "⚡",
                   gradient: "from-yellow-400 to-orange-500"
                 },
@@ -898,7 +893,7 @@ export default function Contact() {
                   <div className="relative p-8 overflow-hidden transition-all duration-300 border border-gray-200 shadow-lg bg-white/80 backdrop-blur-sm rounded-2xl hover:shadow-xl">
                     {/* Gradient border effect */}
                     <div className={`absolute inset-0 bg-gradient-to-r ${faq.gradient} opacity-0 group-hover:opacity-10 transition-opacity duration-300 rounded-2xl`}></div>
-                    
+
                     {/* Question header */}
                     <div className="flex items-start mb-4">
                       <div className={`flex items-center justify-center w-12 h-12 rounded-xl bg-gradient-to-r ${faq.gradient} text-white text-xl font-bold mr-4 flex-shrink-0 shadow-lg`}>
@@ -910,7 +905,7 @@ export default function Contact() {
                         </h3>
                       </div>
                     </div>
-                    
+
                     {/* Answer */}
                     <div className="ml-16">
                       <p className="leading-relaxed text-gray-600 transition-colors duration-300 group-hover:text-gray-700">
@@ -954,7 +949,7 @@ export default function Contact() {
                       <FaArrowRight className="ml-2" />
                     </motion.a>
                     <motion.a
-                      href="tel:+917668410473"
+                      href="tel:+916396273640"
                       whileHover={{ scale: 1.05, y: -2 }}
                       whileTap={{ scale: 0.95 }}
                       className="inline-flex items-center px-8 py-4 font-semibold text-blue-600 transition-all border-2 border-blue-200 bg-blue-50 rounded-xl hover:bg-blue-100 hover:border-blue-300"
